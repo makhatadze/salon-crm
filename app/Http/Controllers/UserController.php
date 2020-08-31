@@ -2,9 +2,9 @@
 /**
  *  app/Http/Controllers/UserController.php
  *
- * User: 
+ * User:
  * Date-Time: 31.08.20
- * Time: 13:42
+ * Time: 13:55
  * @author Vito Makhatadze <vitomaxatadze@gmail.com>
  */
 namespace App\Http\Controllers;

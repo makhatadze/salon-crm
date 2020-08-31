@@ -1,5 +1,12 @@
 <?php
-
+/**
+ *  app/Http/Controllers/ManagementController.php
+ *
+ * User:
+ * Date-Time: 31.08.20
+ * Time: 13:57
+ * @author Vito Makhatadze <vitomaxatadze@gmail.com>
+ */
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
