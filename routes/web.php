@@ -5,8 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 //HOME CONTROLLER
 Route::group(['prefix' => '/'], function () {
-    Route::any('/home',['uses'=>'HomeController@ActionHome', 'as' => 'ActionHome']);
-    Route::any('/home', ['uses'=>'HomeController@index', 'as' => 'ActionHome']);
+    Route::any('/home',['uses'=>'MainController@index', 'as' => 'ActionMain']);
     Route::get('/user', ['uses'=>'UserController@index', 'as' => 'ActionUser']);
     Route::get('/services', ['uses'=>'ServiceController@index', 'as' => 'ActionService']);
     Route::get('/products', ['uses'=>'ProductController@index', 'as' => 'ActionProduct']);
