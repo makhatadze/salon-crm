@@ -12,4 +12,6 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
         Route::get('/products', ['uses'=>'ProductController@index', 'as' => 'ActionProduct']);
         Route::get('/clients', ['uses'=>'ClientController@index', 'as' => 'ActionClient']);
     });
+    Auth::routes();
 });
+
