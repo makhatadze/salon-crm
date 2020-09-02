@@ -1,23 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Login - Midone - Tailwind HTML Admin Template</title>
+        <title>CRM DIMOND</title>
 
         <meta charset="utf-8">
-
-        <link href="dist/images/logo.svg" rel="shortcut icon">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link href="{{ url('theme/images/logo.svg') }}" rel="shortcut icon">
+        <link rel="stylesheet" href="{{ url('theme/css/app.css') }}">
     </head>
     <body class="login">
         <div class="container sm:px-10">
             <div class="block xl:grid grid-cols-2 gap-4">
                 <div class="hidden xl:flex flex-col min-h-screen">
-                    <a href="" class="-intro-x flex items-center pt-5">
-                        <img alt="Midone Tailwind HTML Admin Template" class="w-6" src="dist/images/logo.svg">
-                        <span class="text-white text-lg ml-3"> Mid<span class="font-medium">One</span> </span>
-                    </a>
                     <div class="my-auto">
-                        <img alt="Midone Tailwind HTML Admin Template" class="-intro-x w-1/2 -mt-16" src="dist/images/illustration.svg">
+                        <img alt="" class="-intro-x w-1/2 -mt-16" src="{{ url('theme/images/illustration.svg')}}">
                         <div class="-intro-x text-white font-medium text-4xl leading-tight mt-10">
                             A few more clicks to 
                             <br>
@@ -32,30 +29,28 @@
                             Sign In
                         </h2>
                         <div class="intro-x mt-2 text-gray-500 xl:hidden text-center">A few more clicks to sign in to your account. Manage all your e-commerce accounts in one place</div>
-                        <div class="intro-x mt-8">
-                            <input type="text" class="intro-x login__input input input--lg border border-gray-300 block" placeholder="Email">
-                            <input type="password" class="intro-x login__input input input--lg border border-gray-300 block mt-4" placeholder="Password">
-                        </div>
-                        <div class="intro-x flex text-gray-700 text-xs sm:text-sm mt-4">
-                            <div class="flex items-center mr-auto">
-                                <input type="checkbox" class="input border mr-2" id="remember-me">
-                                <label class="cursor-pointer select-none" for="remember-me">Remember me</label>
+                        {!! Form::open() !!}
+                            <div class="intro-x mt-5">
+                                {{ Form::label('email', '', ['class' => 'font-helvetica']) }}
+                                {{ Form::text('email', null, ['class' => 'intro-x login__input input input--lg border border-gray-300 block mt-2 mb-3']) }}
+                                {{ Form::label('password', '', ['class' => 'font-helvetica']) }}
+                                {{ Form::password('password', ['class' => 'intro-x login__input input input--lg border border-gray-300 block mt-2']) }}  
                             </div>
-                            <a href="">Forgot Password?</a> 
-                        </div>
-                        <div class="intro-x mt-5 xl:mt-8 text-center xl:text-left">
-                            <button class="button button--lg w-full xl:w-32 text-white bg-theme-1 xl:mr-3">Login</button>
-                            <button class="button button--lg w-full xl:w-32 text-gray-700 border border-gray-300 mt-3 xl:mt-0">Sign up</button>
-                        </div>
-                        <div class="intro-x mt-10 xl:mt-24 text-gray-700 text-center xl:text-left">
-                            By signin up, you agree to our 
-                            <br>
-                            <a class="text-theme-1" href="">Terms and Conditions</a> & <a class="text-theme-1" href="">Privacy Policy</a> 
-                        </div>
+                            <div class="intro-x flex text-gray-700 text-xs sm:text-sm mt-4">
+                                <div class="flex items-center mr-auto">
+                                    <input type="checkbox" name="remember" class="input border mr-2" id="remember-me">
+                                    <label class="cursor-pointer select-none" for="remember-me">Remember me</label>
+                                </div>
+                                <a href="#">Forgot Password?</a> 
+                            </div>
+                            <div class="intro-x mt-5 xl:mt-8 text-center xl:text-left">
+                                 {{ Form::submit('Login', ['class' => 'button button--lg w-full xl:w-32 text-white bg-theme-1 xl:mr-3']) }}  
+                            </div>
+                        {!! Form::close() !!}
                     </div>
                 </div>
             </div>
         </div>
-        <script src="dist/js/app.js"></script>
+        <script src="{{ url('theme/js/app.js') }}"></script>
     </body>
 </html>

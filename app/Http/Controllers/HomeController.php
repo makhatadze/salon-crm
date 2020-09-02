@@ -30,8 +30,15 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function ActionHome()
     {
-        return view('home');
+        if (view()->exists('theme.template.home.home_index')) {
+            $data = [
+                
+            ];
+            return view('theme.template.home.home_index', $data);
+        } else {
+            abort('404');
+        }
     }
 }
