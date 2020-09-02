@@ -49867,7 +49867,7 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-// removed by extract-text-webpack-plugin
+throw new Error("Module build failed (from ./node_modules/css-loader/index.js):\nModuleNotFoundError: Module not found: Error: Can't resolve '../fonts/summernote/summernote.woff' in 'C:\\xampp\\htdocs\\project\\resources\\sass'\n    at C:\\xampp\\htdocs\\project\\node_modules\\webpack\\lib\\Compilation.js:925:10\n    at C:\\xampp\\htdocs\\project\\node_modules\\webpack\\lib\\NormalModuleFactory.js:401:22\n    at C:\\xampp\\htdocs\\project\\node_modules\\webpack\\lib\\NormalModuleFactory.js:130:21\n    at C:\\xampp\\htdocs\\project\\node_modules\\webpack\\lib\\NormalModuleFactory.js:224:22\n    at C:\\xampp\\htdocs\\project\\node_modules\\neo-async\\async.js:2830:7\n    at C:\\xampp\\htdocs\\project\\node_modules\\neo-async\\async.js:6877:13\n    at C:\\xampp\\htdocs\\project\\node_modules\\webpack\\lib\\NormalModuleFactory.js:214:25\n    at C:\\xampp\\htdocs\\project\\node_modules\\enhanced-resolve\\lib\\Resolver.js:213:14\n    at C:\\xampp\\htdocs\\project\\node_modules\\enhanced-resolve\\lib\\Resolver.js:285:5\n    at eval (eval at create (C:\\xampp\\htdocs\\project\\node_modules\\tapable\\lib\\HookCodeFactory.js:33:10), <anonymous>:13:1)\n    at C:\\xampp\\htdocs\\project\\node_modules\\enhanced-resolve\\lib\\UnsafeCachePlugin.js:44:7\n    at C:\\xampp\\htdocs\\project\\node_modules\\enhanced-resolve\\lib\\Resolver.js:285:5\n    at eval (eval at create (C:\\xampp\\htdocs\\project\\node_modules\\tapable\\lib\\HookCodeFactory.js:33:10), <anonymous>:13:1)\n    at C:\\xampp\\htdocs\\project\\node_modules\\enhanced-resolve\\lib\\Resolver.js:285:5\n    at eval (eval at create (C:\\xampp\\htdocs\\project\\node_modules\\tapable\\lib\\HookCodeFactory.js:33:10), <anonymous>:25:1)\n    at C:\\xampp\\htdocs\\project\\node_modules\\enhanced-resolve\\lib\\DescriptionFilePlugin.js:67:43\n    at C:\\xampp\\htdocs\\project\\node_modules\\enhanced-resolve\\lib\\Resolver.js:285:5\n    at eval (eval at create (C:\\xampp\\htdocs\\project\\node_modules\\tapable\\lib\\HookCodeFactory.js:33:10), <anonymous>:14:1)\n    at C:\\xampp\\htdocs\\project\\node_modules\\enhanced-resolve\\lib\\Resolver.js:285:5\n    at eval (eval at create (C:\\xampp\\htdocs\\project\\node_modules\\tapable\\lib\\HookCodeFactory.js:33:10), <anonymous>:25:1)\n    at C:\\xampp\\htdocs\\project\\node_modules\\enhanced-resolve\\lib\\DescriptionFilePlugin.js:67:43\n    at C:\\xampp\\htdocs\\project\\node_modules\\enhanced-resolve\\lib\\Resolver.js:285:5\n    at eval (eval at create (C:\\xampp\\htdocs\\project\\node_modules\\tapable\\lib\\HookCodeFactory.js:33:10), <anonymous>:14:1)\n    at C:\\xampp\\htdocs\\project\\node_modules\\enhanced-resolve\\lib\\Resolver.js:285:5\n    at eval (eval at create (C:\\xampp\\htdocs\\project\\node_modules\\tapable\\lib\\HookCodeFactory.js:33:10), <anonymous>:13:1)\n    at C:\\xampp\\htdocs\\project\\node_modules\\enhanced-resolve\\lib\\DirectoryExistsPlugin.js:27:15\n    at C:\\xampp\\htdocs\\project\\node_modules\\enhanced-resolve\\lib\\CachedInputFileSystem.js:85:15\n    at processTicksAndRejections (internal/process/task_queues.js:79:11)");
 
 /***/ }),
 
@@ -49878,8 +49878,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /home/administrator/www/CRM-DIMOND/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /home/administrator/www/CRM-DIMOND/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\xampp\htdocs\project\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\project\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
