@@ -18,9 +18,16 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function ActionUser()
     {
-        //
+        if (view()->exists('theme.template.user.user_index')) {
+            $data = [
+                
+            ];
+            return view('theme.template.user.user_index', $data);
+        } else {
+            abort('404');
+        }
     }
 
     /**
@@ -28,9 +35,16 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function ActionUserAdd()
     {
-        //
+        if (view()->exists('theme.template.user.user_add')) {
+            $data = [
+                
+            ];
+            return view('theme.template.user.user_add', $data);
+        } else {
+            abort('404');
+        }
     }
 
     /**

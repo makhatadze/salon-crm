@@ -8,6 +8,7 @@
 
         <link href="{{ url('theme/images/logo.svg') }}" rel="shortcut icon">
         <link rel="stylesheet" href="{{ url('theme/css/app.css') }}">
+        <link rel="stylesheet" href="{{ url('theme/css/custom.css') }}">
 
     </head>
     <body class="app">

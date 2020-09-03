@@ -1,0 +1,9 @@
+.side-menu__title,
+.breadcrumb,
+.font-helvetica {
+	font-family: 'HelveticaRegular';
+}
+
+.custom-nav-item {
+	height: 40px !important;
+}

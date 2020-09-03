@@ -13,21 +13,15 @@
         <p/li>
         @if(auth()->user()->isAdministrator())
         <li>
-            <a href="javascript:;" class="side-menu" data-menu="users">
+            <a href="javascript:;" class="side-menu" data-menu="user">
                 <div class="side-menu__icon"> <i data-feather="users"></i> </div>
                 <div class="side-menu__title"> მომხმარებლები <i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
             </a>
             <ul class="">
                 <li>
-                    <a href="#" class="side-menu custom-nav-item">
+                    <a href="{{ route('ActionUser') }}" class="side-menu custom-nav-item">
                         <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
                         <div class="side-menu__title"> ჩამონათვალი </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="index.html" class="side-menu custom-nav-item">
-                        <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
-                        <div class="side-menu__title"> ჯგუფები </div>
                     </a>
                 </li>
             </ul>
