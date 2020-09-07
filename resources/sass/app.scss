@@ -8,3 +8,22 @@
 @import '~bootstrap/scss/bootstrap';
 
 
+.has-error {
+    label {
+        color: $red;
+    }
+
+    input {
+        border: 2px solid $red !important;
+
+    }
+
+    input:focus {
+        border: 2px solid $red !important;
+    }
+
+    .help-block {
+        color: $red;
+    }
+}
+
