@@ -32,7 +32,7 @@
                </div>
               <div class="flex">
                 <div class="w-1/2 p-2">
-                    <label>ფასი</label>
+                    <label>ფასი 1111</label>
                     <div class="relative mt-2">
                         <input type="text" name="price" name="price" class="input pr-12 w-full border col-span-4" placeholder="ფასი">
                         <div class="absolute top-0 right-0 rounded-r w-10 h-full flex items-center justify-center bg-gray-100 border text-gray-600">₾</div>
@@ -106,7 +106,7 @@
                 datatype: 'JSON',
                 success: function (response) {
                     if(response.status == true){
-                        console.log(response);
+                        console.log(response.);
                     }
                 }
             }); 
