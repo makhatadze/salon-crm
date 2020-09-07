@@ -10,7 +10,8 @@
         <link rel="stylesheet" href="{{ url('theme/css/app.css') }}">
         <link rel="stylesheet" href="{{ url('theme/css/custom.css') }}">
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-
+        <link href="{{ asset('css/admin.css') }}" rel="stylesheet">  
+        
     </head>
     <body class="app">
         <div class="flex">
@@ -46,4 +47,5 @@
         <script src="{{ url('theme/js/app.js') }}"></script>
         @yield('custom_scripts')
     </body>
-</html>
+
+    </html>

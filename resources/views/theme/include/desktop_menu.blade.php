@@ -10,7 +10,7 @@
                 <div class="side-menu__icon"> <i data-feather="home"></i> </div>
                 <div class="side-menu__title"> მთავარი გვერდი </div>
             </a>
-        <p/li>
+        </li>
         @if(auth()->user()->isAdministrator())
         <li>
             <a href="javascript:;" class="side-menu" data-menu="user">
@@ -35,6 +35,26 @@
             <ul class="">
                 <li>
                     <a href="#" class="side-menu custom-nav-item">
+                        <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
+                        <div class="side-menu__title"> ჩამონათვალი </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="side-menu custom-nav-item">
+                        <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
+                        <div class="side-menu__title"> კატეგორიები </div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a href="javascript:;" class="side-menu" data-menu="services">
+                <div class="side-menu__icon"> <i data-feather="box"></i> </div>
+                <div class="side-menu__title"> სერვისები <i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
+            </a>
+            <ul class="">
+                <li>
+                    <a href="/services" class="side-menu custom-nav-item">
                         <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
                         <div class="side-menu__title"> ჩამონათვალი </div>
                     </a>
