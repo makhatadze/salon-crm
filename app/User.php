@@ -64,4 +64,12 @@ class User extends Authenticatable
     {
         return $this->hasAnyRole('manager'); // ?? something like this! should return true or false
     }
+
+    /**
+     * Get the user's profile.
+     */
+    public function profile()
+    {
+        return $this->morphOne('App\Profile', 'profileable');
+    }
 }

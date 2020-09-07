@@ -9,7 +9,10 @@
  */
 namespace App\Http\Controllers;
 
+use App\Profile;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -22,7 +25,7 @@ class UserController extends Controller
     {
         if (view()->exists('theme.template.user.user_index')) {
             $data = [
-                
+
             ];
             return view('theme.template.user.user_index', $data);
         } else {
@@ -35,12 +38,57 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function ActionUserAdd()
+    public function ActionUserAdd(Request $request)
     {
         if (view()->exists('theme.template.user.user_add')) {
+            if ($request->isMethod('post') && auth()->user()->isAdministrator()) {
+
+                $this->validate($request, [
+                    'first_name' => 'required|string',
+                    'last_name' => 'required|string',
+                    'birthday' => 'required|string',
+                    'email' => 'required|email|unique:users',
+                    'pid' => 'required',
+                    'position' => 'required|string',
+                    'phone' => 'required',
+                    'salary' => 'min:0|integer',
+                    'percent' => 'min:0|max:100|integer',
+                    'password' => 'required|min:8',
+                    'password_confirmation' => 'required_with:password|same:password|min:8'
+                ]);
+                $data = $request->all();
+                $user = new User([
+                    'name' => $data['first_name'],
+                    'email' => $data['email'],
+                    'password' => Hash::make($data['password']),
+                ]);
+                $user->save();
+
+                $user->roles()->attach($data['position']);
+
+                $profile = new Profile([
+                   'first_name' => $data['first_name'],
+                    'last_name' => $data['last_name'],
+                    'birthday' => $data['birthday'],
+                    'position' => $data['position'],
+                    'phone' => $data['phone'],
+                    'pid' => $data['pid'],
+                    'salary' => $data['salary'],
+                    'salary_type' => $data['salary_type'],
+                    'percent' => $data['pid'],
+                ]);
+
+                $user->profile()->save($profile);
+
+                return redirect('user')->with('success', 'User added.');
+
+
+            }
             $data = [
-                
+
             ];
+
+
             return view('theme.template.user.user_add', $data);
         } else {
             abort('404');
