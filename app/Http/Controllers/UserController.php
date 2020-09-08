@@ -7,11 +7,13 @@
  * Time: 13:55
  * @author Vito Makhatadze <vitomaxatadze@gmail.com>
  */
+
 namespace App\Http\Controllers;
 
 use App\Profile;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -21,13 +23,26 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function ActionUser()
+    public function ActionUser(Request $request)
     {
         if (view()->exists('theme.template.user.user_index')) {
-            $data = [
-
-            ];
-            return view('theme.template.user.user_index', $data);
+            if (request()->ajax()) {
+                if ($request->searchValue) {
+                    return  User::query()
+                        ->where('name', 'LIKE', "%{$request->searchValue}%")
+                        ->with(['Image','Profile'])
+                        ->get();
+                }
+                if (!empty($request->searchValue)) {
+                    return  User::query()
+                        ->with(['Image','Profile'])
+                        ->get();
+                }
+            }
+            $users = User::query()
+                ->with(['Image','Profile'])
+                ->get();
+            return view('theme.template.user.user_index', compact('users'));
         } else {
             abort('404');
         }
@@ -55,7 +70,7 @@ class UserController extends Controller
                     'percent' => 'integer',
                     'password' => 'required|min:8',
                     'password_confirmation' => 'required_with:password|same:password|min:8',
-                    'files' => 'mimes:jpeg,bmp,png,gif,svg',
+                    'files' => 'image|mimes:jpeg,bmp,png,gif,svg',
                 ]);
                 $user = new User([
                     'name' => $data['first_name'],
@@ -67,9 +82,9 @@ class UserController extends Controller
 
                 $user->roles()->attach($data['position']);
 
-                if($request->hasFile('files')){
-                    $imagename = date('Ymhs').$request->file('files')->getClientOriginalName();
-                    $destination = base_path() . '/storage/app/public/profile/'. $user->id;
+                if ($request->hasFile('files')) {
+                    $imagename = date('Ymhs') . $request->file('files')->getClientOriginalName();
+                    $destination = base_path() . '/storage/app/public/profile/' . $user->id;
                     $request->file('files')->move($destination, $imagename);
                     $user->image()->create([
                         'name' => $imagename
@@ -77,7 +92,7 @@ class UserController extends Controller
                 }
 
                 $profile = new Profile([
-                   'first_name' => $data['first_name'],
+                    'first_name' => $data['first_name'],
                     'last_name' => $data['last_name'],
                     'birthday' => $data['birthday'],
                     'position' => $data['position'],
@@ -108,7 +123,7 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -119,7 +134,7 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -130,7 +145,7 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -141,8 +156,8 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -153,7 +168,7 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
