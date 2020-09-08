@@ -72,7 +72,7 @@
                     <div class="sm:grid grid-cols-2 gap-2 mb-4">
                         <div class="relative mt-2 {{ $errors->has('position') ? ' has-error' : '' }}">
                             {{ Form::label('position', 'თანამდებობა', ['class' => 'font-helvetica']) }}
-                            {{ Form::select('position', ['1' => 'სალონის ადმინისტრატორი', '2' => 'სტილისტი'], null, ['class' => 'input w-full border mt-2 col-span-12 font-helvetica']) }}
+                            {{ Form::select('position', ['2' => 'სალონის ადმინისტრატორი', '4' => 'სტილისტი'], null, ['class' => 'input w-full border mt-2 col-span-12 font-helvetica']) }}
                             @if ($errors->has('position'))
                                 <span class="help-block">
                                             {{ $errors->first('position') }}
