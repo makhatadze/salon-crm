@@ -42,7 +42,7 @@ class UserController extends Controller
     {
         if (view()->exists('theme.template.user.user_add')) {
             if ($request->isMethod('post') && auth()->user()->isAdministrator()) {
-
+                $data = $request->all();
                 $this->validate($request, [
                     'first_name' => 'required|string',
                     'last_name' => 'required|string',
@@ -52,19 +52,29 @@ class UserController extends Controller
                     'position' => 'required|string',
                     'phone' => 'required',
                     'salary' => 'min:0|integer',
-                    'percent' => 'min:0|max:100|integer',
+                    'percent' => 'integer',
                     'password' => 'required|min:8',
-                    'password_confirmation' => 'required_with:password|same:password|min:8'
+                    'password_confirmation' => 'required_with:password|same:password|min:8',
+                    'files' => 'mimes:jpeg,bmp,png,gif,svg',
                 ]);
-                $data = $request->all();
                 $user = new User([
                     'name' => $data['first_name'],
                     'email' => $data['email'],
                     'password' => Hash::make($data['password']),
                 ]);
+
                 $user->save();
 
                 $user->roles()->attach($data['position']);
+
+                if($request->hasFile('files')){
+                    $imagename = date('Ymhs').$request->file('files')->getClientOriginalName();
+                    $destination = base_path() . '/storage/app/public/profile/'. $user->id;
+                    $request->file('files')->move($destination, $imagename);
+                    $user->image()->create([
+                        'name' => $imagename
+                    ]);
+                }
 
                 $profile = new Profile([
                    'first_name' => $data['first_name'],
