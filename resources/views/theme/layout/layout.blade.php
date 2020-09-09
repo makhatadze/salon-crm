@@ -10,8 +10,8 @@
         <link rel="stylesheet" href="{{ url('theme/css/app.css') }}">
         <link rel="stylesheet" href="{{ url('theme/css/custom.css') }}">
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-        <link href="{{ asset('css/admin.css') }}" rel="stylesheet">  
-        
+        <link href="{{ asset('css/admin.css') }}" rel="stylesheet">
+
     </head>
     <body class="app">
         <div class="flex">
@@ -45,8 +45,8 @@
         </div>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="{{ url('theme/js/app.js') }}"></script>
-      
-     @yield('custom_scripts')
+        <script src="{{ url('js/app.js') }}"></script>
+        @yield('custom_scripts')
     </body>
 
     </html>

@@ -34,3 +34,18 @@
     border: 1px solid transparent;
     border-radius: 0.25rem;
 }
+
+.pip {
+    position: absolute;
+    left: 120%;
+    display: flex;
+    align-items: center;
+
+    img {
+        min-height: 64px;
+    }
+
+    span {
+        margin-left: 12px;
+    }
+}

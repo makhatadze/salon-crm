@@ -1,17 +1,17 @@
 @extends('theme.layout.layout')
 
 @section('content')
-<div class="intro-y flex items-center mt-8">
-    <h2 class="text-lg font-medium mr-auto font-helvetica">
-        ახალი მომხმარებლის რეგისტრაცია
-    </h2>
-</div>
-<div class="grid grid-cols-12 gap-6 mt-5">
-    <div class="intro-y col-span-12 lg:col-span-8">
-        <div class="intro-y box p-5">
-            {!! Form::open() !!}
+    <div class="intro-y flex items-center mt-8">
+        <h2 class="text-lg font-medium mr-auto font-helvetica">
+            ახალი მომხმარებლის რეგისტრაცია
+        </h2>
+    </div>
+    <div class="grid grid-cols-12 gap-6 mt-5">
+        <div class="intro-y col-span-12 lg:col-span-8">
+            <div class="intro-y box p-5">
+                {!! Form::open(['files' => 'true']) !!}
                 <div>
-        			<label class="font-helvetica"><b>პირადი ინფორმაცია</b></label>
+                    <label class="font-helvetica"><b>პირადი ინფორმაცია</b></label>
                     <div class="sm:grid grid-cols-2 gap-2 mb-4">
                         <div class="relative mt-2 {{ $errors->has('first_name') ? ' has-error' : '' }}">
                             {{ Form::label('first_name', 'მომხმარებლის სახელი', ['class' => 'font-helvetica']) }}
@@ -70,9 +70,9 @@
                     </div>
                     <label class="font-helvetica"><b>სამსახურეობრივი მონაცემები</b></label>
                     <div class="sm:grid grid-cols-2 gap-2 mb-4">
-                    	<div class="relative mt-2 {{ $errors->has('position') ? ' has-error' : '' }}">
+                        <div class="relative mt-2 {{ $errors->has('position') ? ' has-error' : '' }}">
                             {{ Form::label('position', 'თანამდებობა', ['class' => 'font-helvetica']) }}
-                            {{ Form::select('position', ['1' => 'სალონის ადმინისტრატორი', '2' => 'სტილისტი'], null, ['class' => 'input w-full border mt-2 col-span-12 font-helvetica']) }}
+                            {{ Form::select('position', ['2' => 'სალონის ადმინისტრატორი', '4' => 'სტილისტი'], null, ['class' => 'input w-full border mt-2 col-span-12 font-helvetica']) }}
                             @if ($errors->has('position'))
                                 <span class="help-block">
                                             {{ $errors->first('position') }}
@@ -97,13 +97,32 @@
                                         </span>
                             @endif
                         </div>
-                        <div class="relative mt-2 {{ $errors->has('percent') ? ' has-error' : '' }}">
+                        <div class="relative mt-2 {{ $errors->has('percent') ? ' has-error' : '' }} percent-container">
                             {{ Form::label('percent', 'პროცენტი', ['class' => 'font-helvetica']) }}
                             {{ Form::text('percent', null, ['class' => 'input w-full border mt-2 col-span-2']) }}
                             @if ($errors->has('percent'))
                                 <span class="help-block">
                                             {{ $errors->first('percent') }}
                                         </span>
+                            @endif
+                        </div>
+
+                    </div>
+                    <div class="sm:grid grid-cols-2 gap-2">
+                        <div class="w-1/2 p-2 {{ $errors->has('files') ? ' has-error' : '' }}">
+                            {{ Form::label('image', 'სურათი', ['class' => 'font-helvetica']) }}
+                            <div class="border-2 border-dashed rounded-md mt-2 pt-1">
+                                <div class="relative mt-1">
+                                    <div class="px-4 pb-2 flex items-center cursor-pointer relative">
+                                        <span class="text-theme-1 mr-1">ატვირთეთ ფაილი</span>
+                                        {!! Form::file('image',['class' => 'w-full h-full top-0 left-0 absolute opacity-0', 'id' => 'files', 'name' =>'files']) !!}
+                                    </div>
+                                </div>
+                            </div>
+                            @if ($errors->has('files'))
+                                <span class="help-block">
+                                                {{ $errors->first('files') }}
+                                            </span>
                             @endif
                         </div>
                     </div>
@@ -128,20 +147,25 @@
                             @endif
                         </div>
                     </div>
-                    <div class="relative mt-3">
-                        <button type="submit" name="user_add_submit" class="button w-25 bg-theme-1 text-white font-helvetica">რეგისტრაცია</button>
-                    </div>
                 </div>
+                <div class="relative mt-3">
+                    <button type="submit" name="user_add_submit"
+                            class="button w-25 bg-theme-1 text-white font-helvetica">რეგისტრაცია
+                    </button>
+                </div>
+
+            </div>
             {!! Form::close() !!}
         </div>
     </div>
-</div>
+    </div>
 @endsection
 @section('custom_scripts')
-<script type="text/javascript">
-	$(document).ready(function() {
-		$('.side-menu').removeClass('side-menu--active');
-		$('.side-menu[data-menu="user"]').addClass('side-menu--active');
-	});
-</script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.side-menu').removeClass('side-menu--active');
+            $('.side-menu[data-menu="user"]').addClass('side-menu--active');
+
+        });
+    </script>
 @endsection

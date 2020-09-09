@@ -1,32 +1,54 @@
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
 
-require('./bootstrap');
 
-window.Vue = require('vue');
 
-/**
- * The following block of code may be used to automatically register your
- * Vue components. It will recursively scan this directory for the Vue
- * components and automatically register them with their "basename".
- *
- * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
- */
+$(document).ready(function () {
+    if (window.File && window.FileList && window.FileReader) {
 
-// const files = require.context('./', true, /\.vue$/i)
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
+        $('.percent-container').css('display','none');
+        $('input[name ="percent"]').val(0);
+        $('input[name ="salary"]').val(0);
+        $('input[name ="percent"]').focusout(function (e) {
+            if (!e.target.value) {
+                $('input[name ="percent"]').val(0)
+            }
+        })
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+        $('input[name ="salary"]').focusout(function (e) {
+            if (!e.target.value) {
+                $('input[name ="salary"]').val(0)
+            }
+        })
 
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
+        $("#salary_type").change(function (e) {
+            if (e.target.value == 1) {
+                $('.percent-container').css('display','none');
+            } else {
+                $('.percent-container').css('display','block');
+            }
+        })
+        $("#files").on("change", function(e) {
+            var files = e.target.files,
+                filesLength = files.length;
+            for (var i = 0; i < filesLength; i++) {
+                $('.pip').remove();
+                var f = files[i]
+                var fileReader = new FileReader();
+                fileReader.onload = (function(e) {
+                    var file = e.target;
+                    $("<span class=\"pip\">" +
+                        "<img class=\"imageThumb\" src=\"" + e.target.result + "\" title=\"" + file.name + "\"/>" +
+                        "<br/><span class=\"remove\">Remove image</span>" +
+                        "</span>").insertAfter("#files");
+                    $(".remove").click(function(){
+                        $(this).parent(".pip").remove();
+                    });
 
-const app = new Vue({
-    el: '#app',
+                });
+                fileReader.readAsDataURL(f);
+            }
+        });
+    } else {
+        alert("Your browser doesn't support to File API")
+    }
 });
+
