@@ -129,6 +129,7 @@ $(document).ready(function () {
           $("<span class=\"pip\">" + "<img class=\"imageThumb\" src=\"" + e.target.result + "\" title=\"" + file.name + "\"/>" + "<br/><span class=\"remove\">Remove image</span>" + "</span>").insertAfter("#files");
           $(".remove").click(function () {
             $(this).parent(".pip").remove();
+            $('input[name ="files"]').val('');
           });
         };
 
