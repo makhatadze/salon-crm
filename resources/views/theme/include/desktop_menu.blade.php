@@ -39,12 +39,6 @@
                         <div class="side-menu__title"> ჩამონათვალი </div>
                     </a>
                 </li>
-                <li>
-                    <a href="#" class="side-menu custom-nav-item">
-                        <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
-                        <div class="side-menu__title"> კატეგორიები </div>
-                    </a>
-                </li>
             </ul>
         </li>
         <li>
@@ -54,15 +48,35 @@
             </a>
             <ul class="">
                 <li>
-                    <a href="/services" class="side-menu custom-nav-item">
+                    <a href="/services" class="side-menu custom-nav-item" data-menu="companies">
                         <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
-                        <div class="side-menu__title"> ჩამონათვალი </div>
+                        <div class="side-menu__title">ჩამონათვალი </div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li>
+            <a href="javascript:;" class="side-menu" data-menu="companies">
+                <div class="side-menu__icon"> <i data-feather="box"></i> </div>
+                <div class="side-menu__title"> კომპანია <i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
+            </a>
+            <ul class="">
+                <li>
+                    <a href="/companies" class="side-menu custom-nav-item" data-menu="companies">
+                        <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
+                        <div class="side-menu__title"> კომპანიები </div>
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="side-menu custom-nav-item">
+                    <a href="/companies/offices" class="side-menu custom-nav-item" data-menu="offices">
                         <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
-                        <div class="side-menu__title"> კატეგორიები </div>
+                        <div class="side-menu__title"> ოფისები </div>
+                    </a>
+                </li>
+                <li>
+                <a href="{{route('Departments')}}" class="side-menu custom-nav-item" data-menu="departments">
+                        <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
+                        <div class="side-menu__title"> დეპარტამენტები </div>
                     </a>
                 </li>
             </ul>
@@ -80,7 +94,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="index.html" class="side-menu custom-nav-item">
+                    <a href="/products" class="side-menu custom-nav-item">
                         <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
                         <div class="side-menu__title"> პროდუქცია </div>
                     </a>
@@ -111,6 +125,13 @@
                 <div class="side-menu__title"> პარამეტრები <i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
             </a>
             <ul class="">
+                
+                <li>
+                    <a href="/categories" class="side-menu custom-nav-item">
+                        <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
+                        <div class="side-menu__title"> კატეგორიები </div>
+                    </a>
+                </li>
                 <li>
                     <a href="#" class="side-menu custom-nav-item">
                         <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>

@@ -10,7 +10,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Product;
+use App\Department;
 class ProductController extends Controller
 {
     /**
@@ -20,7 +21,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        $products = Product::paginate(10);
+        return view('theme.template.product.products', compact('products'));
     }
 
     /**
@@ -30,7 +32,8 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        $departments = Department::all();
+        return view('theme.template.product.add_product', compact('departments'));
     }
 
     /**
@@ -41,7 +44,15 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'title_ge' => 'required|string',
+            'title_ru' => '',
+            'title_en' => '',
+            'get_office' => '',
+            'get_department' => '',
+            'get_office' => '',
+            
+        ]);
     }
 
     /**
