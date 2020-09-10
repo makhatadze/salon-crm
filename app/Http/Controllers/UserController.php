@@ -31,17 +31,16 @@ class UserController extends Controller
                     return  User::query()
                         ->where('name', 'LIKE', "%{$request->searchValue}%")
                         ->with(['Image','Profile'])
-                        ->get();
-                }
-                if (!empty($request->searchValue)) {
+                        ->paginate($request->pagination);
+                } else {
                     return  User::query()
                         ->with(['Image','Profile'])
-                        ->get();
+                        ->paginate($request->pagination);
                 }
             }
             $users = User::query()
                 ->with(['Image','Profile'])
-                ->get();
+                ->paginate(25);
             return view('theme.template.user.user_index', compact('users'));
         } else {
             abort('404');

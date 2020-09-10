@@ -41,6 +41,8 @@ $(document).ready(function () {
                         "</span>").insertAfter("#files");
                     $(".remove").click(function(){
                         $(this).parent(".pip").remove();
+                        $('input[name ="files"]').val('')
+
                     });
 
                 });
