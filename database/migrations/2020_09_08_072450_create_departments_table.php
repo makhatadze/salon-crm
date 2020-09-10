@@ -24,6 +24,7 @@ class CreateDepartmentsTable extends Migration
             $table->string('departmentable_type')->nullable();
             $table->integer('departmentable_id')->nullable();
             $table->timestamps();
+            $table->timestamp('deleted_at')->nullable();
         });
     }
 

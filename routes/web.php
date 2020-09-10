@@ -19,16 +19,25 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
         Route::get('/getcategories', ['uses'=> 'ServiceController@getcategory', 'as' => 'GetCategory']);
         Route::delete('/servicescategory/{id}', 'ServiceController@removecategory');
         Route::resource('/services', 'ServiceController')->except('show', 'update');
+        Route::delete('/services/{id}', 'ServiceController@destroy')->name('RemoveService');
         Route::put('/services/update/{id}', 'ServiceController@update')->name('UpdateService');
+        Route::post('/services/store', 'ServiceController@store')->name('StoreService');
         //Product Controller
-        Route::resource('/products', 'ProductController')->except('show');
+        Route::get('/products/turn/{product}/{status}', 'ProductController@turn');
+        Route::post('/products/removeimg', 'ProductController@removeimg')->name('RemoveImage');
+        Route::delete('/products/delete/{product}', 'ProductController@destroy')->name('DeleteProduct');
+        Route::resource('/products', 'ProductController')->except('show', 'store', 'update', 'delete');
+        Route::get('/products/edit/{product}', 'ProductController@edit')->name('ProductEdit');
+        Route::post('/products/store', 'ProductController@store')->name('AddProduct');
+        Route::put('/products/update/{id}', 'ProductController@update')->name('UpdateProduct');
+        Route::post('/products/getproductsajax', 'ProductController@getproductsajax')->name('GetProductsAjax');
         //Company Controller
         Route::get('/companies/offices', 'CompanyController@getoffices');
         Route::resource('/companies', 'CompanyController')->except('show');
-        Route::get('/companies/addoffice/{company}', 'CompanyController@createoffice')->name('CreateOffice');
+        Route::get('/companies/addoffice/{id}', 'CompanyController@createoffice')->name('CreateOffice');
         Route::delete('/companies/removeoffice/{id}', 'CompanyController@removeoffice')->name('RemoveOffice');
         Route::post('/companies/add', 'CompanyController@store')->name('AddCompany');
-        Route::any('/companies/update/{company}', 'CompanyController@update')->name('EditCompany');
+        Route::any('/companies/update/{id}', 'CompanyController@update')->name('EditCompany');
         Route::post('/companies/addoffice/store/{id}', 'CompanyController@storeoffice')->name('AddOffice');
         // Company Department Controller
         Route::get('/companies/departments', 'DepartmentController@index')->name('Departments');

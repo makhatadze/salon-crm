@@ -6,40 +6,7 @@
     <form action="{{route('EditCompany', $company->id)}}" method="post">
     @method('PUT')
         @csrf
-        <label class="font-helvetica w-full"><b>ოფისის რეგისტრირება</b></label>
-        <div class="flex">
-            <div class="w-1/2 p-2">
-                <label class="font-helvetica">მოკლე სახელი <span class="text-red-700">*</span></label>
-            <input required type="text" class="input w-full border mt-2" value="{{$company->offices()->first()->name_ge}}" name="office-name-ge">
-            </div>
-            
-            <div class="w-1/2 p-2">
-                <label class="font-helvetica">მისამართი <span class="text-red-700">*</span></label>
-                <input required type="text"  value="{{$company->offices()->first()->address_ge}}"class="input w-full border mt-2" name="address-ge">
-            </div>
-        </div>
-        <div class="flex">
-            <div class="w-1/2 p-2">
-                <label class="font-helvetica">მოკლე სახელი რუსულად</label>
-            <input  type="text" class="input w-full border mt-2"value="{{$company->offices()->first()->name_ru}}"  name="office-name-ru">
-            </div>
-            
-            <div class="w-1/2 p-2">
-                <label class="font-helvetica">მისამართი რუსულად</label>
-                <input  type="text"  value="{{$company->offices()->first()->address_ru}}" class="input w-full border mt-2" name="address-ru">
-            </div>
-        </div>
-        <div class="flex">
-            <div class="w-1/2 p-2">
-                <label class="font-helvetica">მოკლე სახელი ინგლისურად </label>
-            <input  type="text" class="input w-full border mt-2" value="{{$company->offices()->first()->name_en}}" name="office-name-en">
-            </div>
-            
-            <div class="w-1/2 p-2">
-                <label class="font-helvetica">მისამართი ინგლისურად</label>
-                <input  type="text"  value="{{$company->offices()->first()->address_en}}"  class="input w-full border mt-2" name="address-en">
-            </div>
-        </div>
+
     
         <label class="font-helvetica"><b>კომპანიის ინფორმაცია </b></label>
         <div class="flex">

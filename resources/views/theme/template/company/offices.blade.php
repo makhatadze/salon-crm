@@ -12,7 +12,7 @@
             </thead>
             <tbody>
                 @foreach ($companies as $company)
-                    @foreach ($company->offices()->get() as $office)
+                    @foreach ($company->offices()->whereNull('deleted_at')->get() as $office)
                     <tr>
                         <td class="border-b">
                             <div class="font-medium whitespace-no-wrap font-helvetica"><b> {{$company->{"title_".app()->getLocale()} }} </b></div>
@@ -22,7 +22,7 @@
                             
                         <div class="font-medium whitespace-no-wrap font-helvetica"><b> {{$office->{"address_".app()->getLocale()} }} </b></div>
                         <div class="text-gray-600 text-xs whitespace-no-wrap font-helvetica"> 
-                            @if ($company->offices()->count() > 1) 
+                            @if ($company->offices()->where('deleted_at', null)->count() > 1) 
                         <form action="{{route('RemoveOffice', $office->id)}}" method="post">
                                 @csrf
                                 @method('DELETE')

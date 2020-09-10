@@ -12,6 +12,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Service;
 use App\Category;
+use Carbon\Carbon;
 class ServiceController extends Controller
 {
     /**
@@ -21,7 +22,7 @@ class ServiceController extends Controller
      */
     public function index()
     {
-        $services = Service::paginate(30);
+        $services = Service::whereNull('deleted_at')->orderBy('id', 'DESC')->paginate(30);
         return view('theme.template.service.services', compact('services'));
     }
 
@@ -32,7 +33,7 @@ class ServiceController extends Controller
      */
     public function create()
     {
-        $categories = Category::all();
+        $categories = Category::whereNull('deleted_at')->get();
         $action = "post";
         return view('theme.template.service.add_service', compact('action', 'categories'));
     }
@@ -45,7 +46,6 @@ class ServiceController extends Controller
      */
     public function store(Request $request)
     {
-
         $this->validate($request,[
             'title-ge' => 'required',
             'title-en' => '',
@@ -81,7 +81,7 @@ class ServiceController extends Controller
          if($request->input('category-ge') || $request->input('category-en') || $request->input('category-ru')){
 
             $service->category()->create([
-                'title' => $request->input('category-ge'),
+                'title_ge' => $request->input('category-ge'),
                 'title_ru' => $request->input('category-ru'),
                 'title_en' => $request->input('category-en'),
              ]);
@@ -116,9 +116,12 @@ class ServiceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Service $service)
+    public function update(Request $request, $id)
     {
-
+        $service = Service::findorFail($id);
+        if($service->first()->deleted_at != null){
+            return redirect('/services');
+        }
         $this->validate($request,[
             'title-ge' => 'required',
             'title-en' => '',
@@ -148,27 +151,32 @@ class ServiceController extends Controller
      $service->unit_ru = $request->input('unit-ru');
      $service->unit_en = $request->input('unit-en');
      $service->price = intval($request->input('price')*100);
-     dd($service->category()->first());
-      
-     $service->save();
          if($request->input('category-ge') || $request->input('category-en') || $request->input('category-ru')){
-
+             if($service->category()->first()){
+                $servicecat = $service->category()->first();
+                $servicecat->title_ge = $request->input('category-ge');
+                $servicecat->title_ru = $request->input('category-ru');
+                $servicecat->title_en = $request->input('category-en');
+                $servicecat->save();
+             }else{
+                $service->category()->create([
+                    'title_ge' => $request->input('category-ge'),
+                    'title_ru' => $request->input('category-ru'),
+                    'title_en' => $request->input('category-en'),
+                 ]);
+             }
+         }elseif(!$request->input('category-ge') & !$request->input('category-en') && !$request->input('category-ru') && $service->category()->first()){
             $service->category()->first()->delete();
-            $service->category()->create([
-                'title' => $request->input('category-ge'),
-                'title_ru' => $request->input('category-ru'),
-                'title_en' => $request->input('category-en'),
-             ]);
          }
-
+     $service->save();
          
          if($request->hasFile('file')){
-             $imagename = date('Ymhs').$request->file('file')->getClientOriginalName();
-             $destination = base_path() . '/storage/app/public/serviceimg';
-             $request->file('file')->move($destination, $imagename);
-             $service->image()->create([
-                 'name' => $imagename
-             ]);
+            $imagename = date('Ymhs').$request->file('file')->getClientOriginalName();
+            $destination = base_path() . '/storage/app/public/serviceimg';
+            $request->file('file')->move($destination, $imagename);
+            $service->first()->image()->create([
+                'name' => $imagename
+            ]);
          }
          return redirect('/services');
     }
@@ -179,15 +187,18 @@ class ServiceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Service $service)
+    public function destroy($id)
     {
-        $service->delete();
+        $service = Service::findOrFail((int)$id);
+        $service->deleted_at = Carbon::now('Asia/Tbilisi');
+            $service->save();
         return redirect('/services');
     }
 
     //Service Turn off
 
     public function turn(Service $service, $status){
+        
         $service->published = $status;
         $service->save();
         return redirect('/services');
@@ -195,19 +206,20 @@ class ServiceController extends Controller
 
     //For Ajax
     public function getcategory(Request $request){
-        $data = Category::where('title', 'like', '%'.$request->input('value').'%')->take(4);
+        $data = Category::where('title', 'like', '%'.$request->input('value').'%')->orderBy('id', 'DESC')->take(4);
 
          return response()->json($data);
     }
     //Service Categories
     public function categories(){
-        $categories = Category::paginate(50);
+        $categories = Category::whereNull('deleted_at')->orderBy('id', 'DESC')->paginate(50);
         return view('theme.template.main.categories', compact('categories'));
     }
     public function removecategory($id){
         $Category = Category::findorfail($id);
-        $Category->delete();
-        return redirect('/servicecategories');
+        $Category->delete_at = Carbon::now('Asia/Tbilisi');
+        $Category->save();
+        return redirect('/categories');
     }
 
 }

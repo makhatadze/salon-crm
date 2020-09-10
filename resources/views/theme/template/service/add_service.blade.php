@@ -8,24 +8,25 @@
 </div>
 <div class="grid grid-cols-12 gap-6 mt-5">
     <div class="intro-y col-span-12 lg:col-span-8">
-    <form @if ($action == "update") action="{{url('/services')}}/{{$service->id}}" @else action="/services" @endif method="POST" enctype="multipart/form-data">
+    <form  action="{{route('StoreService')}}"  method="POST" enctype="multipart/form-data">
         @csrf
         @if ($action == "update")
         @method('PUT')
         @endif
-        <input type="text" required  name="title-ge" @if($action == "update") value="{{$service->title_ge}}" @endif id="title-ge" class="intro-y input input--lg w-full box pr-10 placeholder-theme-13 m-0 mb-3" placeholder="სათაური-GE">
+        <input type="text" required  name="title-ge"  class="intro-y input input--lg w-full box pr-10 placeholder-theme-13 m-0 mb-3" placeholder="სათაური-GE">
         @error('title-ge')
         <span class="invalid-feedback" role="alert">
             <strong style="color: tomato">{{ $message }}</strong>
+            
         </span>
     @enderror
-        <input type="text"  name="title-ru" @if($action == "update") value="{{$service->title_ru}}" @endif id="title-ru" class="intro-y input input--lg w-full box pr-10 placeholder-theme-13 m-0 mb-3" placeholder="სათაური-RU">
+        <input type="text"  name="title-ru"  class="intro-y input input--lg w-full box pr-10 placeholder-theme-13 m-0 mb-3" placeholder="სათაური-RU">
             @error('title-ru')
             <span class="invalid-feedback" role="alert">
                 <strong style="color: tomato">{{ $message }}</strong>
             </span>
         @enderror
-        <input type="text"  name="title-en" @if($action == "update") value="{{$service->title_en}}" @endif id="title-en" class="intro-y input input--lg w-full box pr-10 placeholder-theme-13 m-0 mb-3" placeholder="სათაური-EN">
+        <input type="text"  name="title-en" class="intro-y input input--lg w-full box pr-10 placeholder-theme-13 m-0 mb-3" placeholder="სათაური-EN">
             @error('title-en')
             <span class="invalid-feedback" role="alert">
                 <strong style="color: tomato">{{ $message }}</strong>
@@ -36,38 +37,38 @@
                 <div class="flex">
                  <div class="w-1/2 p-2">
                      <label>კატეგორია_GE</label> <br>
-                     <input type="text" autocomplete="off" name="category-ge" id="category-ge" @if($action == "update")  value="@if($service->categories->where('lang', 'ge')->first()) {{$service->categories->where('lang', 'ge')->first()->title}} @endif" @endif class="input w-full border category mt-2" placeholder="აირჩიეთ კატეგორია">
+                     <input type="text" autocomplete="off" name="category-ge" id="category-ge"  class="input w-full border category mt-2" placeholder="აირჩიეთ კატეგორია">
                  </div>
                  <div class="w-1/2 p-2">
                      <label>ხანგრძლივობა_GE</label>
-                     <input type="text" name="duration-ge" id="duration-ge" @if($action == "update") value="{{$service->duration_ge}}" @endif class="input w-full border mt-2" placeholder="მიუთითეთ დრო">
+                     <input type="text" name="duration-ge" id="duration-ge" class="input w-full border mt-2" placeholder="მიუთითეთ დრო">
                  </div>
                 </div>
                 <div class="flex">
                  <div class="w-1/2 p-2">
                      <label>კატეგორია_RU</label> <br>
-                     <input type="text" autocomplete="off" name="category-ru" id="category-ru" @if($action == "update")  value="@if($service->categories->where('lang', 'ru')->first()) {{$service->categories->where('lang', 'ru')->first()->title}} @endif" @endif class="input w-full border category mt-2" placeholder="აირჩიეთ კატეგორია">
+                     <input type="text" autocomplete="off" name="category-ru" id="category-ru"  class="input w-full border category mt-2" placeholder="აირჩიეთ კატეგორია">
                  </div>
                  <div class="w-1/2 p-2">
                      <label>ხანგრძლივობა_RU</label>
-                     <input type="text" name="duration-ru" id="duration-ru" @if($action == "update") value="{{$service->duration_ru}}" @endif class="input w-full border mt-2" placeholder="მიუთითეთ დრო">
+                     <input type="text" name="duration-ru" id="duration-ru" class="input w-full border mt-2" placeholder="მიუთითეთ დრო">
                  </div>
                 </div>
                 <div class="flex">
                  <div class="w-1/2 p-2">
                      <label>კატეგორია_EN</label> <br>
-                     <input type="text" autocomplete="off" name="category-en" id="categor-en" @if($action == "update")  value="@if($service->categories->where('lang', 'en')->first()) {{$service->categories->where('lang', 'en')->first()->title}} @endif" @endif class="input w-full border category mt-2" placeholder="აირჩიეთ კატეგორია">
+                     <input type="text" autocomplete="off" name="category-en" id="categor-en"   class="input w-full border category mt-2" placeholder="აირჩიეთ კატეგორია">
                  </div>
                  <div class="w-1/2 p-2">
                      <label>ხანგრძლივობა_EN</label>
-                     <input type="text" name="duration-en" id="duration-en" @if($action == "update") value="{{$service->duration_en}}" @endif class="input w-full border mt-2" placeholder="მიუთითეთ დრო">
+                     <input type="text" name="duration-en" id="duration-en" class="input w-full border mt-2" placeholder="მიუთითეთ დრო">
                  </div>
                 </div>
                 <div class="flex">
                   <div class="w-1/2 p-2">
                       <label>ფასი</label>
                       <div class="relative mt-2">
-                          <input type="number" min="0" step="0.01" @if($action == "update") value="{{$service->price/100}}" @endif name="price" name="price" class="input pr-12 w-full border col-span-4" placeholder="ფასი">
+                          <input type="number" min="0" step="0.01"  name="price" name="price" class="input pr-12 w-full border col-span-4" placeholder="ფასი">
                           <div class="absolute top-0 right-0 rounded-r w-10 h-full flex items-center justify-center bg-gray-100 border text-gray-600">₾</div>
                       </div>
                       @error('price')
@@ -80,7 +81,7 @@
                       <div class="flex justify-between align-items-center">
                           <label class="font-medium">ერთეული_GE</label>
                       </div>
-                      <input type="text" name="unit-ge" @if($action == "update") value="{{$service->unit_ge}}" @endif class="input w-full border mt-2" placeholder="ჩაწერეთ ერთეულის სახელი">
+                      <input type="text" name="unit-ge"  class="input w-full border mt-2" placeholder="ჩაწერეთ ერთეულის სახელი">
                     
                   </div>
                 </div>
@@ -89,14 +90,14 @@
                       <div class="flex justify-between align-items-center">
                           <label class="font-medium">ერთეული_RU</label>
                       </div>
-                      <input type="text" name="unit-ru" @if($action == "update") value="{{$service->unit_ru}}" @endif class="input w-full border mt-2" placeholder="ჩაწერეთ ერთეულის სახელი">
+                      <input type="text" name="unit-ru"  class="input w-full border mt-2" placeholder="ჩაწერეთ ერთეულის სახელი">
                     
                   </div>
                   <div class="w-1/2 p-2">
                       <div class="flex justify-between align-items-center">
                           <label class="font-medium">ერთეული_EN</label>
                       </div>
-                      <input type="text" name="unit-en" @if($action == "update") value="{{$service->unit_en}}" @endif class="input w-full border mt-2" placeholder="ჩაწერეთ ერთეულის სახელი">
+                      <input type="text" name="unit-en"  class="input w-full border mt-2" placeholder="ჩაწერეთ ერთეულის სახელი">
                     
                   </div>
                 </div>
@@ -117,9 +118,7 @@
                   <label>აღწერა_GE</label>
                   
                   <textarea data-feature="basic" class="summernote" name="editor-ge" style="display: none;">
-                      @if($action == "update")
-                       {{$service->body_ge}}
-                       @endif
+                     
                   </textarea>
                   </div>
                   @error('editor-ge')
@@ -132,9 +131,7 @@
                       <label>აღწერა_RU</label>
                       
                       <textarea data-feature="basic" class="summernote" name="editor-ru" style="display: none;">
-                          @if($action == "update")
-                           {{$service->body_ru}}
-                           @endif
+                        
                       </textarea>
                       </div>
                       @error('editor-ru')
@@ -147,9 +144,7 @@
                           <label>აღწერა_EN</label>
                           
                           <textarea data-feature="basic" class="summernote" name="editor-en" style="display: none;">
-                              @if($action == "update")
-                               {{$service->body_en}}
-                               @endif
+                              
                           </textarea>
                           </div>
                           @error('editor-en')
@@ -158,7 +153,7 @@
                           </span>
                       @enderror
                           <br>
-                    <input type="submit" class=" button text-white bg-theme-1 shadow-md mr-1" value="ატვირთვა">
+                          <input type="submit" class=" button text-white bg-theme-1 shadow-md mr-1" value="ატვირთვა">
             </form>
         </div>
     </div>

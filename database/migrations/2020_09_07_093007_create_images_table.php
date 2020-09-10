@@ -19,6 +19,7 @@ class CreateImagesTable extends Migration
             $table->string('imageable_type');
             $table->integer('imageable_id');
             $table->timestamps();
+            $table->timestamp('deleted_at')->nullable();
         });
     }
 

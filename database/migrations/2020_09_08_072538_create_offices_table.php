@@ -24,6 +24,7 @@ class CreateOfficesTable extends Migration
             $table->string('officeable_type')->nullable();
             $table->integer('officeable_id')->nullable();
             $table->timestamps();
+            $table->timestamp('deleted_at')->nullable();
         });
     }
 

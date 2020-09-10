@@ -19,8 +19,9 @@ class CreateCategoriesTable extends Migration
             $table->string('title_en')->nullable();
             $table->string('title_ru')->nullable();
             $table->string('categoryable_type');
-            $table->integer('categoryable_id');
+            $table->integer('categoryable_id')->nullable();
             $table->timestamps();
+            $table->timestamp('deleted_at')->nullable();
         });
     }
 

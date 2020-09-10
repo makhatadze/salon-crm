@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Company;
 use App\Office;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class CompanyController extends Controller
@@ -15,7 +16,7 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        $companies = Company::paginate(10);
+        $companies = Company::whereNull('deleted_at')->paginate(10);
         return view('theme.template.company.companies', compact('companies'));
     }
 
@@ -77,8 +78,12 @@ class CompanyController extends Controller
      * @param  \App\Company  $company
      * @return \Illuminate\Http\Response
      */
-    public function edit(Company $company)
+    public function edit($id)
     {
+        $company = Company::findOrFail($id);
+        if($company->deleted_at != null){
+            return redirect('/companies');
+        }
         return view('theme.template.company.edit_company', compact('company'));
     }
 
@@ -89,8 +94,12 @@ class CompanyController extends Controller
      * @param  \App\Company  $company
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Company $company)
+    public function update(Request $request, $id)
     {
+        $company = Company::findOrFail($id);
+        if($company->deleted_at != null){
+            return redirect('/companies');
+        }
         $this->validate($request, [
             'title-ge' => 'required|string|min:3',
             'title-ru' => '',
@@ -98,12 +107,6 @@ class CompanyController extends Controller
             'editor-ge' => 'required',
             'editor-ru' => '',
             'editor-en' => '',
-            'office-name-ge' => 'required|string|min:3',
-            'address-ge' => 'required|string|min:2',
-            'office-name-ru' => '',
-            'address-ru' => '',
-            'office-name-en' => '',
-            'address-en' => '',
         ]);
         $company->title_ge = $request->input('title-ge');
         $company->title_ru = $request->input('title-ru');
@@ -111,15 +114,6 @@ class CompanyController extends Controller
         $company->description_ge = $request->input('editor-ge');
         $company->description_ru = $request->input('editor-ru');
         $company->description_en = $request->input('editor-en');
-        $company->offices()->first()->delete();
-        $company->offices()->create([
-            'name_ge' => $request->input('office-name-ge'),
-            'address_ge' => $request->input('address-ge'),
-            'name_en' => $request->input('office-name-en'),
-            'address_en' => $request->input('address-en'),
-            'name_ru' => $request->input('office-name-ru'),
-            'address_ru' => $request->input('address-ru'),
-        ]);
         $company->save();
         return redirect('/companies');
     }
@@ -130,19 +124,30 @@ class CompanyController extends Controller
      * @param  \App\Company  $company
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Company $company)
+    public function destroy($id)
     {
-        foreach($company->offices()->get() as $office){
-            foreach($office->departments()->get() as $dept){
-                $dept->delete();
-            }
-            $office->delete();
+        $company = Company::findOrFail($id);
+        if($company->deleted_at != null){
+            return redirect('/companies');
         }
-        $company->delete();
+        foreach($company->offices('deleted_at', null)->get() as $office){
+            foreach($office->departments('deleted_at', null)->get() as $dept){
+                $dept->deleted_at = Carbon::now('Asia/Tbilisi');
+                $dept->save();
+            }
+            $office->deleted_at = Carbon::now('Asia/Tbilisi');
+            $office->save();
+        }
+        $company->deleted_at = Carbon::now('Asia/Tbilisi');
+        $company->save();
         return redirect('/companies');
     }
     //Office Controllers
-    public function createoffice(Company $company){
+    public function createoffice($id){
+        $company = Company::findOrFail($id);
+        if($company->deleted_at != null){
+            return redirect('/companies');
+        }
         return view('theme.template.company.add_office', compact('company'));
     }
     public function storeoffice(Request $request, $id){
@@ -156,6 +161,9 @@ class CompanyController extends Controller
         ]);
         $id = (int)$id;
         $company = Company::findOrFail($id);
+        if($company->deleted_at != null){
+            return redirect('/companies');
+        }
         $company->offices()->create([
             'name_ge' => $request->input('office-name-ge'),
             'address_ge' => $request->input('address-ge'),
@@ -168,15 +176,20 @@ class CompanyController extends Controller
     }
     //Show Registered Offices
     public function getoffices(){
-        $companies = Company::all();
+        $companies = Company::wherenull('deleted_at')->get();
         return view('theme.template.company.offices', compact('companies'));
     }
     public function removeoffice($id){
         $office = Office::findOrFail($id);
-        foreach($office->departments()->get() as $dept){
-            $dept->delete();
+        if(Office::where('officeable_id', $office->officeable_id)->count() == 1){
+            return redirect('/companies/offices');
         }
-        $office->delete();
+        foreach($office->departments()->where('deleted_at', null)->get() as $dept){
+            $dept->deleted_at = Carbon::now('Asia/Tbilisi');
+            $dept->save();
+        }
+        $office->deleted_at = Carbon::now('Asia/Tbilisi');
+        $office->save();
         return redirect('/companies/offices');
     }
 }

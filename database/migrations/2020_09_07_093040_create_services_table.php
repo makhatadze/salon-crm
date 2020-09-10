@@ -18,18 +18,19 @@ class CreateServicesTable extends Migration
             $table->string('title_ge');
             $table->string('title_ru')->nullable();
             $table->string('title_en')->nullable();
-            $table->string('body_ge');
-            $table->string('body_ru')->nullable();
-            $table->string('body_en')->nullable();
+            $table->text('body_ge');
+            $table->text('body_ru')->nullable();
+            $table->text('body_en')->nullable();
             $table->string('duration_ge')->nullable();
             $table->string('duration_ru')->nullable();
             $table->string('duration_en')->nullable();
             $table->integer('price')->nullable();
             $table->boolean('published')->default(true);
-            $table->text('unit_ge')->nullable();
-            $table->text('unit_ru')->nullable();
-            $table->text('unit_en')->nullable();
+            $table->string('unit_ge')->nullable();
+            $table->string('unit_ru')->nullable();
+            $table->string('unit_en')->nullable();
             $table->timestamps();
+            $table->timestamp('deleted_at')->nullable();
         });
     }
 

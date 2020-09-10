@@ -16,11 +16,12 @@ class CreateFieldsTable extends Migration
         Schema::create('fields', function (Blueprint $table) {
             $table->id();
             $table->string('text-ge');
-            $table->string('text-en');
-            $table->string('text-ru');
+            $table->string('text-en')->nullable();
+            $table->string('text-ru')->nullable();
             $table->string('fieldable_type');
             $table->integer('fieldable_id');
             $table->timestamps();
+            $table->timestamp('deleted_at')->nullable();
         });
     }
 

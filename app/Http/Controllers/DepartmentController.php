@@ -16,7 +16,7 @@ class DepartmentController extends Controller
      */
     public function index()
     {
-        $departments = Department::paginate(10);
+        $departments = Department::whereNull('deleted_at')->paginate(10);
         return view('theme.template.company.departments', compact('departments'));
     }
 
@@ -28,7 +28,7 @@ class DepartmentController extends Controller
     public function create()
     {
         $action = "create";
-        $companies = Company::select('id', 'title_ge', 'title_ru', 'title_en')->get();
+        $companies = Company::select('id', 'title_ge', 'title_ru', 'title_en')->whereNull('deleted_at')->get();
         return view('theme.template.company.add_department', compact('action', 'companies'));
     }
 
@@ -73,7 +73,8 @@ class DepartmentController extends Controller
      */
     public function destroy(Department $department)
     {
-        $department->delete();
+        $department->deleted_at = Carbon::now('Asia/Tbilisi');
+        $department->save();
         return redirect('/companies/departments');
     }
 }

@@ -22,6 +22,7 @@ class CreateCompaniesTable extends Migration
             $table->text('description_ru')->nullable();
             $table->text('description_en')->nullable();
             $table->timestamps();
+            $table->timestamp('deleted_at')->nullable();
         });
     }
 
