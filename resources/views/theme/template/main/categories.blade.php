@@ -44,7 +44,7 @@
                </td>
                
                <td class="table-report__action w-56">
-                   @if ($cat->categoryable_id)
+                   @if ($cat->categoryable_type != "App\Product")
                    <div class="flex justify-center items-center">
                     <form action="/servicescategory/{{$cat->id}}" method="POST">
                        @csrf

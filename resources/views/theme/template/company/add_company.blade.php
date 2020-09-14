@@ -59,6 +59,10 @@
             </div>
         </div>
         <div class="mt-3">
+            <label class="font-helvetica">საიდენთიფიკაციო კოდი</label>
+            <input type="text" class="input w-full border mt-2" name="code">
+        </div>
+        <div class="mt-3">
             <label class="font-helvetica">აღწერა ქართულად <span class="text-red-700">*</span></label>
             <div class="mt-2">
                 <textarea required data-feature="basic" class="summernote" name="editor-ge">

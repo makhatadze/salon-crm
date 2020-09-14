@@ -42,6 +42,20 @@
             </ul>
         </li>
         <li>
+            <a href="javascript:;" class="side-menu" data-menu="purchases">
+                <div class="side-menu__icon"> <i data-feather="box"></i> </div>
+                <div class="side-menu__title"> შესყიდვა <i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
+            </a>
+            <ul class="">
+                <li>
+                    <a href="/purchases" class="side-menu custom-nav-item" data-menu="companies">
+                        <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
+                        <div class="side-menu__title">ჩამონათვალი </div>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li>
             <a href="javascript:;" class="side-menu" data-menu="services">
                 <div class="side-menu__icon"> <i data-feather="box"></i> </div>
                 <div class="side-menu__title"> სერვისები <i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
@@ -65,6 +79,12 @@
                     <a href="/companies" class="side-menu custom-nav-item" data-menu="companies">
                         <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
                         <div class="side-menu__title"> კომპანიები </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="/companies/distcompany" class="side-menu custom-nav-item" data-menu="companies">
+                        <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
+                        <div class="side-menu__title"> სადისტრიბუციო </div>
                     </a>
                 </li>
                 <li>
@@ -100,12 +120,6 @@
                     </a>
                 </li>
                 <li>
-                    <a href="simple-menu-dashboard.html" class="side-menu custom-nav-item">
-                        <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
-                        <div class="side-menu__title"> კატეგორიები </div>
-                    </a>
-                </li>
-                <li>
                     <a href="top-menu-dashboard.html" class="side-menu custom-nav-item">
                         <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
                         <div class="side-menu__title"> დამატებითი ველები </div>
@@ -125,7 +139,12 @@
                 <div class="side-menu__title"> პარამეტრები <i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
             </a>
             <ul class="">
-                
+                <li>
+                    <a href="/options" class="side-menu custom-nav-item">
+                        <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
+                        <div class="side-menu__title"> პარამეტრები </div>
+                    </a>
+                </li>
                 <li>
                     <a href="/categories" class="side-menu custom-nav-item">
                         <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>

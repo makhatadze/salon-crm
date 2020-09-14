@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Company;
 use App\Office;
+use App\DistributionCompany;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -43,6 +44,7 @@ class CompanyController extends Controller
             'title-ge' => 'required|string',
             'title-ru' => '',
             'title-en' => '',
+            'code' => '',
             'editor-ge' => 'required',
             'editor-ru' => '',
             'editor-en' => '',
@@ -57,6 +59,7 @@ class CompanyController extends Controller
         $company->title_ge = $request->input('title-ge');
         $company->title_ru = $request->input('title-ru');
         $company->title_en = $request->input('title-en');
+        $company->code = $request->input('code');
         $company->description_ge = $request->input('editor-ge');
         $company->description_ru = $request->input('editor-ru');
         $company->description_en = $request->input('editor-en');
@@ -80,10 +83,7 @@ class CompanyController extends Controller
      */
     public function edit($id)
     {
-        $company = Company::findOrFail($id);
-        if($company->deleted_at != null){
-            return redirect('/companies');
-        }
+        $company = Company::wherenull('deleted_at')->findOrFail($id);
         return view('theme.template.company.edit_company', compact('company'));
     }
 
@@ -96,14 +96,12 @@ class CompanyController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $company = Company::findOrFail($id);
-        if($company->deleted_at != null){
-            return redirect('/companies');
-        }
+        $company = Company::wherenull('deleted_at')->findOrFail($id);
         $this->validate($request, [
             'title-ge' => 'required|string|min:3',
             'title-ru' => '',
             'title-en' => '',
+            'code' => '',
             'editor-ge' => 'required',
             'editor-ru' => '',
             'editor-en' => '',
@@ -111,6 +109,7 @@ class CompanyController extends Controller
         $company->title_ge = $request->input('title-ge');
         $company->title_ru = $request->input('title-ru');
         $company->title_en = $request->input('title-en');
+        $company->code = $request->input('code');
         $company->description_ge = $request->input('editor-ge');
         $company->description_ru = $request->input('editor-ru');
         $company->description_en = $request->input('editor-en');
@@ -126,10 +125,7 @@ class CompanyController extends Controller
      */
     public function destroy($id)
     {
-        $company = Company::findOrFail($id);
-        if($company->deleted_at != null){
-            return redirect('/companies');
-        }
+        $company = Company::wherenull('deleted_at')->findOrFail($id);
         foreach($company->offices('deleted_at', null)->get() as $office){
             foreach($office->departments('deleted_at', null)->get() as $dept){
                 $dept->deleted_at = Carbon::now('Asia/Tbilisi');
@@ -144,10 +140,7 @@ class CompanyController extends Controller
     }
     //Office Controllers
     public function createoffice($id){
-        $company = Company::findOrFail($id);
-        if($company->deleted_at != null){
-            return redirect('/companies');
-        }
+        $company = Company::wherenull('deleted_at')->findOrFail($id);
         return view('theme.template.company.add_office', compact('company'));
     }
     public function storeoffice(Request $request, $id){
@@ -160,10 +153,7 @@ class CompanyController extends Controller
             'address-ge' => '',
         ]);
         $id = (int)$id;
-        $company = Company::findOrFail($id);
-        if($company->deleted_at != null){
-            return redirect('/companies');
-        }
+        $company = Company::wherenull('deleted_at')->findOrFail($id);
         $company->offices()->create([
             'name_ge' => $request->input('office-name-ge'),
             'address_ge' => $request->input('address-ge'),
@@ -180,7 +170,7 @@ class CompanyController extends Controller
         return view('theme.template.company.offices', compact('companies'));
     }
     public function removeoffice($id){
-        $office = Office::findOrFail($id);
+        $office = Office::wherenull('deleted_at')->findOrFail($id);
         if(Office::where('officeable_id', $office->officeable_id)->count() == 1){
             return redirect('/companies/offices');
         }
@@ -191,5 +181,54 @@ class CompanyController extends Controller
         $office->deleted_at = Carbon::now('Asia/Tbilisi');
         $office->save();
         return redirect('/companies/offices');
+    }
+    //Distribution Company
+    public function distcompany(){
+        $distcompanies = DistributionCompany::whereNull('deleted_at')->paginate(25);
+        return view('theme.template.company.dist_company', compact('distcompanies'));
+    }
+    public function distcreate(){
+        return view('theme.template.company.add_dist_company');
+    }
+    public function distedit($id){
+        $distribution = DistributionCompany::wherenull('deleted_at')->findOrFail($id);
+        return view('theme.template.company.edit_dist_company', compact('distribution'));
+    }
+    public function diststore(Request $request){
+        $this->validate($request, [
+            'code' => 'required',
+            'name_ge' => 'required',
+            'name_ru' => '',
+            'name_en' => '',
+        ]);
+
+        $discompany = new DistributionCompany;
+        $discompany->code = $request->input('code');
+        $discompany->name_ge = $request->input('name_ge');
+        $discompany->name_ru = $request->input('name_ru');
+        $discompany->name_en = $request->input('name_en');
+        $discompany->save();
+        return redirect('/companies/distcompany');
+    }
+    public function distupdate(Request $request, $id){
+        $this->validate($request, [
+            'code' => 'required',
+            'name_ge' => 'required',
+            'name_ru' => '',
+            'name_en' => ''
+        ]);
+        $discompany = DistributionCompany::wherenull('deleted_at')->findOrFail($id);
+        $discompany->code = $request->input('code');
+        $discompany->name_ge = $request->input('name_ge');
+        $discompany->name_ru = $request->input('name_ru');
+        $discompany->name_en = $request->input('name_en');
+        $discompany->save();
+        return redirect('/companies/distcompany');
+    }
+    public function distdelete($id){
+        $discompany = DistributionCompany::wherenull('deleted_at')->findOrFail($id);
+        $discompany->deleted_at = Carbon::now('Asia/Tbilisi');
+        $discompany->save();
+        return redirect('/companies/distcompany');
     }
 }

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Client;
 class ClientController extends Controller
 {
     /**
@@ -13,7 +13,8 @@ class ClientController extends Controller
      */
     public function index()
     {
-        //
+        $clients = Client::whereNull('deleted_at')->paginate(25);
+        return view('theme.template.client.clients', compact($clients));
     }
 
     /**
