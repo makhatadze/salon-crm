@@ -1,0 +1,33 @@
+/*Fonts*/
+@font-face{
+    src: url("../fonts/FiraGO-Heavy.ttf");
+    font-family: bolder;
+}
+@font-face{
+    src: url("../fonts/FiraGO-Bold.ttf");
+    font-family: bold;
+}
+@font-face{
+    src: url("../fonts/FiraGO-Medium.ttf");
+    font-family: medium;
+}
+@font-face{
+    src: url("../fonts/FiraGO-Regular.ttf");
+    font-family: normal;
+}
+.font-bolder{
+    font-family: bolder;
+}
+.font-bold{
+    font-family: bold;
+}
+.font-medium{
+    font-family: medium;
+}
+.font-normal{
+    font-family: normal;
+}
+.font-caps{
+    -webkit-font-feature-settings: 'case' on;
+    font-feature-settings: 'case' on;
+}

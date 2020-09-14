@@ -133,7 +133,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $product = Product::findOrFail($id);
+        $product = Product::wherenull('deleted_at')->findOrFail($id);
         $this->validate($request, [
             'title_ge' => 'required|string',
             'title_ru' => '',
@@ -214,7 +214,15 @@ class ProductController extends Controller
     }
     public function getproductsajax(Request $request){
         $lang = app()->getLocale();
-        $products = Product::where('title_'.app()->getLocale(), 'like', '%'.$request->input('val').'%')->whereNull('deleted_at')->get();
+        $products = Product::where('title_'.app()->getLocale(), 'like', '%'.$request->input('val').'%')->whereNull('deleted_at')->orderBy('id', 'desc')->take(30)->get();
+        foreach ($products as $key => $prod) {
+            if($prod->category_id){
+                $prod['category_name'] = $prod->getCategoryName($prod->category_id);
+            } 
+            if($prod->images()->count() > 0){
+                $prod['product_images[]'] = $prod->images()->whereNull('deleted_at')->take(3)->get();
+            }
+        }
         return response()->json(array('status'=>true, 'data'=>$products, 'lang'=>$lang));
     }
 }

@@ -71,9 +71,8 @@
                     <td class="table-report__action w-56">
                         <div class="flex justify-center items-center">
                         <a href=" {{route('ProductEdit', $prod->id)}} " class="flex items-center mr-3" href="javascript:;"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-square w-4 h-4 mr-1"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg> რედაქტირება </a>
-                        <form action="{{route('DeleteProduct', $prod->id)}}" method="post">
+                        <form action="{{route('DeleteProduct', $prod->id)}}" method="get">
                             @csrf
-                                @method('DELETE')
                                 <button type="submit" class="flex items-center text-theme-6" href="javascript:;" data-toggle="modal" data-target="#delete-confirmation-modal"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2 w-4 h-4 mr-1"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg> წაშლა </button>
                         </form>
                         </div>
@@ -86,31 +85,8 @@
     <!-- END: Data List -->
     <!-- BEGIN: Pagination -->
     <div class="intro-y col-span-12 flex flex-wrap sm:flex-row sm:flex-no-wrap items-center">
-        <ul class="pagination">
-            <li>
-                <a class="pagination__link" href=""> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-left w-4 h-4"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg> </a>
-            </li>
-            <li>
-                <a class="pagination__link" href=""> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-left w-4 h-4"><polyline points="15 18 9 12 15 6"></polyline></svg> </a>
-            </li>
-            <li> <a class="pagination__link" href="">...</a> </li>
-            <li> <a class="pagination__link" href="">1</a> </li>
-            <li> <a class="pagination__link pagination__link--active" href="">2</a> </li>
-            <li> <a class="pagination__link" href="">3</a> </li>
-            <li> <a class="pagination__link" href="">...</a> </li>
-            <li>
-                <a class="pagination__link" href=""> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right w-4 h-4"><polyline points="9 18 15 12 9 6"></polyline></svg> </a>
-            </li>
-            <li>
-                <a class="pagination__link" href=""> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-right w-4 h-4"><polyline points="13 17 18 12 13 7"></polyline><polyline points="6 17 11 12 6 7"></polyline></svg> </a>
-            </li>
-        </ul>
-        <select class="w-20 input box mt-3 sm:mt-0">
-            <option>10</option>
-            <option>25</option>
-            <option>35</option>
-            <option>50</option>
-        </select>
+       {{$products->links('vendor.pagination.custom')}}
+      
     </div>
     <!-- END: Pagination -->
 </div>
@@ -135,44 +111,54 @@
                      'val': $value,
                   },
                   success: function(result){
+                      
                      if(result.status == true){
                         let products = result.data;
                         let content = ``;
+                        
                         products.forEach(function (prod) {
+                            let turnpost = '';
+                            if(prod['published'] == 1){
+                                turnpost = `<a href="/products/turn/`+prod['id']+`/0" class="flex items-center justify-center text-theme-6"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-square w-4 h-4 mr-2"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg> გათიშვა </a>`;
+                            }else{
+                                turnpost = ` <a href="/products/turn/`+prod['id']+`/1" class="flex items-center justify-center text-green-500"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-square w-4 h-4 mr-2"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg> ჩართვა </a>
+                        `;
+                            }
+                            let imageshtml = ``;
+                            prod['product_images[]'].forEach(function (img){
+                                imageshtml += `
+                                <div class="w-10 h-10 image-fit zoom-in">
+                                <img  class="tooltip rounded-full tooltipstered" src="/storage/productimage/`+img['name']+`">
+                                 </div>
+                                `;
+                                
+                            });
                             content +=`
                         <tr class="intro-x">
                     <td class="w-40">
                         <div class="flex">
-                            @foreach ($prod->images()->whereNull('deleted_at')->get() as $key => $image)
-                            <div class="w-10 h-10 image-fit zoom-in">
-                                <img alt="Midone Tailwind HTML Admin Template" class="tooltip rounded-full tooltipstered" src="{{asset('../storage/productimage/'.$image->name)}}">
-                            </div>
-                            @if ($key == 3)
-                            @break;
-                            @endif
-                            @endforeach
+                           `+
+                           imageshtml
+                           +`
                         </div>
                         
                     </td>
                     <td>
                         <a href="" class="font-medium whitespace-no-wrap">`+prod['title_'+result.lang]+`</a> 
-                        <div class="text-gray-600 text-xs whitespace-no-wrap"> @if($prod->category_id){{$prod->getCategoryName($prod->category_id)}}@endif</div>
+                        <div class="text-gray-600 text-xs whitespace-no-wrap"> `+prod['category_name']+` </div>
                     </td>
-                    <td class="text-center">{{$prod->price/100}} ₾</td>
-                    <td class="text-center">{{$prod->stock}}</td>
+                    <td class="text-center">`+prod['price']+` ₾</td>
+                    <td class="text-center">`+prod['stock']+`</td>
                     <td class="w-40">
-                        @if ($prod->published)
-                    <a href="/products/turn/{{$prod->id}}/0" class="flex items-center justify-center text-theme-6"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-square w-4 h-4 mr-2"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg> გათიშვა </a>
-                        @else 
-                        <a href="/products/turn/{{$prod->id}}/1" class="flex items-center justify-center text-green-500"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-square w-4 h-4 mr-2"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg> ჩართვა </a>
-                        @endif
+                        `+
+                            turnpost
+                        +`
                     </td>
                     <td class="table-report__action w-56">
                         <div class="flex justify-center items-center">
-                        <a href=" {{route('ProductEdit', $prod->id)}} " class="flex items-center mr-3" href="javascript:;"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-square w-4 h-4 mr-1"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg> რედაქტირება </a>
-                        <form action="{{route('DeleteProduct', $prod->id)}}" method="post">
+                        <a href="/products/edit/`+prod['id']+`" class="flex items-center mr-3" href="javascript:;"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-square w-4 h-4 mr-1"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg> რედაქტირება </a>
+                        <form action="/products/delete/`+prod['id']+`" method="GET">
                             @csrf
-                                @method('DELETE')
                                 <button type="submit" class="flex items-center text-theme-6" href="javascript:;" data-toggle="modal" data-target="#delete-confirmation-modal"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2 w-4 h-4 mr-1"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg> წაშლა </button>
                         </form>
                         </div>
@@ -184,7 +170,8 @@
                     $('#products').html('');
                     $('#products').html(content);
                      }
-                  }});
+                    }
+                  });
     
         });
 	});

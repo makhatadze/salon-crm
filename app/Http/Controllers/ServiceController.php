@@ -53,9 +53,8 @@ class ServiceController extends Controller
             'editor-ge' => 'required',
             'editor-en' => '',
             'editor-ru' => '',
-            'duration-ge' => '', 
-            'duration-en' => '', 
-            'duration-ru' => '', 
+            'duration_count' => 'required|integer', 
+            'duration_type' => 'required|string', 
             'price' => 'required|between:0,99.99',
             'unit-ge' => '',
             'unit-en' => '',
@@ -69,9 +68,8 @@ class ServiceController extends Controller
          $service->body_ge = $request->input('editor-ge');
          $service->body_en = $request->input('editor-en');
          $service->body_ru = $request->input('editor-ru');
-         $service->duration_ge = $request->input('duration-ge');
-         $service->duration_ru = $request->input('duration-ru');
-         $service->duration_en = $request->input('duration-en');
+         $service->duration_count = $request->input('duration_count');
+         $service->duration_type = $request->input('duration_type');
          $service->unit_ge = $request->input('unit-ge');
          $service->unit_ru = $request->input('unit-ru');
          $service->unit_en = $request->input('unit-en');
@@ -129,9 +127,8 @@ class ServiceController extends Controller
             'editor-ge' => 'required',
             'editor-en' => '',
             'editor-ru' => '',
-            'duration-ge' => '', 
-            'duration-en' => '', 
-            'duration-ru' => '', 
+            'duration_count' => 'required|integer', 
+            'duration_type' => 'required|string', 
             'price' => 'required|between:0,99.99',
             'unit-ge' => '',
             'unit-en' => '',
@@ -144,9 +141,8 @@ class ServiceController extends Controller
      $service->body_ge = $request->input('editor-ge');
      $service->body_en = $request->input('editor-en');
      $service->body_ru = $request->input('editor-ru');
-     $service->duration_ge = $request->input('duration-ge');
-     $service->duration_ru = $request->input('duration-ru');
-     $service->duration_en = $request->input('duration-en');
+     $service->duration_count = $request->input('duration_count');
+     $service->duration_type = $request->input('duration_type');
      $service->unit_ge = $request->input('unit-ge');
      $service->unit_ru = $request->input('unit-ru');
      $service->unit_en = $request->input('unit-en');
