@@ -10,8 +10,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Company;
+use App\Office;
 use App\Profile;
 use App\User;
+use App\UserHasJob;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -28,18 +31,18 @@ class UserController extends Controller
         if (view()->exists('theme.template.user.user_index')) {
             if (request()->ajax()) {
                 if ($request->searchValue) {
-                    return  User::query()
+                    return User::query()
                         ->where('name', 'LIKE', "%{$request->searchValue}%")
-                        ->with(['Image','Profile'])
+                        ->with(['Image', 'Profile'])
                         ->paginate($request->pagination);
                 } else {
-                    return  User::query()
-                        ->with(['Image','Profile'])
+                    return User::query()
+                        ->with(['Image', 'Profile'])
                         ->paginate($request->pagination);
                 }
             }
             $users = User::query()
-                ->with(['Image','Profile'])
+                ->with(['Image', 'Profile'])
                 ->paginate(25);
             return view('theme.template.user.user_index', compact('users'));
         } else {
@@ -104,16 +107,65 @@ class UserController extends Controller
 
                 $user->profile()->save($profile);
 
+                if ($request->company) {
+                    foreach ($request->company as $key => $item) {
+                        $model = new UserHasJob();
+                        $model->user_id = $user->id;
+                        $model->company_id = $item;
+                        if (isset($request->office)) {
+                            if ($request->office && $request->office[$key]) {
+                                $model->office_id = $request->office[$key];
+                            }
+                        }
+                        if (isset($request->department)) {
+                            if ($request->department && $request->department[$key]) {
+                                $model->department_id = $request->department[$key];
+                            }
+                        }
+
+
+                        $model->save();
+
+                    }
+                }
+
+
                 return redirect('user')->with('success', 'User added.');
 
 
             }
+
             $data = [
 
             ];
 
+            $companies = Company::whereNull('deleted_at')->get();
 
-            return view('theme.template.user.user_add', $data);
+            return view('theme.template.user.user_add', [
+                'companies' => $companies
+            ]);
+        } else {
+            abort('404');
+        }
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function ActionUserData(Request $request)
+    {
+        if (request()->ajax()) {
+            $request->all();
+            if ($request->company) {
+                $company = Company::wherenull('deleted_at')->findOrFail($request->company);
+                return $company->offices()->wherenull('deleted_at')->get();
+            }
+            if ($request->office) {
+                $office = Office::wherenull('deleted_at')->findOrFail($request->office);
+                return $office->departments()->wherenull('deleted_at')->get();
+            }
         } else {
             abort('404');
         }

@@ -12,7 +12,8 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
         Route::get('/', 'HomeController@ActionHome')->name('ActionHome');
         //USERS CONTROLLER
         Route::get('/user', ['uses'=>'UserController@ActionUser', 'as' => 'ActionUser']);
-        Route::any('/user/add', ['uses'=>'UserController@ActionUserAdd', 'as' => 'ActionUserAdd']);
+        Route::any('/user/add', ['uses' => 'UserController@ActionUserAdd', 'as' => 'ActionUserAdd']);
+        Route::any('/user/data', ['uses' => 'UserController@ActionUserData', 'as' => 'ActionUserData']);
         //Service COntroller
         Route::get('/services/turn/{service}/{status}', 'ServiceController@turn');
         Route::get('/categories', 'ServiceController@categories');

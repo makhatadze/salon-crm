@@ -51,21 +51,18 @@ class PermissionsSeeder extends Seeder
         $user = Factory(App\User::class)->create([
             'name' => 'Administrator User',
             'email' => 'administrator@example.com',
-            'deleted_at' => 'null'
         ]);
         $user->assignRole($role1);
 
         $user = Factory(App\User::class)->create([
             'name' => 'Manager User',
             'email' => 'manager@example.com',
-            'deleted_at' => 'null'
         ]);
         $user->assignRole($role2);
 
         $user = Factory(App\User::class)->create([
             'name' => 'Accountant user',
             'email' => 'accountant@example.com',
-            'deleted_at' => 'null'
         ]);
         $user->assignRole($role3);
 
