@@ -10,8 +10,13 @@ $ composer install
 $ npm install 
 ```
 
+Run Migrations:
+```sh
+$ php artisan migrate
+```
+
 Run migrations for roles and permissions system:
 ```sh
-$ php artisan migrate:fresh --seed --seeder=PermissionsDemoSeeder
+$ php artisan migrate:fresh --seed --seeder=PermissionsSeeder
 $ php artisan db:seed --class=AlterPermissions
 ```
