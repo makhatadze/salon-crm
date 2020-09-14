@@ -1,5 +1,4 @@
 @extends('theme.layout.layout')
-
 @section('content')
     <div class="intro-y flex items-center mt-8">
         <h2 class="text-lg font-medium mr-auto font-helvetica">
@@ -126,28 +125,66 @@
                             @endif
                         </div>
                     </div>
-                    <label class="font-helvetica"><b>პროფილის მონაცემები</b></label>
-                    <div class="sm:grid grid-cols-2 gap-2">
-                        <div class="relative mt-2 {{ $errors->has('password') ? ' has-error' : '' }}">
-                            {{ Form::label('password', 'პაროლი', ['class' => 'font-helvetica']) }}
-                            {{ Form::password('password', ['class' => 'input w-full border mt-2 col-span-2']) }}
-                            @if ($errors->has('password'))
-                                <span class="help-block">
+                    @if($companies)
+                        <div class="jobs">
+                            <div class="sm:grid grid-cols-3 gap-3 mb-5">
+
+                                <div class="relative mt-2">
+                                    <label class="font-helvetica">company</label>
+                                    <div class="mt-2">
+                                        <select data-placeholder="Select a company" name="company[]" id="company"
+                                                class="font-helvetica select2 w-full">
+                                            <option value=""></option>
+                                            @foreach ($companies as $company)
+                                                <option value="{{$company->id}}"> {{$company->{"title_".app()->getLocale()} }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="relative mt-2 office-1" id="office-1" style="display: none">
+                                    <label class="font-helvetica">office</label>
+                                    <div class="mt-2">
+                                        <select data-placeholder="Select a office" name="office[]" id="select-office-1"
+                                                class="font-helvetica select2 w-full">
+                                            <option value=""></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="relative mt-2 department-1" id="department-1" style="display: none">
+                                    <label class="font-helvetica">department</label>
+                                    <div class="mt-2">
+                                        <select data-placeholder="Select a company" name="department[]"
+                                                id="select-department-1"
+                                                class="font-helvetica select2 w-full">
+                                            <option value=""></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <label class="font-helvetica"><b>პროფილის მონაცემები</b></label>
+                        <div class="sm:grid grid-cols-2 gap-2">
+                            <div class="relative mt-2 {{ $errors->has('password') ? ' has-error' : '' }}">
+                                {{ Form::label('password', 'პაროლი', ['class' => 'font-helvetica']) }}
+                                {{ Form::password('password', ['class' => 'input w-full border mt-2 col-span-2']) }}
+                                @if ($errors->has('password'))
+                                    <span class="help-block">
                                             {{ $errors->first('password') }}
                                         </span>
-                            @endif
-                        </div>
-                        <div class="relative mt-2 {{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
-                            {{ Form::label('password_confirmation', 'პაროლის გამეორება', ['class' => 'font-helvetica']) }}
-                            {{ Form::password('password_confirmation', ['class' => 'input w-full border mt-2 col-span-2', 'type' => 'password']) }}
-                            @if ($errors->has('password_confirmation'))
-                                <span class="help-block">
+                                @endif
+                            </div>
+                            <div class="relative mt-2 {{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
+                                {{ Form::label('password_confirmation', 'პაროლის გამეორება', ['class' => 'font-helvetica']) }}
+                                {{ Form::password('password_confirmation', ['class' => 'input w-full border mt-2 col-span-2', 'type' => 'password']) }}
+                                @if ($errors->has('password_confirmation'))
+                                    <span class="help-block">
                                             {{ $errors->first('password_confirmation') }}
                                         </span>
-                            @endif
+                                @endif
+                            </div>
                         </div>
-                    </div>
                 </div>
+                @endif
                 <div class="relative mt-3">
                     <button type="submit" name="user_add_submit"
                             class="button w-25 bg-theme-1 text-white font-helvetica">რეგისტრაცია
@@ -166,6 +203,65 @@
             $('.side-menu').removeClass('side-menu--active');
             $('.side-menu[data-menu="user"]').addClass('side-menu--active');
 
+
+            $('select[name ="company[]"]').change(function () {
+                getDropdownList($(this), $(this).val());
+            })
+
+            $('select[name ="office[]"').change(function () {
+                getDropdownList($(this), '', $(this).val());
+            })
+
+            function getDropdownList(el, company = '', office = '', department = '') {
+                $.ajax({
+                    url: "{{route('ActionUserData')}}",
+                    data: {
+                        'company': company,
+                        'office': office,
+                        'department': department
+                    }
+                }).done(function (data) {
+                    if (company) {
+                        if (data) {
+                            let option = '<option value=""></option>';
+                            data.forEach(el => {
+                                option = `${option}
+                                <option value="${el.id}">${el['name_{{app()->getLocale()}}']}</option>
+`
+                            })
+                            let id = $('.jobs').children();
+                            id = id.length;
+                            let office = `.office-${id}`;
+                            let selectOffice = `#select-office-${id}`
+                            let department = `.department-${id}`;
+                            let selectDepartment = `#select-department-${id}`
+                            $(department).css('display', 'none');
+                            $(selectDepartment).html('')
+                            $(office).css('display', 'block')
+                            $(selectOffice).html(option)
+                            $('.select2').select2();
+
+                        }
+                    }
+                    if (office) {
+                        if (data) {
+                            let option = '<option value=""></option>';
+                            data.forEach(el => {
+                                option = `${option}
+                                <option value="${el.id}">${el['name_{{app()->getLocale()}}']}</option>
+`
+                            })
+                            let id = $('.jobs').children();
+                            id = id.length;
+                            let department = `.department-${id}`;
+                            let selectDepartment = `#select-department-${id}`
+                            $(department).css('display', 'block')
+                            $(selectDepartment).html(option)
+                            $('.select2').select2();
+                        }
+                    }
+                });
+            }
         });
     </script>
 @endsection
