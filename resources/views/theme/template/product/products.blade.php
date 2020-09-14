@@ -3,7 +3,7 @@
 @section('content')
 <div class="grid grid-cols-12 gap-6 mt-5">
     <div class="intro-y col-span-12 flex flex-wrap sm:flex-no-wrap items-center mt-2">
-        <a href="/products/create" class="button text-white bg-theme-1 shadow-md mr-2">დამატეთ პროდუქტი</a>
+        <a href="/products/create" class="button text-white font-bold font-caps text-xs bg-theme-1 shadow-md mr-2">დამატეთ პროდუქტი</a>
         <div class="dropdown relative">
             <button class="dropdown-toggle button px-2 box text-gray-700">
                 <span class="w-5 h-5 flex items-center justify-center"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus w-4 h-4"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> </span>
@@ -29,11 +29,11 @@
         <table class="table table-report -mt-2">
             <thead>
                 <tr>
-                    <th class="whitespace-no-wrap">სურათები</th>
-                    <th class="whitespace-no-wrap">სახელი</th>
-                    <th class="text-center whitespace-no-wrap">ფასი</th>
-                    <th class="text-center whitespace-no-wrap">საწყობში</th>
-                    <th class="text-center whitespace-no-wrap">სტატუსი</th>
+                    <th class="whitespace-no-wrap font-bold font-caps text-xs text-gray-700">სურათები</th>
+                    <th class="whitespace-no-wrap font-bold font-caps text-xs text-gray-700">სახელი</th>
+                    <th class="text-center whitespace-no-wrap font-bold font-caps text-xs text-gray-700">ფასი</th>
+                    <th class="text-center whitespace-no-wrap font-bold font-caps text-xs text-gray-700">საწყობში</th>
+                    <th class="text-center whitespace-no-wrap font-bold font-caps text-xs text-gray-700">სტატუსი</th>
                     <th class="text-center whitespace-no-wrap"></th>
                 </tr>
             </thead>
@@ -44,7 +44,7 @@
                         <div class="flex">
                             @foreach ($prod->images()->whereNull('deleted_at')->get() as $key => $image)
                             <div class="w-10 h-10 image-fit zoom-in">
-                                <img alt="Midone Tailwind HTML Admin Template" class="tooltip rounded-full tooltipstered" src="{{asset('../storage/productimage/'.$image->name)}}">
+                                <img class="tooltip rounded-full tooltipstered" src="{{asset('../storage/productimage/'.$image->name)}}">
                             </div>
                             @if ($key == 3)
                             @break;
@@ -56,12 +56,12 @@
                         
                     </td>
                     <td>
-                        <a href="" class="font-medium whitespace-no-wrap">{{$prod->{"title_".app()->getLocale()} }}</a> 
-                        <div class="text-gray-600 text-xs whitespace-no-wrap"> @if($prod->category_id){{$prod->getCategoryName($prod->category_id)}}@endif</div>
+                        <a href="" class="font-medium whitespace-no-wrap font-bold text-black">{{$prod->{"title_".app()->getLocale()} }}</a> 
+                        <div class="text-gray-600 text-xs whitespace-no-wrap font-normal"> @if($prod->category_id){{$prod->getCategoryName($prod->category_id)}}@endif</div>
                     </td>
-                    <td class="text-center">{{$prod->price/100}} ₾</td>
-                    <td class="text-center">{{$prod->stock}}</td>
-                    <td class="w-40">
+                    <td class="text-center font-normal">{{$prod->price/100}} ₾</td>
+                    <td class="text-center font-normal">{{$prod->stock}}</td>
+                    <td class="w-40 font-bold font-caps text-xs">
                         @if ($prod->published)
                     <a href="/products/turn/{{$prod->id}}/0" class="flex items-center justify-center text-theme-6"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-square w-4 h-4 mr-2"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg> გათიშვა </a>
                         @else 
@@ -70,10 +70,20 @@
                     </td>
                     <td class="table-report__action w-56">
                         <div class="flex justify-center items-center">
-                        <a href=" {{route('ProductEdit', $prod->id)}} " class="flex items-center mr-3" href="javascript:;"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-square w-4 h-4 mr-1"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg> რედაქტირება </a>
+                        <a href=" {{route('ProductEdit', $prod->id)}} "  class="p-2 bg-gray-300 rounded-lg ml-2" href="javascript:;"> 
+                            <svg width="1.18em" height="1.18em" viewBox="0 0 16 16" class="bi bi-pencil-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
+                              </svg>
+                           </a>
                         <form action="{{route('DeleteProduct', $prod->id)}}" method="get">
                             @csrf
-                                <button type="submit" class="flex items-center text-theme-6" href="javascript:;" data-toggle="modal" data-target="#delete-confirmation-modal"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2 w-4 h-4 mr-1"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg> წაშლა </button>
+                                <button type="submit"  class="p-2 bg-gray-300 rounded-lg ml-2" href="javascript:;" data-toggle="modal" data-target="#delete-confirmation-modal">
+                                    <svg width="1.18em" height="1.18em" viewBox="0 0 16 16" class="bi bi-trash2" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M3.18 4l1.528 9.164a1 1 0 0 0 .986.836h4.612a1 1 0 0 0 .986-.836L12.82 4H3.18zm.541 9.329A2 2 0 0 0 5.694 15h4.612a2 2 0 0 0 1.973-1.671L14 3H2l1.721 10.329z"/>
+                                        <path d="M14 3c0 1.105-2.686 2-6 2s-6-.895-6-2 2.686-2 6-2 6 .895 6 2z"/>
+                                        <path fill-rule="evenodd" d="M12.9 3c-.18-.14-.497-.307-.974-.466C10.967 2.214 9.58 2 8 2s-2.968.215-3.926.534c-.477.16-.795.327-.975.466.18.14.498.307.975.466C5.032 3.786 6.42 4 8 4s2.967-.215 3.926-.534c.477-.16.795-.327.975-.466zM8 5c3.314 0 6-.895 6-2s-2.686-2-6-2-6 .895-6 2 2.686 2 6 2z"/>
+                                      </svg>
+                                   </button>
                         </form>
                         </div>
                     </td>

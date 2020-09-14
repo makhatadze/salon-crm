@@ -15,14 +15,11 @@ class CreateClientsTable extends Migration
     {
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
-            $table->string('full_name');
+            $table->string('full_name_ge');
+            $table->string('full_name_ru')->nullable();
+            $table->string('full_name_en')->nullable();
             $table->string('address')->nullable();
             $table->string('number');
-            $table->timestamp('session_start_time');
-            $table->foreignId('user_id')->constrained('users');
-            $table->string('email')->nullable();
-            $table->string('clientable_type');
-            $table->integer('clientable_id');
             $table->timestamps();
             $table->timestamp('deleted_at')->nullable();
         });

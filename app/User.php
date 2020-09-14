@@ -66,6 +66,15 @@ class User extends Authenticatable
     }
 
     /**
+     *
+     * @return boolean
+     */
+    public function isUser()
+    {
+        return $this->hasAnyRole('user'); // ?? something like this! should return true or false
+    }
+
+    /**
      * Get the user's profile.
      */
     public function profile()

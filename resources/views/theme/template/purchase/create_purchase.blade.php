@@ -240,6 +240,7 @@
                      'value': $('#distributor_search').val(),
                   },
                   success: function(result){
+                      console.log(result);
                     if(result.status == true){
                         if(result.data.length > 0){
                         if($('#showdistributors').hasClass('hidden')){

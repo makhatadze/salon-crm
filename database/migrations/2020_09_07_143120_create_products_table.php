@@ -15,12 +15,12 @@ class CreateProductsTable extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string('title-ge');
-            $table->string('title-ru')->nullable();
-            $table->string('title-en')->nullable();
-            $table->text('description-ge');
-            $table->text('description-ru')->nullable();
-            $table->text('description-en')->nullable();
+            $table->string('title_ge');
+            $table->string('title_ru')->nullable();
+            $table->string('title_en')->nullable();
+            $table->text('description_ge');
+            $table->text('description_ru')->nullable();
+            $table->text('description_en')->nullable();
             $table->integer('price');
             $table->integer('stock')->nullable();
             $table->boolean('published')->default(true);

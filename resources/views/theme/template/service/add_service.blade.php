@@ -10,12 +10,9 @@
     <div class="intro-y col-span-12 lg:col-span-8">
     <form  action="{{route('StoreService')}}"  method="POST" enctype="multipart/form-data">
         @csrf
-        @if ($action == "update")
-        @method('PUT')
-        @endif
         <div class="flex">
           <div class="w-1/3 p-2">
-            <input type="text" required  name="title-ge"  class="font-normal text-sm intro-y input input--lg w-full box pr-10 placeholder-theme-13 m-0 mb-3" placeholder="სათაური-GE">
+            <input type="text" required  name="title_ge"  class="font-normal text-sm intro-y input input--lg w-full box pr-10 placeholder-theme-13 m-0 mb-3" placeholder="სათაური-GE">
             @error('title-ge')
             <span class="invalid-feedback" role="alert">
                 <strong style="color: tomato">{{ $message }}</strong>
@@ -24,7 +21,7 @@
             @enderror
         </div>
             <div class="w-1/3 p-2">
-                <input type="text"  name="title-ru"  class="font-normal text-sm intro-y input input--lg w-full box pr-10 placeholder-theme-13 m-0 mb-3" placeholder="სათაური-RU">
+                <input type="text"  name="title_ru"  class="font-normal text-sm intro-y input input--lg w-full box pr-10 placeholder-theme-13 m-0 mb-3" placeholder="სათაური-RU">
                 @error('title-ru')
                 <span class="invalid-feedback" role="alert">
                     <strong style="color: tomato">{{ $message }}</strong>
@@ -32,7 +29,7 @@
             @enderror
         </div>
          <div class="w-1/3 p-2">
-            <input type="text"  name="title-en" class="font-normal text-sm intro-y input input--lg w-full box pr-10 placeholder-theme-13 m-0 mb-3" placeholder="სათაური-EN">
+            <input type="text"  name="title_en" class="font-normal text-sm intro-y input input--lg w-full box pr-10 placeholder-theme-13 m-0 mb-3" placeholder="სათაური-EN">
             @error('title-en')
             <span class="invalid-feedback" role="alert">
                 <strong style="color: tomato">{{ $message }}</strong>
@@ -41,71 +38,71 @@
     </div>
         </div>
         <div class="intro-y box p-5">
-                @csrf
-                <div class="flex">
-                 <div class="w-1/3 p-2">
-                     <label class="font-bold font-caps text-xs text-gray-700">კატეგორია_GE</label> <br>
-                     <input type="text" autocomplete="off" name="category-ge" id="category-ge"  class="font-normal text-sm input w-full border category mt-2" placeholder="აირჩიეთ კატეგორია">
-                 </div>
-                 <div class="w-1/3 p-2">
-                     <label class="font-bold font-caps text-xs text-gray-700">კატეგორია_RU</label> <br>
-                     <input type="text" autocomplete="off" name="category-ru" id="category-ru"  class="font-normal text-sm input w-full border category mt-2" placeholder="აირჩიეთ კატეგორია">
-                 </div>
-                 <div class="w-1/3 p-2">
-                     <label class="font-bold font-caps text-xs text-gray-700">კატეგორია_EN</label> <br>
-                     <input type="text" autocomplete="off" name="category-en" id="categor-en"   class="font-normal text-sm input w-full border category mt-2" placeholder="აირჩიეთ კატეგორია">
-                 </div>
-                </div>
-                <div class="flex">
-                    <div class="w-1/2 p-2">
-                        <label class="font-bold font-caps text-xs text-gray-700">ხანგრძლივობა</label>
-                        <input type="number" min="0" step="1" name="duration_count" id="duration_count" class="font-normal text-sm input w-full border mt-2" placeholder="მიუთითეთ დრო">
-                    </div>
-                 <div class="w-1/2 p-2">
-                     <label class="font-bold font-caps text-xs text-gray-700">ხანგრძლივობის ტიპი</label>
-                    <select data-placeholder="Select a Duration Type" name="duration_type" class=" select2 w-full font-normal text-sm" >
-                        <option value="minute">წუთი</option>
-                        <option value="hours">საათი</option>
-                        <option value="day">დღე</option>
-                     </select>
-                 </div>
-                </div>
-                <div class="w-full p-2">
-                    <label class="font-bold font-caps text-xs text-gray-700">ფასი</label>
-                    <div class="relative mt-2">
-                        <input type="number" min="0" step="0.01"  name="price" name="price" class="font-normal text-sm input pr-12 w-full border col-span-4" placeholder="ფასი">
-                        <div class="absolute top-0 right-0 rounded-r w-10 h-full flex items-center justify-center bg-gray-100 border text-gray-600">₾</div>
-                    </div>
-                    @error('price')
-                    <span class="invalid-feedback" role="alert">
-                        <strong style="color: tomato">{{ $message }}</strong>
-                    </span>
-                @enderror
-                </div>
-                <div class="flex">
                 
-                  <div class="w-1/3 p-2">
-                      <div class="flex justify-between align-items-center">
-                          <label class="font-bold font-caps text-xs text-gray-700">ერთეული_GE</label>
-                      </div>
-                      <input type="text" name="unit-ge"  class="font-normal text-sm input w-full border mt-2" placeholder="ჩაწერეთ ერთეულის სახელი">
-                    
-                  </div>
-                  <div class="w-1/3 p-2">
-                      <div class="flex justify-between align-items-center">
-                          <label class="font-bold font-caps text-xs text-gray-700">ერთეული_RU</label>
-                      </div>
-                      <input type="text" name="unit-ru"  class="font-normal text-sm input w-full border mt-2" placeholder="ჩაწერეთ ერთეულის სახელი">
-                    
-                  </div>
-                  <div class="w-1/3 p-2">
-                      <div class="flex justify-between align-items-center">
-                          <label class="font-bold font-caps text-xs text-gray-700">ერთეული_EN</label>
-                      </div>
-                      <input type="text" name="unit-en"  class="font-normal text-sm input w-full border mt-2" placeholder="ჩაწერეთ ერთეულის სახელი">
-                    
-                  </div>
+            <div class="flex">
+                <div class="w-1/3 p-2">
+                    <label class="font-bold font-caps text-xs text-gray-700">კატეგორია_GE</label> <br>
+                    <input type="text" autocomplete="off" name="category-ge" id="category-ge"  class="font-normal text-sm input w-full border category mt-2" placeholder="აირჩიეთ კატეგორია">
                 </div>
+                <div class="w-1/3 p-2">
+                    <label class="font-bold font-caps text-xs text-gray-700">კატეგორია_RU</label> <br>
+                    <input type="text" autocomplete="off" name="category-ru" id="category-ru"  class="font-normal text-sm input w-full border category mt-2" placeholder="აირჩიეთ კატეგორია">
+                </div>
+                <div class="w-1/3 p-2">
+                    <label class="font-bold font-caps text-xs text-gray-700">კატეგორია_EN</label> <br>
+                    <input type="text" autocomplete="off" name="category-en" id="categor-en"   class="font-normal text-sm input w-full border category mt-2" placeholder="აირჩიეთ კატეგორია">
+                </div>
+               </div>
+               <div class="flex">
+                   <div class="w-1/2 p-2">
+                       <label class="font-bold font-caps text-xs text-gray-700">ხანგრძლივობა <span class="text-red-500">*</span></label>
+                       <input required type="number" min="0" step="1" name="duration_count" id="duration_count" class="font-normal text-sm input w-full border mt-2" placeholder="მიუთითეთ დრო">
+                   </div>
+                <div class="w-1/2 p-2">
+                    <label class="font-bold font-caps text-xs text-gray-700">ხანგრძლივობის ტიპი <span class="text-red-500">*</span></label>
+                   <select required data-placeholder="Select a Duration Type" name="duration_type" class=" select2 w-full font-normal text-sm" >
+                       <option value="minute">წუთი</option>
+                       <option value="hours">საათი</option>
+                       <option value="day">დღე</option>
+                    </select>
+                </div>
+               </div>
+               <div class="w-full p-2">
+                <label class="font-bold font-caps text-xs text-gray-700">ფასი</label>
+                <div class="relative mt-2">
+                    <input type="number" min="0" step="0.01"  name="price" name="price" class="font-normal text-sm input pr-12 w-full border col-span-4" placeholder="ფასი">
+                    <div class="absolute top-0 right-0 rounded-r w-10 h-full flex items-center justify-center bg-gray-100 border text-gray-600">₾</div>
+                </div>
+                @error('price')
+                <span class="invalid-feedback" role="alert">
+                    <strong style="color: tomato">{{ $message }}</strong>
+                </span>
+            @enderror
+            </div>
+            <div class="flex">
+                
+                <div class="w-1/3 p-2">
+                    <div class="flex justify-between align-items-center">
+                        <label class="font-bold font-caps text-xs text-gray-700">ერთეული_GE</label>
+                    </div>
+                    <input type="text" name="unit-ge"  class="font-normal text-sm input w-full border mt-2" placeholder="ჩაწერეთ ერთეულის სახელი">
+                  
+                </div>
+                <div class="w-1/3 p-2">
+                    <div class="flex justify-between align-items-center">
+                        <label class="font-bold font-caps text-xs text-gray-700">ერთეული_RU</label>
+                    </div>
+                    <input type="text" name="unit-ru"  class="font-normal text-sm input w-full border mt-2" placeholder="ჩაწერეთ ერთეულის სახელი">
+                  
+                </div>
+                <div class="w-1/3 p-2">
+                    <div class="flex justify-between align-items-center">
+                        <label class="font-bold font-caps text-xs text-gray-700">ერთეული_EN</label>
+                    </div>
+                    <input type="text" name="unit-en"  class="font-normal text-sm input w-full border mt-2" placeholder="ჩაწერეთ ერთეულის სახელი">
+                  
+                </div>
+              </div>
               <div>
                 <div class="w-full p-2">
                      <label class="font-bold font-caps text-xs text-gray-700">სურათი</label>

@@ -47,24 +47,24 @@ class ServiceController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            'title-ge' => 'required',
-            'title-en' => '',
-            'title-ru' => '',
+            'title_ge' => 'required',
+            'title_en' => '',
+            'title_ru' => '',
             'editor-ge' => 'required',
             'editor-en' => '',
             'editor-ru' => '',
             'duration_count' => 'required|integer', 
             'duration_type' => 'required|string', 
-            'price' => 'required|between:0,99.99',
+            'price' => 'required|between:0,9999.99',
             'unit-ge' => '',
             'unit-en' => '',
             'unit-ru' => '',
             'file' => 'image'
          ]);
          $service = new Service;
-         $service->title_ge = $request->input('title-ge');
-         $service->title_en = $request->input('title-en');
-         $service->title_ru = $request->input('title-ru');
+         $service->title_ge = $request->input('title_ge');
+         $service->title_en = $request->input('title_en');
+         $service->title_ru = $request->input('title_ru');
          $service->body_ge = $request->input('editor-ge');
          $service->body_en = $request->input('editor-en');
          $service->body_ru = $request->input('editor-ru');
@@ -121,23 +121,23 @@ class ServiceController extends Controller
             return redirect('/services');
         }
         $this->validate($request,[
-            'title-ge' => 'required',
-            'title-en' => '',
-            'title-ru' => '',
+            'title_ge' => 'required',
+            'title_en' => '',
+            'title_ru' => '',
             'editor-ge' => 'required',
             'editor-en' => '',
             'editor-ru' => '',
             'duration_count' => 'required|integer', 
             'duration_type' => 'required|string', 
-            'price' => 'required|between:0,99.99',
+            'price' => 'required|between:0,9999.99',
             'unit-ge' => '',
             'unit-en' => '',
             'unit-ru' => '',
             'file' => 'image'
          ]);
-     $service->title_ge = $request->input('title-ge');
-     $service->title_en = $request->input('title-en');
-     $service->title_ru = $request->input('title-ru');
+     $service->title_ge = $request->input('title_ge');
+     $service->title_en = $request->input('title_en');
+     $service->title_ru = $request->input('title_ru');
      $service->body_ge = $request->input('editor-ge');
      $service->body_en = $request->input('editor-en');
      $service->body_ru = $request->input('editor-ru');
@@ -164,15 +164,21 @@ class ServiceController extends Controller
          }elseif(!$request->input('category-ge') & !$request->input('category-en') && !$request->input('category-ru') && $service->category()->first()){
             $service->category()->first()->delete();
          }
-     $service->save();
+         $service->save();
          
          if($request->hasFile('file')){
             $imagename = date('Ymhs').$request->file('file')->getClientOriginalName();
             $destination = base_path() . '/storage/app/public/serviceimg';
             $request->file('file')->move($destination, $imagename);
-            $service->first()->image()->create([
-                'name' => $imagename
-            ]);
+            if($service->first()->image()->first()){
+               $firstimg = $service->first()->image()->first();
+               $firstimg->name = $imagename;
+               $firstimg->save();
+            }else{
+                $service->first()->image()->create([
+                    'name' => $imagename
+                ]);
+            }
          }
          return redirect('/services');
     }

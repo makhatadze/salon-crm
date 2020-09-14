@@ -83,7 +83,7 @@
                 <div class="flex flex-wrap px-4">
                     @if ($product->images()->where('deleted_at', null)->count() > 0)
                         @foreach($product->images()->where('deleted_at', null)->get() as $image)
-                <div id="img{{$image->id}}" class="w-24 h-24 relative image-fit mb-5 mr-5 cursor-pointer zoom-in">
+                        <div id="img{{$image->id}}" class="w-24 h-24 relative image-fit mb-5 mr-5 cursor-pointer zoom-in">
                             <img class="rounded-md" alt="Midone Tailwind HTML Admin Template" src="{{asset('/storage/productimage/'.$image->name)}}">
                             <div id="{{$image->id}}" class="removeimg tooltip w-5 h-5 flex items-center justify-center absolute rounded-full text-white bg-theme-6 right-0 top-0 -mr-2 -mt-2 tooltipstered"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x w-4 h-4"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg> </div>
                             </div>

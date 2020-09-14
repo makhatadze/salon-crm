@@ -63,6 +63,10 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
         Route::post('/purchases/getprofiles', 'PurchaseController@getprofiles')->name('GetProfilesForPurchase');
         //Client Controller
         Route::get('/clients', 'ClientController@index');
+        Route::get('/clients/create', 'ClientController@create');
+        Route::get('/clients/turnon/{id}', 'ClientController@turnon');
+        Route::get('/clients/delete/{id}', 'ClientController@destroy');
+        Route::post('/clients/store', 'ClientController@store')->name('StoreClient');
     });
     Auth::routes();
 });
