@@ -12,7 +12,6 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
         Route::get('/', 'HomeController@ActionHome')->name('ActionHome');
         //USERS CONTROLLER
         Route::get('/user', ['uses'=>'UserController@ActionUser', 'as' => 'ActionUser']);
-        Route::get('/user/profile', ['uses'=>'UserController@profile', 'as' => 'UserProfile']);
         Route::get('/profile/turn/{status}', 'UserController@turnprofile');
         Route::post('/profile/filter', 'UserController@profilefilter')->name('ProfileFilter');
         Route::any('/user/add', ['uses' => 'UserController@ActionUserAdd', 'as' => 'ActionUserAdd']);

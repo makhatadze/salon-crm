@@ -145,7 +145,7 @@
             $('.side-menu[data-menu="user"]').addClass('side-menu--active');
             $('#clientfilter').select2();
             $("#clientfilter").change(function() {
-                
+                $value = $('#clientfilter').val();
                 $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -155,10 +155,64 @@
                   url: "{{ route('ProfileFilter') }}",
                   method: 'post',
                   data: {
-                     'filter': this->value,
+                     'filter': $value,
                   },
                   success: function(result){
-                      console.log(result.data);
+                    if(result.status == true){
+                        $html = '';
+                        $data = result.data;
+                        $data.forEach(function (client){
+                        $dt = new Date('{{Carbon\Carbon::now()}}');
+                        $st = new Date(client['session_start_time']);
+                        $mark = '';
+                            if(client['status'] == true){
+                                $mark = `<div class="flex items-center justify-center h-full font-normal text-xs">
+                                        <svg width="1.3em" height="1.3em" viewBox="0 0 16 16" class="bi bi-check-circle-fill mr-2" fill="#5dc78c" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"></path>
+                                        </svg>მიღებულია
+                                        </div>`;
+                            }else if($dt.getTime() < $st.getTime()){
+                                $mark = `
+                                <div class="flex items-center justify-center h-full font-normal text-xs">
+                                        <svg width="1.3em" height="1.3em" viewBox="0 0 16 16" class="bi mr-2 bi-slash-circle-fill" fill="#ffb52d" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.646-2.646a.5.5 0 0 0-.708-.708l-6 6a.5.5 0 0 0 .708.708l6-6z"></path>
+                                        </svg>
+                                        ველოდებით
+                                    </div>
+                                `;
+                            }else if($dt.getTime() > $st.getTime()){
+                                $mark = `
+                                <div class="flex items-center justify-center h-full font-normal text-xs">
+                                        <svg width="1.3em" height="1.3em" viewBox="0 0 16 16" class="bi mr-2 bi-dash-circle-fill" fill="#ff6155" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM4.5 7.5a.5.5 0 0 0 0 1h7a.5.5 0 0 0 0-1h-7z"></path>
+                                        </svg>არ მოსულა
+                                        </div>`;
+                            }
+                            $html += `
+                            <div class="grid grid-cols-4 my-3">
+                                <div class="col-span-1 ">
+                                <h6 class="font-bold text-gray-800">`+client['clientname']+`</h6>
+                                <span class="text-sm text-gray-700 font-normal">`+client['clientnumber']+`</span>
+                                </div>
+                                <div class="col-span-1 font-normal">
+                                    <span class="text-xs">დან: </span>`+client['session_start_time']+`<br>
+                                    <span class="text-xs">მდე: </span>`+client['endtime']+`
+                                </div>
+                                <div class="col-span-1 ">
+                                <h6 class="font-bold">`+client['serviceprice']+` <sup>₾</sup></h6>
+                                    <span class="font-normal">`+client['servicename']+`</span>
+                                </div>
+                                <div class="col-span-1 flex align-center justify-center">
+                                   `+$mark+`
+                                    
+                                </div>
+                            </div> 
+                            <hr>
+                            `;
+                        });
+                        $('#clientlist').html('');
+                        $('#clientlist').html($html);
+                    }
                   }
                 });
 

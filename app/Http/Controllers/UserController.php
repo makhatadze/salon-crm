@@ -14,6 +14,7 @@ use App\Company;
 use App\Office;
 use App\Profile;
 use App\User;
+use App\ClientService;
 use App\UserHasJob;
 use Carbon\Carbon;
 use Auth;
@@ -197,12 +198,20 @@ class UserController extends Controller
         }elseif($request->filter == "done"){
             $clients = ClientService::where([['user_id', auth::user()->id], ['status', true]])->get();
         }elseif($request->filter == "waiting"){
-            $clients = ClientService::where([['user_id', auth::user()->id], ['session_start_time', '>', Carbon::now()]])->get();
+            $clients = ClientService::where([['user_id', auth::user()->id], ['session_start_time', '>', Carbon::now()], ['status', false]])->get();
         }elseif($request->filter == "notcome"){
-            $clients = ClientService::where([['user_id', auth::user()->id], ['session_start_time', '<', Carbon::now()]])->get();
+            $clients = ClientService::where([['user_id', auth::user()->id], ['session_start_time', '<', Carbon::now()], ['status', false]])->get();
         }else{
             return response()->json(array('status' => false));
         }
+        foreach($clients as $client){
+            $client['endtime'] = $client->getEndTime();
+            $client['servicename'] = $client->getServiceName();
+            $client['serviceprice'] = $client->getServicePrice();
+            $client['clientnumber'] = $client->clinetserviceable()->first()->number;
+            $client['clientname'] = $client->clinetserviceable()->first()->{"full_name_".app()->getLocale()};
+        }
+        return response()->json(array('status' => true, 'data' => $clients));
     }
     /**
      * Store a newly created resource in storage.
