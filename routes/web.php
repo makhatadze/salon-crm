@@ -12,6 +12,9 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
         Route::get('/', 'HomeController@ActionHome')->name('ActionHome');
         //USERS CONTROLLER
         Route::get('/user', ['uses'=>'UserController@ActionUser', 'as' => 'ActionUser']);
+        Route::get('/user/profile', ['uses'=>'UserController@profile', 'as' => 'UserProfile']);
+        Route::get('/profile/turn/{status}', 'UserController@turnprofile');
+        Route::post('/profile/filter', 'UserController@profilefilter')->name('ProfileFilter');
         Route::any('/user/add', ['uses' => 'UserController@ActionUserAdd', 'as' => 'ActionUserAdd']);
         Route::any('/user/data', ['uses' => 'UserController@ActionUserData', 'as' => 'ActionUserData']);
         //Service COntroller
@@ -69,5 +72,6 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
         Route::post('/clients/store', 'ClientController@store')->name('StoreClient');
     });
     Auth::routes();
+    Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout');
 });
 

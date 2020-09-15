@@ -34,7 +34,7 @@
                             @if($user->image)
                                 <img alt="" class="rounded-full" src="/storage/profile/{{$user->id}}/{{$user->image->name}}">
                             @else
-                                <img alt="" class="rounded-full" src="/no-avatar.png">
+                            <img alt="" class="rounded-full" src="/no-avatar.png">
                             @endif
                         </div>
                         <div class="lg:ml-2 lg:mr-auto text-center lg:text-left mt-3 lg:mt-0">

@@ -15,6 +15,8 @@ use App\Office;
 use App\Profile;
 use App\User;
 use App\UserHasJob;
+use Carbon\Carbon;
+use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -170,7 +172,38 @@ class UserController extends Controller
             abort('404');
         }
     }
-
+    /**
+     * User Profile 
+     */
+    public function profile(){
+        $user = auth::user();
+        return view('theme.template.user.user_profile', compact('user'));
+    }
+    /**
+     * Turn Profile On or Off
+     */
+    public function turnprofile($status){
+        $user = auth::user();
+        $user->active = $status;
+        $user->save();
+        return redirect('/');
+    }
+    public function profilefilter(Request $request){
+        $this->validate($request,[
+            'filter' => 'required', 
+        ]);
+        if($request->filter == "all"){
+            $clients = ClientService::where('user_id', auth::user()->id)->get();
+        }elseif($request->filter == "done"){
+            $clients = ClientService::where([['user_id', auth::user()->id], ['status', true]])->get();
+        }elseif($request->filter == "waiting"){
+            $clients = ClientService::where([['user_id', auth::user()->id], ['session_start_time', '>', Carbon::now()]])->get();
+        }elseif($request->filter == "notcome"){
+            $clients = ClientService::where([['user_id', auth::user()->id], ['session_start_time', '<', Carbon::now()]])->get();
+        }else{
+            return response()->json(array('status' => false));
+        }
+    }
     /**
      * Store a newly created resource in storage.
      *

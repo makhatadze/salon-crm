@@ -89,4 +89,16 @@ class User extends Authenticatable
     {
         return $this->morphOne('App\Image', 'imageable');
     }
+    public function getEarnedMoney(){
+        $clients = ClientService::where([['user_id', $this->id], ['status', true]])->get();
+        $money = 0;
+        foreach($clients as $client){
+            $money += $client->getServicePrice();
+        }
+        return $money;
+    }
+    public function ClientCount(){
+        $clients = ClientService::where([['user_id', $this->id], ['status', true]])->count();
+        return $clients;
+    }
 }

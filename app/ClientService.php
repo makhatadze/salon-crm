@@ -38,11 +38,11 @@ class ClientService extends Model
         $duration = Service::find($this->service_id);
         if($duration){
             if($duration->duration_type == "minute"){
-                return Carbon::parse($this->session_start_time)->addminutes($duration->duration_count);
+                return Carbon::parse($this->session_start_time)->addminutes($duration->duration_count)->isoFormat('Y-MM-DD hh:mm:ss');
             }elseif($duration->duration_type == "hours"){
-                return Carbon::parse($this->session_start_time)->addHours($duration->duration_count)->format('Y-m-d h:m:s');
+                return Carbon::parse($this->session_start_time)->addHours($duration->duration_count)->isoFormat('Y-MM-DD hh:mm:ss');
             }elseif($duration->duration_type == "day"){
-                return $price->price/100;
+                return Carbon::parse($this->session_start_time)->addDays($duration->duration_count)->isoFormat('Y-MM-DD hh:mm:ss');
             }
         }
         return;
