@@ -15,6 +15,7 @@ use Spatie\Permission\Models\Role;
 use Auth;
 use App\ClientService;
 use App\Client;
+use Carbon\Carbon;
 
 class HomeController extends Controller
 {
@@ -41,7 +42,7 @@ class HomeController extends Controller
             ];
             if(Auth::user()->isUser()){
                 $user = Auth::user();
-                $userclients = ClientService::where('user_id', $user->id)->get();
+                $userclients = ClientService::where('user_id', $user->id)->whereNull('deleted_at')->get();
                 return view('theme.template.user.user_profile', compact('user', 'userclients'));
             }
             $totalclients = Client::count();
@@ -49,10 +50,11 @@ class HomeController extends Controller
             $usedservices = ClientService::where('status', true)->get();
             $allclientservices = ClientService::count();
             $income = 0;
+            $todayservices = ClientService::whereDate('session_start_time', Carbon::today())->whereNull('deleted_at')->get();
             foreach($usedservices as $service){
                 $income += $service->getServicePrice();
             }
-            return view('theme.template.home.home_index', compact('totalclients', 'userdservices', 'income', 'allclientservices'));
+            return view('theme.template.home.home_index', compact('totalclients', 'userdservices', 'income', 'allclientservices', 'todayservices'));
         } else {
             abort('404');
         }

@@ -6,7 +6,9 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
-
+use App\UserHasJob;
+use App\Office;
+use App\Company;
 class User extends Authenticatable
 {
     use Notifiable, HasRoles;
@@ -74,6 +76,55 @@ class User extends Authenticatable
         return $this->hasAnyRole('user'); // ?? something like this! should return true or false
     }
 
+    /**
+     * @return string
+     */
+    public function getDepartmentName(){
+        $department_id = UserHasJob::where('user_id', $this->id)->first();
+        if($department_id){
+            $department = Department::find($department_id);
+            if($department){
+                return $department->first()->{"name_".app()->getLocale()} ;
+            }
+        }
+        return;
+    }
+    public function getDepartmentId(){
+        $department_id = UserHasJob::where('user_id', $this->id)->first();
+        if($department_id){
+            $department = Department::find($department_id);
+            if($department){
+                return $department->first()->id;
+            }
+        }
+        return;
+    }
+    /**
+     * @return string
+     */
+    public function getOfficeName(){
+        $office_id = UserHasJob::where('office_id', $this->id)->first();
+        if($office_id){
+            $office = Office::find($office_id);
+            if($office){
+                return $office->first()->{"name_".app()->getLocale()} ;
+            }
+        }
+        return;
+    }
+    /**
+     * @return string
+     */
+    public function getCompanyName(){
+        $company_id = UserHasJob::where('company_id', $this->id)->first();
+        if($department_id){
+            $company = Company::find($company_id);
+            if($company){
+                return $company->first()->{"title_".app()->getLocale()} ;
+            }
+        }
+        return;
+    }
     /**
      * Get the user's profile.
      */

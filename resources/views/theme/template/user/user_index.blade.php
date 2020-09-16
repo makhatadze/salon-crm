@@ -41,7 +41,9 @@
                             <a href="" class="font-medium font-helvetica">{{$user->name}}</a>
                         </div>
                         <div class="flex mt-4 lg:mt-0">
-                            <a href="#" class="button button--sm text-gray-700 border border-gray-300 font-helvetica">პროფილი</a>
+                            @if ($user->profile()->first())
+                            <a href="{{route('ShowUserProfile', $user->id)}}" class="button button--sm text-gray-700 border border-gray-300 font-helvetica">პროფილი</a>
+                            @endif
                         </div>
                     </div>
                 </div>

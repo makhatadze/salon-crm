@@ -21,7 +21,7 @@ class CreateServicesTable extends Migration
             $table->text('body_ge');
             $table->text('body_ru')->nullable();
             $table->text('body_en')->nullable();
-            $table->integer('duration_count');
+            $table->float('duration_count');
             $table->string('duration_type');
             $table->integer('price')->nullable();
             $table->boolean('published')->default(true);

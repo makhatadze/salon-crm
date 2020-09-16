@@ -17,10 +17,11 @@ use App\User;
 use App\ClientService;
 use App\UserHasJob;
 use Carbon\Carbon;
+
+use Illuminate\Support\Facades\Hash;
 use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -180,6 +181,26 @@ class UserController extends Controller
         $user = auth::user();
         return view('theme.template.user.user_profile', compact('user'));
     }
+    public function changepassword(){
+        $user = auth::user();
+        return view('theme.template.user.user_change_password', compact('user'));
+    }
+    public function storenewpassword(Request $request){
+        $this->validate($request,[
+            'old_password' => ['required', 'string', 'min:8'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
+        if(Hash::check($request->input('old_password'), Auth::user()->password)){
+            $user = auth::user();
+            $user->password = Hash::make($request->input('password'));
+            $user->save();
+        }
+        return redirect('/');
+    }
+    public function accountsetting(){
+        $user = auth::user();
+        return view('theme.template.user.user_account_settings', compact('user'));
+    }
     /**
      * Turn Profile On or Off
      */
@@ -267,5 +288,26 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
+    }
+    public function showprofile($id){
+        $user = User::findOrFail($id);
+        $userclients = ClientService::where('user_id', $user->id)->whereNull('deleted_at')->get();
+        return view('theme.template.user.user_profile', compact('user', 'userclients'));
+    }
+    public function showprofilesettings($id){
+        $user = User::findOrFail($id);
+        return view('theme.template.user.user_account_settings', compact('user'));
+    }
+    public function updateuserprofile(Request $request, $id){
+        dd($request->all());
+        $this->validate($request,[
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'phone' => 'required|string|unique:profiles',
+            'email' => 'required|string|email|max:255|unique:users',
+            'department_id' => 'required|integer'
+        ]);
+        $user = User::findOrFail($id);
+        return view('theme.template.user.user_account_settings', compact('user'));
     }
 }

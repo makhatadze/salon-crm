@@ -58,10 +58,10 @@
                 </div>
                 <div class="intro-x flex text-gray-700 text-xs sm:text-sm mt-4">
                     <div class="flex items-center mr-auto">
-                        <input type="checkbox" name="remember" class="input border mr-2" id="remember-me">
+                        <input class="input border mr-2" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
                         <label class="cursor-pointer select-none" for="remember-me">Remember me</label>
                     </div>
-                    <a href="#">Forgot Password?</a>
+                    <a href="/password/reset">Forgot Password?</a>
                 </div>
                 <div class="intro-x mt-5 xl:mt-8 text-center xl:text-left">
                     {{ Form::submit('Login', ['class' => 'button button--lg w-full xl:w-32 text-white bg-theme-1 xl:mr-3']) }}

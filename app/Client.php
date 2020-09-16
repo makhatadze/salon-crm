@@ -14,4 +14,12 @@ class Client extends Model
     public function clientservices(){
         return $this->morphMany('App\ClientService', 'clinetserviceable');
     }
+    public function getPayedMoney(){
+        $services = $this->clientservices()->where('status', true)->wherenull('deleted_at')->get();
+        $money = 0;
+        foreach($services as $service){
+            $money += $service->getServicePrice();
+        }
+        return $money;
+    }
 }

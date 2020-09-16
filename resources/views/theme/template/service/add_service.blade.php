@@ -56,7 +56,7 @@
                <div class="flex">
                    <div class="w-1/2 p-2">
                        <label class="font-bold font-caps text-xs text-gray-700">ხანგრძლივობა <span class="text-red-500">*</span></label>
-                       <input required type="number" min="0" step="1" name="duration_count" id="duration_count" class="font-normal text-sm input w-full border mt-2" placeholder="მიუთითეთ დრო">
+                       <input required type="number" min="0" step="0.1" name="duration_count" id="duration_count" class="font-normal text-sm input w-full border mt-2" placeholder="მიუთითეთ დრო">
                    </div>
                 <div class="w-1/2 p-2">
                     <label class="font-bold font-caps text-xs text-gray-700">ხანგრძლივობის ტიპი <span class="text-red-500">*</span></label>

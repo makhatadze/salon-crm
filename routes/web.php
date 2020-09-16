@@ -13,9 +13,16 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
         //USERS CONTROLLER
         Route::get('/user', ['uses'=>'UserController@ActionUser', 'as' => 'ActionUser']);
         Route::get('/profile/turn/{status}', 'UserController@turnprofile');
+        Route::get('/profile/accountsettings', 'UserController@accountsetting');
+        Route::get('/profile/changepassword', 'UserController@changepassword');
+        Route::post('/profile/storenewpassword', 'UserController@storenewpassword')->name('ChangePassword');
         Route::post('/profile/filter', 'UserController@profilefilter')->name('ProfileFilter');
         Route::any('/user/add', ['uses' => 'UserController@ActionUserAdd', 'as' => 'ActionUserAdd']);
         Route::any('/user/data', ['uses' => 'UserController@ActionUserData', 'as' => 'ActionUserData']);
+        Route::get('/user/showprofile/{id}', 'UserController@showprofile')->name('ShowUserProfile');
+        Route::get('/show/accountsettings/{id}', 'UserController@showprofilesettings')->name('ShowProfileSettings');
+        Route::post('/updateuserprofile/{id}', 'UserController@updateuserprofile')->name('UpdateUserProfile');
+
         //Service COntroller
         Route::get('/services/turn/{service}/{status}', 'ServiceController@turn');
         Route::get('/categories', 'ServiceController@categories');
@@ -68,7 +75,15 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
         Route::get('/clients/create', 'ClientController@create');
         Route::get('/clients/turnon/{id}', 'ClientController@turnon');
         Route::get('/clients/delete/{id}', 'ClientController@destroy');
+        Route::get('/clients/deleteclient/{id}', 'ClientController@destroyclient')->name('DeleteClient');
+        Route::get('/clients/edit/{id}', 'ClientController@edit')->name('EditClient');
+        Route::post('/client/ajaxdelete', 'ClientController@removeservice')->name('AjaxServiceRemove');
+        Route::post('/clients/update/{id}', 'ClientController@update')->name('UpdateClient');
         Route::post('/clients/store', 'ClientController@store')->name('StoreClient');
+        Route::post('/clinets/getbydate', 'ClientController@getbydate')->name('GetServiceByDate');
+
+        //Export Controller
+        Route::get('/clients/export', 'ClientController@export')->name('ClientExcel');
     });
     Auth::routes();
     Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout');
