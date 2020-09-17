@@ -22,7 +22,9 @@ class CreateProductsTable extends Migration
             $table->text('description_ru')->nullable();
             $table->text('description_en')->nullable();
             $table->integer('price');
-            $table->integer('stock')->nullable();
+            $table->string('type');
+            $table->float('stock');
+            $table->string('unit');
             $table->boolean('published')->default(true);
             $table->integer('category_id')->nullable();
             $table->integer('department_id')->nullable();

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Client;
 use App\Service;
+use App\Product;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
@@ -134,6 +135,7 @@ class ClientController extends Controller
        
         if($request->input('userpicker') && $request->input('datepicker') && $request->input('timepicker') && $request->input('servicepicker')){
             foreach($request->input('userpicker') as $key => $item){
+                
                 $time = Carbon::parse($request->datepicker[$key])->setTimeFromTimeString($request->timepicker[$key]);
                 $clientservices[] = [
                     'user_id' => $request->userpicker[$key],
@@ -178,6 +180,18 @@ class ClientController extends Controller
      */
     public function turnon($id){
         $clientservice = ClientService::findOrFail($id);
+
+        $service = Service::find($clientservice->service_id)->first();
+        if($service){
+            $inventories = $service->inventories()->get();
+            foreach($inventories as $prods){
+                $prod = Product::find($prods->product_id);
+                if($prod){
+                    $prod->stock = $prod->stock - $prods->quantity;
+                    $prod->save();
+                }   
+            }
+        }
         $clientservice->status = true;
         $clientservice->save();
         return redirect('/');

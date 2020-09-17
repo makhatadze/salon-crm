@@ -65,11 +65,13 @@
                        </div>
                     <div class="w-1/2 p-2">
                         <label class="font-bold font-caps text-xs text-gray-700">ხანგრძლივობის ტიპი <span class="text-red-500">*</span></label>
-                       <select data-placeholder="Select a Duration Type" name="duration_type" class=" select2 w-full font-normal text-sm" >
-                           <option value="minute">წუთი</option>
-                           <option value="hours">საათი</option>
-                           <option value="day">დღე</option>
-                        </select>
+                       <div class="mt-2">
+                        <select data-placeholder="Select a Duration Type" name="duration_type" class=" select2 w-full font-normal text-sm" >
+                            <option value="minute">წუთი</option>
+                            <option value="hours">საათი</option>
+                            <option value="day">დღე</option>
+                         </select>
+                       </div>
                     </div>
                    </div>
                    <div class="w-full p-2">
@@ -112,6 +114,14 @@
                 <div class="w-full p-2">
                      <label class="font-bold font-caps text-xs text-gray-700">სურათი</label>
                     <div class="border-2 border-dashed rounded-md mt-2 pt-1">
+                        <div class="flex flex-wrap px-4">
+                            @if ($service->image()->first())
+                            <div id="remove{{$service->image()->first()->id}}" class="w-24 h-24 relative image-fit mb-5 mr-5 cursor-pointer zoom-in">
+                                <img class="rounded-md" alt="Midone Tailwind HTML Admin Template" src="{{asset('/storage/serviceimg/'.$service->image()->first()->name)}}">
+                                <div id="{{$service->image()->first()->id}}" class="removeimg tooltip w-5 h-5 flex items-center justify-center absolute rounded-full text-white bg-theme-6 right-0 top-0 -mr-2 -mt-2 tooltipstered"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x w-4 h-4"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg> </div>
+                                </div>
+                            @endif
+                        </div>
                     <div class="relative mt-1">
                     <div class="px-4 pb-2 flex items-center cursor-pointer relative">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-image w-4 h-4 mr-2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg> <span class="text-theme-1 mr-1 font-bold font-caps text-xs">ატვირთეთ ფაილი</span> 
@@ -121,6 +131,43 @@
                 </div>
                 </div>
               </div>
+              <div class="my-4 flex justify-between items-center">
+                <span class="font-medium text-base text-gray-700">ინვენტარის დამატება</span>
+                <button type="button" id="addunit" class="shadow dropdown-toggle bg-gray-200 button px-2 box text-gray-700 hover:bg-blue-900 hover:text-white">
+                  <span class="w-5 h-5 flex items-center justify-center"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus w-4 h-4"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> </span>
+              </button>
+            </div>
+            @foreach ($service->inventories()->get() as $key => $inv)
+                
+            <div class="w-full relative flex items-center mt-2" id="remove{{$inv->id}}">
+            <span class="text-white px-2 cursor-pointer rounded font-bold right-0 top-0 absolute bg-red-500" onclick="removeinventoryajax('{{$inv->id}}')">x</span>
+           <div class="mt-3 flex items-center w-full">
+              <div class="w-1/3 p-2">
+                  
+                  <select required data-placeholder="აირჩიეთ ინვენტარი" disabled class="font-normal text-xs select2 p-2 w-full border border-gray-300 rounded" >
+                      <option value="" selected></option>
+                      @foreach ($inventories as $item)
+                      @if ($inv->product_id == $item->id)
+                      <option value="{{$item->id}}" selected>{{$item->{"title_".app()->getLocale()} }}</option>
+                      @else 
+                      <option value="{{$item->id}}">{{$item->{"title_".app()->getLocale()} }}</option>
+                      @endif
+                      @endforeach
+                      
+                  </select>
+              </div>
+              <div class="w-1/3 p-2">
+              <input type="text" disabled  required  class="text-xs font-normal input w-full border" value="{{$inv->getProductUnit()}}" placeholder="ერთეული">
+              </div>
+              <div class="w-1/3 p-2">
+                <input type="number" disabled min="0" step="0.1" required  class="text-xs font-normal input w-full border" value="{{$inv->quantity}}" placeholder="რაოდენობა">
+              </div>
+           </div>
+            </div>
+            @endforeach
+           <div id="inventory">
+             
+           </div>
               <div class="mt-2">
                   <label class="font-bold font-caps text-xs text-gray-700">აღწერა_GE</label>
                   
@@ -169,11 +216,107 @@
 @section('custom_scripts')
 <script type="text/javascript">
 	$(document).ready(function() {
+        $('.removeimg').click(function(){
+            $id = $(this).attr('id');
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                url: "{{ route('RemoveServiceImage') }}",
+                method: 'post',
+                data:{
+                    'imgid':$id
+                },
+                success: function(result){
+                    if(result.status == true){
+                        $('#remove'+$id).remove();
+                    }
+                } 
+            });
+        });
 		$('.side-menu').removeClass('side-menu--active');
         $('.side-menu[data-menu="services"]').addClass('side-menu--active');
         $('.service-category-dropdown li').click(function($this){
             alert($(this).html());
         });
+        $('#addunit').click(function(){
+            $id = Date.now();
+            $('#inventory').append(`
+            <div class="w-full relative flex items-center mt-2" id="remove`+$id+`">
+                    <span class="text-white px-2 cursor-pointer rounded font-bold right-0 top-0 absolute bg-red-500" onclick="removeinventory('remove`+$id+`')">x</span>
+               <div class="mt-3 flex items-center w-full">
+                  <div class="w-1/3 p-2">
+                      
+                      <select required data-placeholder="აირჩიეთ ინვენტარი" onchange="selectinventary(this.value, '`+$id+`')" name="inventory[]" class="font-normal text-xs select2 p-2 w-full border border-gray-300 rounded" >
+                          <option value="" selected></option>
+                          @foreach ($inventories as $item)
+                          <option value="{{$item->id}}">{{$item->{"title_".app()->getLocale()} }}</option>
+                          @endforeach
+                          
+                      </select>
+                  </div>
+                  <div class="w-1/3 p-2">
+                    <input type="text" disabled  required name="unit[]" id="unit`+$id+`"  class="text-xs font-normal input w-full border" placeholder="ერთეული">
+                  </div>
+                  <div class="w-1/3 p-2">
+                    <input type="number" disabled min="0" step="0.1" required name="quantity[]" id="quantity`+$id+`"  class="text-xs font-normal input w-full border" placeholder="რაოდენობა">
+                  </div>
+               </div>
+                </div>
+            `);
+        });
     });
+    function removeinventory($id){
+        $('#'+$id).remove();
+    }
+    function selectinventary($value, $id){
+        if($value){
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+        });
+        $.ajax({
+                  url: "/services/unitname/"+$value,
+                  method: 'GET',
+                  success: function(result){
+                      if(result.status == true){
+                          if(result.data == "unit"){
+                              $('#unit'+$id).val("ცალი");
+                          }else if(result.data == "gram"){
+                              $('#unit'+$id).val("გრამი");
+                          }else if(result.data == "metre"){
+                              $('#unit'+$id).val("მეტრი");
+                          }
+                          $('#quantity'+$id).prop('disabled', false);
+                      }
+                  } 
+        });
+        }else{
+            $('#unit'+$id).val("");
+            $('#quantity'+$id).prop('disabled', true);
+        }
+    }
+    function removeinventoryajax($id){
+        $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+        });
+        $.ajax({
+            url: "{{ route('RemoveInventory') }}",
+            method: 'post',
+            data:{
+                'invid':$id
+            },
+            success: function(result){
+                      if(result.status == true){
+                         $('#remove'+$id).remove();
+                      }
+                  } 
+        });
+    }
 </script>
 @endsection

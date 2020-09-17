@@ -15,18 +15,28 @@ class ClientExport implements FromCollection, WithHeadings
         $array = array();
         $services =  ClientService::all();
         foreach($services as $service){
-            unset($service['created_at']);
+            $service['service_name'] = $service->getServiceName();
+            $service['worker_name'] = $service->getWorkerName();
+            $service['client_name'] = $service->clinetserviceable()->first()->{'full_name_'.app()->getLocale()};
+            $service['client_phone'] = $service->clinetserviceable()->first()->number;
+            $service['client_address'] = $service->clinetserviceable()->first()->address;
+            unset($service['user_id']);
+            unset($service['service_id']);
+            unset($service['deleted_at']);
+            unset($service['clinetserviceable_id']);
+            unset($service['clinetserviceable_type']);
         }
-        dd($services);
-        return $array;
+        return $services;
     }
     public function headings(): array
     {
         return [
-            'სერვისის სახელი',
-            'რეგისტრაციის თარიღი',
-            'სესიის თარიღი',
+            '#',
             'სტატუსი',
+            'სესიის თარიღი',
+            'რეგისტრაციის თარიღი',
+            'განახლების თარიღი',
+            'სერვისის სახელი',
             'მიმღები',
             'კლიენტის სახელი',
             'მობილური',

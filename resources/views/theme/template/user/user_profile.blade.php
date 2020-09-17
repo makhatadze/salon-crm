@@ -6,7 +6,7 @@
             <div class="relative flex items-center p-5">
                 <div class="w-12 h-12 image-fit">
                     @if ($user->image()->first())
-                    <img alt="Midone Tailwind HTML Admin Template" class="rounded-full" src="dist/images/profile-14.jpg">
+                    <img alt="Midone Tailwind HTML Admin Template" class="rounded-full" src="{{asset('../storage/profile/'.$user->id.'/'.$user->image()->first()->name)}}">
                     @else
                     <img alt="" class="rounded-full" src="/no-avatar.png">
                     @endif

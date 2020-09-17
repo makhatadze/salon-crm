@@ -299,15 +299,31 @@ class UserController extends Controller
         return view('theme.template.user.user_account_settings', compact('user'));
     }
     public function updateuserprofile(Request $request, $id){
-        dd($request->all());
         $this->validate($request,[
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'phone' => 'required|string|unique:profiles',
-            'email' => 'required|string|email|max:255|unique:users',
-            'department_id' => 'required|integer'
+            'department_id' => ''
         ]);
         $user = User::findOrFail($id);
+        $profile = $user->profile()->first();
+        
+        if(trim($request->input('phone')," ") != trim($profile->phone," ")){
+            $this->validate($request,[
+                'phone' => 'required|string|unique:profiles',
+            ]);
+            $profile->phone = $request->input('phone');
+        }
+
+        if($request->input('email') != $user->email){
+            $this->validate($request,[
+                'email' => 'required|email|max:255|unique:users',
+            ]);
+            $user->email = $request->input('email');
+        }
+        $profile->first_name = $request->input('first_name');
+        $profile->last_name = $request->input('last_name');
+        $profile->save();
+        $user->save();
         return view('theme.template.user.user_account_settings', compact('user'));
     }
 }

@@ -83,7 +83,7 @@ class User extends Authenticatable
         $department_id = UserHasJob::where('user_id', $this->id)->first();
         if($department_id){
             $department = Department::find($department_id);
-            if($department){
+            if($department->first()){
                 return $department->first()->{"name_".app()->getLocale()} ;
             }
         }
@@ -93,7 +93,7 @@ class User extends Authenticatable
         $department_id = UserHasJob::where('user_id', $this->id)->first();
         if($department_id){
             $department = Department::find($department_id);
-            if($department){
+            if($department->first()){
                 return $department->first()->id;
             }
         }

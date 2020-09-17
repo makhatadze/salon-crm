@@ -44,7 +44,6 @@
 
            @if ($services)
            @foreach ($services as $serv)
-                
            <tr class="intro-x">
                <td class="w-40">
                    <div class="flex font-bold font-black font-caps">

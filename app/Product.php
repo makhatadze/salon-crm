@@ -7,7 +7,7 @@ use App\Category;
 use App\Department;
 class Product extends Model
 {
-    protected $fillable = ['title_ge', 'title_ru', 'title_en', 'description_ge', 'description_ru', 'description_en', 'price', 'stock', 'category_id', 'department_id'];
+    protected $fillable = ['title_ge', 'title_ru', 'title_en', 'description_ge', 'description_ru', 'description_en', 'price', 'type', 'stock', 'category_id', 'department_id'];
     protected $table = 'products';
     public function category(){
         return $this->morphOne('App\Category', 'categoryable');

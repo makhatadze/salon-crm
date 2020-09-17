@@ -53,6 +53,9 @@ class ProductController extends Controller
             'title_ru' => '',
             'title_en' => '',
             'get_department' => '',
+            'get_type' => 'required|string',
+            'unit' => 'required|string',
+            'stock' => 'required|between:0,99999.99',
             'get_category' => '',
             'new_category-ge' => '',
             'new_category-ru' => '',
@@ -60,7 +63,6 @@ class ProductController extends Controller
             'editor-ge' => 'required',
             'editor-ru' => '',
             'editor-en' => '',
-            'stock' => '',
             'price' => 'required',
             'images[]' => 'image'
         ]);
@@ -71,7 +73,9 @@ class ProductController extends Controller
         $product->description_ge = $request->input('editor-ge');
         $product->description_ru = $request->input('editor-ru');
         $product->description_en = $request->input('editor-en');
-        $product->stock = intval($request->input('stock'));
+        $product->type = $request->input('get_type');
+        $product->stock = $request->input('stock');
+        $product->unit = $request->input('unit');
         $product->department_id = $request->input('get_department');
         $product->price = intval($request->input('price')*100);
         $product->save();
@@ -140,13 +144,15 @@ class ProductController extends Controller
             'title_en' => '',
             'get_department' => '',
             'get_category' => '',
+            'get_type' => 'required|string',
+            'unit' => 'required|string',
+            'stock' => 'required|between:0,99999.99',
             'new_category-ge' => '',
             'new_category-ru' => '',
             'new_category-en' => '',
             'editor-ge' => 'required',
             'editor-ru' => '',
             'editor-en' => '',
-            'stock' => '',
             'price' => 'required',
             'images[]' => 'image'
         ]);
@@ -156,7 +162,9 @@ class ProductController extends Controller
         $product->description_ge = $request->input('editor-ge');
         $product->description_ru = $request->input('editor-ru');
         $product->description_en = $request->input('editor-en');
-        $product->stock = intval($request->input('stock'));
+        $product->type = $request->input('get_type');
+        $product->unit = $request->input('unit');
+        $product->stock = $request->input('stock');
         $product->department_id = $request->input('get_department');
         $product->price = intval($request->input('price')*100);
         $product->save();

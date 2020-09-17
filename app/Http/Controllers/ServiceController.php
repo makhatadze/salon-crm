@@ -11,7 +11,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Service;
+use App\ClientService;
 use App\Category;
+use App\Product;
+use App\Image;
+use App\Inventory;
 use Carbon\Carbon;
 class ServiceController extends Controller
 {
@@ -34,8 +38,9 @@ class ServiceController extends Controller
     public function create()
     {
         $categories = Category::whereNull('deleted_at')->get();
+        $inventories = Product::where('type', 'inventory')->whereNull('deleted_at')->get();
         $action = "post";
-        return view('theme.template.service.add_service', compact('action', 'categories'));
+        return view('theme.template.service.add_service', compact('action', 'categories', 'inventories'));
     }
 
     /**
@@ -59,7 +64,9 @@ class ServiceController extends Controller
             'unit-ge' => '',
             'unit-en' => '',
             'unit-ru' => '',
-            'file' => 'image'
+            'file' => 'image',
+            'inventory' => '',
+            'quantity' => '',
          ]);
          $service = new Service;
          $service->title_ge = $request->input('title_ge');
@@ -74,8 +81,19 @@ class ServiceController extends Controller
          $service->unit_ru = $request->input('unit-ru');
          $service->unit_en = $request->input('unit-en');
          $service->price = intval($request->input('price')*100);
+
+        
          $service->save();
-         
+         $array = array();
+         if($request->input('inventory') && $request->input('quantity')){
+             foreach($request->input('inventory') as $key => $item){
+                 $array[] =[
+                    'product_id' => $request->input('inventory')[$key],
+                    'quantity' => $request->input('quantity')[$key],
+                 ];
+             }
+             $service->inventories()->createMany($array);
+         }
          if($request->input('category-ge') || $request->input('category-en') || $request->input('category-ru')){
 
             $service->category()->create([
@@ -104,7 +122,8 @@ class ServiceController extends Controller
      */
     public function edit(Service $service)
     {
-        return view('theme.template.service.edit_service', compact('service',));
+        $inventories = Product::where('type', 'inventory')->whereNull('deleted_at')->get();
+        return view('theme.template.service.edit_service', compact('service', 'inventories'));
     }
 
     /**
@@ -133,7 +152,9 @@ class ServiceController extends Controller
             'unit-ge' => '',
             'unit-en' => '',
             'unit-ru' => '',
-            'file' => 'image'
+            'file' => 'image',
+            'inventory' => '',
+            'quantity' => '',
          ]);
      $service->title_ge = $request->input('title_ge');
      $service->title_en = $request->input('title_en');
@@ -147,6 +168,16 @@ class ServiceController extends Controller
      $service->unit_ru = $request->input('unit-ru');
      $service->unit_en = $request->input('unit-en');
      $service->price = intval($request->input('price')*100);
+     $array = array();
+     if($request->input('inventory') && $request->input('quantity')){
+         foreach($request->input('inventory') as $key => $item){
+             $array[] =[
+                'product_id' => $request->input('inventory')[$key],
+                'quantity' => $request->input('quantity')[$key],
+             ];
+         }
+         $service->inventories()->createMany($array);
+     }
          if($request->input('category-ge') || $request->input('category-en') || $request->input('category-ru')){
              if($service->category()->first()){
                 $servicecat = $service->category()->first();
@@ -192,6 +223,11 @@ class ServiceController extends Controller
     public function destroy($id)
     {
         $service = Service::findOrFail((int)$id);
+        $clientservices = ClientService::where('service_id', (int)$id)->whereNull('deleted_at')->get();
+        foreach($clientservices as $serv){
+            $serv->deleted_at = Carbon::now('Asia/Tbilisi');
+            $serv->save();
+        }
         $service->deleted_at = Carbon::now('Asia/Tbilisi');
             $service->save();
         return redirect('/services');
@@ -200,7 +236,6 @@ class ServiceController extends Controller
     //Service Turn off
 
     public function turn(Service $service, $status){
-        
         $service->published = $status;
         $service->save();
         return redirect('/services');
@@ -223,5 +258,31 @@ class ServiceController extends Controller
         $Category->save();
         return redirect('/categories');
     }
-
+    //Get Unit Name for Inventory Product
+    public function getunitname($id){
+        $unit = Product::findOrFail($id);
+        return response()->json(array('status'=>true, 'data' => $unit->unit));
+    }
+    //Remove Inventory
+    public function removeinventory(Request $request){
+        $this->validate($request, [
+            'invid' => 'required|integer' 
+        ]);
+        $inventory = Inventory::findOrFail($request->invid);
+        if($inventory->delete()){
+            return response()->json(array('status' => true));
+        }
+        return;
+    }
+    //Remove Image
+    public function removeimage(Request $request){
+        $this->validate($request, [
+            'imgid' => 'required|integer' 
+        ]);
+        $image = Image::findOrFail($request->imgid);
+        if($image->delete()){
+            return response()->json(array('status' => true));
+        }
+        return;
+    }
 }

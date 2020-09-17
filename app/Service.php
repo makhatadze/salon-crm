@@ -18,4 +18,8 @@ class Service extends Model
     protected $casts = [
         'price' => 'integer',
     ];
+    
+    public function inventories(){
+        return $this->morphMany('App\Inventory', 'inventoriable');
+    }
 }

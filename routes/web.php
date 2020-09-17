@@ -32,6 +32,9 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
         Route::delete('/services/{id}', 'ServiceController@destroy')->name('RemoveService');
         Route::put('/services/update/{id}', 'ServiceController@update')->name('UpdateService');
         Route::post('/services/store', 'ServiceController@store')->name('StoreService');
+        Route::get('/services/unitname/{id}', 'ServiceController@getunitname')->name('GetUnitName');
+        Route::post('/services/removeinventory', 'ServiceController@removeinventory')->name('RemoveInventory');
+        Route::post('/services/removeimage', 'ServiceController@removeimage')->name('RemoveServiceImage');
         //Product Controller
         Route::get('/products/turn/{product}/{status}', 'ProductController@turn');
         Route::post('/products/removeimg', 'ProductController@removeimg')->name('RemoveImage');

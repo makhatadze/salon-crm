@@ -5,11 +5,11 @@
         <div class="intro-y box mt-5">
             <div class="relative flex items-center p-5">
                 <div class="w-12 h-12 image-fit">
-                    @if ($user->image()->first())
-                    <img alt="Midone Tailwind HTML Admin Template" class="rounded-full" src="dist/images/profile-14.jpg">
-                    @else
-                    <img alt="" class="rounded-full" src="/no-avatar.png">
-                    @endif
+                  @if ($user->image()->first())
+                  <img alt="Midone Tailwind HTML Admin Template" class="rounded-full" src="{{asset('../storage/profile/'.$user->id.'/'.$user->image()->first()->name)}}">
+                  @else
+                  <img alt="" class="rounded-full" src="/no-avatar.png">
+                  @endif
                 </div>
                 <div class="ml-4 mr-auto">
                 <div class="font-bold text-sm "> {{$user->profile()->first()->first_name}} {{$user->profile()->first()->last_name}}</div>

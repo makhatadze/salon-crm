@@ -40,20 +40,14 @@
     <div class="intro-y box mt-2 p-5">
         
         <div class="flex">
-            <div class="w-1/3 p-2">
+            <div class="w-1/2 p-2">
                 <label class="font-bold font-caps text-xs text-gray-700">ფასი</label>
                 <div class="relative mt-2">
                     <input required type="number" min="0" step="0.01" name="price" class="input pr-12 w-full border col-span-4" placeholder="ფასი">
                     <div class="absolute top-0 right-0 rounded-r w-10 h-full flex items-center justify-center bg-gray-100 border text-gray-600">₾</div>
                 </div>
             </div>
-            <div class="w-1/3 p-2">
-                <label class="font-bold font-caps text-xs text-gray-700">რაოდენობა საწყობში</label>
-                <div class="relative mt-2">
-                    <input type="number" min="0" step="1" name="stock" class="input  w-full border " placeholder="რაოდენობა">
-                </div>
-            </div>
-            <div class="p-2 w-1/3">
+            <div class="p-2 w-1/2">
                 <label class="font-bold font-caps text-xs text-gray-700">ოფისი</label>
                 <div class="mt-2">
                     <select data-placeholder="Select a Department" name="get_department" class="font-helvetica select2 w-full" >
@@ -64,7 +58,7 @@
                 </div>
             </div>
         </div>
-        <div class="mt-2">
+        <div class="mt-2 w-full p-2">
             <label class="font-bold font-caps text-xs text-gray-700">კატეგორია</label>
             <select data-placeholder="აირჩიეთ კატეგორია" class="pr-12 select2 w-full" name="get_category">
                 @if ($categories)
@@ -74,6 +68,32 @@
                     @endforeach
                 @endif
             </select>
+        </div>
+        <div class="flex">
+            <div class="w-1/3 p-2 ">
+                <label class="font-bold font-caps text-xs text-gray-700">რაოდენობა საწყობში</label>
+                <div class="mt-2">
+                <select required data-placeholder="ერთეული" name="unit" class="font-helvetica select2  p-2 w-full border border-gray-300 rounded" >
+                    <option value="unit" selected>ცალი</option>
+                    <option value="gram">გრამი</option>
+                    <option value="metre">მეტრი</option>
+                </select>
+            </div>
+            
+            </div>
+            <div class="w-1/3 p-2">
+                <label class="font-bold font-caps text-xs text-gray-700">რაოდენობა</label>
+                <div class="relative mt-2">
+                    <input type="number" required min="0" step="0.1" name="stock" class="input  w-full border " placeholder="რაოდენობა">
+                </div>
+            </div>
+            <div class="mt-2 w-1/3 p-2">
+                <label class="font-bold font-caps text-xs text-gray-700">ტიპი</label>
+                <select data-placeholder="პროდუქტის ტიპი" required class="pr-12 select2 w-full" name="get_type">
+                    <option value="inventory">ინვენტარი</option>
+                    <option value="sale">გასაყიდი</option>
+                </select>
+            </div>
         </div>
         <div class="mt-2">
             <label class="font-bold font-caps text-xs text-gray-700">ახალი კატეგორია</label><br>

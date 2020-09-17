@@ -54,7 +54,7 @@
                             <div class="mt-2">
                                 <select required  class="select2 w-full" @if($serv->status) disabled @endif>
                                     @foreach ($services as $service)
-                                    @if ($serv->id == $service->id)
+                                    @if ($serv->service_id == $service->id)
                                     <option value="{{$service->id}}" selected>{{$service->{"title_".app()->getLocale()} }}</option>
                                     @else 
                                      <option value="{{$service->id}}">{{$service->{"title_".app()->getLocale()} }}</option>
@@ -79,7 +79,7 @@
                                 <label class="font-bold font-caps text-xs text-gray-700">ჩაწერის დრო <span class="text-red-500">*</span></label>
                             </div>
                             <div class="w-full mt-2">
-                                <input required type="time"  @if($serv->status) disabled @endif  value="{{Carbon\Carbon::parse($serv->session_start_time)->isoformat('H:mm')}}"  class=" input w-full border block mx-auto"> 
+                                <input required type="time"  @if($serv->status) disabled @endif  value="{{Carbon\Carbon::parse($serv->session_start_time)->isoformat('hh:mm')}}"  class=" input w-full border block mx-auto"> 
                             </div>
                           
                         </div>

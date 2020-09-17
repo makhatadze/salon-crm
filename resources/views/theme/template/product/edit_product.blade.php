@@ -21,20 +21,14 @@
     <div class="intro-y box mt-2 p-5">
         
         <div class="flex">
-            <div class="w-1/3 p-2">
+            <div class="w-1/2 p-2">
                 <label>ფასი</label>
                 <div class="relative mt-2">
                     <input required value="{{$product->price/100}}" type="number" min="0" step="0.01" name="price" class="input pr-12 w-full border col-span-4" placeholder="ფასი">
                     <div class="absolute top-0 right-0 rounded-r w-10 h-full flex items-center justify-center bg-gray-100 border text-gray-600">₾</div>
                 </div>
             </div>
-            <div class="w-1/3 p-2">
-                <label>რაოდენობა საწყობში</label>
-                <div class="relative mt-2">
-                    <input type="number" min="0" step="1" value="{{$product->stock}}" name="stock" class="input  w-full border " placeholder="რაოდენობა">
-                </div>
-            </div>
-            <div class="p-2 w-1/3">
+            <div class="p-2 w-1/2">
                 <label class="font-helvetica">ოფისი</label>
                 <div class="mt-2">
                     <select data-placeholder="Select a Department" name="get_department" class="font-helvetica select2 w-full" >
@@ -51,17 +45,61 @@
                 </div>
             </div>
         </div>
-        <div class="mt-2">
-            <label class="font-helvetica">კატეგორია</label>
-            <select data-placeholder="აირჩიეთ კატეგორია" class="pr-12 select2 w-full" name="get_category" >
-                @if ($categories)
-                <option value="" selected></option>
-                    @foreach ($categories as $cat)
-                    <option value="{{$cat->id}}" >{{$cat->{'title_'.app()->getLocale()} }}</option>
-                    @endforeach
-                @endif
-            </select>
+            <div class="mt-2 w-full p-2">
+                <label class="font-bold font-caps text-xs text-gray-700">კატეგორია</label>
+                <select data-placeholder="აირჩიეთ კატეგორია" class="pr-12 select2 w-full" name="get_category">
+                    @if ($categories)
+                        @foreach ($categories as $cat)
+                        @if($product->category_id == null)
+                        <option value="" selected ></option>
+                        @elseif($product->category_id == $cat->id)
+                        <option value="{{$cat->id}}" selected>{{$cat->{'title_'.app()->getLocale()} }}</option>
+                        @else
+                        <option value="{{$cat->id}}" >{{$cat->{'title_'.app()->getLocale()} }}</option>
+                        @endif
+                        @endforeach
+                    @endif
+                </select>
+            </div>
+
+        <div class="flex">
+            <div class="w-1/3 p-2 ">
+                <label class="font-bold font-caps text-xs text-gray-700">ერთეული</label>
+                <div class="mt-2">
+                <select required data-placeholder="ერთეული" name="unit" class="font-helvetica select2  p-2 w-full border border-gray-300 rounded" >
+                    <option value="unit" @if($product->unit == "unit") selected @endif>ცალი</option>
+                    <option value="gram" @if($product->unit == "gram") selected @endif>გრამი</option>
+                    <option value="metre" @if($product->unit == "metre") selected @endif>მეტრი</option>
+                </select>
+            </div>
+            
+            </div>
+            <div class="w-1/3 p-2">
+                <label class="font-bold font-caps text-xs text-gray-700">რაოდენობა</label>
+                <div class="relative mt-2">
+                    <input type="number" required min="0" value="{{$product->stock}}" step="0.1" name="stock" class="input  w-full border " placeholder="რაოდენობა">
+                </div>
+            </div>
+            <div class="mt-2 w-1/3 p-2">
+                <label class="font-bold font-caps text-xs text-gray-700">ტიპი</label>
+                <select data-placeholder="პროდუქტის ტიპი" required class="pr-12 select2 w-full" name="get_type">
+                    <option value="inventory" @if($product->type == "inventory") selected @endif>ინვენტარი</option>
+                    <option value="sale" @if($product->type == "sale") selected @endif>გასაყიდი</option>
+                </select>
+            </div>
         </div>
+
+
+
+
+
+
+
+
+
+
+
+
         <div class="mt-2">
             <label class="font-helvetica">ახალი კატეგორია</label><br>
             <small class="font-helvetica">ახალი კატეგორიის შეყვანის შემთხვევაში, პროდუქტის კატეგორიად ეს ჩაითვლება.</small>
