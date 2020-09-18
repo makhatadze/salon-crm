@@ -122,7 +122,8 @@ class PurchaseController extends Controller
     {
         $purchase = Purchase::wherenull('deleted_at')->findOrFail($id);
         $offices = Office::whereNull('deleted_at')->get();
-        return view('theme.template.purchase.edit_purchase', compact('offices', 'purchase'));
+        $departments = Department::where('departmentable_id', $purchase->office_id)->whereNull('deleted_at')->get();
+        return view('theme.template.purchase.edit_purchase', compact('offices', 'purchase', 'departments'));
 
     }
 

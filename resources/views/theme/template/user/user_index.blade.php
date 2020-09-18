@@ -38,7 +38,9 @@
                             @endif
                         </div>
                         <div class="lg:ml-2 lg:mr-auto text-center lg:text-left mt-3 lg:mt-0">
-                            <a href="" class="font-medium font-helvetica">{{$user->name}}</a>
+                            <a href="" class="font-bolder text-xs text-gray-700 uppercase font-caps">{{$user->name}} @if($user->profile()->first()) {{$user->profile()->first()->last_name}} @endif</a><br>
+                            <span class="text-xs font-normal">@if($user->profile()->first())ხელფასი: {{$user->profile()->first()->salary + ($user->profile()->first()->salary/100*$user->profile()->first()->percent)}} <sup>₾</sup>@endif</span> <br>
+                            @if($user->profile()->first())<span class="text-xs font-normal">მოვიდა: {{Carbon\Carbon::parse($user->created_at)->isoFormat('Y-MM-DD')}}</span>@endif
                         </div>
                         <div class="flex mt-4 lg:mt-0">
                             @if ($user->profile()->first())

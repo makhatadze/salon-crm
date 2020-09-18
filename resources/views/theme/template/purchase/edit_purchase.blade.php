@@ -64,7 +64,15 @@
         <label class="font-bold font-caps text-xs text-gray-700">დეპარტამენტი</label>
         <div class="mt-2">
             <select required data-placeholder="აირჩიეთ ოფისი" name="department_id" class="font-helvetica select2 w-full" id="showdepartments">
-           @if($purchase->getDepartmentName($purchase->department_id)) <option value="{{$purchase->department_id}}">{{$purchase->getDepartmentName($purchase->department_id)}}</option>@endif
+           @if($purchase->getDepartmentName($purchase->department_id))
+            <option value="{{$purchase->department_id}}">{{$purchase->getDepartmentName($purchase->department_id)}}</option>
+            @else 
+            <option value=""></option>
+            @foreach ($departments as $dept)
+            <option value="{{$dept->id}}">{{$dept->{"name_".app()->getLocale()} }}</option>
+                
+            @endforeach
+            @endif
             </select>
         </div>
     </div>

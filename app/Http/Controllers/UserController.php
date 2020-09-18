@@ -14,6 +14,7 @@ use App\Company;
 use App\Office;
 use App\Profile;
 use App\User;
+use App\Department;
 use App\ClientService;
 use App\UserHasJob;
 use Carbon\Carbon;
@@ -199,7 +200,8 @@ class UserController extends Controller
     }
     public function accountsetting(){
         $user = auth::user();
-        return view('theme.template.user.user_account_settings', compact('user'));
+        $departments = Department::whereNull('deleted_at')->get();
+        return view('theme.template.user.user_account_settings', compact('user', 'departments'));
     }
     /**
      * Turn Profile On or Off
@@ -297,7 +299,8 @@ class UserController extends Controller
     }
     public function showprofilesettings($id){
         $user = User::findOrFail($id);
-        return view('theme.template.user.user_account_settings', compact('user'));
+        $departments = Department::whereNull('deleted_at')->get();
+        return view('theme.template.user.user_account_settings', compact('user', 'departments'));
     }
     public function updateuserprofile(Request $request, $id){
         $this->validate($request,[
@@ -323,8 +326,11 @@ class UserController extends Controller
         }
         $profile->first_name = $request->input('first_name');
         $profile->last_name = $request->input('last_name');
+        $userhasjobs = UserHasJob::where('user_id', $id)->first();
+        $userhasjobs->department_id = $request->input('department_id');
+        $userhasjobs->save();
         $profile->save();
         $user->save();
-        return view('theme.template.user.user_account_settings', compact('user'));
+        return redirect('/user/showprofile/'.$id);
     }
 }

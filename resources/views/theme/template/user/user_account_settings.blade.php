@@ -28,16 +28,20 @@
               @endif
               </div>
             <div class="p-5 border-t border-gray-200">
-                <div class="flex">
-                    <div class="w-1/2 p-2">
-                        <h6 class="font-bold font-caps text-xl text-black">{{$user->getEarnedMoney()}} <sup>₾</sup></h6>
-                        <span class="font-normal text-xs">გამომუშავებული</span>
-                    </div>
-                    <div class="w-1/2 p-2">
-                        <h6 class="font-bold font-caps text-xl text-black">{{$user->ClientCount()}}</h6>
-                        <span class="font-normal text-xs">კლიენი</span>
-                    </div>
-                </div>
+              <div class="flex">
+                  <div class="w-1/3 p-3">
+                      <h6 class="font-bold font-caps text-base text-black">{{$user->getEarnedMoney()}} <sup>₾</sup></h6>
+                      <span class="font-normal text-xs">შემოსული</span>
+                  </div>
+                  <div class="w-1/3 p-3">
+                      <h6 class="font-bold font-caps text-base text-black">{{$user->ClientCount()}}</h6>
+                      <span class="font-normal text-xs">კლიენი</span>
+                  </div>
+                  <div class="w-1/3 p-3">
+                      <h6 class="font-bold font-caps text-base text-black"> {{$user->profile()->first()->salary + ($user->profile()->first()->salary/100*$user->profile()->first()->percent)}} <sup>₾</sup></h6>
+                      <span class="font-normal text-xs">ხელფასი</span>
+                  </div>
+              </div>
             </div>
             <div class="p-5 border-t flex items-center justify-center">
                 @if ($user->active)
@@ -65,24 +69,23 @@
     <div class="col-span-12 lg:col-span-8 xxl:col-span-9">
         <div class="intro-y p-4  lg:mt-1">
           
-          @if($user->id != auth::user()->id)
-        <form class="w-5/12 box p-3 max-w-lg" action="{{route('UpdateUserProfile', $user->id)}}" method="post">
+         
+        <form class="w-5/12 box p-3 max-w-lg"  @if($user->id != auth::user()->id) action="{{route('UpdateUserProfile', $user->id)}}" @endif method="post">
             @csrf
-            @endif
-                <div class="flex flex-wrap -mx-3 mb-5">
-                  <div class="w-full md:w-1/2 px-3 mb-4 md:mb-0">
-                    <label class="block font-caps uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
-                      სახელი
-                    </label>
-                <input name="first_name" value="{{$user->profile()->first()->first_name}}" class="font-normal appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name" type="text"  @if($user->id == Auth::user()->id) readonly="true" @endif >
-                  </div>
-                  <div class="w-full md:w-1/2 px-3">
-                    <label class="block uppercase font-caps tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
-                      გვარი
-                    </label>
-                    <input name="last_name" value="{{$user->profile()->first()->last_name}}" class="font-normal appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder="Doe"  @if($user->id == Auth::user()->id) readonly="true" @endif>
-                  </div>
-                </div>
+            <div class="flex flex-wrap -mx-3 mb-5">
+              <div class="w-full md:w-1/2 px-3 mb-4 md:mb-0">
+                <label class="block font-caps uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
+                  სახელი
+                </label>
+            <input name="first_name" value="{{$user->profile()->first()->first_name}}" class="font-normal appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name" type="text"  @if($user->id == Auth::user()->id) readonly="true" @endif >
+              </div>
+              <div class="w-full md:w-1/2 px-3">
+                <label class="block uppercase font-caps tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
+                  გვარი
+                </label>
+                <input name="last_name" value="{{$user->profile()->first()->last_name}}" class="font-normal appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder="Doe"  @if($user->id == Auth::user()->id) readonly="true" @endif>
+              </div>
+            </div>
                 <div class="flex flex-wrap -mx-3 mb-6">
                   <div class="w-full px-3">
                     <label class="block uppercase font-caps tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">
@@ -102,8 +105,25 @@
                     <label class="block uppercase font-caps tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-city">
                       დეპარტამენტი
                     </label>
-                  <input type="hidden" name="department_id" value="{{$user->getDepartmentId()}}">
-                <input value="{{$user->getDepartmentName()}}"  class="text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-city" type="text"  @if($user->id == Auth::user()->id) readonly="true" @endif>
+                  <div class="relative">
+                    <select class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-department" name="department_id">
+                      @if ($user->id != Auth::user()->id)
+                      <option value=""></option>
+                      @foreach ($departments as $dept)
+                      @if ($user->getDepartmentId() == $dept->id)
+                      <option value="{{$dept->id}}" selected>{{$dept->{"name_".app()->getLocale()} }}</option>
+                      @else 
+                      <option value="{{$dept->id}}">{{$dept->{"name_".app()->getLocale()} }}</option> 
+                      @endif
+                      @endforeach
+                      @else 
+                      <option value="{{$user->getDepartmentId()}}" selected>{{$user->getDepartmentName() }}</option>
+                      @endif
+                    </select>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                      <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                    </div>
+                  </div>
                   </div>
                   <div class="w-full md:w-1/2 px-3 mb-4 md:mb-0">
                     <label class="block font-caps uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-zip">
@@ -118,10 +138,12 @@
                   @enderror
                 </div>
                 </div>
+                
+               
                 @if($user->id != auth::user()->id)
                 <input type="submit" class="font-bold font-caps text-xs appearance-none block w-full bg-indigo-500 text-white border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none cursor-pointer" value="განახლება">
-              </form>
-              @endif
+              
+              @endif</form>
         </div>
     </div>
 </div>

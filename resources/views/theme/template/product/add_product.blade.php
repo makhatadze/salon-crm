@@ -48,7 +48,7 @@
                 </div>
             </div>
             <div class="p-2 w-1/2">
-                <label class="font-bold font-caps text-xs text-gray-700">ოფისი</label>
+                <label class="font-bold font-caps text-xs text-gray-700">დეპარტამენტი</label>
                 <div class="mt-2">
                     <select data-placeholder="Select a Department" name="get_department" class="font-helvetica select2 w-full" >
                         @foreach ($departments as $department)
@@ -58,16 +58,31 @@
                 </div>
             </div>
         </div>
-        <div class="mt-2 w-full p-2">
-            <label class="font-bold font-caps text-xs text-gray-700">კატეგორია</label>
-            <select data-placeholder="აირჩიეთ კატეგორია" class="pr-12 select2 w-full" name="get_category">
-                @if ($categories)
-                    @foreach ($categories as $cat)
+        <div class="flex">
+            <div class="mt-2 w-1/2 p-2">
+                <label class="font-bold font-caps text-xs text-gray-700">კატეგორია</label>
+                <select data-placeholder="აირჩიეთ კატეგორია" class="pr-12 select2 w-full" name="get_category">
+                    
+                        <option value="" selected ></option>
+                    @if ($categories)
+                        @foreach ($categories as $cat)
+                        <option value="{{$cat->id}}" >{{$cat->{'title_'.app()->getLocale()} }}</option>
+                        @endforeach
+                    @endif
+                </select>
+            </div>
+            <div class="mt-2 w-1/2 p-2">
+                <label class="font-bold font-caps text-xs text-gray-700">დისტრიბუტორი</label>
+                <select data-placeholder="დისტრიბუტორი" class="pr-12 select2 w-full" name="get_distributor">
+                    
                     <option value="" selected ></option>
-                    <option value="{{$cat->id}}" >{{$cat->{'title_'.app()->getLocale()} }}</option>
-                    @endforeach
-                @endif
-            </select>
+                    @if ($distributions)
+                        @foreach ($distributions as $dist)
+                        <option value="{{$dist->id}}" >{{$dist->{'name_'.app()->getLocale()} }}</option>
+                        @endforeach
+                    @endif
+                </select>
+            </div>
         </div>
         <div class="flex">
             <div class="w-1/3 p-2 ">
@@ -92,6 +107,7 @@
                 <select data-placeholder="პროდუქტის ტიპი" required class="pr-12 select2 w-full" name="get_type">
                     <option value="inventory">ინვენტარი</option>
                     <option value="sale">გასაყიდი</option>
+                    <option value="both">ორივე</option>
                 </select>
             </div>
         </div>

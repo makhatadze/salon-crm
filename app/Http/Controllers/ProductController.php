@@ -13,8 +13,11 @@ use Illuminate\Http\Request;
 use App\Product;
 use App\Category;
 use App\Department;
+use App\DistributionCompany;
 use Carbon\Carbon;
 use App\Image;
+use App\Exports\ProductExport;
+use Maatwebsite\Excel\Facades\Excel;
 class ProductController extends Controller
 {
     /**
@@ -35,9 +38,10 @@ class ProductController extends Controller
      */
     public function create()
     {
+        $distributions = DistributionCompany::whereNull('deleted_at')->get();
         $departments = Department::whereNull('deleted_at')->get();
         $categories = Category::where('categoryable_type', 'App\Product')->whereNull('deleted_at')->get();
-        return view('theme.template.product.add_product', compact('departments', 'categories'));
+        return view('theme.template.product.add_product', compact('departments', 'categories', 'distributions'));
     }
 
     /**
@@ -53,6 +57,7 @@ class ProductController extends Controller
             'title_ru' => '',
             'title_en' => '',
             'get_department' => '',
+            'get_distributor' => '',
             'get_type' => 'required|string',
             'unit' => 'required|string',
             'stock' => 'required|between:0,99999.99',
@@ -77,6 +82,7 @@ class ProductController extends Controller
         $product->stock = $request->input('stock');
         $product->unit = $request->input('unit');
         $product->department_id = $request->input('get_department');
+        $product->distributor_id = $request->input('get_distributor');
         $product->price = intval($request->input('price')*100);
         $product->save();
         if($request->input('new_category_ge') || $request->input('new_category_ru') || $request->input('new_category_en')){
@@ -123,9 +129,10 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
+        $distributions = DistributionCompany::whereNull('deleted_at')->get();
         $departments = Department::whereNull('deleted_at')->get();
         $categories = Category::where('categoryable_type', 'App\Product')->whereNull('deleted_at')->get();
-        return view('theme.template.product.edit_product', compact('departments', 'categories', 'product'));
+        return view('theme.template.product.edit_product', compact('departments', 'categories', 'product', 'distributions'));
     }
 
     /**
@@ -143,6 +150,7 @@ class ProductController extends Controller
             'title_ru' => '',
             'title_en' => '',
             'get_department' => '',
+            'get_distributor' => '',
             'get_category' => '',
             'get_type' => 'required|string',
             'unit' => 'required|string',
@@ -166,6 +174,7 @@ class ProductController extends Controller
         $product->unit = $request->input('unit');
         $product->stock = $request->input('stock');
         $product->department_id = $request->input('get_department');
+        $product->distributor_id = $request->input('get_distributor');
         $product->price = intval($request->input('price')*100);
         $product->save();
         if($request->input('new_category_ge') || $request->input('new_category_ru') || $request->input('new_category_en')){
@@ -232,5 +241,9 @@ class ProductController extends Controller
             }
         }
         return response()->json(array('status'=>true, 'data'=>$products, 'lang'=>$lang));
+    }
+    public function productexport() 
+    {
+        return Excel::download(new ProductExport, 'products.xlsx');
     }
 }

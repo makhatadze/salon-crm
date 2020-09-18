@@ -15,8 +15,8 @@ class Product extends Model
     public function images(){
         return $this->morphMany('App\Image', 'imageable');
     }
-    public function getCategoryName($id){
-        $catname = Category::find($id)->{"title_".app()->getLocale()};
+    public function getCategoryName(){
+        $catname = Category::find($this->id)->{"title_".app()->getLocale()};
         if($catname){
             return $catname;
         }

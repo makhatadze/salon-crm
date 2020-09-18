@@ -38,7 +38,7 @@ class ServiceController extends Controller
     public function create()
     {
         $categories = Category::whereNull('deleted_at')->get();
-        $inventories = Product::where('type', 'inventory')->whereNull('deleted_at')->get();
+        $inventories = Product::whereIn('type', ['inventory', 'both'])->whereNull('deleted_at')->get();
         $action = "post";
         return view('theme.template.service.add_service', compact('action', 'categories', 'inventories'));
     }
@@ -122,7 +122,7 @@ class ServiceController extends Controller
      */
     public function edit(Service $service)
     {
-        $inventories = Product::where('type', 'inventory')->whereNull('deleted_at')->get();
+        $inventories = Product::whereIn('type', ['inventory', 'both'])->whereNull('deleted_at')->get();
         return view('theme.template.service.edit_service', compact('service', 'inventories'));
     }
 

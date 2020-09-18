@@ -21,7 +21,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
         Route::any('/user/data', ['uses' => 'UserController@ActionUserData', 'as' => 'ActionUserData']);
         Route::get('/user/showprofile/{id}', 'UserController@showprofile')->name('ShowUserProfile');
         Route::get('/show/accountsettings/{id}', 'UserController@showprofilesettings')->name('ShowProfileSettings');
-        Route::post('/updateuserprofile/{id}', 'UserController@updateuserprofile')->name('UpdateUserProfile');
+        Route::post('/user/updateuserprofile/{id}', 'UserController@updateuserprofile')->name('UpdateUserProfile');
 
         //Service COntroller
         Route::get('/services/turn/{service}/{status}', 'ServiceController@turn');
@@ -44,6 +44,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
         Route::post('/products/store', 'ProductController@store')->name('AddProduct');
         Route::put('/products/update/{id}', 'ProductController@update')->name('UpdateProduct');
         Route::post('/products/getproductsajax', 'ProductController@getproductsajax')->name('GetProductsAjax');
+        Route::get('/products/productexport', 'ProductController@productexport')->name('ProductExport');
         //Company Controller
           //Distribution
             Route::get('/companies/distcompany', 'CompanyController@distcompany'); 

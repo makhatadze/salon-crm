@@ -8,6 +8,7 @@ use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 use App\UserHasJob;
 use App\Office;
+use App\Department;
 use App\Company;
 class User extends Authenticatable
 {
@@ -80,9 +81,9 @@ class User extends Authenticatable
      * @return string
      */
     public function getDepartmentName(){
-        $department_id = UserHasJob::where('user_id', $this->id)->first();
-        if($department_id){
-            $department = Department::find($department_id);
+        $hasjob = UserHasJob::where('user_id', $this->id)->first();
+        if($hasjob){
+            $department = Department::find($hasjob->department_id);
             if($department->first()){
                 return $department->first()->{"name_".app()->getLocale()} ;
             }
@@ -90,12 +91,9 @@ class User extends Authenticatable
         return;
     }
     public function getDepartmentId(){
-        $department_id = UserHasJob::where('user_id', $this->id)->first();
-        if($department_id){
-            $department = Department::find($department_id);
-            if($department->first()){
-                return $department->first()->id;
-            }
+        $hasjob = UserHasJob::where('user_id', $this->id)->first();
+        if($hasjob){
+            return $hasjob->department_id;
         }
         return;
     }

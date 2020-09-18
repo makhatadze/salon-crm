@@ -32,8 +32,8 @@ class ClientExport implements FromCollection, WithHeadings
     {
         return [
             '#',
-            'სტატუსი',
             'სესიის თარიღი',
+            'სტატუსი',
             'რეგისტრაციის თარიღი',
             'განახლების თარიღი',
             'სერვისის სახელი',
