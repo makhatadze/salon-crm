@@ -69,15 +69,15 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
         Route::get('/purchases/edit/{id}', 'PurchaseController@edit');
         Route::get('/purchases/create', 'PurchaseController@create');
         Route::get('/purchases/delete/{purchase}', 'PurchaseController@destroy')->name('RemovePurchase');
-        Route::post('/purchases/store', 'PurchaseController@store')->name('StorePurchase'); 
-        Route::put('/purchases/update/{purchase}', 'PurchaseController@update')->name('UpdatePurchase'); 
+        Route::post('/purchases/store', 'PurchaseController@store')->name('StorePurchase');
+        Route::put('/purchases/update/{purchase}', 'PurchaseController@update')->name('UpdatePurchase');
         Route::post('/purchases/getdepartment', 'PurchaseController@getdepartments')->name('GetDepartmentsByOffice');
         Route::post('/purchases/getdistributors', 'PurchaseController@getdistributors')->name('GetDistributors');
         Route::post('/purchases/getprofiles', 'PurchaseController@getprofiles')->name('GetProfilesForPurchase');
         //Client Controller
         Route::get('/clients', 'ClientController@index');
         Route::get('/clients/create', 'ClientController@create');
-        Route::get('/clients/turnon/{id}', 'ClientController@turnon');
+        Route::post('/clients/turnon', 'ClientController@turnon')->name('turnonawqa');;
         Route::get('/clients/delete/{id}', 'ClientController@destroy');
         Route::get('/clients/deleteclient/{id}', 'ClientController@destroyclient')->name('DeleteClient');
         Route::get('/clients/edit/{id}', 'ClientController@edit')->name('EditClient');
@@ -85,7 +85,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
         Route::post('/clients/update/{id}', 'ClientController@update')->name('UpdateClient');
         Route::post('/clients/store', 'ClientController@store')->name('StoreClient');
         Route::post('/clinets/getbydate', 'ClientController@getbydate')->name('GetServiceByDate');
-
+        Route::any('/clients/services', 'ClientController@services')->name('Finances');
         //Export Controller
         Route::get('/clients/export', 'ClientController@export')->name('ClientExcel');
     });

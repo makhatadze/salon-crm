@@ -95,22 +95,32 @@
                 </li>
                 <li>
                     <a href="/companies/offices" class="side-menu custom-nav-item" data-menu="offices">
-                        <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
-                        <div class="side-menu__title"> ოფისები </div>
+                        <div class="side-menu__icon"><i data-feather="circle" style="width: 15px; height: 15px;"></i>
+                        </div>
+                        <div class="side-menu__title"> ოფისები</div>
                     </a>
                 </li>
                 <li>
-                <a href="{{route('Departments')}}" class="side-menu custom-nav-item" data-menu="departments">
-                        <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
-                        <div class="side-menu__title"> დეპარტამენტები </div>
+                    <a href="{{route('Departments')}}" class="side-menu custom-nav-item" data-menu="departments">
+                        <div class="side-menu__icon"><i data-feather="circle" style="width: 15px; height: 15px;"></i>
+                        </div>
+                        <div class="side-menu__title"> დეპარტამენტები</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{route('Finances')}}" class="side-menu custom-nav-item" data-menu="departments">
+                        <div class="side-menu__icon"><i data-feather="circle" style="width: 15px; height: 15px;"></i>
+                        </div>
+                        <div class="side-menu__title"> ფინანსები</div>
                     </a>
                 </li>
             </ul>
         </li>
         <li>
             <a href="javascript:;" class="side-menu" data-menu="shop">
-                <div class="side-menu__icon"> <i data-feather="shopping-cart"></i> </div>
-                <div class="side-menu__title"> ონლაინ მაღაზია <i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
+                <div class="side-menu__icon"><i data-feather="shopping-cart"></i></div>
+                <div class="side-menu__title"> ონლაინ მაღაზია <i data-feather="chevron-down"
+                                                                 class="side-menu__sub-icon"></i></div>
             </a>
             <ul class="">
                 <li>

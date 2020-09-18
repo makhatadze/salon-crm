@@ -4,7 +4,6 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Service;
-use App\ClientService;
 use Carbon\Carbon;
 class ClientService extends Model
 {

@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Client;
-use App\Service;
+use App\ClientService;
+use App\Exports\ClientExport;
 use App\Product;
+use App\Service;
 use App\User;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use App\ClientService;
-
-use App\Exports\ClientExport;
 use Maatwebsite\Excel\Facades\Excel;
+
 class ClientController extends Controller
 {
     /**
@@ -41,12 +41,13 @@ class ClientController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        $this->validate($request,[
+        $this->validate($request, [
             'client_name_ge' => 'required|string',
             'client_name_ru' => '',
             'client_name_en' => '',
@@ -65,8 +66,8 @@ class ClientController extends Controller
         $client->address = $request->input('client_address');
         $client->save();
         $clientservices = array();
-        if($request->input('userpicker') && $request->input('datepicker') && $request->input('timepicker') && $request->input('servicepicker')){
-            foreach($request->input('userpicker') as $key => $item){
+        if ($request->input('userpicker') && $request->input('datepicker') && $request->input('timepicker') && $request->input('servicepicker')) {
+            foreach ($request->input('userpicker') as $key => $item) {
                 $time = Carbon::parse($request->datepicker[$key])->setTimeFromTimeString($request->timepicker[$key]);
                 $clientservices[] = [
                     'user_id' => $request->userpicker[$key],
@@ -82,7 +83,8 @@ class ClientController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -93,7 +95,8 @@ class ClientController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -107,13 +110,14 @@ class ClientController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request,[
+        $this->validate($request, [
             'client_name_ge' => 'required|string',
             'client_name_ru' => '',
             'client_name_en' => '',
@@ -132,10 +136,10 @@ class ClientController extends Controller
         $client->address = $request->input('client_address');
         $client->save();
         $clientservices = array();
-       
-        if($request->input('userpicker') && $request->input('datepicker') && $request->input('timepicker') && $request->input('servicepicker')){
-            foreach($request->input('userpicker') as $key => $item){
-                
+
+        if ($request->input('userpicker') && $request->input('datepicker') && $request->input('timepicker') && $request->input('servicepicker')) {
+            foreach ($request->input('userpicker') as $key => $item) {
+
                 $time = Carbon::parse($request->datepicker[$key])->setTimeFromTimeString($request->timepicker[$key]);
                 $clientservices[] = [
                     'user_id' => $request->userpicker[$key],
@@ -151,7 +155,8 @@ class ClientController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
+     *
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
@@ -161,6 +166,7 @@ class ClientController extends Controller
         $clientservice->save();
         return redirect('/clients');
     }
+
     /**
      * Destroy Client with Client Services
      */
@@ -168,88 +174,114 @@ class ClientController extends Controller
     {
         $client = Client::findOrFail($id);
         $client->deleted_at = Carbon::now('Asia/Tbilisi');
-        foreach($client->clientservices()->get() as $service){
+        foreach ($client->clientservices()->get() as $service) {
             $service->deleted_at = Carbon::now('Asia/Tbilisi');
             $service->save();
         }
         $client->save();
         return redirect('/clients');
     }
+
     /**
      * Client Service is Active
      */
-    public function turnon($id){
+    public function turnon(Request $request)
+    {
+        $data = $request->all();
+        $this->validate($request, [
+            'pay_id' => 'required',
+            'pay_method' => 'required|string',
+        ]);
+        $id = $request->pay_id;
+
         $clientservice = ClientService::findOrFail($id);
         $message = '';
         $service = Service::find($clientservice->service_id)->first();
-        if($service){
+        if ($service) {
             $inventories = $service->inventories()->get();
             $message = '';
-            foreach($inventories as $prods){
+            foreach ($inventories as $prods) {
                 $prod = Product::find($prods->product_id);
-                if($prod){
+                if ($prod) {
                     $success = false;
-                    if($prod->stock == 0 || $prod->stock < $prods->quantity){
-                        return redirect('/')->with('error', $prod->id.' | '.$prod->{"title_".app()->getLocale()}.' მარაგი ცარიელია');
-                    }else if($prod->stock - $prods->quantity == 0 || $prod->stock - $prods->quantity <=  $prods->quantity){
-                        $message .= $prod->id.' | '.$prod->{"title_".app()->getLocale()}.' მარაგი შესავსევბია <br>';
-                    }else{
+                    if ($prod->stock == 0 || $prod->stock < $prods->quantity) {
+                        return redirect('/')->with('error', $prod->id . ' | ' . $prod->{"title_" . app()->getLocale()} . ' მარაგი ცარიელია');
+                    } else if ($prod->stock - $prods->quantity == 0 || $prod->stock - $prods->quantity <= $prods->quantity) {
+                        $message .= $prod->id . ' | ' . $prod->{"title_" . app()->getLocale()} . ' მარაგი შესავსევბია <br>';
+                    } else {
                         $success = true;
                         $message .= 'სტატუსი წარმატებით განახლდა';
                     }
-                     $prod->stock = $prod->stock - $prods->quantity;
+                    $prod->stock = $prod->stock - $prods->quantity;
                     $prod->save();
-                }   
+                }
             }
         }
         $clientservice->status = true;
+        $clientservice->pay_method = $request->pay_method;
         $clientservice->save();
-        if($success){
+        if ($success) {
             return redirect('/')->with('success', $message);
-        }else{ 
+        } else {
             return redirect('/')->with('warning', $message);
         }
     }
+
     /**
      * get Client Services By date
      */
-    public function getbydate(Request $request){
-        $this->validate($request,[
-            'date' => 'required' 
+    public function getbydate(Request $request)
+    {
+        $this->validate($request, [
+            'date' => 'required'
         ]);
         $date = $request->date;
-        $services = ClientService::whereDate('session_start_time', Carbon::parse(Str::substr($date,1,strlen($date)-2)))->whereNull('deleted_at')->get();
-        foreach($services as $client){
+        $services = ClientService::whereDate('session_start_time', Carbon::parse(Str::substr($date, 1, strlen($date) - 2)))->whereNull('deleted_at')->get();
+        foreach ($services as $client) {
             $client['endtime'] = $client->getEndTime();
             $client['workername'] = $client->getWorkerName();
             $client['servicename'] = $client->getServiceName();
             $client['serviceprice'] = $client->getServicePrice();
             $client['clientid'] = $client->clinetserviceable()->first()->id;
             $client['clientnumber'] = $client->clinetserviceable()->first()->number;
-            $client['clientname'] = $client->clinetserviceable()->first()->{"full_name_".app()->getLocale()};
+            $client['clientname'] = $client->clinetserviceable()->first()->{"full_name_" . app()->getLocale()};
         }
         return response()->json(array('status' => true, 'data' => $services));
     }
+
     /**
      * Remove Service From Client By Ajax
      */
-    public function removeservice(Request $request){
+    public function removeservice(Request $request)
+    {
         $this->validate($request, [
             'serviceid' => 'required|integer'
         ]);
         $id = (int)$request->input('serviceid');
         $service = ClientService::findOrFail($id);
         $service->deleted_at = Carbon::now('Asia/Tbilisi');
-        if($service->save()){
-            return response()->json(array('status'=>true));
+        if ($service->save()) {
+            return response()->json(array('status' => true));
         }
-        return response()->json(array('status'=>false));
+        return response()->json(array('status' => false));
+    }
+
+    public function services(Request $request)
+    {
+        if (request()->get('date')) {
+            $request->all();
+            $date = $request->date;
+            $services = ClientService::whereDate('session_start_time', Carbon::parse(Str::substr($date, 1, strlen($date) - 2)))->whereNull('deleted_at')->paginate(1);
+            return view('theme.template.company.finance', compact('services'));
+        }
+        $services = ClientService::whereNull('deleted_at')->paginate(20);
+        return view('theme.template.company.finance', compact('services'));
     }
 
     /**
      * Convert to Excel
      */
-    public function export() 
+    public function export()
     {
         return Excel::download(new ClientExport, 'client.xlsx');
     }
