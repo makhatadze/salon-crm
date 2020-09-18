@@ -10,13 +10,12 @@
             </button>
             <div class="dropdown-box mt-10 absolute w-40 top-0 left-0 z-20">
                 <div class="dropdown-box__content box p-2">
-                    <a href="" class="flex items-center block p-2 transition duration-300 ease-in-out bg-white hover:bg-gray-200 rounded-md"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-printer w-4 h-4 mr-2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg> Print </a>
-                    <a href="" class="flex items-center block p-2 transition duration-300 ease-in-out bg-white hover:bg-gray-200 rounded-md"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text w-4 h-4 mr-2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg> Export to Excel </a>
-                    <a href="" class="flex items-center block p-2 transition duration-300 ease-in-out bg-white hover:bg-gray-200 rounded-md"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text w-4 h-4 mr-2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg> Export to PDF </a>
-                </div>
+                    <a onclick="window.print()" class="flex items-center block p-2 transition duration-300 ease-in-out bg-white hover:bg-gray-200 rounded-md"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-printer w-4 h-4 mr-2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg> ბეჭდვა </a>
+                    <a href="" class="flex items-center block p-2 transition duration-300 ease-in-out bg-white hover:bg-gray-200 rounded-md"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text w-4 h-4 mr-2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg> ექსელშ ექსპორტი </a>
+                  </div>
             </div>
         </div>
-        <div class="hidden md:block mx-auto text-gray-600">Showing 1 to 10 of 150 entries</div>
+        <div class="hidden md:block mx-auto text-gray-600"></div>
         <div class="w-full sm:w-auto mt-3 sm:mt-0 sm:ml-auto md:ml-0">
             <div class="w-56 relative text-gray-700">
                 <input id="searchproduct" type="text" class="input w-56 box pr-10 placeholder-theme-13" placeholder="Search...">
@@ -32,15 +31,15 @@
                     <th class="whitespace-no-wrap font-bold font-caps text-xs text-gray-700">სურათები</th>
                     <th class="whitespace-no-wrap font-bold font-caps text-xs text-gray-700">სახელი</th>
                     <th class="text-center whitespace-no-wrap font-bold font-caps text-xs text-gray-700">ფასი</th>
-                    <th class="text-center whitespace-no-wrap font-bold font-caps text-xs text-gray-700">საწყობში</th>
+                    <th class="text-center whitespace-no-wrap font-bold font-caps text-xs text-gray-700">დეპარტამენტი</th>
                     <th class="text-center whitespace-no-wrap font-bold font-caps text-xs text-gray-700">სტატუსი</th>
                     <th class="text-center whitespace-no-wrap"></th>
                 </tr>
             </thead>
             <tbody id="products">
                 @foreach ($products as $prod)
-                <tr class="intro-x">
-                    <td class="w-40">
+                <tr class="intro-x" >
+                    <td class="w-40" @if($prod->stock == 0)  style="background-color: #ffaeae" @endif>
                         <div class="flex">
                             @foreach ($prod->images()->whereNull('deleted_at')->get() as $key => $image)
                             <div class="w-10 h-10 image-fit zoom-in">
@@ -55,42 +54,54 @@
                         </div>
                         
                     </td>
-                    <td>
+                    <td @if($prod->stock == 0)  style="background-color: #ffaeae" @endif>
                         <a href="" class="font-medium whitespace-no-wrap font-bold text-black">{{$prod->{"title_".app()->getLocale()} }}</a> 
                         <div class="text-gray-600 text-xs whitespace-no-wrap font-normal"> @if($prod->category_id){{$prod->getCategoryName($prod->category_id)}}@endif</div>
                     </td>
-                    <td class="text-center font-normal">{{$prod->price/100}} ₾</td>
-                    <td class="text-center font-normal ">
-                        <h6 class="text-base text-black font-black">{{$prod->stock}}
+                    <td  @if($prod->stock == 0)  style="background-color: #ffaeae" @endif class="text-center font-normal">{{$prod->price/100}} ₾</td>
+                    <td @if($prod->stock == 0)  style="background-color: #ffaeae" @endif class="text-center font-normal ">
+                        <h6 class="text-xs text-gray-900 font-black">
+                            {{ $prod->getDepartmentName() }} </h6>
                             <span class="ml-1 text-xs font-normal">
-                                
-                            </span></h6>
+                                {{ $prod->getOfficeName() }}
+                            </span>
                         
                     </td>
-                    <td class="text-center flex justify-center">
-                        <div class="flex ">
-                        <h6 class="texe-base text-black flex items-center justify-center font-bold">
-                        <div class="text-left">
-                            {{$prod->stock}} <br>
-                            <span class="text-xs font-normal">{{$prod->unit}}</span>
-                        </div>
-                        <span class="ml-2 text-xs font-normal">
-                            @if ($prod->type == "inventory")
-                                    ინვენტარი
-                                @elseif($prod->type == "sale")
-                                    გაყიდვები
-                                @endif
-                        </span>
+                    <td @if($prod->stock == 0)  style="background-color: #ffaeae" @endif class="text-center ">
+                        <div class="flex w-full justify-center ">
+                        <h6 class="texe-xl text-gray-800  font-bolder">
+                            {{$prod->stock}} 
+                        </h6>
+                            <div class="text-left ml-2">
+                                <small class="text-sm font-bolder text-gray-800">
+                                    @if($prod->unit == "unit")
+                                    ერთეული
+                                    @elseif($prod->unit == "gram")
+                                    გრამი
+                                    @elseif($prod->unit == "metre")
+                                    მეტრი
+                                    @endif
+                                </small> <br>
+                                <span class="text-xs font-normal">
+                                    @if ($prod->type == "inventory")
+                                            ინვენტარი
+                                        @elseif($prod->type == "sale")
+                                            გაყიდვები
+                                        @endif
+                                </span>
+                           
+                            </div>
+                       
                         </div>
                         </td>
-                    <td class="w-40 font-bold font-caps text-xs">
+                    <td @if($prod->stock == 0)  style="background-color: #ffaeae" @endif class="w-40 font-bold font-caps text-xs">
                         @if ($prod->published)
                     <a href="/products/turn/{{$prod->id}}/0" class="flex items-center justify-center text-theme-6"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-square w-4 h-4 mr-2"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg> გათიშვა </a>
                         @else 
                         <a href="/products/turn/{{$prod->id}}/1" class="flex items-center justify-center text-green-500"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-square w-4 h-4 mr-2"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg> ჩართვა </a>
                         @endif
                     </td>
-                    <td class="table-report__action w-56">
+                    <td @if($prod->stock == 0)  style="background-color: #ffaeae" @endif class="table-report__action w-56">
                         <div class="flex justify-center items-center">
                             <a href=" {{route('ProductEdit', $prod->id)}} "  class="p-2 bg-gray-300 rounded-lg ml-2" href="javascript:;"> 
                                 <svg width="1.18em" height="1.18em" viewBox="0 0 16 16" class="bi bi-pencil-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">

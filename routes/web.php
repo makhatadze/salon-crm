@@ -59,8 +59,9 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
         Route::post('/companies/add', 'CompanyController@store')->name('AddCompany');
         Route::any('/companies/update/{id}', 'CompanyController@update')->name('EditCompany');
         Route::post('/companies/addoffice/store/{id}', 'CompanyController@storeoffice')->name('AddOffice');
-        // Company Department Controller
+        // Company Department Controllers
         Route::get('/companies/departments', 'DepartmentController@index')->name('Departments');
+        Route::delete('/companies/departments/{department}', 'DepartmentController@destroy')->name('RemoveDepartment');
         Route::get('/companies/departments/create', 'DepartmentController@create')->name('CreateDepartment');
         Route::post('/companies/departments/store', 'DepartmentController@store')->name('AddDepartment');
         //Purchase Controller

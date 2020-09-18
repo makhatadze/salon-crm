@@ -212,16 +212,17 @@ class UserController extends Controller
     }
     public function profilefilter(Request $request){
         $this->validate($request,[
-            'filter' => 'required', 
+            'filter' => 'required|string', 
+            'userid' => 'required|integer'
         ]);
         if($request->filter == "all"){
-            $clients = ClientService::where('user_id', auth::user()->id)->get();
+            $clients = ClientService::where('user_id', $request->userid)->get();
         }elseif($request->filter == "done"){
-            $clients = ClientService::where([['user_id', auth::user()->id], ['status', true]])->get();
+            $clients = ClientService::where([['user_id', $request->userid], ['status', true]])->get();
         }elseif($request->filter == "waiting"){
-            $clients = ClientService::where([['user_id', auth::user()->id], ['session_start_time', '>', Carbon::now()], ['status', false]])->get();
+            $clients = ClientService::where([['user_id', $request->userid], ['session_start_time', '>', Carbon::now()], ['status', false]])->get();
         }elseif($request->filter == "notcome"){
-            $clients = ClientService::where([['user_id', auth::user()->id], ['session_start_time', '<', Carbon::now()], ['status', false]])->get();
+            $clients = ClientService::where([['user_id', $request->userid], ['session_start_time', '<', Carbon::now()], ['status', false]])->get();
         }else{
             return response()->json(array('status' => false));
         }

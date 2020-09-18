@@ -55,7 +55,10 @@
 			</div>
 		</div>
 	</div>
-	<!-- Sia -->
+	<div class="col-span-12 my-3 container mx-auto">
+		@include('inc.message')
+	</div>
+	<!-- Table -->
 	<table class="table table-report -mt-2 col-span-12">
         <thead>
             <tr>

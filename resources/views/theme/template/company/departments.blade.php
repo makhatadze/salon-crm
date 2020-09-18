@@ -31,7 +31,7 @@
                  <td class="text-right border-b w-32 font-medium">
                     <div class="font-helvetica  whitespace-no-wrap font-normal">{{$department->{'address_'.app()->getLocale()} }}</div>
                     <div class="text-gray-600 text-xs whitespace-no-wrap">
-                        <form action="/companies/departments/{{$department->id}}" method="post">
+                        <form action="{{ route('RemoveDepartment', $department->id) }}" method="post">
                             @csrf
                             @method('DELETE')
                  <button type="submit" class="text-red-400 font-bold font-caps text-gray-800 text-sm"><b>წაშლა</b></button>

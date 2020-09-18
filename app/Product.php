@@ -12,18 +12,28 @@ class Product extends Model
     public function category(){
         return $this->morphOne('App\Category', 'categoryable');
     }
-    public function department(){
-        return $this->morphOne('App\Department', 'departmentable');
-    }
     public function images(){
         return $this->morphMany('App\Image', 'imageable');
     }
     public function getCategoryName($id){
         $catname = Category::find($id)->{"title_".app()->getLocale()};
-        return $catname;
+        if($catname){
+            return $catname;
+        }
+        return;
     }
-    public function getDepartmentName($id){
-        $depname = Department::find($id)->{"name_".app()->getLocale()};
-        return $depname;
+    public function getDepartmentName(){
+        $depname = Department::find($this->id)->{"name_".app()->getLocale()};
+        if($depname){
+            return $depname;
+        }
+        return;
+    }
+    public function getOfficeName(){
+        $officename = Department::find($this->id)->departmentable()->first()->{"name_".app()->getLocale()};
+        if($officename){
+            return $officename;
+        }
+        return;
     }
 }

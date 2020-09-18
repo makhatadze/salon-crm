@@ -180,21 +180,35 @@ class ClientController extends Controller
      */
     public function turnon($id){
         $clientservice = ClientService::findOrFail($id);
-
+        $message = '';
         $service = Service::find($clientservice->service_id)->first();
         if($service){
             $inventories = $service->inventories()->get();
+            $message = '';
             foreach($inventories as $prods){
                 $prod = Product::find($prods->product_id);
                 if($prod){
-                    $prod->stock = $prod->stock - $prods->quantity;
+                    $success = false;
+                    if($prod->stock == 0 || $prod->stock < $prods->quantity){
+                        return redirect('/')->with('error', $prod->id.' | '.$prod->{"title_".app()->getLocale()}.' მარაგი ცარიელია');
+                    }else if($prod->stock - $prods->quantity == 0 || $prod->stock - $prods->quantity <=  $prods->quantity){
+                        $message .= $prod->id.' | '.$prod->{"title_".app()->getLocale()}.' მარაგი შესავსევბია <br>';
+                    }else{
+                        $success = true;
+                        $message .= 'სტატუსი წარმატებით განახლდა';
+                    }
+                     $prod->stock = $prod->stock - $prods->quantity;
                     $prod->save();
                 }   
             }
         }
         $clientservice->status = true;
         $clientservice->save();
-        return redirect('/');
+        if($success){
+            return redirect('/')->with('success', $message);
+        }else{ 
+            return redirect('/')->with('warning', $message);
+        }
     }
     /**
      * get Client Services By date

@@ -58,7 +58,7 @@
             <label class="font-bold font-caps text-xs text-gray-700">აირჩიეთ კომპანიის ოფისი <span class="text-red-700">*</span></label><br>
             <select required class="input border mr-2 w-full" name="office-id">
                 @foreach ($companies as $company)
-                    @foreach($company->offices()->get() as $office)
+                    @foreach($company->offices()->whereNull('deleted_at')->get() as $office)
                     <option value="{{$office->id}}">{{$company->{"title_".app()->getLocale()} }} | {{$office->{"name_".app()->getLocale()} }}</option>
                     @endforeach
                 @endforeach

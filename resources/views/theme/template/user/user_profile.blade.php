@@ -139,6 +139,7 @@
                   method: 'post',
                   data: {
                      'filter': $value,
+                     'userid': '{{$user->id}}',
                   },
                   success: function(result){
                     if(result.status == true){
