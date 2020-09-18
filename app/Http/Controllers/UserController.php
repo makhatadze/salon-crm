@@ -74,7 +74,7 @@ class UserController extends Controller
                     'position' => 'required|string',
                     'phone' => 'required',
                     'salary' => 'min:0|integer',
-                    'percent' => 'integer',
+                    'percent' => 'between:0,99.99',
                     'password' => 'required|min:8',
                     'password_confirmation' => 'required_with:password|same:password|min:8',
                     'files' => 'image|mimes:jpeg,bmp,png,gif,svg',
@@ -107,7 +107,7 @@ class UserController extends Controller
                     'pid' => $data['pid'],
                     'salary' => $data['salary'],
                     'salary_type' => $data['salary_type'],
-                    'percent' => $data['pid'],
+                    'percent' => $data['percent'],
                 ]);
 
                 $user->profile()->save($profile);
