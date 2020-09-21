@@ -27,7 +27,7 @@
 
     <div class="grid grid-cols-12 gap-6 mt-5 user-list">
         @foreach($users as $user)
-            <div class="intro-y col-span-12 md:col-span-6">
+            <div class="intro-y col-span-12 md:col-span-4">
                 <div class="box">
                     <div class="flex flex-col lg:flex-row items-center p-5">
                         <div class="w-24 h-24 lg:w-12 lg:h-12 image-fit lg:mr-1">
@@ -39,8 +39,11 @@
                         </div>
                         <div class="lg:ml-2 lg:mr-auto text-center lg:text-left mt-3 lg:mt-0">
                             <a href="" class="font-bolder text-xs text-gray-700 uppercase font-caps">{{$user->name}} @if($user->profile()->first()) {{$user->profile()->first()->last_name}} @endif</a><br>
-                            <span class="text-xs font-normal">@if($user->profile()->first())ხელფასი: {{$user->profile()->first()->salary + ($user->profile()->first()->salary/100*$user->profile()->first()->percent)}} <sup>₾</sup>@endif</span> <br>
-                            @if($user->profile()->first())<span class="text-xs font-normal">მოვიდა: {{Carbon\Carbon::parse($user->created_at)->isoFormat('Y-MM-DD')}}</span>@endif
+                            @if($user->profile()->first())
+                            <span class="text-xs font-normal">ხელფასი: {{$user->profile()->first()->salary}} <sup>₾</sup></span> <br>
+                            <span class="text-xs font-normal">გამოიმუშავა: 0 <sup>₾</sup></span> <br>
+                            <span class="text-xs font-normal">მოვიდა: {{Carbon\Carbon::parse($user->created_at)->isoFormat('Y-MM-DD')}}</span>
+                            @endif
                         </div>
                         <div class="flex mt-4 lg:mt-0">
                             @if ($user->profile()->first())

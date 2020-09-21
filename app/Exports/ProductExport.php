@@ -18,6 +18,7 @@ class ProductExport implements FromCollection, WithHeadings
             unset($prod['description_ge']);
             unset($prod['description_ru']);
             unset($prod['description_en']);
+            unset($prod['distributor_id']);
             unset($prod['deleted_at']);
             $prod['price'] = $prod->price/100;
             $prod['category_id'] = $prod->getCategoryName();

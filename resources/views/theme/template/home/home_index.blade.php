@@ -17,7 +17,7 @@
                                     <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
                                 </svg>
                                 <div class="ml-auto">
-                                    <div class="text-gray-600 font-normal mt-1 text-xs">ყველა შემოსული შეკვეთა</div>
+                                    <div class="text-gray-600 font-normal mt-1 text-xs">პროდუქტების ჯამური ფასი</div>
                                 </div>
                             </div>
                             <div class="text-3xl font-bold leading-8 mt-6">{{$allclientservices}}</div>
@@ -272,7 +272,7 @@
                                 `;
                                 accept = `
                                     <a data-toggle="modal" data-target="#add-pay-method"
-                                       onclick="addPayMethod({{$service->id}})" id="pay-method-link"
+                                       onclick="addPayMethod(`+service['id']+`)" id="pay-method-link"
                                        class="bg-gray-300 p-2 rounded-lg mr-2">
                                         <svg width="1.18em" height="1.18em" viewBox="0 0 16 16"
                                              class="bi bi-emoji-laughing" fill="currentColor"

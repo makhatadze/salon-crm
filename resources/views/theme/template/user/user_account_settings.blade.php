@@ -38,7 +38,7 @@
                       <span class="font-normal text-xs">კლიენი</span>
                   </div>
                   <div class="w-1/3 p-3">
-                      <h6 class="font-bold font-caps text-base text-black"> {{$user->profile()->first()->salary + ($user->profile()->first()->salary/100*$user->profile()->first()->percent)}} <sup>₾</sup></h6>
+                      <h6 class="font-bold font-caps text-base text-black"> {{$user->profile()->first()->salary}} <sup>₾</sup></h6>
                       <span class="font-normal text-xs">ხელფასი</span>
                   </div>
               </div>
@@ -65,7 +65,83 @@
                 @endif
             </div>
         </div>
+        <div class="col-span-12 md:col-span-6 xl:col-span-4 xxl:col-span-12 mt-3 xxl:mt-8">
+          <div class="intro-x flex items-center h-10">
+              <h2 class="font-bolder font-caps text-gray-800 text-sm truncate mr-5">
+                  ტრანსაქციები
+              </h2>
+          </div>
+          <div class="mt-5">
+
+            {{-- Transactions --}}
+              <div class="intro-x">
+                  <div class="box px-5 py-3 mb-3 flex items-center zoom-in">
+                      <div class="w-10 h-10 flex-none image-fit rounded-full overflow-hidden">
+                          <img alt="Midone Tailwind HTML Admin Template" src="dist/images/profile-14.jpg">
+                      </div>
+                      <div class="ml-4 mr-auto">
+                          <div class="font-medium">Leonardo DiCaprio</div>
+                          <div class="text-gray-600 text-xs">6 August 2022</div>
+                      </div>
+                      <div class="text-theme-9">+$23</div>
+                  </div>
+              </div>
+              <div class="intro-x">
+                  <div class="box px-5 py-3 mb-3 flex items-center zoom-in">
+                      <div class="w-10 h-10 flex-none image-fit rounded-full overflow-hidden">
+                          <img alt="Midone Tailwind HTML Admin Template" src="dist/images/profile-10.jpg">
+                      </div>
+                      <div class="ml-4 mr-auto">
+                          <div class="font-medium">Tom Cruise</div>
+                          <div class="text-gray-600 text-xs">21 July 2020</div>
+                      </div>
+                      <div class="text-theme-9">+$83</div>
+                  </div>
+              </div>
+              <div class="intro-x">
+                  <div class="box px-5 py-3 mb-3 flex items-center zoom-in">
+                      <div class="w-10 h-10 flex-none image-fit rounded-full overflow-hidden">
+                          <img alt="Midone Tailwind HTML Admin Template" src="dist/images/profile-12.jpg">
+                      </div>
+                      <div class="ml-4 mr-auto">
+                          <div class="font-medium">Al Pacino</div>
+                          <div class="text-gray-600 text-xs">5 January 2021</div>
+                      </div>
+                      <div class="text-theme-9">+$199</div>
+                  </div>
+              </div>
+              <div class="intro-x">
+                  <div class="box px-5 py-3 mb-3 flex items-center zoom-in">
+                      <div class="w-10 h-10 flex-none image-fit rounded-full overflow-hidden">
+                          <img alt="Midone Tailwind HTML Admin Template" src="dist/images/profile-6.jpg">
+                      </div>
+                      <div class="ml-4 mr-auto">
+                          <div class="font-medium">Russell Crowe</div>
+                          <div class="text-gray-600 text-xs">22 April 2020</div>
+                      </div>
+                      <div class="text-theme-9">+$43</div>
+                  </div>
+              </div>
+              <div class="intro-x">
+                  <div class="box px-5 py-3 mb-3 flex items-center zoom-in">
+                      <div class="w-10 h-10 flex-none image-fit rounded-full overflow-hidden">
+                          <img alt="Midone Tailwind HTML Admin Template" src="dist/images/profile-15.jpg">
+                      </div>
+                      <div class="ml-4 mr-auto">
+                          <div class="font-medium">Al Pacino</div>
+                          <div class="text-gray-600 text-xs">8 October 2022</div>
+                      </div>
+                      <div class="text-theme-9">+$112</div>
+                  </div>
+              </div>
+
+
+
+          </div>
+      </div>
     </div>
+
+    {{-- End of Profile --}}
     <div class="col-span-12 lg:col-span-8 xxl:col-span-9">
         <div class="intro-y p-4  lg:mt-1">
           
@@ -84,6 +160,32 @@
                   გვარი
                 </label>
                 <input name="last_name" value="{{$user->profile()->first()->last_name}}" class="font-normal appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder="Doe"  @if($user->id == Auth::user()->id) readonly="true" @endif>
+              </div>
+            </div>
+            <div class="flex flex-wrap -mx-3 mb-5">
+              <div class="w-full md:w-1/2 px-3 mb-4 md:mb-0">
+                <label class="block font-caps uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
+                  ხელფასი
+                </label>
+            <input name="user_salary" value="{{$user->profile()->first()->salary}}" class="font-normal appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name" type="text"  @if($user->id == Auth::user()->id) readonly="true" @endif >
+            @error('user_salary')
+            <span class="invalid-feedback" role="alert">
+                <strong style="color: tomato">{{ $message }}</strong>
+                
+                </span>
+            @enderror 
+          </div>
+              <div class="w-full md:w-1/2 px-3">
+                <label class="block uppercase font-caps tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
+                  პროცენტი
+                </label>
+                <input name="user_percent" value="{{$user->profile()->first()->percent}}" class="font-normal appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder="Doe"  @if($user->id == Auth::user()->id) readonly="true" @endif>
+                @error('user_percent')
+                <span class="invalid-feedback" role="alert">
+                    <strong style="color: tomato">{{ $message }}</strong>
+                    
+                    </span>
+                @enderror 
               </div>
             </div>
                 <div class="flex flex-wrap -mx-3 mb-6">
