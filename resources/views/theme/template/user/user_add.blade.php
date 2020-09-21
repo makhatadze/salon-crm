@@ -89,7 +89,7 @@
                         </div>
                         <div class="relative mt-2 {{ $errors->has('salary') ? ' has-error' : '' }}">
                             {{ Form::label('salary', 'ხელფასი', ['class' => 'font-helvetica']) }}
-                            {{ Form::text('salary', null, ['class' => 'input w-full border mt-2 col-span-2']) }}
+                            {{ Form::text('salary', null, ['class' => 'input w-full border mt-2 col-span-2 user-salary']) }}
                             @if ($errors->has('salary'))
                                 <span class="help-block">
                                             {{ $errors->first('salary') }}
@@ -98,7 +98,7 @@
                         </div>
                         <div class="relative mt-2 {{ $errors->has('percent') ? ' has-error' : '' }} percent-container">
                             {{ Form::label('percent', 'პროცენტი', ['class' => 'font-helvetica']) }}
-                            {{ Form::text('percent', null, ['class' => 'input w-full border mt-2 col-span-2']) }}
+                            {{ Form::text('percent', null, ['class' => 'input w-full border mt-2 col-span-2 user-percent']) }}
                             @if ($errors->has('percent'))
                                 <span class="help-block">
                                             {{ $errors->first('percent') }}

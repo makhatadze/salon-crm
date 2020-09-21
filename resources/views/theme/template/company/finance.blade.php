@@ -1,6 +1,12 @@
 @extends('theme.layout.layout')
 
 @section('content')
+    <div class="grid grid-cols-12 gap-6 mt-5">
+        <div class="intro-y col-span-12 flex flex-wrap sm:flex-no-wrap items-center mt-2">
+            <a href="{{ route('FinanceExport') }}"
+               class="button text-white font-bold font-caps text-xs bg-theme-1 shadow-md mr-2">ექსელში ექსპორტი</a>
+        </div>
+    </div>
     <table class="table table-report -mt-2 col-span-12">
         <thead>
         <tr>

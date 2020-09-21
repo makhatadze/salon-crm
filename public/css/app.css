@@ -36,11 +36,11 @@
 }
 
 .pip img {
-    min-height: 64px;
+  min-height: 64px;
 }
 
 .pip span {
-    margin-left: 12px;
+  margin-left: 12px;
 }
 
 .modal-container {
@@ -51,5 +51,9 @@
     -moz-text-align-last: center;
     text-align-last: center;
     margin-top: 20px;
+}
+
+#add-pay-method {
+    cursor: pointer;
 }
 

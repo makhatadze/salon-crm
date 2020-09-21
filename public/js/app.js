@@ -95,21 +95,28 @@
 
 $(document).ready(function () {
   if (window.File && window.FileList && window.FileReader) {
-    $('.percent-container').css('display', 'none');
-    $('input[name ="percent"]').val(0);
-    $('input[name ="salary"]').val(0);
-    $('input[name ="percent"]').focusout(function (e) {
+    if (!$('.user-salary').val()) {
+      $('.user-salary').val(0);
+    }
+
+    if (!$('.user-percent').val()) {
+      $('.user-percent').val(0);
+    }
+
+    $('.user-percent').focusout(function (e) {
       if (!e.target.value) {
-        $('input[name ="percent"]').val(0);
+        $('.user-percent').val(0);
       }
     });
-    $('input[name ="salary"]').focusout(function (e) {
+    $('.percent-container').css('display', 'none');
+    $('.user-salary').focusout(function (e) {
       if (!e.target.value) {
-        $('input[name ="salary"]').val(0);
+        $('user-salary').val(0);
       }
     });
     $("#salary_type").change(function (e) {
       if (e.target.value == 1) {
+        $('.user-percent').val(0);
         $('.percent-container').css('display', 'none');
       } else {
         $('.percent-container').css('display', 'block');
@@ -155,17 +162,17 @@ $(document).ready(function () {
 /***/ }),
 
 /***/ 0:
-/*!*************************************************************!*\
-  !*** multi ./resources/js/app.js ./resources/sass/app.scss ***!
-  \*************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
+        /*!*************************************************************!*\
+          !*** multi ./resources/js/app.js ./resources/sass/app.scss ***!
+          \*************************************************************/
+        /*! no static exports found */
+        /***/ (function (module, exports, __webpack_require__) {
 
-        __webpack_require__(/*! /home/administrator/www/CRM-DIMOND/resources/js/app.js */"./resources/js/app.js");
-        module.exports = __webpack_require__(/*! /home/administrator/www/CRM-DIMOND/resources/sass/app.scss */"./resources/sass/app.scss");
+            __webpack_require__(/*! /home/administrator/www/CRM-DIMOND/resources/js/app.js */"./resources/js/app.js");
+            module.exports = __webpack_require__(/*! /home/administrator/www/CRM-DIMOND/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
-        /***/
-      })
+            /***/
+        })
 
 /******/ });

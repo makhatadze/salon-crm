@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Client;
 use App\ClientService;
 use App\Exports\ClientExport;
+use App\Exports\FinanceExport;
 use App\Product;
+use App\SalaryToService;
 use App\Service;
 use App\User;
 use Carbon\Carbon;
@@ -195,6 +197,18 @@ class ClientController extends Controller
         $id = $request->pay_id;
 
         $clientservice = ClientService::findOrFail($id);
+        $user = $clientservice->getUser();
+        if ($user) {
+            $userProfile = $user->profile()->first();
+            if ($userProfile) {
+                SalaryToService::create([
+                    'user_id' => $user->id,
+                    'service_id' => $clientservice->service_id,
+                    'service_price' => $clientservice->getServicePrice(),
+                    'percent' => $userProfile->percent
+                ]);
+            }
+        }
         $message = '';
         $service = Service::find($clientservice->service_id)->first();
         if ($service) {
@@ -284,6 +298,11 @@ class ClientController extends Controller
     public function export()
     {
         return Excel::download(new ClientExport, 'client.xlsx');
+    }
+
+    public function financeExport()
+    {
+        return Excel::download(new FinanceExport(), 'finance.xlsx');
     }
 
 }

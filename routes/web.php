@@ -93,6 +93,8 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
         Route::get('/company/money', 'MoneyController@index')->name('MoneyController');
         //Statistic Controller
         Route::get('/statistics', 'StatisticController@index')->name('StatisticController');
+        Route::get('/clients/financeExport', 'ClientController@financeExport')->name('FinanceExport');
+
         //Export Controller
         Route::get('/clients/export', 'ClientController@export')->name('ClientExcel');
     });

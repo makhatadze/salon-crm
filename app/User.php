@@ -150,4 +150,5 @@ class User extends Authenticatable
         $clients = ClientService::where([['user_id', $this->id], ['status', true]])->count();
         return $clients;
     }
+
 }
