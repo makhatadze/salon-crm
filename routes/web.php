@@ -87,6 +87,8 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
         Route::post('/clients/store', 'ClientController@store')->name('StoreClient');
         Route::post('/clinets/getbydate', 'ClientController@getbydate')->name('GetServiceByDate');
         Route::any('/clients/services', 'ClientController@services')->name('Finances');
+        Route::get('/clients/financeExport', 'ClientController@financeExport')->name('FinanceExport');
+
         //Export Controller
         Route::get('/clients/export', 'ClientController@export')->name('ClientExcel');
     });

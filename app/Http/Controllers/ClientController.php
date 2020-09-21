@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Client;
 use App\ClientService;
 use App\Exports\ClientExport;
+use App\Exports\FinanceExport;
 use App\Product;
 use App\Service;
 use App\User;
@@ -284,6 +285,11 @@ class ClientController extends Controller
     public function export()
     {
         return Excel::download(new ClientExport, 'client.xlsx');
+    }
+
+    public function financeExport()
+    {
+        return Excel::download(new FinanceExport(), 'finance.xlsx');
     }
 
 }
