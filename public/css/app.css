@@ -44,12 +44,16 @@
 }
 
 .modal-container {
-  text-align: center;
+    text-align: center;
 }
 
 .no-result-msg {
-  -moz-text-align-last: center;
-  text-align-last: center;
-  margin-top: 20px;
+    -moz-text-align-last: center;
+    text-align-last: center;
+    margin-top: 20px;
+}
+
+#add-pay-method {
+    cursor: pointer;
 }
 

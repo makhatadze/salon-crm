@@ -162,17 +162,17 @@ $(document).ready(function () {
 /***/ }),
 
 /***/ 0:
-/*!*************************************************************!*\
-  !*** multi ./resources/js/app.js ./resources/sass/app.scss ***!
-  \*************************************************************/
-/*! no static exports found */
-/***/ (function (module, exports, __webpack_require__) {
+        /*!*************************************************************!*\
+          !*** multi ./resources/js/app.js ./resources/sass/app.scss ***!
+          \*************************************************************/
+        /*! no static exports found */
+        /***/ (function (module, exports, __webpack_require__) {
 
-        __webpack_require__(/*! /home/administrator/www/CRM-DIMOND/resources/js/app.js */"./resources/js/app.js");
-        module.exports = __webpack_require__(/*! /home/administrator/www/CRM-DIMOND/resources/sass/app.scss */"./resources/sass/app.scss");
+            __webpack_require__(/*! /home/administrator/www/CRM-DIMOND/resources/js/app.js */"./resources/js/app.js");
+            module.exports = __webpack_require__(/*! /home/administrator/www/CRM-DIMOND/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
-        /***/
-      })
+            /***/
+        })
 
 /******/ });

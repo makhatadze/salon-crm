@@ -159,7 +159,7 @@
                                 @if (!$service->status)
                                     <a data-toggle="modal" data-target="#add-pay-method"
                                        onclick="addPayMethod({{$service->id}})" id="pay-method-link"
-                                       class="bg-gray-300 p-2 rounded-lg mr-2">
+                                       class="bg-gray-300 p-2 rounded-lg mr-2 cursor-pointer">
                                         <svg width="1.18em" height="1.18em" viewBox="0 0 16 16"
                                              class="bi bi-emoji-laughing" fill="currentColor"
                                              xmlns="http://www.w3.org/2000/svg">
@@ -273,7 +273,7 @@
                                 accept = `
                                     <a data-toggle="modal" data-target="#add-pay-method"
                                        onclick="addPayMethod(` + service['id'] + `)" id="pay-method-link"
-                                       class="bg-gray-300 p-2 rounded-lg mr-2">
+                                       class="bg-gray-300 p-2 rounded-lg mr-2 cursor-pointer">
                                         <svg width="1.18em" height="1.18em" viewBox="0 0 16 16"
                                              class="bi bi-emoji-laughing" fill="currentColor"
                                              xmlns="http://www.w3.org/2000/svg">
