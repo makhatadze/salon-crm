@@ -74,7 +74,7 @@ class UserController extends Controller
                     'position' => 'required|string',
                     'phone' => 'required',
                     'salary' => 'min:0|integer',
-                    'percent' => 'between:0,99.99',
+                    'percent' => 'required|numeric|between:0,99.99',
                     'password' => 'required|min:8',
                     'password_confirmation' => 'required_with:password|same:password|min:8',
                     'files' => 'image|mimes:jpeg,bmp,png,gif,svg',
