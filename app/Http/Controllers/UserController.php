@@ -19,6 +19,10 @@ use App\ClientService;
 use App\UserHasJob;
 use Carbon\Carbon;
 
+
+use App\Exports\UserExport;
+use Maatwebsite\Excel\Facades\Excel;
+
 use Illuminate\Support\Facades\Hash;
 use Auth;
 use Illuminate\Http\Request;
@@ -306,6 +310,8 @@ class UserController extends Controller
         $this->validate($request,[
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
+            'user_percent' => 'required|numeric|between:0,99.99',
+            'user_salary' => 'required|integer|min:0',
             'department_id' => ''
         ]);
         $user = User::findOrFail($id);
@@ -326,11 +332,17 @@ class UserController extends Controller
         }
         $profile->first_name = $request->input('first_name');
         $profile->last_name = $request->input('last_name');
+        $profile->salary = $request->input('user_salary');
+        $profile->percent = $request->input('user_percent');
         $userhasjobs = UserHasJob::where('user_id', $id)->first();
         $userhasjobs->department_id = $request->input('department_id');
         $userhasjobs->save();
         $profile->save();
         $user->save();
-        return redirect('/user/showprofile/'.$id);
+        return redirect()->back();
+    }
+    //User Exports
+    public function userexport(){
+        return Excel::download(new UserExport, 'users.xlsx');
     }
 }

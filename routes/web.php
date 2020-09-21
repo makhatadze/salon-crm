@@ -22,6 +22,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
         Route::get('/user/showprofile/{id}', 'UserController@showprofile')->name('ShowUserProfile');
         Route::get('/show/accountsettings/{id}', 'UserController@showprofilesettings')->name('ShowProfileSettings');
         Route::post('/user/updateuserprofile/{id}', 'UserController@updateuserprofile')->name('UpdateUserProfile');
+        Route::get('/user/userexport', 'UserController@userexport')->name('UserExport');
 
         //Service COntroller
         Route::get('/services/turn/{service}/{status}', 'ServiceController@turn');
@@ -75,6 +76,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
         Route::post('/purchases/getdepartment', 'PurchaseController@getdepartments')->name('GetDepartmentsByOffice');
         Route::post('/purchases/getdistributors', 'PurchaseController@getdistributors')->name('GetDistributors');
         Route::post('/purchases/getprofiles', 'PurchaseController@getprofiles')->name('GetProfilesForPurchase');
+        Route::get('/purchases/purchaseexport', 'PurchaseController@purchaseexport')->name('PurchaseExport');
         //Client Controller
         Route::get('/clients', 'ClientController@index');
         Route::get('/clients/create', 'ClientController@create');
@@ -87,6 +89,10 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
         Route::post('/clients/store', 'ClientController@store')->name('StoreClient');
         Route::post('/clinets/getbydate', 'ClientController@getbydate')->name('GetServiceByDate');
         Route::any('/clients/services', 'ClientController@services')->name('Finances');
+        //Money Controller
+        Route::get('/company/money', 'MoneyController@index')->name('MoneyController');
+        //Statistic Controller
+        Route::get('/statistics', 'StatisticController@index')->name('StatisticController');
         Route::get('/clients/financeExport', 'ClientController@financeExport')->name('FinanceExport');
 
         //Export Controller

@@ -7,6 +7,10 @@ use App\Office;
 use App\Profile;
 use App\Department;
 use App\DistributionCompany;
+
+use App\Exports\PurchaseExport;
+use Maatwebsite\Excel\Facades\Excel;
+
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -212,17 +216,23 @@ class PurchaseController extends Controller
         $departments = Department::where('departmentable_id', intval($request->input('office_id')))->whereNull('deleted_at')->get();
         return response()->json(array('status' => true, 'data' => $departments));
     }
+    //Ajax For Distributor
     public function getdistributors(Request $request){
         $distributors = DistributionCompany::where('code', 'like', intval($request->input('value')).'%')
         ->orWhere('name_'.app()->getLocale(), 'like', '%'.strval($request->input('value')).'%')
         ->whereNull('deleted_at')->get();
         return response()->json(array('status' => true, 'data' => $distributors));
     }
+    //Ajax for Responsible and Getter Person
     public function getprofiles(Request $request){
         $profiles = Profile::where('pid', 'like', strval($request->input('value')).'%')
         ->orWhere('first_name', 'like', '%'.strval($request->input('value')).'%')
         ->orWhere('last_name', 'like', '%'.strval($request->input('value')).'%')
         ->get();
         return response()->json(array('status' => true, 'data' => $profiles));
+    }
+    //Purchase Export
+    public function purchaseexport(){
+        return Excel::download(new PurchaseExport, 'purchases.xlsx');
     }
 }

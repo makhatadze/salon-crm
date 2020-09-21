@@ -114,6 +114,20 @@
                         <div class="side-menu__title"> ფინანსები</div>
                     </a>
                 </li>
+                <li>
+                    <a href="{{route('MoneyController')}}" class="side-menu custom-nav-item" data-menu="departments">
+                        <div class="side-menu__icon"><i data-feather="circle" style="width: 15px; height: 15px;"></i>
+                        </div>
+                        <div class="side-menu__title"> თანხის ბრუნვა</div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{route('StatisticController')}}" class="side-menu custom-nav-item" data-menu="departments">
+                        <div class="side-menu__icon"><i data-feather="circle" style="width: 15px; height: 15px;"></i>
+                        </div>
+                        <div class="side-menu__title"> სტატისტიკა</div>
+                    </a>
+                </li>
             </ul>
         </li>
         <li>

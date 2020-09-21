@@ -91,6 +91,9 @@
                             <div class="mt-2">
                                 <select required class="select2 w-full"  @if($serv->status) disabled @endif>
                                     <option value=""></option>
+                                    @if($serv->status)
+                                <option value="dsa" selected>{{$serv->getWorkerName()}}</option>
+                                    @else 
                                     @foreach ($workers as $per)
                                         @if ($serv->user_id == $per->id)
                                         <option value="{{$per->id}}" selected>{{$per->profile()->first()->first_name}} {{$per->profile()->first()->last_name}}</option>
@@ -98,6 +101,7 @@
                                         <option value="{{$per->id}}">{{$per->profile()->first()->first_name}} {{$per->profile()->first()->last_name}}</option>
                                         @endif
                                     @endforeach
+                                    @endif
                                 </select>
                             </div>
                           

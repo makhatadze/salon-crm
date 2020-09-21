@@ -148,7 +148,7 @@ class ServiceController extends Controller
             'editor-ru' => '',
             'duration_count' => 'required|between:0,99.99', 
             'duration_type' => 'required|string', 
-            'price' => 'required|between:0,9999.99',
+            'price' => 'required|between:0,99.99',
             'unit-ge' => '',
             'unit-en' => '',
             'unit-ru' => '',

@@ -36,7 +36,7 @@ class ClientController extends Controller
     public function create()
     {
         $services = Service::whereNull('deleted_at')->get();
-        $workers = User::role('user')->whereNull('deleted_at')->get();
+        $workers = User::role('user')->where('active', true)->whereNull('deleted_at')->get();
         return view('theme.template.client.add_client', compact('workers', 'services'));
     }
 
@@ -105,7 +105,7 @@ class ClientController extends Controller
     {
         $client = Client::findOrFail($id);
         $services = Service::whereNull('deleted_at')->get();
-        $workers = User::role('user')->whereNull('deleted_at')->get();
+        $workers = User::role('user')->where('active', true)->whereNull('deleted_at')->get();
         return view('theme.template.client.edit_client', compact('workers', 'services', 'client'));
     }
 
