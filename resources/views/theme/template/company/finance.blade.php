@@ -34,7 +34,7 @@
                         <small class="font-normal text-sm">{{$service->getServicePrice() }} <sup>₾</sup></small>
                     </td>
                     <td class="text-center whitespace-no-wrap">
-                        <small class="font-normal text-sm">{{__('pay.'.$service->pay_method)}}</small>
+                        <small class="font-normal text-sm">{{$service->pay_method ? __('pay.'.$service->pay_method) : ''}}</small>
                     </td>
                     <td class="text-center whitespace-no-wrap">
                         <div class="flex justify-center items-center">
