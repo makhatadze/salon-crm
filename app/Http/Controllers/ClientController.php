@@ -203,8 +203,8 @@ class ClientController extends Controller
             if ($userProfile) {
                 SalaryToService::create([
                     'user_id' => $user->id,
-                    'service_id' => $clientservice->service_id,
-                    'service_price' => $clientservice->getServicePrice(),
+                    'service_id' => $id,
+                    'service_price' => $clientservice->getServicePrice()*100,
                     'percent' => $userProfile->percent
                 ]);
             }

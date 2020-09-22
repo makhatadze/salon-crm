@@ -74,69 +74,25 @@
           <div class="mt-5">
 
             {{-- Transactions --}}
-              <div class="intro-x">
-                  <div class="box px-5 py-3 mb-3 flex items-center zoom-in">
-                      <div class="w-10 h-10 flex-none image-fit rounded-full overflow-hidden">
-                          <img alt="Midone Tailwind HTML Admin Template" src="dist/images/profile-14.jpg">
-                      </div>
-                      <div class="ml-4 mr-auto">
-                          <div class="font-medium">Leonardo DiCaprio</div>
-                          <div class="text-gray-600 text-xs">6 August 2022</div>
-                      </div>
-                      <div class="text-theme-9">+$23</div>
-                  </div>
-              </div>
-              <div class="intro-x">
-                  <div class="box px-5 py-3 mb-3 flex items-center zoom-in">
-                      <div class="w-10 h-10 flex-none image-fit rounded-full overflow-hidden">
-                          <img alt="Midone Tailwind HTML Admin Template" src="dist/images/profile-10.jpg">
-                      </div>
-                      <div class="ml-4 mr-auto">
-                          <div class="font-medium">Tom Cruise</div>
-                          <div class="text-gray-600 text-xs">21 July 2020</div>
-                      </div>
-                      <div class="text-theme-9">+$83</div>
-                  </div>
-              </div>
-              <div class="intro-x">
-                  <div class="box px-5 py-3 mb-3 flex items-center zoom-in">
-                      <div class="w-10 h-10 flex-none image-fit rounded-full overflow-hidden">
-                          <img alt="Midone Tailwind HTML Admin Template" src="dist/images/profile-12.jpg">
-                      </div>
-                      <div class="ml-4 mr-auto">
-                          <div class="font-medium">Al Pacino</div>
-                          <div class="text-gray-600 text-xs">5 January 2021</div>
-                      </div>
-                      <div class="text-theme-9">+$199</div>
-                  </div>
-              </div>
-              <div class="intro-x">
-                  <div class="box px-5 py-3 mb-3 flex items-center zoom-in">
-                      <div class="w-10 h-10 flex-none image-fit rounded-full overflow-hidden">
-                          <img alt="Midone Tailwind HTML Admin Template" src="dist/images/profile-6.jpg">
-                      </div>
-                      <div class="ml-4 mr-auto">
-                          <div class="font-medium">Russell Crowe</div>
-                          <div class="text-gray-600 text-xs">22 April 2020</div>
-                      </div>
-                      <div class="text-theme-9">+$43</div>
-                  </div>
-              </div>
-              <div class="intro-x">
-                  <div class="box px-5 py-3 mb-3 flex items-center zoom-in">
-                      <div class="w-10 h-10 flex-none image-fit rounded-full overflow-hidden">
-                          <img alt="Midone Tailwind HTML Admin Template" src="dist/images/profile-15.jpg">
-                      </div>
-                      <div class="ml-4 mr-auto">
-                          <div class="font-medium">Al Pacino</div>
-                          <div class="text-gray-600 text-xs">8 October 2022</div>
-                      </div>
-                      <div class="text-theme-9">+$112</div>
-                  </div>
-              </div>
-
-
-
+            @forelse ($user->transacrions() as $item)
+            <div class="intro-x">
+                <div class="box px-5 py-3 mb-3 flex items-center zoom-in">
+                    <div class="w-10 h-10 flex bg-gray-300 font-bolder items-center justify-center image-fit rounded-full overflow-hidden">
+                        {{$item->percent}} <sub>%</sub>
+                    </div>
+                    <div class="ml-4 mr-auto">
+                    <div class="font-medium">{{$item->getClientName()}}</div>
+                        <div class="text-gray-600 text-xs">{{Carbon\Carbon::parse($item->created_at)->settings([
+                            'toStringFormat' => 'jS \o\f F, Y',
+                        ])}}</div>
+                    </div>
+                <div class="text-theme-9 font-normal">+{{round($item->service_price/100 * $item->percent/100, 2)}} <sup>₾</sup></div>
+                </div>
+            </div>
+            @empty
+                
+            @endforelse
+             
           </div>
       </div>
     </div>

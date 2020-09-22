@@ -74,69 +74,25 @@
           <div class="mt-5">
 
             {{-- Transactions --}}
-              <div class="intro-x">
-                  <div class="box px-5 py-3 mb-3 flex items-center zoom-in">
-                      <div class="w-10 h-10 flex-none image-fit rounded-full overflow-hidden">
-                          <img alt="Midone Tailwind HTML Admin Template" src="dist/images/profile-14.jpg">
-                      </div>
-                      <div class="ml-4 mr-auto">
-                          <div class="font-medium">Leonardo DiCaprio</div>
-                          <div class="text-gray-600 text-xs">6 August 2022</div>
-                      </div>
-                      <div class="text-theme-9">+$23</div>
-                  </div>
-              </div>
-              <div class="intro-x">
-                  <div class="box px-5 py-3 mb-3 flex items-center zoom-in">
-                      <div class="w-10 h-10 flex-none image-fit rounded-full overflow-hidden">
-                          <img alt="Midone Tailwind HTML Admin Template" src="dist/images/profile-10.jpg">
-                      </div>
-                      <div class="ml-4 mr-auto">
-                          <div class="font-medium">Tom Cruise</div>
-                          <div class="text-gray-600 text-xs">21 July 2020</div>
-                      </div>
-                      <div class="text-theme-9">+$83</div>
-                  </div>
-              </div>
-              <div class="intro-x">
-                  <div class="box px-5 py-3 mb-3 flex items-center zoom-in">
-                      <div class="w-10 h-10 flex-none image-fit rounded-full overflow-hidden">
-                          <img alt="Midone Tailwind HTML Admin Template" src="dist/images/profile-12.jpg">
-                      </div>
-                      <div class="ml-4 mr-auto">
-                          <div class="font-medium">Al Pacino</div>
-                          <div class="text-gray-600 text-xs">5 January 2021</div>
-                      </div>
-                      <div class="text-theme-9">+$199</div>
-                  </div>
-              </div>
-              <div class="intro-x">
-                  <div class="box px-5 py-3 mb-3 flex items-center zoom-in">
-                      <div class="w-10 h-10 flex-none image-fit rounded-full overflow-hidden">
-                          <img alt="Midone Tailwind HTML Admin Template" src="dist/images/profile-6.jpg">
-                      </div>
-                      <div class="ml-4 mr-auto">
-                          <div class="font-medium">Russell Crowe</div>
-                          <div class="text-gray-600 text-xs">22 April 2020</div>
-                      </div>
-                      <div class="text-theme-9">+$43</div>
-                  </div>
-              </div>
-              <div class="intro-x">
-                  <div class="box px-5 py-3 mb-3 flex items-center zoom-in">
-                      <div class="w-10 h-10 flex-none image-fit rounded-full overflow-hidden">
-                          <img alt="Midone Tailwind HTML Admin Template" src="dist/images/profile-15.jpg">
-                      </div>
-                      <div class="ml-4 mr-auto">
-                          <div class="font-medium">Al Pacino</div>
-                          <div class="text-gray-600 text-xs">8 October 2022</div>
-                      </div>
-                      <div class="text-theme-9">+$112</div>
-                  </div>
-              </div>
-
-
-
+            @forelse ($user->transacrions() as $item)
+            <div class="intro-x">
+                <div class="box px-5 py-3 mb-3 flex items-center zoom-in">
+                    <div class="w-10 h-10 flex bg-gray-300 font-bolder items-center justify-center image-fit rounded-full overflow-hidden">
+                        {{$item->percent}} <sub>%</sub>
+                    </div>
+                    <div class="ml-4 mr-auto">
+                    <div class="font-medium">{{$item->getClientName()}}</div>
+                        <div class="text-gray-600 text-xs">{{Carbon\Carbon::parse($item->created_at)->settings([
+                            'toStringFormat' => 'jS \o\f F, Y',
+                        ])}}</div>
+                    </div>
+                <div class="text-theme-9 font-normal">+{{round($item->service_price/100 * $item->percent/100, 2)}} <sup>₾</sup></div>
+                </div>
+            </div>
+            @empty
+                
+            @endforelse
+             
           </div>
       </div>
     </div>
@@ -145,14 +101,25 @@
         <div class="intro-y box lg:mt-5">
             <div class="flex items-center px-5 py-5 sm:py-3 border-b border-gray-200">
                 <h2 class="font-bolder text-sm font-caps mr-auto">
-                    კლიენტების სია
+                    
                 </h2>
-                <select class="slect2" id="clientfilter">
-                    <option value="all">ყველა</option>
-                    <option value="done">მიღებული</option>
-                    <option value="waiting">ველოდებით</option>
-                    <option value="notcome">არ მოსულა</option>
-                </select>    
+                <form class="flex">
+                    <input data-daterange="true" class="datepicker font-normal text-xs input appearance-none block w-56 mr-3 bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"> 
+           
+                    <div class="relative w-56">
+                        <select class="block font-normal text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
+                          <option>ყველა</option>
+                          <option>მიღებული</option>
+                          <option>ველოდებით</option>
+                          <option>არ მოსულა</option>
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 -mt-3 text-gray-700">
+                          <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                        </div>
+                      </div>
+                      <input  class="font-normal cursor-pointer text-xs input appearance-none block w-56 font-bold font-caps ml-3 bg-indigo-500 text-white rounded py-3 px-4 mb-3 leading-tight" type="submit" value="ძებნა"> 
+           
+                </form>
             </div>
             <div class="p-5" id="clientlist">
                 @foreach ($userclients as $client)

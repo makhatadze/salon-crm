@@ -5,8 +5,9 @@
     დაამატეთ კლიენტის ჩანაწერი
 </h2>
 <div class="grid grid-cols-12 gap-6 mt-5">
-    <div class="intro-y col-span-12 flex flex-wrap sm:flex-no-wrap items-center mt-2">
-        <a href="/clients/create" class="button text-white bg-theme-1 shadow-md mr-2 font-bold font-caps text-xs">კლიენტის დამატება</a>
+    <div class="intro-y col-span-12 flex justify-between flex-wrap sm:flex-no-wrap items-center mt-2">
+        <div class="flex">
+            <a href="/clients/create" class="button text-white bg-theme-1 shadow-md mr-2 font-bold font-caps text-xs">კლიენტის დამატება</a>
         <div class="dropdown relative">
             <button class="dropdown-toggle button px-2 box text-gray-700">
                 <span class="w-5 h-5 flex items-center justify-center"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus w-4 h-4"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> </span>
@@ -18,10 +19,13 @@
                 </div>
             </div>
         </div>
+        </div>
         <div class="w-full sm:w-auto mt-3 sm:mt-0 sm:ml-auto md:ml-0">
-            <div class="w-56 relative text-gray-700">
-                
-               </div>
+            <form action="" class="flex box p-2">
+                <input class="appearance-none font-normal text-xs block w-56 bg-gray-200 text-gray-700 border rounded py-3 px-4  leading-tight focus:outline-none focus:bg-white" type="text" placeholder="სახელი ან ნომერი">
+                <input class="appearance-none font-normal text-xs font-caps block w-56 ml-3 bg-indigo-500 text-white border rounded py-3 px-4  leading-tight " type="submit" value="ძებნა">
+                  
+            </form>
         </div>
     </div>
     <table class="table table-report -mt-2 col-span-12">
@@ -39,6 +43,7 @@
                 <tr>
                 <td class="whitespace-no-wrap">
                     <h6 class="font-bold text-black uppercase text-sm">{{$client->{"full_name_".app()->getLocale()} }}</h6>
+                    <span class="text-gray-700 text-xs">{{$client->number}}</span>
                 </td>
                 <td class="whitespace-no-wrap">
                     <h6 class="text-sm text-black font-normal"><span class="text-xs">რეგ:</span> {{$client->created_at}}</h6>

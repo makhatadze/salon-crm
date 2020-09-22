@@ -36,6 +36,7 @@
                             @else
                             <img alt="" class="rounded-full" src="/no-avatar.png">
                             @endif
+                            
                         </div>
                         <div class="lg:ml-2 lg:mr-auto text-center lg:text-left mt-3 lg:mt-0">
                             <a href="" class="font-bolder text-xs text-gray-700 uppercase font-caps">{{$user->name}} @if($user->profile()->first()) {{$user->profile()->first()->last_name}} @endif</a><br>

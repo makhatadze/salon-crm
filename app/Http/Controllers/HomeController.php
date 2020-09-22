@@ -50,7 +50,7 @@ class HomeController extends Controller
             $usedservices = ClientService::where('status', true)->get();
             $allclientservices = ClientService::count();
             $income = 0;
-            $todayservices = ClientService::whereDate('session_start_time', Carbon::today())->whereNull('deleted_at')->get();
+            $todayservices = ClientService::whereDate('session_start_time', Carbon::today())->whereNull('deleted_at')->paginate(40);
             foreach($usedservices as $service){
                 $income += $service->getServicePrice();
             }

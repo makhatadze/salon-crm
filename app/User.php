@@ -9,6 +9,7 @@ use Spatie\Permission\Traits\HasRoles;
 use App\UserHasJob;
 use App\Office;
 use App\Department;
+use App\SalaryToService;
 use App\Company;
 class User extends Authenticatable
 {
@@ -115,7 +116,7 @@ class User extends Authenticatable
      */
     public function getCompanyName(){
         $company_id = UserHasJob::where('company_id', $this->id)->first();
-        if($department_id){
+        if($company_id){
             $company = Company::find($company_id);
             if($company){
                 return $company->first()->{"title_".app()->getLocale()} ;
@@ -139,12 +140,22 @@ class User extends Authenticatable
         return $this->morphOne('App\Image', 'imageable');
     }
     public function getEarnedMoney(){
-        $clients = ClientService::where([['user_id', $this->id], ['status', true]])->get();
-        $money = 0;
-        foreach($clients as $client){
-            $money += $client->getServicePrice();
+       $earned = SalaryToService::where('user_id', $this->id)->get();
+       if($earned){
+           $money = 0;
+           foreach($earned as $serv){
+            $money += round($serv->service_price/100 * $serv->percent/100, 2);
+           }
+        return $money; 
+       }
+       return;
+    }
+    public function transacrions(){
+        $list = SalaryToService::where('user_id', $this->id)->get();
+        if($list){
+            return $list;
         }
-        return $money;
+        return;
     }
     public function ClientCount(){
         $clients = ClientService::where([['user_id', $this->id], ['status', true]])->count();

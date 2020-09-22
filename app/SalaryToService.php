@@ -11,7 +11,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-
+use App\ClientService;
 class SalaryToService extends Model
 {
 
@@ -23,4 +23,12 @@ class SalaryToService extends Model
     protected $fillable = [
         'user_id', 'service_id', 'service_price', 'percent',
     ];
+    protected $table = 'salary_to_services';
+    public function getClientName(){
+        $name = ClientService::find($this->service_id)->first();
+        if($name){
+            return $name->clinetserviceable()->first()->{"full_name_".app()->getLocale()};
+        }
+        return;
+    }
 }

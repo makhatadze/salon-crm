@@ -18,7 +18,7 @@ class CreateSalaryToServicesTable extends Migration
             $table->bigInteger('user_id')->unsigned()->index();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->bigInteger('service_id')->unsigned()->index()->nullable();
-            $table->foreign('service_id')->references('id')->on('services');
+            $table->foreign('service_id')->references('id')->on('client_services');
             $table->integer('service_price');
             $table->string('percent')->nullable();
             $table->timestamp('deleted_at')->nullable();
