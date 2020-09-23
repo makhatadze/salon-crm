@@ -204,7 +204,7 @@ class ClientController extends Controller
                 SalaryToService::create([
                     'user_id' => $user->id,
                     'service_id' => $id,
-                    'service_price' => $clientservice->getServicePrice()*100,
+                    'service_price' => $clientservice->getServicePrice() * 100,
                     'percent' => $userProfile->percent
                 ]);
             }
@@ -282,25 +282,81 @@ class ClientController extends Controller
 
     public function services(Request $request)
     {
-        if (request()->get('date')) {
-            $request->all();
-            $date = $request->date;
-            $services = ClientService::whereDate('session_start_time', Carbon::parse(Str::substr($date, 1, strlen($date) - 2)))->whereNull('deleted_at')->paginate(1);
-            return view('theme.template.company.finance', compact('services'));
+        $this->validate($request, [
+            'client_name' => 'nullable|string|max:30',
+            'service' => 'nullable|string',
+            'date_from' => 'nullable|date',
+            'date_to' => 'nullable|date',
+            'price_from' => 'nullable|numeric|',
+            'price_to' => 'nullable|numeric|gt:price_from',
+            'pay_method' => "nullable|string",
+            'pay_status' => "nullable|string",
+        ]);
+        $services = ClientService::query()
+            ->join('profiles', 'profiles.profileable_id', '=', 'client_services.user_id')
+            ->join('services', 'services.id', '=', 'client_services.service_id');
+        if ($request) {
+            if ($request->client_name) {
+                $name = explode(' ', $request->client_name);
+                $services = $services->where('profiles.first_name', 'like', '%' . $name[0] . '%');
+                if (isset($name[1])) {
+                    $services = $services->where('profiles.last_name', 'like', '%' . $name[1] . '%');
+                }
+            }
+//            $services = $services->where('CONCAT(profiles.first_name, ", ", profiles.last_name)', 'LIKE',  'ჯოხაძე');
+            if ($request->service) {
+                $serviceTitle = 'services.title_' . App()->getLocale();
+                $services = $services->where('services.title_en', 'LIKE', '%' . $request->service . '%');
+            }
+            if ($request->date_from) {
+                $services = $services->whereDate('client_services.session_start_time', '>=', Carbon::parse($request->date_from));
+            }
+            if ($request->date_to) {
+                $services = $services->whereDate('client_services.session_start_time', '<=', Carbon::parse($request->date_to));
+            }
+            if ($request->price_from) {
+                $services = $services->where('services.price', '>=', $request->price_from * 100);
+            }
+            if ($request->price_to) {
+                $services = $services->where('services.price', '<=', $request->price_to * 100);
+            }
+            if ($request->pay_method && $request->pay_method != 'all') {
+                $services = $services->where('client_services.pay_method', '=', $request->pay_method);
+            }
+            if ($request->pay_status != 0) {
+                if ($request->pay_status == 1) {
+                    $services = $services->where('client_services.status', '=', true);
+                }
+                if ($request->pay_status == 2) {
+                    $services = $services->where('client_services.status', '=', false);
+                    $services = $services->whereDate('client_services.session_start_time', '>', Carbon::now());
+                }
+                if ($request->pay_status == 3) {
+                    $services = $services->where('client_services.status', '=', false);
+                    $services = $services->whereDate('client_services.session_start_time', '<', Carbon::now());
+                }
+            }
         }
-        $services = ClientService::whereNull('deleted_at')->paginate(20);
+
+        $services = $services->paginate(20);
+
+//        $services = ClientService::whereNull('deleted_at')->paginate(20);
+
+//        $services = ClientService::whereNull('deleted_at')->paginate(20);
         return view('theme.template.company.finance', compact('services'));
     }
 
     /**
      * Convert to Excel
      */
-    public function export()
+    public
+    function export()
     {
         return Excel::download(new ClientExport, 'client.xlsx');
     }
 
-    public function financeExport()
+    public
+    function financeExport()
     {
         return Excel::download(new FinanceExport(), 'finance.xlsx');
     }

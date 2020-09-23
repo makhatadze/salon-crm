@@ -3,6 +3,7 @@
 namespace App\Exports;
 
 use App\ClientService;
+use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
@@ -31,12 +32,10 @@ class FinanceExport implements FromCollection, WithHeadings
             $clService['session_start_time'] = $startTime;
             if ($status) {
                 $clService['status'] = 'მიღებულია';
-            } else if (Carbon\Carbon::now() > $startTime) {
+            } else if (Carbon::now() > $startTime) {
                 $clService['status'] = 'არ მოსულა';
-            } else if (Carbon\Carbon::now() < $startTime) {
-
+            } else if (Carbon::now() < $startTime) {
                 $clService['status'] = 'ველოდებით';
-
             }
             unset($clService['deleted_at']);
             unset($clService['id']);

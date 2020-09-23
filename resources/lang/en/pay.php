@@ -15,5 +15,6 @@ return [
 
     'Card' => 'Card',
     'Cash' => 'Cash',
-    'Bank' => 'Bank'
+    'Bank' => 'Bank',
+    'All' => 'All'
 ];
