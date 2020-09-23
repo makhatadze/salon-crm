@@ -5,22 +5,20 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use App\Category;
 use App\Department;
+use Illuminate\Database\Eloquent\SoftDeletes;
 class Product extends Model
 {
-    protected $fillable = ['title_ge', 'title_ru', 'title_en', 'description_ge', 'description_ru', 'description_en', 'price', 'type', 'stock', 'category_id', 'department_id'];
+    use SoftDeletes;
+    protected $fillable = ['title_ge', 'title_ru', 'title_en', 'description_ge', 'description_ru', 'description_en', 'price', 'purchase_id', 'type', 'stock', 'unit', 'category_id', 'department_id'];
     protected $table = 'products';
     public function category(){
-        return $this->hasMany('App\Category');
+        return $this->belongsTo('App\Category');
+    }
+    public function purchase(){
+        return $this->belongsTo('App\Purchase');
     }
     public function images(){
         return $this->morphMany('App\Image', 'imageable');
-    }
-    public function getCategoryName(){
-        $catname = Category::find($this->id)->{"title_".app()->getLocale()};
-        if($catname){
-            return $catname;
-        }
-        return;
     }
     public function getDepartmentName(){
         $depname = Department::whereNull('deleted_at')->find($this->department_id);

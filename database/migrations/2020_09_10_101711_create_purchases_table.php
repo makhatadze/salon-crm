@@ -28,8 +28,6 @@ class CreatePurchasesTable extends Migration
             $table->integer('getter_person_id');
             //third
             $table->boolean('dgg');
-            //Array
-            $table->json('array');
             //Footer
             $table->timestamps();
             $table->timestamp('deleted_at')->nullable();

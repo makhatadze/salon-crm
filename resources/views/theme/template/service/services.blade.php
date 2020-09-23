@@ -52,8 +52,8 @@
                    </div>
                </td>
                <td class="font-normal">
-               @if ($serv->category()->first())
-               {{ $serv->category()->first()->{"title_".app()->getLocale()} }}
+               @if ($serv->category)
+               {{ $serv->category->{"title_".app()->getLocale()} }}
                @endif
                 
                </td>

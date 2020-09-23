@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Purchase;
 use App\Office;
 use App\Profile;
+use App\Product;
 use App\Department;
 use App\Category;
 use App\DistributionCompany;
@@ -34,7 +35,8 @@ class PurchaseController extends Controller
            
             if(request($req)){
                 if($req == "code"){
-                    $purchases = $purchases->where('purchase_number', 'like', '%'.request($req).'%')->orWhere('overhead_number', 'like', '%'.request($req).'%');
+                    $purchases = $purchases->where('purchase_number', 'like', '%'.request($req).'%')
+                    ->orWhere('overhead_number', 'like', '%'.request($req).'%');
                 }elseif($req == "distributor"){
                     $purchases = $purchases->where('distributor_id', 'like', '%'.intval(request($req)).'%');
                 }
@@ -84,23 +86,29 @@ class PurchaseController extends Controller
             //array
             'ability_type' => '',
             'title' => '',
+            'unit_price' => '',
+            'currency' => '',
             'unit' => '',
             'quantity' => '',
-            'unit_price' => '',
+            'category' => '',
+            'body' => '',
         ],[
             'responsible_person_id.required' => 'აირჩიეთ პასუხისმგებელი პირი',
             'getter_person_id.required' => 'აირჩიეთ მიმღები პირი',
             'distributor_id.required' => 'აირჩიეთ მომწოდებელი',
         ]);
         $json = array();
-        if($request->input('ability_type') && $request->input('title') && $request->input('unit') && $request->input('quantity') && $request->input('unit_price')){
+        if($request->input('ability_type') && $request->input('title') && $request->input('unit') && $request->input('quantity') && $request->input('unit_price') && $request->input('currency') && $request->input('category') && $request->input('body')){
             foreach($request->input('ability_type') as $key => $item){
-                $json[$key] =[
+                $json[] =[
                     'ability_type' => $request->input('ability_type')[$key],
                     'title' => $request->input('title')[$key],
                     'unit' => $request->input('unit')[$key],
-                    'quantity' => $request->input('quantity')[$key],
                     'unit_price' => $request->input('unit_price')[$key]*100,
+                    'currency' => $request->input('currency')[$key],
+                    'quantity' => $request->input('quantity')[$key],
+                    'category' => $request->input('category')[$key],
+                    'body' => $request->input('body')[$key],
                 ];
             }
         }
@@ -122,8 +130,22 @@ class PurchaseController extends Controller
         }else{
             $purchase->dgg = false;
         }
-        $purchase->array = json_encode($json);
-        $purchase->save();
+        if($purchase->save()){
+            
+            foreach ($json as $key => $product) {
+                Product::create([
+                    'title_ge' => $product['title'],
+                    'price' => $product['unit_price'],
+                    'currency_type' => $product['currency'],
+                    'unit' => $product['unit'],
+                    'stock' => $product['quantity'],
+                    'category_id' => $product['category'],
+                    'description_ge' => $product['body'],
+                    'type' => $product['ability_type'],
+                    'purchase_id' => $purchase->id
+                ]);
+            }
+        }
         return redirect('/purchases');
     }
 
@@ -179,10 +201,10 @@ class PurchaseController extends Controller
             //array
             'ability_type' => '',
             'title' => '',
-            'unit' => '',
-            'quantity' => '',
             'unit_price' => '',
             'currency' => '',
+            'unit' => '',
+            'quantity' => '',
             'category' => '',
             'body' => '',
         ],[
@@ -191,22 +213,20 @@ class PurchaseController extends Controller
             'distributor_id.required' => 'აირჩიეთ მომწოდებელი',
         ]);
         $json = array();
-        if($request->input('ability_type') && $request->input('title') && $request->input('unit') && $request->input('quantity') && $request->input('unit_price')){
+        if($request->input('ability_type') && $request->input('title') && $request->input('unit') && $request->input('quantity') && $request->input('unit_price') && $request->input('currency') && $request->input('category') && $request->input('body')){
             foreach($request->input('ability_type') as $key => $item){
-                $json[$key] =[
+                $json[] =[
                     'ability_type' => $request->input('ability_type')[$key],
                     'title' => $request->input('title')[$key],
+                    'unit' => $request->input('unit')[$key],
                     'unit_price' => $request->input('unit_price')[$key]*100,
                     'currency' => $request->input('currency')[$key],
-                    'unit' => $request->input('unit')[$key],
                     'quantity' => $request->input('quantity')[$key],
                     'category' => $request->input('category')[$key],
-                    'images' => $request->input('images')[$key],
                     'body' => $request->input('body')[$key],
                 ];
             }
         }
-
         $purchase->purchase_type = $request->input('purchase_type');
         if($request->input('purchase_type') == "overhead"){
             $purchase->overhead_number = $request->input('overhead_number');
@@ -224,8 +244,22 @@ class PurchaseController extends Controller
         }else{
             $purchase->dgg = false;
         }
-        $purchase->array = json_encode($json);
-        $purchase->save();
+        if($purchase->save()){
+            
+            foreach ($json as $key => $product) {
+                Product::create([
+                    'title_ge' => $product['title'],
+                    'price' => $product['unit_price'],
+                    'currency_type' => $product['currency'],
+                    'unit' => $product['unit'],
+                    'stock' => $product['quantity'],
+                    'category_id' => $product['category'],
+                    'description_ge' => $product['body'],
+                    'type' => $product['ability_type'],
+                    'purchase_id' => $purchase->id
+                ]);
+            }
+        }
         return redirect('/purchases');
     }
 
@@ -237,8 +271,7 @@ class PurchaseController extends Controller
      */
     public function destroy(Purchase $purchase)
     {
-        $purchase->deleted_at = Carbon::now('Asia/Tbilisi');
-        $purchase->save();
+        $purchase->delete();
         return redirect('/purchases');
     }
     //Get Departments by office

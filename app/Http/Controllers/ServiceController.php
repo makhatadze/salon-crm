@@ -40,8 +40,8 @@ class ServiceController extends Controller
      */
     public function create()
     {
-        $categories = Category::whereNull('deleted_at')->get();
-        $inventories = Product::whereIn('type', ['inventory', 'both'])->whereNull('deleted_at')->get();
+        $categories = Category::all();
+        $inventories = Product::where('type', 2)->whereNull('deleted_at')->get();
         $action = "post";
         return view('theme.template.service.add_service', compact('action', 'categories', 'inventories'));
     }
@@ -54,6 +54,7 @@ class ServiceController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request->all());
         $this->validate($request,[
             'title_ge' => 'required',
             'title_en' => '',

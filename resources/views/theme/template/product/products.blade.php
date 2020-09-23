@@ -3,7 +3,6 @@
 @section('content')
 <div class="grid grid-cols-12 gap-6 mt-5">
     <div class="intro-y col-span-12 flex flex-wrap sm:flex-no-wrap items-center mt-2">
-        <a href="/products/create" class="button text-white font-bold font-caps text-xs bg-theme-1 shadow-md mr-2">დამატეთ პროდუქტი</a>
         <div class="dropdown relative">
             <button class="dropdown-toggle button px-2 box text-gray-700">
                 <span class="w-5 h-5 flex items-center justify-center"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus w-4 h-4"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> </span>
@@ -56,14 +55,14 @@
                     </td>
                     <td @if($prod->stock == 0)  style="background-color: #ffaeae" @endif>
                         <a href="" class="font-medium whitespace-no-wrap font-bold text-black">{{$prod->{"title_".app()->getLocale()} }}</a> 
-                        <div class="text-gray-600 text-xs whitespace-no-wrap font-normal"> @if($prod->category_id){{$prod->getCategoryName($prod->category_id)}}@endif</div>
+                        <div class="text-gray-600 text-xs whitespace-no-wrap font-normal"> </div>
                     </td>
                     <td  @if($prod->stock == 0)  style="background-color: #ffaeae" @endif class="text-center font-normal">{{$prod->price/100}} ₾</td>
                     <td @if($prod->stock == 0)  style="background-color: #ffaeae" @endif class="text-center font-normal ">
                         <h6 class="text-xs text-gray-900 font-black">
-                            {{ $prod->getDepartmentName() }} </h6>
+                          {{ $prod->purchase->department->{"name_".app()->getLocale()} }} </h6>
                             <span class="ml-1 text-xs font-normal">
-                                {{ $prod->getOfficeName() }}
+                              {{ $prod->purchase->office->{"name_".app()->getLocale()} }}
                             </span>
                         
                     </td>
@@ -72,21 +71,19 @@
                             {{$prod->stock}} 
                             @if($prod->unit == "unit")
                             ერთეული
-                            @elseif($prod->unit == "gram")
-                            გრამი
+                            @elseif($prod->unit == "kilo")
+                            კილოგრამი
                             @elseif($prod->unit == "metre")
                             მეტრი
                             @endif
                         </span>
                              <br>
                                 <span class="text-xs font-normal">
-                                    @if ($prod->type == "inventory")
-                                            ინვენტარი
-                                        @elseif($prod->type == "both")
-                                        ინვენტარი / გაყიდვები
-                                        @elseif($prod->type == "sale")
-                                            გაყიდვები
-                                        @endif
+                                    @if ($prod->type == "1")
+                                      ძირითადი საშუალება
+                                    @elseif($prod->type == "2")
+                                      ხარჯთმასალა
+                                    @endif
                                 </span>
                            
                         </td>

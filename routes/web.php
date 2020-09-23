@@ -39,12 +39,12 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
         Route::get('/products/turn/{product}/{status}', 'ProductController@turn');
         Route::post('/products/removeimg', 'ProductController@removeimg')->name('RemoveImage');
         Route::get('/products/delete/{product}', 'ProductController@destroy')->name('DeleteProduct');
-        Route::resource('/products', 'ProductController')->except('show', 'store', 'update', 'delete');
+        Route::get('/products', 'ProductController@index');
         Route::get('/products/edit/{product}', 'ProductController@edit')->name('ProductEdit');
-        Route::post('/products/store', 'ProductController@store')->name('AddProduct');
         Route::put('/products/update/{id}', 'ProductController@update')->name('UpdateProduct');
         Route::post('/products/getproductsajax', 'ProductController@getproductsajax')->name('GetProductsAjax');
         Route::get('/products/productexport', 'ProductController@productexport')->name('ProductExport');
+        Route::get('/product/removeproduct/{id}', 'ProductController@removeproductajax')->name('RemoveProductAjax');
         //Company Controller
           //Distribution
             Route::get('/companies/distcompany', 'CompanyController@distcompany'); 

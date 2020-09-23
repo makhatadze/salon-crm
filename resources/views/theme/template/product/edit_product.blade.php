@@ -6,135 +6,126 @@
 <form action="{{route('UpdateProduct', $product->id)}}" method="post" enctype="multipart/form-data">
        @csrf
        @method('PUT')
-    <div>
-        <label class="font-helvetica">სათაური ქართულად <span class="text-red-500">*</span></label>
-    <input required type="text" value="{{$product->title_ge}}" class="input w-full border mt-2" name="title_ge">
-    </div>
-    <div>
-        <label class="font-helvetica">სათაური რუსულად</label>
-        <input type="text" value="{{$product->title_ru}}" class="input w-full border mt-2" name="title_ru">
-    </div>
-    <div>
-        <label class="font-helvetica">სათაური ინგლისურად</label>
-        <input type="text" value="{{$product->title_en}}" class="input w-full border mt-2" name="title_en">
-    </div>
     <div class="intro-y box mt-2 p-5">
-        
-        <div class="flex">
-            <div class="w-1/2 p-2">
-                <label>ფასი</label>
-                <div class="relative mt-2">
-                    <input required value="{{$product->price/100}}" type="number" min="0" step="0.01" name="price" class="input pr-12 w-full border col-span-4" placeholder="ფასი">
-                    <div class="absolute top-0 right-0 rounded-r w-10 h-full flex items-center justify-center bg-gray-100 border text-gray-600">₾</div>
-                </div>
-            </div>
-            <div class="p-2 w-1/2">
-                <label class="font-helvetica">დეპარტამენტი</label>
-                <div class="mt-2">
-                    <select data-placeholder="Select a Department" name="get_department" class="font-helvetica select2 w-full" >
-                        
-                        @foreach ($departments as $department)
-                        @if ($product->department_id && $product->department_id == $department->id)
-                        <option selected value="{{$department->id}}"> {{$department->{"name_".app()->getLocale()} }} | {{$department->departmentable()->first()->{"name_".app()->getLocale()} }}</option>
-                        @else 
-                        <option value="{{$department->id}}"> {{$department->{"name_".app()->getLocale()} }} | {{$department->departmentable()->first()->{"name_".app()->getLocale()} }}</option>
-                        @endif
-                        
-                        @endforeach
-                    </select>
-                </div>
-            </div>
-        </div>
 
-            
+        <div class="flex flex-wrap  mb-6">
+            <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+              <label class="block font-bold font-caps uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                სათაური ქართულად
+              </label>
+              <input value="{{$product->title_ge}}" name="title_ge" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" >
+            </div>
+            <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+              <label class="block font-bold font-caps uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
+                სათაური რუსულად
+              </label>
+              <input value="{{$product->title_ru}}" name="title_ru"  class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="text" >
+            </div>
+            <div class="w-full md:w-1/3 px-3">
+              <label class="block font-bold font-caps uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
+                სათაური ინგლისურად
+              </label>
+              <input value="{{$product->title_en}}" name="title_en" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text">
+            </div>
+          </div>
+          <div class="flex flex-wrap mt-3 mb-6">
+            <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                <label class="block font-bold font-caps uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                  ერთეული
+                </label>
+                <div class="relative">
+                  <select name="unit"  class="block font-medium text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
+                    <option value="unit" @if($product->unit == "unit") selected @endif>ცალი</option>
+                    <option value="kilo" @if($product->unit == "kilo") selected @endif>კილოგრამი</option>
+                    <option value="metre" @if($product->unit == "metre") selected @endif>მეტრი</option>
+                  </select>
+                  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                  </div>
+                </div>
+              </div>
+              <div class="w-full md:w-1/3 px-3">
+                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
+                    რაოდენობა
+                </label>
+                <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="number" required min="0" value="{{$product->stock}}" step="0.1" name="stock">
+              </div>
+              <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                  <label class="block font-bold font-caps uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                    შესყიდვა
+                  </label>
+                  <div class="relative">
+                    <select name="purchase"  class="block font-medium text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
+                      @foreach ($purchases as $item)
+                        @if($product->purchase_id == $item->id)
+                        <option value="{{$item->id}}" selected>@if($item->purchase_type == "overhead") #{{$item->overhead_number}} @else #{{$item->purchase_number}} @endif</option>
+                        @else 
+                        <option value="{{$item->id}}">@if($item->purchase_type == "overhead") #{{$item->overhead_number}} @else #{{$item->purchase_number}} @endif</option>
+                        @endif
+                      @endforeach
+                    </select>
+                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                      <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                    </div>
+                  </div>
+                </div>
+            </div>
         <div class="flex">
-            <div class="mt-2 w-1/2 p-2">
-                <label class="font-bold font-caps text-xs text-gray-700">კატეგორია</label>
-                <select data-placeholder="აირჩიეთ კატეგორია" class="pr-12 select2 w-full" name="get_category">
+          <div class="w-full md:w-1/3 px-3">
+            <div>
+                <label for="price" class="block  leading-5 font-medium text-gray-700 font-bold font-caps text-xs">ფასი</label>
+                <div class="mt-1 relative rounded-md shadow-sm">
+                  <input autocomplete="off" value="{{$product->price/100}}" name="price" min="0" step="0.01" class="block font-medium text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="xxx.xx">
+                  <div class="absolute inset-y-0 right-0 flex items-center">
+                    <select name="currency" aria-label="Currency" class="form-select h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm sm:leading-5">
+                      <option value="gel" @if($product->currency_type == "gel") selected @endif >GEL</option>
+                      <option value="usd" @if($product->currency_type == "usd") selected @endif >USD</option>
+                      <option value="eur" @if($product->currency_type == "eur") selected @endif >EUR</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+        </div>
+            <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                <label class="block font-bold font-caps uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                  კატეგორია
+                </label>
+                <div class="relative">
+                  <select class="block font-medium text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" name="get_category">
                     @if ($categories)
                         @foreach ($categories as $cat)
-                        @if($product->category_id == $cat->id)
+                        @if($product->category->id == $cat->id)
                         <option value="{{$cat->id}}" selected>{{$cat->{'title_'.app()->getLocale()} }}</option>
                         @else
                         <option value="{{$cat->id}}" >{{$cat->{'title_'.app()->getLocale()} }}</option>
                         @endif
                         @endforeach
                     @endif
-                </select>
-            </div>
-            <div class="mt-2 w-1/2 p-2">
-                <label class="font-bold font-caps text-xs text-gray-700">დისტრიბუტორი</label>
-                <select data-placeholder="დისტრიბუტორი" class="pr-12 select2 w-full" name="get_distributor">
-                    @if ($distributions)
-                        @foreach ($distributions as $key => $dist)
-                            @if($product->distributor_id == $dist->id)
-                            <option value="{{$dist->id}}" selected>{{$dist->{'name_'.app()->getLocale()} }}</option>
-                            @else
-                            @if($key == 0) 
-                            <option selected></option>
-                            @endif
-                            <option value="{{$dist->id}}" >{{$dist->{'name_'.app()->getLocale()} }}</option>
-                            @endif
-                        @endforeach
-                    @endif
-                </select>
-            </div>
-        </div>
-
-        <div class="flex">
-            <div class="w-1/3 p-2 ">
-                <label class="font-bold font-caps text-xs text-gray-700">ერთეული</label>
-                <div class="mt-2">
-                <select required data-placeholder="ერთეული" name="unit" class="font-helvetica select2  p-2 w-full border border-gray-300 rounded" >
-                    <option value="unit" @if($product->unit == "unit") selected @endif>ცალი</option>
-                    <option value="gram" @if($product->unit == "gram") selected @endif>გრამი</option>
-                    <option value="metre" @if($product->unit == "metre") selected @endif>მეტრი</option>
-                </select>
-            </div>
-            
-            </div>
-            <div class="w-1/3 p-2">
-                <label class="font-bold font-caps text-xs text-gray-700">რაოდენობა</label>
-                <div class="relative mt-2">
-                    <input type="number" required min="0" value="{{$product->stock}}" step="0.1" name="stock" class="input  w-full border " placeholder="რაოდენობა">
+                  </select>
+                  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                  </div>
                 </div>
-            </div>
-            <div class="mt-2 w-1/3 p-2">
-                <label class="font-bold font-caps text-xs text-gray-700">ტიპი</label>
-                <select data-placeholder="პროდუქტის ტიპი" required class="pr-12 select2 w-full" name="get_type">
-                    <option value="inventory" @if($product->type == "inventory") selected @endif>ინვენტარი</option>
-                    <option value="sale" @if($product->type == "sale") selected @endif>გასაყიდი</option>
-                    <option value="both" @if($product->type == "both") selected @endif>ორივე</option>
-                </select>
-            </div>
+              </div>
+              <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                <label class="block font-bold font-caps uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-state">
+                  ტიპი
+                </label>
+                <div class="relative">
+                  <select name="get_type" class="block font-medium text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
+                    <option value="1" @if($product->type == "1") selected @endif>ძირითადი საშუალება</option>
+                    <option value="2" @if($product->type == "2") selected @endif>ხარჯმასალა</option>
+                  </select>
+                  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                  </div>
+                </div>
+              </div>
         </div>
 
 
 
 
-
-
-
-
-
-
-
-
-        <div class="mt-2">
-            <label class="font-helvetica">ახალი კატეგორია</label><br>
-            <small class="font-helvetica">ახალი კატეგორიის შეყვანის შემთხვევაში, პროდუქტის კატეგორიად ეს ჩაითვლება.</small>
-            <div class="flex">
-                <div class="w-1/3 p-2">
-                    <input type="text" placeholder="ქართულად" class="input w-full border mt-2 font-helvetica" name="new_category_ge">
-                </div>
-                <div class="w-1/3 p-2">
-                    <input type="text" placeholder="რუსულად" class="input w-full border mt-2 font-helvetica" name="new_category_ru">
-                </div>
-                <div class="w-1/3 p-2">
-                    <input type="text" placeholder="ინგლისურად" class="input w-full border mt-2 font-helvetica" name="new_category_en">
-                </div>
-            </div>
-        </div>
         <div class="mt-3">
             <label class="font-helvetica">სურათები</label>
             <div class="border-2 border-dashed rounded-md mt-3 pt-4">
