@@ -1,19 +1,24 @@
 @extends('theme.layout.layout')
 
 @section('content')
-<h2 class="intro-y text-lg font-medium mt-10 font-helvetica">
-    მომხმარებელთა ჩამონათვალი
-</h2>
-<div class="grid grid-cols-12 gap-6 mt-5">
-    <table class="table table-report -mt-2 col-span-12">
-        <thead>
+
+    <div class="intro-y col-span-12 flex flex-wrap sm:flex-no-wrap items-center mt-2 user-header">
+        <a href="/category/create" class="button text-white bg-theme-1 shadow-md mr-2 font-helvetica">ახალი
+            კატეგორიის დამატება</a>
+
+    </div>
+    <h2 class="intro-y text-lg font-medium mt-10 font-helvetica">
+        კატეგორიების ჩამონათვალი
+    </h2>
+    <div class="grid grid-cols-12 gap-6 mt-5">
+        <table class="table table-report -mt-2 col-span-12">
+            <thead>
             <tr>
                 <th class="whitespace-no-wrap font-helvetica">სათაური</th>
                 <th class="whitespace-no-wrap font-helvetica">შექმნის დრო</th>
-                <th class="text-center whitespace-no-wrap font-helvetica">დაკავშირებული</th>
                 <th class="text-center whitespace-no-wrap font-helvetica">მოქმედება</th>
             </tr>
-        </thead>
+            </thead>
         <tbody>
 
            @if ($categories)
@@ -30,19 +35,6 @@
                    {{$cat->created_at}}
               </a> 
                </td>
-               
-               <td class="table-report__action w-56">
-               <a href="" class="font-medium whitespace-no-wrap font-helvetica">
-                
-                       
-                @if ($cat->categoryable_type == "App\Service")
-                    სერვისები 
-                @elseif ($cat->categoryable_type == "App\Product")
-                პროდუქტები
-                @endif
-              </a> 
-               </td>
-               
                <td class="table-report__action w-56">
                    @if ($cat->categoryable_type != "App\Product")
                    <div class="flex justify-center items-center">

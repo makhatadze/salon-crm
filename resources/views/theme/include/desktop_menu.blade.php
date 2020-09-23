@@ -166,25 +166,29 @@
         <li>
             <a href="javascript:;" class="side-menu" data-menu="settings">
                 <div class="side-menu__icon"> <i data-feather="settings"></i> </div>
-                <div class="side-menu__title"> პარამეტრები <i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
+                <div class="side-menu__title"> პარამეტრები <i data-feather="chevron-down"
+                                                              class="side-menu__sub-icon"></i></div>
             </a>
             <ul class="">
                 <li>
                     <a href="/options" class="side-menu custom-nav-item">
-                        <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
-                        <div class="side-menu__title"> პარამეტრები </div>
+                        <div class="side-menu__icon"><i data-feather="circle" style="width: 15px; height: 15px;"></i>
+                        </div>
+                        <div class="side-menu__title"> პარამეტრები</div>
                     </a>
                 </li>
                 <li>
-                    <a href="/categories" class="side-menu custom-nav-item">
-                        <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
-                        <div class="side-menu__title"> კატეგორიები </div>
+                    <a href="/category" class="side-menu custom-nav-item">
+                        <div class="side-menu__icon"><i data-feather="circle" style="width: 15px; height: 15px;"></i>
+                        </div>
+                        <div class="side-menu__title"> კატეგორიები</div>
                     </a>
                 </li>
                 <li>
                     <a href="#" class="side-menu custom-nav-item">
-                        <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
-                        <div class="side-menu__title"> საიტის პარამეტრები </div>
+                        <div class="side-menu__icon"><i data-feather="circle" style="width: 15px; height: 15px;"></i>
+                        </div>
+                        <div class="side-menu__title"> საიტის პარამეტრები</div>
                     </a>
                 </li>
                 <li>

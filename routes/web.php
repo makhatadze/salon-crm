@@ -26,7 +26,6 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
 
         //Service COntroller
         Route::get('/services/turn/{service}/{status}', 'ServiceController@turn');
-        Route::get('/categories', 'ServiceController@categories');
         Route::get('/getcategories', ['uses'=> 'ServiceController@getcategory', 'as' => 'GetCategory']);
         Route::delete('/servicescategory/{id}', 'ServiceController@removecategory');
         Route::resource('/services', 'ServiceController')->except('show', 'update');
@@ -97,6 +96,10 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
 
         //Export Controller
         Route::get('/clients/export', 'ClientController@export')->name('ClientExcel');
+
+        // Category Controller
+        Route::resource('/category', 'CategoryController');
+
     });
     Auth::routes();
     Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout');
