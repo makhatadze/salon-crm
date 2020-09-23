@@ -99,7 +99,18 @@ class CategoryController extends Controller
     public
     function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'title_ge' => 'required|string',
+            'title_en' => 'nullable|string',
+            'title_ru' => 'nullable|string',
+        ]);
+        $category = Category::find($id);
+        $category->title_ge = $request->title_ge;
+        $category->title_en = $request->title_en;
+        $category->title_ru = $request->title_ru;
+        $category->save();
+
+        return redirect('category')->with('success', 'Category updated.');
     }
 
     /**

@@ -37,10 +37,63 @@
                         </td>
                         <td class="table-report__action w-56">
                             <div class="flex justify-center items-center">
-                                <a class="flex items-center mr-3" href="javascript:;"> <i data-feather="check-square"
-                                                                                          class="w-4 h-4 mr-1"></i>
-                                    რედაქტირება
+                                <a class="flex items-center mr-3 cursor-pointer"
+                                   data-catid={{$cat->id}} data-toggle="modal"
+                                   data-target="#category-update-confirmation-modal-{{ $cat->id }}"><i
+                                            data-feather="check-square"
+                                            class="w-4 h-4 mr-1"></i> რედაქტირება
                                 </a>
+                                <div class="modal fade" id="category-update-confirmation-modal-{{ $cat->id }}"
+                                     tabIndex="-1">
+                                    <div class="modal__content">
+                                        <div class="p-5 text-center">
+                                            <div class="p-5 text-center">
+                                                {!! Form::open(['url' => route('CategoryUpdate',$cat->id),'method' => 'PUT']) !!}
+                                                <div>
+                                                    <label class="font-helvetica"><b>კატეგორია</b></label>
+                                                    <div class="sm:grid mb-4">
+                                                        <div class="relative mt-2 {{ $errors->has('title_ge') ? ' has-error' : '' }}">
+                                                            {{ Form::label('title_ge', 'სახელი ქართულად', ['class' => 'font-helvetica']) }}
+                                                            {{ Form::text('title_ge', $cat->title_ge ? $cat->title_ge : '', ['class' => 'input w-full border mt-2 col-span-2', 'no', 'required']) }}
+                                                            @if ($errors->has('title_ge'))
+                                                                <span class="help-block">
+                                                        {{ $errors->first('title_ge') }}
+                                                         </span>
+                                                            @endif
+                                                        </div>
+                                                        <div class="relative mt-2 {{ $errors->has('title_en') ? ' has-error' : '' }}">
+                                                            {{ Form::label('title_en', 'სახელი ინგლისურად', ['class' => 'font-helvetica']) }}
+                                                            {{ Form::text('title_en', $cat->title_en ? $cat->title_en : '', ['class' => 'input w-full border mt-2 col-span-2', 'no']) }}
+                                                            @if ($errors->has('title_en'))
+                                                                <span class="help-block">
+                                            {{ $errors->first('title_en') }}
+                                        </span>
+                                                            @endif
+                                                        </div>
+
+                                                        <div class="relative mt-2 {{ $errors->has('title_ru') ? ' has-error' : '' }}">
+                                                            {{ Form::label('title_ru', 'სახელი რუსულად', ['class' => 'font-helvetica']) }}
+                                                            {{ Form::text('title_ru', $cat->title_ru ? $cat->title_ru : '', ['class' => 'input w-full border mt-2 col-span-2', 'no']) }}
+                                                            @if ($errors->has('title_ru'))
+                                                                <span class="help-block">
+                                            {{ $errors->first('title_ru') }}
+                                        </span>
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                    <div class="relative mt-3">
+                                                        <button type="submit" name="user_add_submit"
+                                                                class="button w-25 bg-theme-1 text-white font-helvetica">
+                                                            დამატება
+                                                        </button>
+                                                    </div>
+
+                                                </div>
+                                                {!! Form::close() !!}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <a class="flex items-center text-theme-6 cursor-pointer"
                                    data-catid={{$cat->id}} data-toggle="modal"
                                    data-target="#category-delete-confirmation-modal-{{ $cat->id }}"> <i
