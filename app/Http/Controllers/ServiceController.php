@@ -251,11 +251,6 @@ class ServiceController extends Controller
         return response()->json($data);
     }
 
-    //Service Categories
-    public function categories(){
-        $categories = Category::whereNull('deleted_at')->orderBy('id', 'DESC')->paginate(50);
-        return view('theme.template.main.categories', compact('categories'));
-    }
 
     public function removecategory($id){
         $Category = Category::findorfail($id);
