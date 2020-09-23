@@ -50,12 +50,18 @@
 }
 
 .modal-container {
-  text-align: center;
+    text-align: center;
 }
 
 .no-result-msg {
-  -moz-text-align-last: center;
-  text-align-last: center;
-  margin-top: 20px;
+    -moz-text-align-last: center;
+    text-align-last: center;
+    margin-top: 20px;
+}
+
+@media (min-width: 769px) {
+    #category-search {
+        margin-top: 28px;
+    }
 }
 

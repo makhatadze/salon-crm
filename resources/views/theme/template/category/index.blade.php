@@ -2,10 +2,56 @@
 
 @section('content')
 
-    <div class="intro-y col-span-12 flex flex-wrap sm:flex-no-wrap items-center mt-2 user-header">
+    {!! Form::open(['method'=>'GET']) !!}
+    <div class="col-span-12 xxl:col-span-3 -mb-10 pb-10">
+        <h6 class="font-bold font-caps text-gray-700 text-xs">ფილტრი</h6>
+        <div class="box mt-5 p-2">
+            <div class="flex flex-wrap -mx-3  mt-3">
+                <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0 {{ $errors->has('date_from') ? ' has-error' : '' }}">
+                    {{ Form::label('date_from', 'გადახდის დრო - დან', ['class' => 'font-helvetica']) }}
+                    {{ Form::date('date_from', Request::get('date_from') ? Request::get('date_from') : null , ['class' => 'input w-full border mt-2 col-span-2']) }}
+                    @if ($errors->has('date_from'))
+                        <span class="help-block">
+                                            {{ $errors->first('date_from') }}
+                                        </span>
+                    @endif
+                </div>
+                <div class="w-full md:w-1/2 px-3 {{ $errors->has('date_to') ? ' has-error' : '' }}">
+                    {{ Form::label('date_to', 'გადახდის დრო - დან', ['class' => 'font-helvetica']) }}
+                    {{ Form::date('date_to', Request::get('date_to') ? Request::get('date_to') : null, ['class' => 'input w-full border mt-2 col-span-2']) }}
+                    @if ($errors->has('date_to'))
+                        <span class="help-block">
+                                            {{ $errors->first('date_to') }}
+                                        </span>
+                    @endif
+                </div>
+            </div>
+
+            <div class="flex flex-wrap -mx-3  mt-3">
+                <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0 {{ $errors->has('title') ? ' has-error' : '' }}">
+                    {{ Form::label('title', 'სათაური', ['class' => 'font-helvetica']) }}
+                    {{ Form::text('title',Request::get('title') ? Request::get('title') : '', ['class' => 'input w-full border mt-2 col-span-2']) }}
+                    @if ($errors->has('title'))
+                        <span class="help-block">
+                                            {{ $errors->first('title') }}
+                                        </span>
+                    @endif
+                </div>
+                <div class="w-full md:w-1/2 px-3">
+                    <button type="submit"
+                            class="mt-2 block appearance-none font-bold font-caps bg-indigo-500 text-xs text-white w-full bg-gray-200 border border-gray-200  py-3 px-4 pr-8 rounded leading-tight"
+                            id="category-search">
+                        ძებნა
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {!! Form::close() !!}
+    <div class="intro-y col-span-12 flex flex-wrap sm:flex-no-wrap items-center mt-2 user-header mt-5">
         <a href="/category/create" class="button text-white bg-theme-1 shadow-md mr-2 font-helvetica">ახალი
             კატეგორიის დამატება</a>
-
     </div>
     <h2 class="intro-y text-lg font-medium mt-10 font-helvetica">
         კატეგორიების ჩამონათვალი

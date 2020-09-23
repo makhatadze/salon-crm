@@ -65,3 +65,9 @@
     text-align-last: center;
     margin-top: 20px;
 }
+
+@media (min-width: 769px) {
+    #category-search {
+        margin-top: 28px;
+    }
+}

@@ -20,9 +20,24 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $categories = Category::whereNull('deleted_at')->orderBy('id', 'DESC')->paginate(25);
+        $this->validate($request, [
+            'title' => 'nullable|string',
+        ]);
+        $categories = Category::query()->whereNull('deleted_at')->orderBy('id', 'DESC');
+        if ($request->title) {
+            $categoryTitle = 'title_' . App()->getLocale();
+            $categories = $categories->where($categoryTitle, 'LIKE', '%' . $request->title . '%');
+        }
+        if ($request->date_from) {
+            $categories = $categories->whereDate('created_at', '>=', Carbon::parse($request->date_from));
+        }
+        if ($request->date_to) {
+            $categories = $categories->whereDate('created_at', '<=', Carbon::parse($request->date_to));
+        }
+
+        $categories = $categories->paginate(25);
         return view('theme.template.category.index', compact('categories'));
     }
 
