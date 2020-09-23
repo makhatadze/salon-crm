@@ -98,7 +98,8 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
         Route::get('/clients/export', 'ClientController@export')->name('ClientExcel');
 
         // Category Controller
-        Route::resource('/category', 'CategoryController');
+        Route::resource('/category', 'CategoryController')->except('destroy');
+        Route::delete('/category/destroy/{id}', 'CategoryController@destroy')->name('CategoryDelete');
 
     });
     Auth::routes();

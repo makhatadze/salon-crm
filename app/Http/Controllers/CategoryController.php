@@ -1,8 +1,16 @@
 <?php
-
+/**
+ *  app/Http/Controllers/CategoryController.php
+ *
+ * User:
+ * Date-Time: 23.09.20
+ * Time: 12:55
+ * @author Vito Makhatadze <vitomaxatadze@gmail.com>
+ */
 namespace App\Http\Controllers;
 
 use App\Category;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
@@ -104,6 +112,9 @@ class CategoryController extends Controller
     public
     function destroy($id)
     {
-        //
+        $category = Category::find($id);
+        $category->deleted_at = Carbon::now();
+        $category->save();
+        return redirect('category')->with('danger', 'Category deleted.');
     }
 }

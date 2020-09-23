@@ -20,6 +20,12 @@
   border-color: #c7eed8;
 }
 
+.alert-danger {
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+}
+
 .alert {
   position: relative;
   padding: 0.75rem 1.25rem;
@@ -44,16 +50,12 @@
 }
 
 .modal-container {
-    text-align: center;
+  text-align: center;
 }
 
 .no-result-msg {
-    -moz-text-align-last: center;
-    text-align-last: center;
-    margin-top: 20px;
-}
-
-#add-pay-method {
-    cursor: pointer;
+  -moz-text-align-last: center;
+  text-align-last: center;
+  margin-top: 20px;
 }
 

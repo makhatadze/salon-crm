@@ -19,56 +19,79 @@
                 <th class="text-center whitespace-no-wrap font-helvetica">მოქმედება</th>
             </tr>
             </thead>
-        <tbody>
+            <tbody>
 
-           @if ($categories)
-           @foreach ($categories as $cat)
-                
-           <tr class="intro-x">
-               <td class="w-40">
-                   <div class="flex font-helvetica">
-                       {{$cat->{"title_".app()->getLocale()} }}
-                   </div>
-               </td>
-               <td>
-               <a href="" class="font-medium whitespace-no-wrap font-helvetica">
-                   {{$cat->created_at}}
-              </a> 
-               </td>
-               <td class="table-report__action w-56">
-                   @if ($cat->categoryable_type != "App\Product")
-                   <div class="flex justify-center items-center">
-                    <form action="/servicescategory/{{$cat->id}}" method="POST">
-                       @csrf
-                       @method('DELETE')
-                       <button class="flex items-center mr-3 font-helvetica" type="submit">
-                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2 w-4 h-4 mr-1"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg> წაშლა
-                   </button>
-                   </form>
-               </div>
-               @else
-               <span class="font-helvetica">კატეგორია ID ით არის დაკავშირებული</span>
-               
-                   @endif
-               </td>
-           </tr>
-           @endforeach
-           {{$categories->links()}}
-           @endif
-            
+            @if ($categories)
+                @foreach ($categories as $cat)
 
+                    <tr class="intro-x">
+                        <td class="w-40">
+                            <div class="flex font-helvetica">
+                                {{$cat->{"title_".app()->getLocale()} }}
+                            </div>
+                        </td>
+                        <td>
+                            <a href="" class="font-medium whitespace-no-wrap font-helvetica">
+                                {{$cat->created_at}}
+                            </a>
+                        </td>
+                        <td class="table-report__action w-56">
+                            <div class="flex justify-center items-center">
+                                <a class="flex items-center mr-3" href="javascript:;"> <i data-feather="check-square"
+                                                                                          class="w-4 h-4 mr-1"></i>
+                                    რედაქტირება
+                                </a>
+                                <a class="flex items-center text-theme-6 cursor-pointer"
+                                   data-catid={{$cat->id}} data-toggle="modal"
+                                   data-target="#category-delete-confirmation-modal-{{ $cat->id }}"> <i
+                                            data-feather="trash-2"
+                                            class="w-4 h-4 mr-1"></i> წაშლა
+                                </a>
+                                <div class="modal fade" id="category-delete-confirmation-modal-{{ $cat->id }}"
+                                     tabIndex="-1">
+                                    <div class="modal__content">
+                                        <div class="p-5 text-center">
+                                            <div class="p-5 text-center">
+                                                <form action="{{route('CategoryDelete',$cat->id)}}" method="post">
+                                                    {{method_field('delete')}}
+                                                    {{csrf_field()}}
+                                                    <div class="p-5 text-center">
+                                                        <i data-feather="x-circle"
+                                                           class="w-16 h-16 text-theme-6 mx-auto mt-3"></i>
+                                                        <div class="text-3xl mt-5">დარწმუნებული ხარ?</div>
+                                                        <div class="text-gray-600 mt-2">ნამდვილად გსურთ ამ ჩანაწერების
+                                                            წაშლა? ამ პროცესის გაუქმება შეუძლებელია.
+                                                        </div>
+                                                    </div>
+                                                    <div class="px-5 pb-8 text-center">
+                                                        <button type="button" data-dismiss="modal"
+                                                                class="button w-24 border text-gray-700 mr-1">გაუქმება
+                                                        </button>
+                                                        <button type="submit" class="button w-24 bg-theme-6 text-white">
+                                                            წაშლა
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                @endforeach
+                {{$categories->links()}}
+            @endif
+            </tbody>
+        </table>
+        @endsection
+        @section('custom_scripts')
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    $('.side-menu').removeClass('side-menu--active');
+                    $('.side-menu[data-menu="services"]').addClass('side-menu--active');
 
-        </tbody>
-    </table>
-</div>
-@endsection
-@section('custom_scripts')
-<script type="text/javascript">
-	$(document).ready(function() {
-		$('.side-menu').removeClass('side-menu--active');
-		$('.side-menu[data-menu="services"]').addClass('side-menu--active');
-        
-	});
+                });
 
-</script>
+            </script>
 @endsection
