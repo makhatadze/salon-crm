@@ -44,36 +44,44 @@
          </div>
         </div>
         <div class="intro-y box p-5">
-                <div class="flex">
-                    <div class="w-1/3 p-2">
-                        <label class="font-bold font-caps text-xs text-gray-700">კატეგორია_GE</label> <br>
-                        <input type="text" autocomplete="off" name="category-ge" id="category-ge"  value="@if($service->category()->first()) {{$service->category()->first()->title_ge}} @endif" class="font-normal text-sm input w-full border category mt-2" placeholder="აირჩიეთ კატეგორია">
-                    </div>
-                    <div class="w-1/3 p-2">
-                        <label class="font-bold font-caps text-xs text-gray-700">კატეგორია_RU</label> <br>
-                        <input type="text" autocomplete="off" name="category-ru" id="category-ru" value="@if($service->category()->first()) {{$service->category()->first()->title_ru}} @endif"  class="font-normal text-sm input w-full border category mt-2" placeholder="აირჩიეთ კატეგორია">
-                    </div>
-                    <div class="w-1/3 p-2">
-                        <label class="font-bold font-caps text-xs text-gray-700">კატეგორია_EN</label> <br>
-                        <input type="text" autocomplete="off" name="category-en" id="categor-en" value="@if($service->category()->first()) {{$service->category()->first()->title_en}} @endif"   class="font-normal text-sm input w-full border category mt-2" placeholder="აირჩიეთ კატეგორია">
-                    </div>
+            <div class="flex">
+                <div class="w-1/3 p-2">
+                    <label class="font-bold font-caps text-xs text-gray-700">ხანგრძლივობა <span class="text-red-500">*</span></label>
+                    <input required type="number" min="0" value="{{$service->duration_count}}" step="0.1" name="duration_count" id="duration_count" class="mt-2 font-normal text-sm appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" placeholder="მიუთითეთ დრო">
+                </div>
+                <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                 <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-5" for="grid-state">
+                   ხანგრძლივობის ტიპი
+                 </label>
+                 <div class="relative ">
+                   <select name="duration_type" class="font-normal text-sm appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-state">
+                     <option value="minute" @if($service->duration_type == "minute") selected @endif>წუთი</option>
+                     <option value="hours" @if($service->duration_type == "hours") selected @endif>საათი</option>
+                     <option value="day" @if($service->duration_type == "day") selected @endif>დღე</option>
+                   </select>
+                   <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                     <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
                    </div>
-                   <div class="flex">
-                       <div class="w-1/2 p-2">
-                           <label class="font-bold font-caps text-xs text-gray-700">ხანგრძლივობა <span class="text-red-500">*</span></label>
-                       <input required type="number" min="0" step="0.1" name="duration_count" value="{{$service->duration_count}}" id="duration_count" class="font-normal text-sm input w-full border mt-2" placeholder="მიუთითეთ დრო">
-                       </div>
-                    <div class="w-1/2 p-2">
-                        <label class="font-bold font-caps text-xs text-gray-700">ხანგრძლივობის ტიპი <span class="text-red-500">*</span></label>
-                       <div class="mt-2">
-                        <select data-placeholder="Select a Duration Type" name="duration_type" class=" select2 w-full font-normal text-sm" >
-                            <option value="minute">წუთი</option>
-                            <option value="hours">საათი</option>
-                            <option value="day">დღე</option>
-                         </select>
-                       </div>
-                    </div>
-                   </div>
+                 </div>
+               </div>
+               <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-5" for="grid-state">
+                  კატეგორიები
+                </label>
+                <div class="relative ">
+                  <select name="category" class="font-normal text-sm appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-state">
+                    @if ($categories)
+                        @foreach ($categories as $cat)
+                          <option value="{{$cat->id}}">{{$cat->{"name_".app()->getLocale()} }}</option>
+                        @endforeach   
+                    @endif
+                  </select>
+                  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                  </div>
+                </div>
+              </div>
+            </div>
                    <div class="w-full p-2">
                     <label class="font-bold font-caps text-xs text-gray-700">ფასი</label>
                     <div class="relative mt-2">

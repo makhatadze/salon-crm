@@ -31,15 +31,21 @@
 
             </ul>
             @error('distributor_id')
-            <span class="invalid-feedback" role="alert">
-                <strong style="color: tomato">{{ $message }}</strong>
-            </span>
-        @enderror
+                <span class="invalid-feedback" role="alert">
+                    <strong style="color: tomato">{{ $message }}</strong>
+                </span>
+            @enderror
             <small class="font-normal">აუცილებელია ბაზიდან არჩევა</small>
         </div>
         <div class="col-span-1 p-2">
             <label class="font-bold font-caps text-xs text-gray-700">შეძენის თარიღი</label>
             <input required class="mt-2 datepicker input w-56 border block mx-auto" name="purchase_date">
+            
+            @error('purchase_date')
+                <span class="invalid-feedback" role="alert">
+                    <strong style="color: tomato">{{ $message }}</strong>
+                </span>
+            @enderror
         </div>
        </div>
     
@@ -54,6 +60,12 @@
                 @endforeach
             </select>
         </div>
+        
+        @error('office_id')
+        <span class="invalid-feedback" role="alert">
+            <strong style="color: tomato">{{ $message }}</strong>
+        </span>
+    @enderror
     </div>
     <div class="col-span-1 p-2">
         <label class="font-bold font-caps text-xs text-gray-700">დეპარტამენტი</label>
@@ -61,6 +73,12 @@
             <select required data-placeholder="აირჩიეთ ოფისი" name="department_id" class="font-helvetica select2 w-full" id="showdepartments">
 
             </select>
+            
+            @error('department_id')
+                <span class="invalid-feedback" role="alert">
+                    <strong style="color: tomato">{{ $message }}</strong>
+                </span>
+            @enderror
         </div>
     </div>
     <div class="col-span-1 p-2 relative">
@@ -389,7 +407,11 @@
                 </label>
                 <div class="relative">
                   <select required name="category[]" class="block font-medium text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
-                    <option value="unit" selected >ცალი</option>
+                    @if($categories)
+                        @foreach($categories as $cat)
+                    <option value="{{$cat->id}}" selected >{{$cat->{'name_'.app()->getLocale()} }}</option>
+                        @endforeach
+                    @endif
                   </select>
                   <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                     <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>

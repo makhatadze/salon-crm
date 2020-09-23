@@ -10,7 +10,7 @@ class Product extends Model
     protected $fillable = ['title_ge', 'title_ru', 'title_en', 'description_ge', 'description_ru', 'description_en', 'price', 'type', 'stock', 'category_id', 'department_id'];
     protected $table = 'products';
     public function category(){
-        return $this->morphOne('App\Category', 'categoryable');
+        return $this->hasMany('App\Category');
     }
     public function images(){
         return $this->morphMany('App\Image', 'imageable');

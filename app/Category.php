@@ -10,7 +10,10 @@ class Category extends Model
     protected $table = 'categories';
     protected $primarykey = 'id';
 
-    public function categoryable(){
-        return $this->morphTo();
+    public function services(){
+        return $this->hasMany('App\Service', 'category_id');
+    }
+    public function products(){
+        return $this->hasMany('App\Products', 'category_id');
     }
 }
