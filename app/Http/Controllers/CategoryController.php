@@ -25,7 +25,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('theme.template.category.create');
     }
 
     /**
@@ -37,7 +37,21 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        $this->validate($request, [
+            'title_ge' => 'required|string',
+            'title_en' => 'nullable|string',
+            'title_ru' => 'nullable|string',
+        ]);
+
+        Category::create([
+            'title_ge' => $request->title_ge,
+            'title_en' => $request->title_ge,
+            'title_ru' => $request->title_ge
+        ]);
+
+        return redirect('category')->with('success', 'Category added.');
+
     }
 
     /**
@@ -47,7 +61,8 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public
+    function show($id)
     {
         //
     }
@@ -59,7 +74,8 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public
+    function edit($id)
     {
         //
     }
@@ -72,7 +88,8 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public
+    function update(Request $request, $id)
     {
         //
     }
@@ -84,7 +101,8 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public
+    function destroy($id)
     {
         //
     }
