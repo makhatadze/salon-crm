@@ -18,11 +18,6 @@ class CreateProductsTable extends Migration
             $table->string('title_ge');
             $table->string('title_ru')->nullable();
             $table->string('title_en')->nullable();
-<<<<<<< HEAD
-            $table->foreignId('distributor_id')->nullable()->constrained('distribution_companies')->onDelete('set null');
-            $table->foreignId('category_id')->nullable()->constrained('categories');
-=======
->>>>>>> b36776bc8653d46a9cbd8f7bf8c9a7043cb4d52b
             $table->text('description_ge');
             $table->text('description_ru')->nullable();
             $table->text('description_en')->nullable();
@@ -31,10 +26,6 @@ class CreateProductsTable extends Migration
             $table->float('stock');
             $table->string('unit');
             $table->boolean('published')->default(true);
-<<<<<<< HEAD
-            $table->integer('department_id')->nullable();
-=======
->>>>>>> b36776bc8653d46a9cbd8f7bf8c9a7043cb4d52b
             $table->timestamps();
             $table->timestamp('deleted_at')->nullable();
         });

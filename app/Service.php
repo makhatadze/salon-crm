@@ -10,7 +10,7 @@ class Service extends Model
     protected $table = 'services';
     protected $primarykey = 'id';
     public function category(){
-        return $this->morphOne('App\Category', 'categoryable');
+        return $this->hasOne('App\Category');
     }
     public function image(){
         return $this->morphOne('App\Image', 'imageable');

@@ -6,6 +6,7 @@ use App\Purchase;
 use App\Office;
 use App\Profile;
 use App\Department;
+use App\Category;
 use App\DistributionCompany;
 
 use App\Exports\PurchaseExport;
@@ -54,8 +55,9 @@ class PurchaseController extends Controller
      */
     public function create()
     {
+        $categories = Category::whereNull('deleted_at')->get();
         $offices = Office::whereNull('deleted_at')->get();
-        return view('theme.template.purchase.create_purchase', compact('offices'));
+        return view('theme.template.purchase.create_purchase', compact('offices', 'categories'));
     }
 
     /**
@@ -144,10 +146,11 @@ class PurchaseController extends Controller
      */
     public function edit($id)
     {
+        $categories = Category::whereNull('deleted_at')->get();
         $purchase = Purchase::wherenull('deleted_at')->findOrFail($id);
         $offices = Office::whereNull('deleted_at')->get();
         $departments = Department::where('departmentable_id', $purchase->office_id)->whereNull('deleted_at')->get();
-        return view('theme.template.purchase.edit_purchase', compact('offices', 'purchase', 'departments'));
+        return view('theme.template.purchase.edit_purchase', compact('offices', 'purchase', 'departments', 'categories'));
 
     }
 

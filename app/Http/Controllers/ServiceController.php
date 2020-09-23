@@ -63,6 +63,7 @@ class ServiceController extends Controller
             'editor-ru' => '',
             'duration_count' => 'required|between:0,99.99',
             'duration_type' => 'required|string',
+            'category' => '',
             'price' => 'required|between:0,9999.99',
             'unit-ge' => '',
             'unit-en' => '',
@@ -78,6 +79,7 @@ class ServiceController extends Controller
         $service->body_ge = $request->input('editor-ge');
         $service->body_en = $request->input('editor-en');
         $service->body_ru = $request->input('editor-ru');
+        $service->category_id = $request->input('category');
         $service->duration_count = $request->input('duration_count');
         $service->duration_type = $request->input('duration_type');
         $service->unit_ge = $request->input('unit-ge');
@@ -96,14 +98,6 @@ class ServiceController extends Controller
                 ];
             }
             $service->inventories()->createMany($array);
-        }
-        if($request->input('category-ge') || $request->input('category-en') || $request->input('category-ru')){
-
-            $service->category()->create([
-                'title_ge' => $request->input('category-ge'),
-                'title_ru' => $request->input('category-ru'),
-                'title_en' => $request->input('category-en'),
-            ]);
         }
 
         if($request->hasFile('file')){
@@ -125,8 +119,9 @@ class ServiceController extends Controller
      */
     public function edit(Service $service)
     {
+        $categories = Category::whereNull('deleted_at')->get();
         $inventories = Product::whereIn('type', ['inventory', 'both'])->whereNull('deleted_at')->get();
-        return view('theme.template.service.edit_service', compact('service', 'inventories'));
+        return view('theme.template.service.edit_service', compact('service', 'inventories', 'categories'));
     }
 
     /**
