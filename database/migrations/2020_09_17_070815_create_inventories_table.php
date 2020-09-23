@@ -15,10 +15,11 @@ class CreateInventoriesTable extends Migration
     {
         Schema::create('inventories', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->constrained('products');;
-            $table->float('quantity');
+            $table->bigInteger('product_id')->unsigned()->index()->nullable();
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->string('inventoriable_type');
             $table->integer('inventoriable_id');
+            $table->float('quantity');
             $table->timestamps();
         });
     }

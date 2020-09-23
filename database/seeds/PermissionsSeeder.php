@@ -47,6 +47,9 @@ class PermissionsSeeder extends Seeder
         $role3 = Role::create(['name' => 'accountant']);
         $role3->givePermissionTo('read');
 
+        $role4 = Role::create(['name' => 'user']);
+        $role4->givePermissionTo('read');
+
         // create demo users
         $user = Factory(App\User::class)->create([
             'name' => 'Administrator User',

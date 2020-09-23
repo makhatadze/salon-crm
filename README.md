@@ -14,5 +14,4 @@ $ npm install
 Run migrations for roles and permissions system:
 ```sh
 $ php artisan migrate:fresh --seed --seeder=PermissionsSeeder
-$ php artisan db:seed --class=AlterPermissions
 ```
