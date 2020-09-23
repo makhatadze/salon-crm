@@ -23,8 +23,28 @@ class PurchaseController extends Controller
      */
     public function index()
     {
-        $purchases = Purchase::whereNull('deleted_at')->paginate(25);
-        return view('theme.template.purchase.purchases', compact('purchases'));
+        $queries = [
+            'code',
+            'distributor',
+        ];
+        
+        $purchases = Purchase::whereNull('deleted_at');
+        foreach($queries as $req){
+           
+            if(request($req)){
+                if($req == "code"){
+                    $purchases = $purchases->where('purchase_number', 'like', '%'.request($req).'%')->orWhere('overhead_number', 'like', '%'.request($req).'%');
+                }elseif($req == "distributor"){
+                    $purchases = $purchases->where('distributor_id', 'like', '%'.intval(request($req)).'%');
+                }
+                $queries[$req] = request($req);
+            }
+        }
+        
+        $purchases = $purchases->paginate(25);
+
+        $distributors = DistributionCompany::whereNull('deleted_at')->get();
+        return view('theme.template.purchase.purchases', compact('purchases', 'distributors', 'queries'));
     }
 
     /**
@@ -159,6 +179,9 @@ class PurchaseController extends Controller
             'unit' => '',
             'quantity' => '',
             'unit_price' => '',
+            'currency' => '',
+            'category' => '',
+            'body' => '',
         ],[
             'responsible_person_id.required' => 'აირჩიეთ პასუხისმგებელი პირი',
             'getter_person_id.required' => 'აირჩიეთ მიმღები პირი',
@@ -170,9 +193,13 @@ class PurchaseController extends Controller
                 $json[$key] =[
                     'ability_type' => $request->input('ability_type')[$key],
                     'title' => $request->input('title')[$key],
+                    'unit_price' => $request->input('unit_price')[$key]*100,
+                    'currency' => $request->input('currency')[$key],
                     'unit' => $request->input('unit')[$key],
                     'quantity' => $request->input('quantity')[$key],
-                    'unit_price' => $request->input('unit_price')[$key]*100,
+                    'category' => $request->input('category')[$key],
+                    'images' => $request->input('images')[$key],
+                    'body' => $request->input('body')[$key],
                 ];
             }
         }

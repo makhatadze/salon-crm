@@ -23,14 +23,14 @@ class Product extends Model
         return;
     }
     public function getDepartmentName(){
-        $depname = Department::find($this->id)->{"name_".app()->getLocale()};
+        $depname = Department::whereNull('deleted_at')->find($this->department_id);
         if($depname){
-            return $depname;
+            return $depname->{"name_".app()->getLocale()};
         }
         return;
     }
     public function getOfficeName(){
-        $officename = Department::find($this->id)->departmentable()->first()->{"name_".app()->getLocale()};
+        $officename = Department::find($this->department_id)->departmentable()->first()->{"name_".app()->getLocale()};
         if($officename){
             return $officename;
         }

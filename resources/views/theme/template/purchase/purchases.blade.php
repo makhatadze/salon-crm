@@ -10,11 +10,11 @@
    
         <div class="hidden md:block mx-auto text-gray-600 font-normal text-xs">ნაჩვენებია {{$purchases->count()}}</div>
         <div class="w-full sm:w-auto mt-3 sm:mt-0 sm:ml-auto md:ml-0">
-            <div class="w-56 relative text-gray-700">
-                
+            <div class="w-full relative text-gray-700">
                </div>
         </div>
     </div>
+    <div class="col-span-12 xxl:col-span-9 grid grid-cols-12 gap-6">
     <table class="table table-report -mt-2 col-span-12">
         <thead>
             <tr>
@@ -78,13 +78,70 @@
            </tr>
            @endforeach
            @endif
-           {{$purchases->links()}}
+           {{$purchases->links('vendor.pagination.custom')}}
 
             
 
 
         </tbody>
     </table>
+</div>
+<div class="col-span-12 xxl:col-span-3 -mb-10 pb-10 px-4">
+    <h6 class="mt-4 font-bold font-caps text-gray-700 text-xs">
+        ფილტრი
+    </h6>
+    <div class="box mt-4 p-2">
+        <form action="" method="GET">
+            <div class="flex flex-wrap -mx-3 mb-1">
+                <div class="w-full md:w-1/2 px-3 mb-4 md:mb-0">
+                  <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="code">
+                    ნომერი
+                  </label>
+                  <input @if(isset($queries['code'])) value="{{$queries['code']}}" @endif class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" name="code" id="code" type="text">
+                  
+                  @error('code')
+                  <p class="text-red-500 text-xs italic">{{ $message }}</p>
+                  @enderror
+                </div>
+                <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-state">
+                      მომწოდებელი
+                    </label>
+                    <div class="relative">
+                      <select name="distributor"  class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
+                        <option value="">ყველა</option>
+                        @foreach ($distributors as $dist)
+                        @if(isset($queries['distributor']) && $queries['distributor'] == $dist->id)
+                        <option value="{{$dist->id}}" selected>{{$dist->{"name_".app()->getLocale()} }}</option> 
+                        @else 
+                        <option value="{{$dist->id}}">{{$dist->{"name_".app()->getLocale()} }}</option> 
+                        @endif
+                        @endforeach
+                      </select>
+                      @error('distributor')
+                        <p class="text-red-500 text-xs italic">{{ $message }}</p>
+                        @enderror
+                      <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+              
+              <div class="flex">
+                <button class="w-3/4 mt-2 block appearance-none font-bold font-caps bg-indigo-500 text-xs text-white bg-gray-200 border border-gray-200  py-3 px-4 rounded leading-tight">
+                    ძებნა
+                  </button>   
+                  <a href="{{url()->current()}}" class="w-1/4 mt-2 block appearance-none flex items-center justify-center font-bold font-caps bg-red-500 text-xs text-white bg-gray-200 border border-gray-200  py-3 px-4  rounded leading-tight">
+                    <svg width="1.3em" height="1.3em" viewBox="0 0 16 16" class="bi bi-x-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                        <path fill-rule="evenodd" d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                      </svg>
+                    </a>   
+            </div>
+        </form>
+    </div>
+</div>
 </div>
 @endsection
 @section('custom_scripts')

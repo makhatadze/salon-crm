@@ -27,6 +27,7 @@
                </div>
         </div>
     </div>
+    <div class="col-span-12 xxl:col-span-9 grid grid-cols-12 gap-6">
     <table class="table table-report -mt-2 col-span-12">
         <thead>
             <tr>
@@ -111,6 +112,45 @@
 
         </tbody>
     </table>
+    </div>
+    <div class="col-span-12 xxl:col-span-3 -mb-10 pb-10 px-4">
+        <h6 class="font-bold font-caps text-gray-700 text-xs mt-4">
+            ფილტრი
+        </h6>
+        <div class="box mt-5 p-3">
+            <form action="">
+                <div class="flex flex-wrap -mx-3 ">
+                    <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                      <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="title">
+                        სათაური
+                      </label>
+                      <input class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="title" type="text" name="title">
+                    </div>
+                    <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                      <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="unit">
+                        ერთეული
+                      </label>
+                      <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="unit" type="text" name="unit">
+                    </div>
+                  </div>
+                  <div class="flex flex-wrap -mx-3 mt-2">
+                      <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="unit">
+                          ფასი <small>დან</small>
+                        </label>
+                        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="pricefrom" type="number" name="pricefrom">
+                      </div>
+                      <div class="w-full md:w-1/2 px-3">
+                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="unit">
+                          ფასი <small>მდე</small>
+                        </label>
+                        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="pricetill" type="number" name="pricetill">
+                      </div>
+                    </div>
+                    <input class="appearance-none block w-full bg-indigo-500 font-bold font-caps text-xs text-white border border-gray-200 rounded py-3 px-4 leading-tight" value="ძებნა" type="submit">
+            </form>
+        </div>
+    </div>
 </div>
 @endsection
 @section('custom_scripts')

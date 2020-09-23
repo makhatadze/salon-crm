@@ -108,10 +108,17 @@
     
     <div id="units">
         
+
+
+
+       
+          
+
+
     </div>
 
     
-    <input type="submit" class=" mt-2 button text-white bg-theme-1 shadow-md mr-1" value="ატვირთვა">
+    <input type="submit" class=" mt-2 button text-white bg-theme-1 shadow-md mr-1 font-caps font-bold text-xs" value="ატვირთვა">
 
 
    </form>
@@ -121,7 +128,25 @@
 @endsection
 @section('custom_scripts')
 <script type="text/javascript">
+  function readURL(input, $id) {
+        if (input.files && input.files[0]) {
+            $("#preloadimages"+$id).html('');
+        $(input.files).each(function () {
+            var reader = new FileReader();
+            reader.readAsDataURL(this);
+            reader.onload = function (e) {
+                $("#preloadimages"+$id).append(`
+                <div class="w-24 h-24 relative image-fit mb-5 mr-5 cursor-pointer zoom-in">
+                        <img class="rounded-md" alt="Midone Tailwind HTML Admin Template" src="` + e.target.result +`">
+                        </div>
+                `);
+            }
+        });
+    }
+}
 	$(document).ready(function() {
+        
+    $('.summernote').summernote();
 		$('.side-menu').removeClass('side-menu--active');
 		$('.side-menu[data-menu="purchases"]').addClass('side-menu--active');
 
@@ -293,47 +318,101 @@
                     }
                   });
         });
+        
         $('#addunit').click(function(){
             let randomid= Date.now();
             $('#units').append(`
-            <div class="relative grid mt-3 grid-cols-3 w-full box p-4" id="`+randomid+`">
-        <button type="button" onclick="removeunit('`+randomid+`')" class="absolute right-0 top-0 dropdown-toggle button px-2 box  bg-red-300 text-red-900">
-            <span class="w-5 h-5 flex items-center justify-center"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus w-4 h-2"><line x1="5" y1="12" x2="19" y2="12"></line></svg> </span>
-        </button>
-        <div class="col-span-1 p-2">
-            <label class="font-helvetica">საშუალების ტიპი</label>
-            <div class="mt-2">
-                <select required data-placeholder="აირჩიეთ ოფისი" name="ability_type[]" class="font-helvetica select2 w-full  p-2 w-full border border-gray-300 rounded" >
-                    <option value="1">ძირითადი საშუალება</option>
-                    <option value="2">ხარჯმასალა</option>
-                </select>
+            <div class="relative w-full mt-3 box p-4" id="`+randomid+`">
+            <button type="button" onclick="removeunit('`+randomid+`')" class="absolute right-0 top-0 dropdown-toggle button px-2 box  bg-red-300 focus:bg-red-900 text-red-900">
+                <span class="w-3 h-3 flex items-center justify-center "> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus w-4 h-2"><line x1="5" y1="12" x2="19" y2="12"></line></svg> </span>
+            </button>
+            <div class="flex flex-wrap -mx-3 mb-6">
+                <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                    <label class="font-bold font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
+                      საშუალების ტიპი
+                    </label>
+                    <div class="relative">
+                      <select required name="ability_type[]" class="font-medium text-xs block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
+                        <option value="1">ძირითადი საშუალება</option>
+                        <option value="2">ხარჯმასალა</option>
+                      </select>
+                      <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="w-full md:w-1/3 px-3">
+                    <label class="font-bold font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
+                      დასახელება
+                    </label>
+                    <input required autocomplete="off" name="title[]" class="font-medium text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="text" placeholder="დასახელება">
+                  </div>
+                  <div class="w-full md:w-1/3 px-3">
+                    <div>
+                        <label for="price" class="block  leading-5 font-medium text-gray-700 font-bold font-caps text-xs">ფასი</label>
+                        <div class="mt-1 relative rounded-md shadow-sm">
+                          <input autocomplete="off" name="unit_price[]" min="0" step="0.01" class="block font-medium text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="xxx.xx">
+                          <div class="absolute inset-y-0 right-0 flex items-center">
+                            <select name="currency[]" aria-label="Currency" class="form-select h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm sm:leading-5">
+                              <option>GEL</option>
+                              <option>USD</option>
+                              <option>EUR</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                      </div>
+                      <div class="w-full md:w-1/3 px-3 mb-6 mt-3 md:mb-0">
+                        <label class="font-bold font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
+                          ზომის ერთეული
+                        </label>
+                        <div class="relative">
+                          <select required name="unit[]" class="block font-medium text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
+                            <option value="unit" selected >ცალი</option>
+                            <option value="gram">გრამი</option>
+                            <option value="metre">მეტრი</option>
+                          </select>
+                          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                          </div>
+                        </div>
+                      </div>
+              <div class="w-full md:w-1/3 mt-3 px-3">
+                <label class="font-bold font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
+                  რაოდენობა
+                </label>
+                <input required autocomplete="off" name="quantity[]" class="font-medium text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="number" min="0" step="0.1" placeholder="xxx.x">
+              </div>
+              <div class="w-full md:w-1/3 px-3 mb-6 mt-3 md:mb-0">
+                <label class="font-bold font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
+                  კატეგორია
+                </label>
+                <div class="relative">
+                  <select required name="category[]" class="block font-medium text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
+                    <option value="unit" selected >ცალი</option>
+                  </select>
+                  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                  </div>
+                </div>
+              </div>
+              <div class="border-2 w-full border-dashed rounded-md mt-3 mx-3 pt-4">
+                <div class="flex flex-wrap px-4" id="preloadimages`+randomid+`">
+
+                </div>
+                <div class="px-4 pb-4 flex items-center cursor-pointer relative">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-image w-4 h-4 mr-2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg> <span class="text-theme-1 mr-1 font-bold font-caps text-xs ">ატვირთეთ ფოტოები</span> 
+                    <input onchange="readURL(this, this.id)" type="file" class="w-full h-full top-0 left-0 absolute opacity-0" accept="image/*" id="`+randomid+`" name="images[]" multiple="">
+                </div>
+            </div>
+            <div class="w-full px-4 mt-2">
+                <label class="font-bold font-caps text-xs text-gray-700">აღწერა ქართულად <span class="text-red-500">*</span> </label>
+                <div class="mt-2 font-medium text-xs">
+                    <textarea required data-feature="basic" class="summernote" name="body[]" style="display: none;"></textarea>
+                </div>
+            </div>
             </div>
         </div>
-        <div class="col-span-1 p-2 ">
-            <label class="font-helvetica">დასახელება</label>
-            <input required type="text" class="input w-full border mt-2" name="title[]">
-        </div>
-        <div class="col-span-1 p-2">
-            <label class="font-helvetica">ზომის ერთეული</label>
-            <div class="mt-2">
-                <select required data-placeholder="აირჩიეთ დეპარტამენტი" name="unit[]" class="font-helvetica select2 p-2 w-full border border-gray-300 rounded" >
-                    <option value="unit" selected>ცალი</option>
-                    <option value="kg">კგ</option>
-                    <option value="metre">მეტრი</option>
-                </select>
-            </div>
-        </div>
-        <div class="col-span-3 grid grid-cols-2">
-            <div class="col-span-1 p-2">
-                <label class="font-helvetica">რაოდენობა</label>
-                <input required type="number" min="0" step="1"class="input w-full border mt-2" name="quantity[]">
-            </div>
-            <div class="col-span-1 p-2">
-                <label class="font-helvetica">ერთ.ფასი</label>
-                <input required type="number" min="0" step="0.01" class="input w-full border mt-2" name="unit_price[]">
-            </div>
-        </div>
-    </div>
             `);
         });
     });

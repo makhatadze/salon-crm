@@ -6,6 +6,7 @@ use App\User;
 use App\ClientService;
 use App\Client;
 use App\Product;
+use App\Profile;
 use Illuminate\Http\Request;
 
 class MoneyController extends Controller
@@ -32,15 +33,25 @@ class MoneyController extends Controller
             'sum' => Product::whereNull('deleted_at')->sum('price')/100
         ];
         //Personal
+        $users = User::whereNull('users.deleted_at')
+        ->join('salary_to_services', 'salary_to_services.user_id', '=', 'users.id')
+        ->get();
         $salary = 0;
-        foreach(User::whereNull('deleted_at')->get() as $user){
-            if($user->profile()->first()){
-               $salary += $user->profile()->first()->salary;
+        $userearn = 0;
+        foreach($users as $user){
+            $profile = Profile::where('profileable_id', $user->user_id)->first(); 
+            if($profile){
+               $salary += $profile->salary;
+            }
+            if($user->service_price && $user->percent){
+                $userearn += $user->service_price * $user->percent/100;
             }
         }
+
         $users = [
             'total' => User::whereNull('deleted_at')->count(),
             'salary' => $salary,
+            'userearn' => round($userearn/100,2)
         ];
         //Clients
         $earn = 0;

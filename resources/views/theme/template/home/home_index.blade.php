@@ -90,7 +90,7 @@
         </div>
         <!-- Table -->
         <div class="col-span-12 xxl:col-span-9 grid grid-cols-12 gap-6">
-        <table class="table table-report -mt-2 col-span-12 ">
+            <table class="table table-report -mt-2 col-span-12 ">
             <thead>
             <tr>
                 <th class="whitespace-no-wrap font-bold font-caps text-gray-700 text-xs">
@@ -194,7 +194,7 @@
                         </td>
                     </tr>
                 @endforeach
-                {{$todayservices->links()}}
+                {{$todayservices->links('vendor.pagination.custom')}}
             @endif
 
             <div class="modal" id="add-pay-method">
@@ -235,44 +235,43 @@
         <div class="mt-4 px-4">
             <h6 class="font-bold font-caps text-gray-700 text-xs">ფილტრი</h6>
             <div class="box mt-5 p-2">
-                <label class="block uppercase tracking-wide mb-2 text-gray-700 text-xs font-bold mb-2">
-                  თარიღი
-                </label>
-                <input data-daterange="true" class="datepicker input w-full appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"> 
-                <div class="flex flex-wrap -mx-3  mt-3">
-                    <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                          ფასი <small>დან</small>
+                <form action="">
+                    <div class="w-full  mb-6 md:mb-0">
+                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="client_name">
+                          კლიენტის სახელი
                         </label>
-                      <input type="number" min="0" step="0.01" placeholder="xxxxxxx" class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" >
-                    </div>
-                    <div class="w-full md:w-1/2 px-3">
-                      <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                        ფასი <small>მდე</small>
-                      </label>
-                      <input type="number"  min="0" step="0.01"  class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="xxxxxxx">
-                    </div>
-                  </div>
-                  <div class="w-full mb-6 md:mb-0">
-                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-state">
-                      სტატუსი
-                    </label>
-                    <div class="relative">
-                      <select class="block appearance-none font-bold font-caps text-xs text-gray-700 w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
-                        <option>ყველა</option>
-                        <option>მიღებული</option>
-                        <option>ველოდებით</option>
-                        <option>არ მოსულა</option>
-                      </select>
-                      <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                        <input @if(isset($queries['client_name'])) value="{{$queries['client_name']}}" @endif class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="client_name" name="client_name" type="text">
                       </div>
-                    </div>
-                  </div>
-                  <button class="mt-2 block appearance-none font-bold font-caps bg-indigo-500 text-xs text-white w-full bg-gray-200 border border-gray-200  py-3 px-4 pr-8 rounded leading-tight">
-                    ძებნა
-
-                  </button>
+                    <label class="block uppercase tracking-wide mb-2 text-gray-700 text-xs font-bold mb-2">
+                        თარიღი
+                      </label>
+                      <input @if(isset($queries['date'])) value="{{$queries['date']}}" @endif data-daterange="true" name="date" class="datepicker input w-full appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"> 
+                      <div class="flex flex-wrap -mx-3  mt-3">
+                          <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                              <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                                ფასი <small>დან</small>
+                              </label>
+                            <input type="number" step="0.01" min="0" name="pricefrom" @if(isset($queries['pricefrom'])) value="{{$queries['pricefrom']}}" @endif min="0" step="0.01" placeholder="xxxxxxx" class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" >
+                          </div>
+                          <div class="w-full md:w-1/2 px-3">
+                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                              ფასი <small>მდე</small>
+                            </label>
+                            <input type="number" step="0.01" min="0" name="pricetill" @if(isset($queries['pricetill'])) value="{{$queries['pricetill']}}" @endif  min="0" step="0.01"  class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="xxxxxxx">
+                          </div>
+                        </div>
+                        <div class="flex">
+                            <button class="w-3/4 mt-2 block appearance-none font-bold font-caps bg-indigo-500 text-xs text-white bg-gray-200 border border-gray-200  py-3 px-4 rounded leading-tight">
+                                ძებნა
+                              </button>   
+                              <a href="{{url()->current()}}" class="w-1/4 mt-2 block appearance-none flex items-center justify-center font-bold font-caps bg-red-500 text-xs text-white bg-gray-200 border border-gray-200  py-3 px-4  rounded leading-tight">
+                                <svg width="1.3em" height="1.3em" viewBox="0 0 16 16" class="bi bi-x-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                    <path fill-rule="evenodd" d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                                  </svg>
+                                </a>   
+                        </div>
+                </form>
             </div>
         </div>
     </div>

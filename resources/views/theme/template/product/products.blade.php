@@ -24,8 +24,8 @@
         </div>
     </div>
     <!-- BEGIN: Data List -->
-    <div class="intro-y col-span-12 overflow-auto lg:overflow-visible">
-        <table class="table table-report -mt-2">
+        <div class="col-span-12 xxl:col-span-9 grid grid-cols-12 gap-6">
+            <table class="table table-report -mt-2 col-span-12 ">
             <thead>
                 <tr>
                     <th class="whitespace-no-wrap font-bold font-caps text-xs text-gray-700">სურათები</th>
@@ -68,20 +68,17 @@
                         
                     </td>
                     <td @if($prod->stock == 0)  style="background-color: #ffaeae" @endif class="text-center ">
-                        <div class="flex w-full justify-center ">
-                        <h6 class="texe-xl text-gray-800  font-bolder">
+                        <span class="m-0 font-medium text-xs">
                             {{$prod->stock}} 
-                        </h6>
-                            <div class="text-left ml-2">
-                                <small class="text-sm font-bolder text-gray-800">
-                                    @if($prod->unit == "unit")
-                                    ერთეული
-                                    @elseif($prod->unit == "gram")
-                                    გრამი
-                                    @elseif($prod->unit == "metre")
-                                    მეტრი
-                                    @endif
-                                </small> <br>
+                            @if($prod->unit == "unit")
+                            ერთეული
+                            @elseif($prod->unit == "gram")
+                            გრამი
+                            @elseif($prod->unit == "metre")
+                            მეტრი
+                            @endif
+                        </span>
+                             <br>
                                 <span class="text-xs font-normal">
                                     @if ($prod->type == "inventory")
                                             ინვენტარი
@@ -92,9 +89,6 @@
                                         @endif
                                 </span>
                            
-                            </div>
-                       
-                        </div>
                         </td>
                         <td @if($prod->stock == 0)  style="background-color: #ffaeae" @endif class="w-40 font-bold font-caps text-xs">
                             @if ($prod->published)
@@ -126,14 +120,114 @@
                 @endforeach
             </tbody>
         </table>
+        {{$products->links('vendor.pagination.custom')}}
     </div>
-    <!-- END: Data List -->
-    <!-- BEGIN: Pagination -->
-    <div class="intro-y col-span-12 flex flex-wrap sm:flex-row sm:flex-no-wrap items-center">
-       {{$products->links('vendor.pagination.custom')}}
-      
+    <div class="col-span-12 px-4 xxl:col-span-3 xxl:border-l border-theme-5 -mb-10 pb-10">
+        <h6 class="mt-5 font-bolder font-caps text-xs text-gray-700">ფილტრი</h6>
+        <div class="mt-4 p-4 box">
+            <form method="GET" >
+                <div class="flex flex-wrap -mx-3 mb-1">
+                    <div class="w-full md:w-1/2 px-3 mb-1 md:mb-0">
+                      <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="productname">
+                        სახელი
+                      </label>
+                      <input class="appearance-none block w-full font-normal text-xs bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="productname" name="productname" type="text" placeholder="Name">
+                    </div>
+                    <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="product_category">
+                          კატეგორია
+                        </label>
+                        <div class="relative">
+                          <select class="block font-normal text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="product_category" name="product_category">
+                            <option value="">ყველა</option>
+                            @foreach ($categories as $cat)
+                            @if(isset($queries['product_category']) && $queries['product_category'] == $cat->id)
+                            <option value="{{$cat->id}}" selected>{{$cat->{'title_'.app()->getLocale()} }}</option>
+                            @else
+                            <option value="{{$cat->id}}">{{$cat->{'title_'.app()->getLocale()} }}</option>
+                            @endif
+                            @endforeach
+                          </select>
+                          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                          </div>
+                        </div>
+                      </div>
+                  </div>
+                  <div class="w-full mb-6 md:mb-0">
+                      <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="departments">
+                        დეპარტამენტები
+                      </label>
+                      <div class="relative">
+                        <select class="block font-normal text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="departments" name="departments">
+                          <option value="">ყველა</option>
+                          @foreach ($departments as $dept)
+                          @if (isset($queries['departments']) && $queries['departments'] == $dept->id)
+                          <option value="{{$dept->id }}" selected>{{$dept->{"name_".app()->getLocale()} }}</option>
+                          @else 
+                          <option value="{{$dept->id }}">{{$dept->{"name_".app()->getLocale()} }}</option>
+                          @endif
+                          @endforeach
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                          <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="flex mt-3 flex-wrap -mx-3 mb-1">
+                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                          <label for="pricefrom"  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                            ფასი <small>დან</small>
+                          </label>
+                          <input name="pricefrom" @if(isset($queries['pricefrom'])) value="{{$queries['pricefrom']}}" @endif placeholder="xxxxxxxx" type="number" step="0.01" min="0" id="pricefrom" class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" >
+                        </div>
+                        <div class="w-full md:w-1/2 px-3">
+                          <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="pricetill">
+                            ფასი <small>მდე</small>
+                          </label>
+                          <input type="number" placeholder="xxxxxxxx" step="0.01" min="0" id="pricetill" name="pricetill" @if(isset($queries['pricetill'])) value="{{$queries['pricetill']}}" @endif class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                        </div>
+                      </div>
+                      <div class="flex flex-wrap -mx-3 mb-1">
+                        <div class="w-full md:w-1/2 px-3 mb-1 md:mb-0">
+                          <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
+                            რაოდენობა
+                          </label>
+                          <input  type="number" placeholder="xxxxxxxx" step="0.01" @if(isset($queries['amout'])) value="{{$queries['amout']}}" @endif min="0" id="amout" name="amout"  class="appearance-none block w-full font-normal text-xs bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white">
+                        </div>
+                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-state">
+                              ერთეული
+                            </label>
+                            <div class="relative">
+                              <select name="unit" class="block font-normal text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
+                                <option value="">ნებისმიერი</option>
+                                <option value="gram"  @if(isset($queries['unit']) == "gram") selected @endif>გრამი</option>
+                                <option value="unit" @if(isset($queries['unit']) == "unit") selected @endif>ერთეული</option>
+                                <option value="metre" @if(isset($queries['unit']) == "metre") selected @endif>მეტრი</option>
+                              </select>
+                              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                              </div>
+                            </div>
+                          </div>
+                          <p class="px-3 text-gray-600 text-xs italic font-normal">რაოდენობის არჩევის შემთხვევაში გამოიტანს არჩეულ რაოდენობაზე ნაკლებ ან ტოლი მონაცემებს.</p>
+                          
+                      </div>
+                      <div class="flex">
+                        <button class="w-3/4 mt-2 block appearance-none font-bold font-caps bg-indigo-500 text-xs text-white bg-gray-200 border border-gray-200  py-3 px-4 rounded leading-tight">
+                            ძებნა
+                          </button>   
+                          <a href="{{url()->current()}}" class="w-1/4 mt-2 block appearance-none flex items-center justify-center font-bold font-caps bg-red-500 text-xs text-white bg-gray-200 border border-gray-200  py-3 px-4  rounded leading-tight">
+                            <svg width="1.3em" height="1.3em" viewBox="0 0 16 16" class="bi bi-x-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                <path fill-rule="evenodd" d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                              </svg>
+                            </a>   
+                    </div>
+            </form>
+        </div>
     </div>
-    <!-- END: Pagination -->
 </div>
 @endsection
 @section('custom_scripts')
@@ -141,135 +235,6 @@
 	$(document).ready(function() {
 		$('.side-menu').removeClass('side-menu--active');
 		$('.side-menu[data-menu="products"]').addClass('side-menu--active');
-
-        $('#searchproduct').keyup(function(){
-            $value = $("#searchproduct").val();
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-            $.ajax({
-                  url: "{{ route('GetProductsAjax') }}",
-                  method: 'post',
-                  data: {
-                     'val': $value,
-                  },
-                  success: function(result){
-                      
-                     if(result.status == true){
-                        let products = result.data;
-                        let content = ``;
-                        products.forEach(function (prod) {
-                            let unit = '';
-                            let turnpost = '';
-                            let bg = '';
-                            let type = '';
-                            if(prod['published'] == 1){
-                                turnpost = `
-                                <a href="/products/turn/`+prod['id']+`/0" class="flex items-center justify-center text-theme-6"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-square w-4 h-4 mr-2"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg> გათიშვა </a>
-                                `;
-                            }else{
-                                turnpost = `
-                                <a href="/products/turn/`+prod['id']+`/1" class="flex items-center justify-center text-green-500"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check-square w-4 h-4 mr-2"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg> ჩართვა </a>
-                                         `;
-                            }
-                            let imageshtml = ``;
-                            if(prod['product_images[]']){
-                                prod['product_images[]'].forEach(function (img){
-                                imageshtml += `
-                                <div class="w-10 h-10 image-fit zoom-in">
-                                <img  class="tooltip rounded-full tooltipstered" src="/storage/productimage/`+img['name']+`">
-                                 </div>
-                                `;
-                                
-                            });
-                            }
-                            if(prod['unit'] == "unit"){
-                                unit = "ეთეული";
-                            }else if(prod['unit'] == "gram"){
-                                unit = "გრამი";
-                            }else if(prod['unit'] == "metre"){
-                                unit = "მეტრი";
-                            }
-
-                            if(prod['stock'] == 0){
-                                bg = `style="background-color: #ffaeae"`;
-                            }
-                            if(prod['type'] == "inventory"){
-                                type = "ინვენტარი";
-                            }else if(prod['type'] == "both"){
-                                type = "ინვენტარი / გაყიდვები";
-                            }else if(prod['type'] == "sale"){
-                                type = "გაყიდვები";
-                            }
-                            
-                            content +=`
-                        <tr class="intro-x">
-                    <td class="w-40" `+ bg +`>
-                        <div class="flex">
-                           `+
-                           imageshtml
-                           +`
-                        </div>
-                        
-                    </td>
-                    <td `+ bg +`>
-                        <a href="" class="font-medium whitespace-no-wrap font-bold text-black">`+prod['title_'+result.lang]+`</a> 
-                        <div class="text-gray-600 text-xs whitespace-no-wrap font-normal">  `+prod['category_name']+` </div>
-                    </td>
-                    <td `+ bg +` class="text-center">`+prod['price']+` ₾</td>
-                    
-                    <td `+bg+` class="text-center ">
-                        <div class="flex w-full justify-center ">
-                        <h6 class="texe-xl text-gray-800  font-bolder">
-                            `+prod['stock']+` 
-                        </h6>
-                            <div class="text-left ml-2">
-                                <small class="text-sm font-bolder text-gray-800">
-                                    `+unit+`
-                                </small> <br>
-                                <span class="text-xs font-normal">
-                                   `+ type +`
-                                </span>
-                           
-                            </div>
-                       
-                        </div>
-                        </td>
-                    <td `+ bg +` class="w-40 font-bold font-caps text-xs">
-                        `+ turnpost +`
-                    </td>
-                    <td `+ bg +` class="table-report__action w-56">
-                        <div class="flex justify-center items-center">
-                            <a href="/products/edit/`+prod['id']+`"  class="p-2 bg-gray-300 rounded-lg ml-2" href="javascript:;"> 
-                                <svg width="1.18em" height="1.18em" viewBox="0 0 16 16" class="bi bi-pencil-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
-                                  </svg>
-                               </a>
-                            <form action="/products/delete/`+prod['id']+`" method="get">
-                                @csrf
-                                    <button type="submit"  class="p-2 bg-gray-300 rounded-lg ml-2" href="javascript:;" data-toggle="modal" data-target="#delete-confirmation-modal">
-                                        <svg width="1.18em" height="1.18em" viewBox="0 0 16 16" class="bi bi-trash2" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                            <path fill-rule="evenodd" d="M3.18 4l1.528 9.164a1 1 0 0 0 .986.836h4.612a1 1 0 0 0 .986-.836L12.82 4H3.18zm.541 9.329A2 2 0 0 0 5.694 15h4.612a2 2 0 0 0 1.973-1.671L14 3H2l1.721 10.329z"/>
-                                            <path d="M14 3c0 1.105-2.686 2-6 2s-6-.895-6-2 2.686-2 6-2 6 .895 6 2z"/>
-                                            <path fill-rule="evenodd" d="M12.9 3c-.18-.14-.497-.307-.974-.466C10.967 2.214 9.58 2 8 2s-2.968.215-3.926.534c-.477.16-.795.327-.975.466.18.14.498.307.975.466C5.032 3.786 6.42 4 8 4s2.967-.215 3.926-.534c.477-.16.795-.327.975-.466zM8 5c3.314 0 6-.895 6-2s-2.686-2-6-2-6 .895-6 2 2.686 2 6 2z"/>
-                                          </svg>
-                                       </button>
-                            </form>
-                            </div>
-                    </td>
-                </tr> 
-                        `;
-                        
-                    });
-                    $('#products').html('');
-                    $('#products').html(content);
-                     }
-                    }
-                  });
-    
-        });
 	});
 
 </script>

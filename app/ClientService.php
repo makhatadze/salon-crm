@@ -8,10 +8,13 @@ use Carbon\Carbon;
 class ClientService extends Model
 {
     protected $fillable = ['user_id','service_id','session_start_time'];
+    
     protected $table = 'client_services';
+    
     public function clinetserviceable(){
         return $this->morphTo();
     }
+
     public function getServiceName(){
         $service = Service::find($this->service_id);
         if($service){
@@ -19,6 +22,7 @@ class ClientService extends Model
         }
         return;
     }
+
     public function getWorkerName(){
         $worker = User::find($this->user_id);
         if($worker){
@@ -33,6 +37,7 @@ class ClientService extends Model
         }
         return;
     }
+    
     public function getEndTime(){
         $duration = Service::find($this->service_id);
         if($duration){

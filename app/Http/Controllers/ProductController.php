@@ -27,8 +27,41 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::whereNull('deleted_at')->orderBy('id', 'DESC')->paginate(25);
-        return view('theme.template.product.products', compact('products'));
+        $queries = [
+        "productname",
+        "product_category",
+        "departments",
+        "pricefrom",
+        "pricetill",
+        "amout",
+        "unit"
+    ];
+        $products = Product::whereNull('deleted_at');
+
+        foreach ($queries as $key => $req) {
+            if(request($req)){
+                if($req == "productname"){
+                    $products = $products->where('title_'.app()->getLocale(), 'like', '%'.request($req).'%');
+                }elseif($req == "product_category"){
+                    $products = $products->where('category_id', request($req));
+                }elseif($req == "departments"){
+                    $products = $products->where('department_id', request($req));
+                }elseif($req == "pricefrom"){
+                    $products = $products->where('price', '>=', request($req)*100);
+                }elseif($req == "pricetill"){
+                    $products = $products->where('price', '<=', request($req)*100);
+                }elseif($req == "amout"){
+                    $products = $products->where('stock', '<=', request($req));
+                }elseif($req == "unit"){
+                    $products = $products->where('unit', request($req));
+                }
+                $queries[$req] = request($req);
+            }
+        }
+        $products = $products->orderBy('id', 'DESC')->paginate(25);
+        $departments = Department::whereNull('deleted_at')->get();
+        $categories = Category::where('categoryable_type', 'App\Product')->whereNull('deleted_at')->get();
+        return view('theme.template.product.products', compact('products', 'categories', 'departments', 'queries'));
     }
 
     /**
@@ -173,8 +206,8 @@ class ProductController extends Controller
         $product->type = $request->input('get_type');
         $product->unit = $request->input('unit');
         $product->stock = $request->input('stock');
-        $product->department_id = $request->input('get_department');
-        $product->distributor_id = $request->input('get_distributor');
+        $product->department_id = intval($request->input('get_department'));
+        $product->distributor_id = intval($request->input('get_distributor'));
         $product->price = intval($request->input('price')*100);
         $product->save();
         if($request->input('new_category_ge') || $request->input('new_category_ru') || $request->input('new_category_en')){

@@ -135,7 +135,7 @@
                     </div>
                     <div class="col-span-1 flex items-center justify-center">
                             <div>
-                                <h4 class="text-xl font-bolder">0 <sup>₾</sup></h4>
+                                <h4 class="text-xl font-bolder">{{$users['userearn']}} <sup>₾</sup></h4>
                                 <span class="font-normal text-xs">გამომუშავებული</span>
                             </div>
                     </div>
@@ -181,7 +181,7 @@
                     </div>
                     <div class="col-span-1 flex items-center justify-center">
                             <div>
-                                <h4 class="text-xl font-bolder">{{$clients['earn']}}</h4>
+                                <h4 class="text-xl font-bolder">{{$clients['earn']}} <sup>₾</sup></h4>
                                 <span class="font-normal text-xs">გამომუშავებული</span>
                             </div>
                     </div>

@@ -13,11 +13,11 @@
         <link href="{{ asset('css/admin.css') }}" rel="stylesheet">
 
     </head>
-    <body class="app">
+    <body class="app py-0">
         <div class="flex">
             @include('theme.include.mobile_menu')
             @include('theme.include.desktop_menu')
-            <div class="content">
+            <div class="content overflow-hidden">
                 <div class="top-bar">
                     <div class="-intro-x breadcrumb mr-auto hidden sm:flex"> <a href="" class="breadcrumb--active">ადმინისტრატორის სივრცე</a> </div>
                 </div>

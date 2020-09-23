@@ -32,7 +32,7 @@
                 <label class="font-helvetica">დეპარტამენტი</label>
                 <div class="mt-2">
                     <select data-placeholder="Select a Department" name="get_department" class="font-helvetica select2 w-full" >
-                    
+                        
                         @foreach ($departments as $department)
                         @if ($product->department_id && $product->department_id == $department->id)
                         <option selected value="{{$department->id}}"> {{$department->{"name_".app()->getLocale()} }} | {{$department->departmentable()->first()->{"name_".app()->getLocale()} }}</option>
