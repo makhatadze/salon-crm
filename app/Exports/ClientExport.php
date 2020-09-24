@@ -20,6 +20,7 @@ class ClientExport implements FromCollection, WithHeadings
             $service['client_name'] = $service->clinetserviceable()->first()->{'full_name_'.app()->getLocale()};
             $service['client_phone'] = $service->clinetserviceable()->first()->number;
             $service['client_address'] = $service->clinetserviceable()->first()->address;
+            $service['serviceprice'] = $service->getServicePrice();
             unset($service['user_id']);
             unset($service['service_id']);
             unset($service['deleted_at']);
@@ -36,11 +37,13 @@ class ClientExport implements FromCollection, WithHeadings
             'სტატუსი',
             'რეგისტრაციის თარიღი',
             'განახლების თარიღი',
+            'გადახდის მეთორი',
             'სერვისის სახელი',
             'მიმღები',
             'კლიენტის სახელი',
             'მობილური',
-            'მისამართი'
+            'მისამართი',
+            'ფასი'
         ];
     }
 }

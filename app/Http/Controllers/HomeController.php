@@ -16,6 +16,7 @@ use Auth;
 use App\ClientService;
 use App\Client;
 use App\Service;
+use App\Product;
 use DB;
 use Carbon\Carbon;
 
@@ -44,8 +45,28 @@ class HomeController extends Controller
             ];
             if(Auth::user()->isUser()){
                 $user = Auth::user();
-                $userclients = ClientService::where('user_id', $user->id)->whereNull('deleted_at')->get();
-                return view('theme.template.user.user_profile', compact('user', 'userclients'));
+                $userclients = ClientService::where('user_id', $user->id);
+                $queries = [
+                    'date',
+                    'status'
+                ];
+                if(request()->all()){
+                    foreach ($queries as $req) {
+                        if(request($req)){
+                            if($req == "date"){
+                                $date = explode(' - ',request($req));
+                                
+                                $userclients = $userclients->whereDate('session_start_time', '>=', Carbon::parse($date[0]))
+                                ->whereDate('session_start_time', '<=', Carbon::parse($date[1]));
+                            }else if($req == "status"){
+                                $userclients = $userclients->where('status', request($req) == "true" ? true : false);
+                            }
+                        }
+                        $queries[$req] = request($req);
+                    }
+                }
+                $userclients =  $userclients->paginate(30)->appends($queries);
+                return view('theme.template.user.user_profile', compact('user', 'userclients', 'queries'));
             }
             
             $queries = [
@@ -56,7 +77,7 @@ class HomeController extends Controller
                 'worker_name',
             ];
             if(request()->all()){
-                $todayservices = ClientService::whereNull('client_services.deleted_at')
+                $todayservices = ClientService::query()
                 ->join('services', 'client_services.service_id', '=', 'services.id')
                 ->join('clients', 'client_services.clinetserviceable_id', '=', 'clients.id')
                 ->join('profiles', 'client_services.user_id', '=', 'profiles.profileable_id');
@@ -76,17 +97,26 @@ class HomeController extends Controller
                         $queries[$req] = request($req);
                     }
                 }
+                $todayservices = $todayservices->select('client_services.id','client_services.status', 'client_services.status', 'services.title_'.app()->getLocale(), 'client_services.session_start_time', 'clients.number', 'clients.full_name_'.app()->getLocale(), 'services.price', 'profiles.first_name', 'profiles.last_name');
                 $todayservices = $todayservices->paginate(40)->appends($queries);
+
             }else{
-                $todayservices = ClientService::whereDate('session_start_time', Carbon::today())->whereNull('deleted_at')->paginate(40);
+                
+                $todayservices = ClientService::query()
+                ->join('services', 'client_services.service_id', '=', 'services.id')
+                ->join('clients', 'client_services.clinetserviceable_id', '=', 'clients.id')
+                ->join('profiles', 'client_services.user_id', '=', 'profiles.profileable_id');
+                $todayservices = $todayservices->select('client_services.id','client_services.status', 'client_services.status', 'services.title_'.app()->getLocale(), 'client_services.session_start_time', 'clients.number', 'clients.full_name_'.app()->getLocale(), 'services.price', 'profiles.first_name', 'profiles.last_name');
+                $todayservices = $todayservices->paginate(40)->appends($queries);
             }
-            $totalclients = Client::whereNull('deleted_at')->count();
-            $userdservices = ClientService::where('status', true)->count();
+            $totalclients = Client::count();
+            $totalproductcost = Product::sum('price')/100;
+            $totalServiceCost = Service::sum('price')/100;
             $allclientservices = ClientService::count();
             $income = ClientService::where('status', true)
             ->join('services', 'client_services.service_id', '=', 'services.id')
             ->sum('price')/100;
-            return view('theme.template.home.home_index', compact('totalclients', 'userdservices', 'income', 'allclientservices', 'todayservices', 'queries'));
+            return view('theme.template.home.home_index', compact('totalclients', 'income', 'totalServiceCost', 'todayservices', 'totalproductcost', 'queries'));
         } else {
             abort('404');
         }

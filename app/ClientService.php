@@ -16,7 +16,6 @@ class ClientService extends Model
     public function clinetserviceable(){
         return $this->morphTo();
     }
-
     public function getServiceName(){
         $service = Service::find($this->service_id);
         if($service){

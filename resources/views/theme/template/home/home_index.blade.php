@@ -20,7 +20,7 @@
                                     <div class="text-gray-600 font-normal mt-1 text-xs">პროდუქტების ჯამური ფასი</div>
                                 </div>
                             </div>
-                            <div class="text-3xl font-bold leading-8 mt-6">{{$allclientservices}}</div>
+                            <div class="text-3xl font-bold leading-8 mt-6">{{$totalproductcost}}<sup class="text-sm">₾</sup></div>
                         </div>
                     </div>
                 </div>
@@ -57,10 +57,10 @@
                                     <line x1="12" y1="17" x2="12" y2="21"></line>
                                 </svg>
                                 <div class="ml-auto">
-                                    <div class="text-gray-600 font-normal mt-1 text-xs">გამოყენებული სერვისები</div>
+                                    <div class="text-gray-600 font-normal mt-1 text-xs"> სერვისების ჯამური ფასი</div>
                                 </div>
                             </div>
-                            <div class="text-3xl font-bold leading-8 mt-6">{{$userdservices}}</div>
+                        <div class="text-3xl font-bold leading-8 mt-6">{{$totalServiceCost}}<sup class="text-sm"> ₾</sup></div>
 
                         </div>
                     </div>
@@ -108,19 +108,19 @@
                 @foreach ($todayservices as $service)
                     <tr class="intro-x">
                         <td>
-                            <h6 class="font-bolder text-black">{{$service->clinetserviceable()->first()->{"full_name_".app()->getLocale()} }}</h6>
-                            <small class="font-normal">{{$service->clinetserviceable()->first()->number}}</small>
+                            <h6 class="font-bolder text-black">{{$service->{"full_name_".app()->getLocale()} }}</h6>
+                            <small class="font-normal">{{$service->number}}</small>
                         </td>
                         <td class="font-normal">
-                            <h6 class="font-bolder text-black">{{$service->getWorkerName() }}</h6>
+                            <h6 class="font-bolder text-black">{{$service->first_name}} {{$service->last_name}}</h6>
                             <small class="font-normal">
                                 დან: {{$service->session_start_time}} <br>
                                 მდე: {{$service->getEndTime()}}
                             </small>
                         </td>
                         <td class="font-normal">
-                            <h6 class="font-bolder text-black">{{$service->getServicePrice() }} <sup>₾</sup></h6>
-                            <small class="font-normal text-sm">{{$service->getServiceName()}}</small>
+                            <h6 class="font-bolder text-black">{{$service->price/100 }} <sup>₾</sup></h6>
+                            <small class="font-normal text-sm">{{$service->{"name_".app()->getLocale()} }}</small>
                         </td>
                         <td class="text-center whitespace-no-wrap font-normal">
                             @if ($service->status)
@@ -172,7 +172,7 @@
                                         </svg>
                                     </a>
                                 @endif
-                                <a href="/clients/edit/{{$service->clinetserviceable()->first()->id}}"
+                                <a href="/clients/edit/{{$service->id}}"
                                    class="bg-gray-300 p-2 rounded-lg mr-2">
                                     <svg width="1.18em" height="1.18em" viewBox="0 0 16 16" class="bi  bi-pencil-fill"
                                          fill="currentColor" xmlns="http://www.w3.org/2000/svg">

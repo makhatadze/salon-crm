@@ -42,7 +42,7 @@
                             <a href="" class="font-bolder text-xs text-gray-700 uppercase font-caps">{{$user->name}} @if($user->profile()->first()) {{$user->profile()->first()->last_name}} @endif</a><br>
                             @if($user->profile()->first())
                             <span class="text-xs font-normal">ხელფასი: {{$user->profile()->first()->salary}} <sup>₾</sup></span> <br>
-                            <span class="text-xs font-normal">გამოიმუშავა: 0 <sup>₾</sup></span> <br>
+                            <span class="text-xs font-normal">გამოიმუშავა: {{$user->getEarnedMoney() ? $user->getEarnedMoney() : 0 }} <sup>₾</sup></span> <br>
                             <span class="text-xs font-normal">მოვიდა: {{Carbon\Carbon::parse($user->created_at)->isoFormat('Y-MM-DD')}}</span>
                             @endif
                         </div>

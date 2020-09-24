@@ -29,6 +29,7 @@ class UserExport implements FromCollection, WithHeadings
                 $user['pid'] = $user->profile()->first()->pid;
                 $user['salary'] = $user->profile()->first()->salary;
                 $user['percent'] = $user->profile()->first()->percent;
+                $user['earned'] = $user->getEarnedMoney();
             }
         }
         return $users;
@@ -45,6 +46,7 @@ class UserExport implements FromCollection, WithHeadings
             'პირადი ნომერი',
             'ხელფასი',
             'პროცენტრი',
+            'გამოიმუშავა',
         ];
     }
 }

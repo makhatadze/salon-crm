@@ -204,19 +204,9 @@ class ClientController extends Controller
             'pay_method' => 'required|string',
         ]);
         $id = $request->pay_id;
-        $clientservice = ClientService::findOrFail($id);
+        $clientservice = ClientService::where('status', false)->findOrFail($id);
         $user = $clientservice->getUser();
-        if ($user) {
-            $userProfile = $user->profile()->first();
-            if ($userProfile) {
-                SalaryToService::create([
-                    'user_id' => $user->id,
-                    'service_id' => $id,
-                    'service_price' => $clientservice->getServicePrice() * 100,
-                    'percent' => $userProfile->percent
-                ]);
-            }
-        }
+
         $message = '';
         $service = Service::find($clientservice->service_id);
         
@@ -248,6 +238,17 @@ class ClientController extends Controller
             }
         }else{
             return back()->with('error', 'დაფიქსირდა შეცდომა');
+        }
+        if ($user) {
+            $userProfile = $user->profile()->first();
+            if ($userProfile) {
+                SalaryToService::create([
+                    'user_id' => $user->id,
+                    'service_id' => $id,
+                    'service_price' => $clientservice->getServicePrice() * 100,
+                    'percent' => $userProfile->percent
+                ]);
+            }
         }
         $clientservice->status = true;
         $clientservice->pay_method = $request->pay_method;

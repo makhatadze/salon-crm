@@ -42,7 +42,7 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
+    
     /**
      *
      * @return boolean
@@ -78,11 +78,15 @@ class User extends Authenticatable
     {
         return $this->hasAnyRole('user'); // ?? something like this! should return true or false
     }
+    public function userHasJob(){
+        return $this->hasOne('App\UserHasJob', 'user_id');
+    }
+    
     /**
      * @return string
      */
     public function getDepartmentName(){
-        $hasjob = UserHasJob::where('user_id', $this->id)->first();
+        $hasjob = $this->userHasJob;
         if($hasjob){
             $department = Department::find($hasjob->department_id);
             if($department->first()){
@@ -91,8 +95,11 @@ class User extends Authenticatable
         }
         return;
     }
+    public function SalaryToServices(){
+        return $this->hasMany('App\SalaryToService', 'user_id');
+    }
     public function getDepartmentId(){
-        $hasjob = UserHasJob::where('user_id', $this->id)->first();
+        $hasjob = $this->userHasJob;
         if($hasjob){
             return $hasjob->department_id;
         }
@@ -102,7 +109,7 @@ class User extends Authenticatable
      * @return string
      */
     public function getOfficeName(){
-        $office_id = UserHasJob::where('office_id', $this->id)->first();
+        $hasjob = $this->userHasJob;
         if($office_id){
             $office = Office::find($office_id);
             if($office){
@@ -115,7 +122,7 @@ class User extends Authenticatable
      * @return string
      */
     public function getCompanyName(){
-        $company_id = UserHasJob::where('company_id', $this->id)->first();
+        $hasjob = $this->userHasJob;
         if($company_id){
             $company = Company::find($company_id);
             if($company){
@@ -140,14 +147,14 @@ class User extends Authenticatable
         return $this->morphOne('App\Image', 'imageable');
     }
     public function getEarnedMoney(){
-       $earned = SalaryToService::where('user_id', $this->id)->get();
-       if($earned){
-           $money = 0;
-           foreach($earned as $serv){
-            $money += round($serv->service_price/100 * $serv->percent/100, 2);
-           }
-        return $money; 
-       }
+        
+        $money = 0;
+        if($this->SalaryToServices->count() > 0){
+            foreach ($this->SalaryToServices as $service) {
+                $money += $service->service_price/100 * $service->percent/100;
+            }
+            return $money; 
+        }
        return;
     }
     public function transacrions(){

@@ -21,10 +21,10 @@
                 </div>
             </div>
             <div class="p-5 border-t border-gray-200">
-            <a class="flex items-center font-medium text-theme-1" @if($user->id != Auth::user()->id) href="/show/accountsettings/{{$user->id}}" @else href="/" @endif> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity w-4 h-4 mr-2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg> სამუშაო ცხრილი </a>
-                <a class="flex items-center mt-5  font-medium" @if($user->id != Auth::user()->id) href="/show/accountsettings/{{$user->id}}" @else href="/" @endif> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-box w-4 h-4 mr-2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg> ანგარიშის დეტალები </a>
+            <a class="flex items-center font-medium text-theme-1" @if($user->id != Auth::user()->id) href="/show/accountsettings/{{$user->id}}" @else href="/profile/accountsettings" @endif> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity w-4 h-4 mr-2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg> სამუშაო ცხრილი </a>
+                <a class="flex items-center mt-5  font-medium" @if($user->id != Auth::user()->id) href="/show/accountsettings/{{$user->id}}" @else href="/profile/accountsettings" @endif> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-box w-4 h-4 mr-2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg> ანგარიშის დეტალები </a>
                 @if($user->id == Auth::user()->id)
-                <a class="flex items-center text-theme-1   mt-5 font-medium" href="/profile/changepassword"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-lock w-4 h-4 mr-2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg> პაროლის შეცვლა </a>
+                <a class="flex items-center mt-5 font-medium" href="/profile/changepassword"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-lock w-4 h-4 mr-2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg> პაროლის შეცვლა </a>
               @endif
               </div>
             <div class="p-5 border-t border-gray-200">
@@ -104,63 +104,74 @@
                     
                 </h2>
                 <form class="flex">
-                    <input data-daterange="true" class="datepicker font-normal text-xs input appearance-none block w-56 mr-3 bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"> 
+                    <input name="date" @if(isset($queries['date'])) value="{{$queries['date']}}" @endif data-daterange="true" class="datepicker font-normal text-xs input appearance-none block w-full md:w-56 mr-3 bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"> 
            
-                    <div class="relative w-56">
-                        <select class="block font-normal text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
-                          <option>ყველა</option>
-                          <option>მიღებული</option>
-                          <option>ველოდებით</option>
-                          <option>არ მოსულა</option>
+                    <div class="relative w-full md:w-56">
+                        <select name="status"  class="block font-normal text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
+                          <option value="">ყველა</option>
+                          <option value="true" @if(isset($queries['status']) && $queries['status'] == "true") selected @endif>მიღებული</option>
+                          <option value="false" @if(isset($queries['status']) && $queries['status'] == "false") selected @endif>არ მოსულა ან ველოდებით</option>
                         </select>
                         <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 -mt-3 text-gray-700">
                           <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
                         </div>
                       </div>
-                      <input  class="font-normal cursor-pointer text-xs input appearance-none block w-56 font-bold font-caps ml-3 bg-indigo-500 text-white rounded py-3 px-4 mb-3 leading-tight" type="submit" value="ძებნა"> 
-           
+                      <div class="flex w-full md:w-56 ml-3 h-10">
+                        <button class="w-3/4 block appearance-none font-bold font-caps bg-indigo-500 text-xs text-white bg-gray-200 border border-gray-200  py-2 px-4 rounded leading-tight">
+                            ძებნა
+                          </button>   
+                          <a href="{{url()->current()}}" class="w-1/4  block appearance-none flex items-center justify-center font-bold font-caps bg-red-500 text-xs text-white bg-gray-200 border border-gray-200  py-3 px-4  rounded leading-tight">
+                            <svg width="1.3em" height="1.3em" viewBox="0 0 16 16" class="bi bi-x-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                <path fill-rule="evenodd" d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                              </svg>
+                            </a>   
+                    </div>
                 </form>
             </div>
             <div class="p-5" id="clientlist">
-                @foreach ($userclients as $client)
-                <div class="grid grid-cols-4 my-3">
-                    <div class="col-span-1 ">
-                    <h6 class="font-bold text-gray-800">{{$client->clinetserviceable()->first()->{'full_name_'.app()->getLocale()} }}</h6>
-                    <span class="text-sm text-gray-700 font-normal">{{$client->clinetserviceable()->first()->number}}</span>
-                    </div>
-                    <div class="col-span-1 font-normal">
-                        <span class="text-xs">დან: </span>{{$client->session_start_time}} <br>
-                        <span class="text-xs">მდე: </span>{{$client->getEndTime()}}
-                    </div>
-                    <div class="col-span-1 ">
-                    <h6 class="font-bold">{{$client->getServicePrice()}} <sup>₾</sup></h6>
-                        <span class="font-normal">{{$client->getServiceName()}}</span>
-                    </div>
-                    <div class="col-span-1 flex align-center justify-center">
-                        @if ($client->status)
-                        <div class="flex items-center justify-center h-full font-normal text-xs">
-                            <svg width="1.3em" height="1.3em" viewBox="0 0 16 16" class="bi bi-check-circle-fill mr-2" fill="#5dc78c" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"></path>
-                              </svg>მიღებულია
-                            </div>
-                          @elseif(Carbon\Carbon::now() < $client->session_start_time)
-                        <div class="flex items-center justify-center h-full font-normal text-xs">
-                            <svg width="1.3em" height="1.3em" viewBox="0 0 16 16" class="bi mr-2 bi-slash-circle-fill" fill="#ffb52d" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.646-2.646a.5.5 0 0 0-.708-.708l-6 6a.5.5 0 0 0 .708.708l6-6z"></path>
-                              </svg>
-                              ველოდებით
-                        </div>
-                        @elseif(Carbon\Carbon::now() > $client->session_start_time)
-                        <div class="flex items-center justify-center h-full font-normal text-xs">
-                            <svg width="1.3em" height="1.3em" viewBox="0 0 16 16" class="bi mr-2 bi-dash-circle-fill" fill="#ff6155" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM4.5 7.5a.5.5 0 0 0 0 1h7a.5.5 0 0 0 0-1h-7z"></path>
-                              </svg>არ მოსულა
-                            </div>
-                        @endif
-                    </div>
-                </div> 
-                <hr>
-                @endforeach
+               @if($userclients)
+               @foreach ($userclients as $client)
+               <div class="grid grid-cols-4 my-3">
+                   <div class="col-span-1 ">
+                   <h6 class="font-bold text-gray-800">{{$client->clinetserviceable()->first()->{'full_name_'.app()->getLocale()} }}</h6>
+                   <span class="text-sm text-gray-700 font-normal">{{$client->clinetserviceable()->first()->number}}</span>
+                   </div>
+                   <div class="col-span-1 font-normal">
+                       <span class="text-xs">დან: </span>{{$client->session_start_time}} <br>
+                       <span class="text-xs">მდე: </span>{{$client->getEndTime()}}
+                   </div>
+                   <div class="col-span-1 ">
+                   <h6 class="font-bold">{{$client->getServicePrice()}} <sup>₾</sup></h6>
+                       <span class="font-normal">{{$client->getServiceName()}}</span>
+                   </div>
+                   <div class="col-span-1 flex align-center justify-center">
+                       @if ($client->status)
+                       <div class="flex items-center justify-center h-full font-normal text-xs">
+                           <svg width="1.3em" height="1.3em" viewBox="0 0 16 16" class="bi bi-check-circle-fill mr-2" fill="#5dc78c" xmlns="http://www.w3.org/2000/svg">
+                               <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"></path>
+                             </svg>მიღებულია
+                           </div>
+                         @elseif(Carbon\Carbon::now() < $client->session_start_time)
+                       <div class="flex items-center justify-center h-full font-normal text-xs">
+                           <svg width="1.3em" height="1.3em" viewBox="0 0 16 16" class="bi mr-2 bi-slash-circle-fill" fill="#ffb52d" xmlns="http://www.w3.org/2000/svg">
+                               <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-4.646-2.646a.5.5 0 0 0-.708-.708l-6 6a.5.5 0 0 0 .708.708l6-6z"></path>
+                             </svg>
+                             ველოდებით
+                       </div>
+                       @elseif(Carbon\Carbon::now() > $client->session_start_time)
+                       <div class="flex items-center justify-center h-full font-normal text-xs">
+                           <svg width="1.3em" height="1.3em" viewBox="0 0 16 16" class="bi mr-2 bi-dash-circle-fill" fill="#ff6155" xmlns="http://www.w3.org/2000/svg">
+                               <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM4.5 7.5a.5.5 0 0 0 0 1h7a.5.5 0 0 0 0-1h-7z"></path>
+                             </svg>არ მოსულა
+                           </div>
+                       @endif
+                   </div>
+               </div> 
+               <hr>
+               @endforeach
+               {{$userclients->links()}}
+               @endif
             </div>
         </div>
     </div>
