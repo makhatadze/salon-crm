@@ -143,7 +143,7 @@ class ProductController extends Controller
         $product->stock = $request->input('stock');
         $product->category_id = intval($request->input('get_category'));
         $product->price = intval($request->input('price')*100);
-        $product->currency_type = $request->input('currency');
+        $product->currency_type = $request->input('currency' );
         $product->save();
 
         if($request->file('images')){
