@@ -24,8 +24,17 @@ class ClientController extends Controller
      */
     public function index()
     {
-        $clients = Client::whereNull('deleted_at')->paginate(80);
-        return view('theme.template.client.clients', compact('clients'));
+        $clients = Client::whereNull('deleted_at');
+        $queries = [
+            'search'
+        ];
+        if(request($queries[0])){
+            $clients = $clients->where('full_name_'.app()->getLocale(), 'LIKE', '%'.request($queries[0]).'%')
+            ->orWhere('number', 'LIKE', '%'.request($queries[0]).'%');
+            $queries[$queries[0]] = request($queries[0]);
+        }
+        $clients = $clients->paginate(50)->appends($queries);
+        return view('theme.template.client.clients', compact('clients', 'queries'));
     }
 
     /**
@@ -35,7 +44,7 @@ class ClientController extends Controller
      */
     public function create()
     {
-        $services = Service::whereNull('deleted_at')->get();
+        $services = Service::where('published', true)->get();
         $workers = User::role('user')->where('active', true)->whereNull('deleted_at')->get();
         return view('theme.template.client.add_client', compact('workers', 'services'));
     }
@@ -74,7 +83,7 @@ class ClientController extends Controller
                 $clientservices[] = [
                     'user_id' => $request->userpicker[$key],
                     'service_id' => $request->servicepicker[$key],
-                    'session_start_time' => $time
+                    'session_start_time' => $time,
                 ];
             }
             $client->clientservices()->createMany($clientservices);
@@ -104,7 +113,7 @@ class ClientController extends Controller
     public function edit($id)
     {
         $client = Client::findOrFail($id);
-        $services = Service::whereNull('deleted_at')->get();
+        $services = Service::where('published', true)->get();
         $workers = User::role('user')->where('active', true)->whereNull('deleted_at')->get();
         return view('theme.template.client.edit_client', compact('workers', 'services', 'client'));
     }
@@ -195,7 +204,6 @@ class ClientController extends Controller
             'pay_method' => 'required|string',
         ]);
         $id = $request->pay_id;
-
         $clientservice = ClientService::findOrFail($id);
         $user = $clientservice->getUser();
         if ($user) {
@@ -210,16 +218,21 @@ class ClientController extends Controller
             }
         }
         $message = '';
-        $service = Service::find($clientservice->service_id)->first();
+        $service = Service::find($clientservice->service_id);
+        
         if ($service) {
+            
             $inventories = $service->inventories()->get();
-            $message = '';
+            if(count($inventories) > 0){
+                $message = '';
             foreach ($inventories as $prods) {
                 $prod = Product::find($prods->product_id);
                 if ($prod) {
                     $success = false;
                     if ($prod->stock == 0 || $prod->stock < $prods->quantity) {
-                        return redirect('/')->with('error', $prod->id . ' | ' . $prod->{"title_" . app()->getLocale()} . ' მარაგი ცარიელია');
+                        return redirect('/')->with('error', $prod->id . ' | ' . $prod->{"title_" . app()->getLocale()} . ' მარაგი ცარიელია ან არასაკმარისი');
+                    }elseif($prod->published == false){
+                        return redirect('/')->with('error', $prod->id . ' | ' . $prod->{"title_" . app()->getLocale()} . ' სტატუსი გათიშულია');
                     } else if ($prod->stock - $prods->quantity == 0 || $prod->stock - $prods->quantity <= $prods->quantity) {
                         $message .= $prod->id . ' | ' . $prod->{"title_" . app()->getLocale()} . ' მარაგი შესავსევბია <br>';
                     } else {
@@ -230,6 +243,11 @@ class ClientController extends Controller
                     $prod->save();
                 }
             }
+            }else{
+                return redirect('/')->with('error', 'სერვის არ გააჩნია ინვენტარი');
+            }
+        }else{
+            return back()->with('error', 'დაფიქსირდა შეცდომა');
         }
         $clientservice->status = true;
         $clientservice->pay_method = $request->pay_method;

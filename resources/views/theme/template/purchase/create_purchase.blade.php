@@ -164,7 +164,7 @@
 }
 	$(document).ready(function() {
         
-    $('.summernote').summernote();
+    
 		$('.side-menu').removeClass('side-menu--active');
 		$('.side-menu[data-menu="purchases"]').addClass('side-menu--active');
 
@@ -372,9 +372,9 @@
                           <input autocomplete="off" name="unit_price[]" min="0" step="0.01" class="block font-medium text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="xxx.xx">
                           <div class="absolute inset-y-0 right-0 flex items-center">
                             <select name="currency[]" aria-label="Currency" class="form-select h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm sm:leading-5">
-                              <option>GEL</option>
-                              <option>USD</option>
-                              <option>EUR</option>
+                                <option value="gel" >GEL</option>
+                              <option value="usd" >USD</option>
+                              <option value="eur" >EUR</option>
                             </select>
                           </div>
                         </div>
@@ -387,7 +387,7 @@
                         <div class="relative">
                           <select required name="unit[]" class="block font-medium text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
                             <option value="unit" selected >ცალი</option>
-                            <option value="gram">გრამი</option>
+                            <option value="kilo">გრამი</option>
                             <option value="metre">მეტრი</option>
                           </select>
                           <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -409,7 +409,7 @@
                   <select required name="category[]" class="block font-medium text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
                     @if($categories)
                         @foreach($categories as $cat)
-                    <option value="{{$cat->id}}" selected >{{$cat->{'name_'.app()->getLocale()} }}</option>
+                    <option value="{{$cat->id}}" selected >{{$cat->{'title_'.app()->getLocale()} }}</option>
                         @endforeach
                     @endif
                   </select>
@@ -418,15 +418,7 @@
                   </div>
                 </div>
               </div>
-              <div class="border-2 w-full border-dashed rounded-md mt-3 mx-3 pt-4">
-                <div class="flex flex-wrap px-4" id="preloadimages`+randomid+`">
-
-                </div>
-                <div class="px-4 pb-4 flex items-center cursor-pointer relative">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-image w-4 h-4 mr-2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg> <span class="text-theme-1 mr-1 font-bold font-caps text-xs ">ატვირთეთ ფოტოები</span> 
-                    <input onchange="readURL(this, this.id)" type="file" class="w-full h-full top-0 left-0 absolute opacity-0" accept="image/*" id="`+randomid+`" name="images[]" multiple="">
-                </div>
-            </div>
+             
             <div class="w-full px-4 mt-2">
                 <label class="font-bold font-caps text-xs text-gray-700">აღწერა ქართულად <span class="text-red-500">*</span> </label>
                 <div class="mt-2 font-medium text-xs">
@@ -436,6 +428,15 @@
             </div>
         </div>
             `);
+            $('.summernote').summernote({
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'underline', 'clear']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                ]
+            });
         });
     });
      function removeunit($id){

@@ -67,7 +67,7 @@
                   <select name="category" class="font-normal text-sm appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-state">
                     @if ($categories)
                     @foreach ($categories as $cat)
-                      <option value="{{$cat->id}}">{{$cat->{"name_".app()->getLocale()} }}</option>
+                      <option value="{{$cat->id}}">{{$cat->{"title_".app()->getLocale()} }}</option>
                     @endforeach   
                 @endif
                   </select>
@@ -78,11 +78,19 @@
               </div>
             </div>
                <div class="w-full p-2">
-                <label class="font-bold font-caps text-xs text-gray-700">ფასი</label>
-                <div class="relative mt-2">
-                    <input type="number" min="0" step="0.01"  name="price" name="price" class="font-normal text-sm appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" placeholder="ფასი">
-                    <div class="absolute top-0 right-0 rounded-r w-10 h-full flex items-center justify-center bg-gray-100 border text-gray-600">₾</div>
-                </div>
+                    <div>
+                        <label for="price" class="block  leading-5 font-medium text-gray-700 font-bold font-caps text-xs">ფასი</label>
+                        <div class="mt-1 relative rounded-md shadow-sm">
+                          <input autocomplete="off"  name="price" min="0" step="0.01" class="block font-medium text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="xxx.xx">
+                          <div class="absolute inset-y-0 right-0 flex items-center">
+                            <select name="currency" aria-label="Currency" class="form-select h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm sm:leading-5">
+                              <option value="gel">GEL</option>
+                              <option value="usd">USD</option>
+                              <option value="eur">EUR</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
                 @error('price')
                 <span class="invalid-feedback" role="alert">
                     <strong style="color: tomato">{{ $message }}</strong>
@@ -197,9 +205,9 @@
                   <div class="w-1/3 p-2">
                       
                       <select required data-placeholder="აირჩიეთ ინვენტარი" onchange="selectinventary(this.value, '`+$id+`')" name="inventory[]" class="font-normal text-xs select2 p-2 w-full border border-gray-300 rounded" >
-                          <option value="" selected></option>
+                        <option value="" selected></option>
                           @foreach ($inventories as $item)
-                          <option value="{{$item->id}}">{{$item->{"title_".app()->getLocale()} }}</option>
+                        <option value="{{$item->id}}">{{$item->{"title_".app()->getLocale()} }}</option>
                           @endforeach
                           
                       </select>

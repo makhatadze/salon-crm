@@ -10,37 +10,44 @@
         <div class="col-span-1 p-2">
             <label class="font-bold font-caps text-xs text-gray-700">შეყვიდის ტიპი</label>
             <div class="mt-2">
-                <select required id="purchasetype" data-placeholder="აირჩიეთ შეტყიდვის ტიპი" name="purchase_type" class=" select2 w-full" >
-                    <option value="overhead" @if($purchase->purchase_type == "orverhead") selected @endif >ზედნადები</option>
-                    <option value="purchase"  @if($purchase->purchase_type == "purchase") selected @endif>შესყიდვის აქტით</option>
+                <select required id="purchasetype" data-placeholder="აირჩიეთ შეტყიდვის ტიპი" name="purchase_type" class="font-helvetica select2 w-full" >
+                    <option value="overhead" @if($purchase->purchase_type == "overhead") selected @endif>ზედნადები</option>
+                    <option value="purchase" @if($purchase->purchase_type == "purchase") selected @endif>შესყიდვის აქტით</option>
                 </select>
             </div>
         </div>
-        <div class="col-span-1 p-2" id="overhead_number" @if($purchase->purchase_type == "purchase") style="display:none" @endif>
-            <label class="font-bold font-caps text-xs text-gray-700">ზედნადების ნომერი</label>
-        <input  type="text" value="{{$purchase->overhead_number}}" autocomplete="off" class="input w-full border mt-2" name="overhead_number">
-        </div>
-        <div class="col-span-1 p-2" id="purchase_number" @if($purchase->purchase_type == "orverhead") style="display: none" @endif>
+        
+        <div class="col-span-1 p-2" id="overhead_number" @if ($purchase->purchase_type == "purchase") style="display: none" @endif>
+          <label class="font-bold font-caps text-xs text-gray-700">ზედნადების ნომერი</label>
+      <input  type="text" value="{{$purchase->overhead_number}}" autocomplete="off" class="input w-full border mt-2" name="overhead_number">
+      </div>
+        <div class="col-span-1 p-2" id="purchase_number" @if ($purchase->purchase_type == "overhead") style="display: none" @endif>
             <label class="font-bold font-caps text-xs text-gray-700">შესყიდვის ნომერი</label>
-            <input  type="text" value="{{$purchase->purchase_number}}"  autocomplete="off" class="input w-full border mt-2" name="purchases_number">
+        <input  type="text"  autocomplete="off" value="{{$purchase->purchase_number}}" class="input w-full border mt-2" name="purchases_number">
         </div>
         <div class="col-span-1 p-2 relative">
             <label class="font-bold font-caps text-xs text-gray-700">მომწოდებელი (ს.კ)</label>
-            <input type="hidden" required id="distributor_id" value="{{$purchase->distributor_id}}" name="distributor_id">
-        <input required type="text" value="{{$purchase->getDistributorName($purchase->distributor_id)}}" class="input w-full border mt-2"  autocomplete="off" id="distributor_search">
+            <input type="hidden" required id="distributor_id" name="distributor_id" value="{{$purchase->distributor->id}}">
+            <input required type="text" class="input w-full border mt-2" value="{{$purchase->distributor->{"name_".app()->getLocale()} }}"  autocomplete="off" id="distributor_search">
             <ul class="hidden shadow-sm absolute w-11/12 p-2 bg-white z-50" id="showdistributors">
 
             </ul>
             @error('distributor_id')
-            <span class="invalid-feedback" role="alert">
-                <strong style="color: tomato">{{ $message }}</strong>
-            </span>
-        @enderror
+                <span class="invalid-feedback" role="alert">
+                    <strong style="color: tomato">{{ $message }}</strong>
+                </span>
+            @enderror
             <small class="font-normal">აუცილებელია ბაზიდან არჩევა</small>
         </div>
         <div class="col-span-1 p-2">
             <label class="font-bold font-caps text-xs text-gray-700">შეძენის თარიღი</label>
-        <input value="{{Carbon\Carbon::parse($purchase->purchase_date)->format('m/d/Y')}}" required class="mt-2 datepicker input w-56 border block mx-auto" name="purchase_date">
+        <input value="{{Carbon\Carbon::parse($purchase->purchase_date)->isoFormat('Y-MM-DD')}}" required class="mt-2  input w-56 border block mx-auto" type="date" name="purchase_date">
+            
+            @error('purchase_date')
+                <span class="invalid-feedback" role="alert">
+                    <strong style="color: tomato">{{ $message }}</strong>
+                </span>
+            @enderror
         </div>
        </div>
     
@@ -51,39 +58,42 @@
             <select required data-placeholder="აირჩიეთ ოფისი" id="selectoffice" name="office_id" class="font-helvetica select2 w-full" >
                 <option value="" selected disabled></option>
                 @foreach ($offices as $office)
-                @if ($purchase->office_id == $office->id)
+                @if($purchase->office_id == $office->id)
                 <option value="{{$office->id}}" selected>{{$office->{"name_".app()->getLocale()} }}</option>
-                @else  
+                @else 
                 <option value="{{$office->id}}">{{$office->{"name_".app()->getLocale()} }}</option>
                 @endif
                 @endforeach
             </select>
         </div>
+        
+        @error('office_id')
+        <span class="invalid-feedback" role="alert">
+            <strong style="color: tomato">{{ $message }}</strong>
+        </span>
+    @enderror
     </div>
     <div class="col-span-1 p-2">
         <label class="font-bold font-caps text-xs text-gray-700">დეპარტამენტი</label>
         <div class="mt-2">
             <select required data-placeholder="აირჩიეთ ოფისი" name="department_id" class="font-helvetica select2 w-full" id="showdepartments">
-           @if($purchase->getDepartmentName($purchase->department_id))
-            <option value="{{$purchase->department_id}}">{{$purchase->getDepartmentName($purchase->department_id)}}</option>
-            @else 
-            <option value=""></option>
-            @foreach ($departments as $dept)
-            <option value="{{$dept->id}}">{{$dept->{"name_".app()->getLocale()} }}</option>
-                
-            @endforeach
-            @endif
+            <option value="{{$purchase->department->id}}">{{$purchase->department->{"name_".app()->getLocale()} }}</option>
             </select>
+            
+            @error('department_id')
+                <span class="invalid-feedback" role="alert">
+                    <strong style="color: tomato">{{ $message }}</strong>
+                </span>
+            @enderror
         </div>
     </div>
     <div class="col-span-1 p-2 relative">
         <label class="font-bold font-caps text-xs text-gray-700">პასუხისმგებელი პირი</label>
-    <input type="hidden" name="responsible_person_id" id="responsible_person_id" value="@if($purchase->getPersonName($purchase->responsible_person_id)){{$purchase->responsible_person_id}}@endif">
-    <input required type="text" @if($purchase->getPersonName($purchase->responsible_person_id))value="{{$purchase->getPersonName($purchase->responsible_person_id)}}"@endif class="input w-full border mt-2" autocomplete="off" name="responsible_person_search" id="responsible_person_search">
+        <input type="hidden" name="responsible_person_id" value="{{$purchase->responsible_person_id}}" id="responsible_person_id">
+        <input required type="text" value="{{$purchase->getPersonName($purchase->responsible_person_id)}}" class="input w-full border mt-2" autocomplete="off" name="responsible_person_search" id="responsible_person_search">
         <ul class="hidden shadow-sm absolute w-11/12 p-2 bg-white z-50" id="showresponsiveperson">
 
         </ul>
-        
         @error('responsive_person_id')
         <span class="invalid-feedback" role="alert">
             <strong style="color: tomato">{{ $message }}</strong>
@@ -93,8 +103,8 @@
     </div>
     <div class="col-span-1 p-2 relative">
         <label class="font-bold font-caps text-xs text-gray-700">მიმღები პირი</label>
-        <input type="hidden" name="getter_person_id" id="getter_person_id" @if($purchase->getPersonName($purchase->responsible_person_id))value="{{$purchase->responsible_person_id}}"@endif>
-        <input required type="text" class="input w-full border mt-2" @if($purchase->getPersonName($purchase->getter_person_id))value="{{$purchase->getPersonName($purchase->getter_person_id)}}"@endif autocomplete="off" name="getter_person_search" id="getter_person_search">
+        <input type="hidden" name="getter_person_id" id="getter_person_id" value="{{$purchase->getter_person_id}}">
+        <input required type="text" class="input w-full border mt-2" value="{{$purchase->getPersonName($purchase->getter_person_id)}}"  autocomplete="off" name="getter_person_search" id="getter_person_search">
         <ul class="hidden shadow-sm absolute w-11/12 p-2 bg-white z-50" id="showgetterperson">
 
         </ul>
@@ -108,57 +118,109 @@
     </div>
    </div>
    <div class="flex items-center text-gray-700 p-2 mt-3">
-    <input  type="checkbox" class="input border border-black mr-2" id="dgg" name="dgg" @if($purchase->dgg == 1) checked @endif>
+    <input  type="checkbox" class="input border border-black mr-2" id="dgg" @if($purchase->dgg) checked @endif name="dgg">
     <label class="cursor-pointer select-none font-normal text-xs" for="dgg">დამატებული ღირებულების გადასახადი (დღგ)</label>
     </div>
 <hr>
-    <!-- Field -->
+    <!-- Field. -->
     <div class="py-3 justify-between flex items-center">
         <span class="text-sm font-medium">დაამატეთ ერთეული</span>
         <button type="button" id="addunit" class="dropdown-toggle button px-2 box text-gray-700 hover:bg-blue-900 hover:text-white">
             <span class="w-5 h-5 flex items-center justify-center"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus w-4 h-4"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> </span>
         </button>
     </div>
-    @foreach (json_decode($purchase->array) as $key => $item)
-    <div class="relative grid mt-3 grid-cols-3 w-full box p-4" id="{{$key}}">
-    <button type="button" onclick="removeunit('{{$key}}')" class="absolute right-0 top-0 dropdown-toggle button px-2 box  bg-red-300 text-red-900">
-            <span class="w-5 h-5 flex items-center justify-center"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus w-4 h-2"><line x1="5" y1="12" x2="19" y2="12"></line></svg> </span>
+
+    @foreach ($purchase->products as $key => $product)
+  <div class="relative w-full mt-3 box p-4" id="remove{{$product->id}}">
+        <button type="button" onclick="removeproduct('{{$product->id}}')" class="font-bold font-caps text-xs absolute right-0 top-0 dropdown-toggle button px-2 box  bg-red-300 focus:bg-red-900 text-red-900">
+           წაშლა
         </button>
-        <div class="col-span-1 p-2">
-            <label class="font-helvetica">საშუალების ტიპი</label>
-            <div class="mt-2">
-                <select required data-placeholder="აირჩიეთ ოფისი" name="ability_type[]" class="font-helvetica select2 w-full  p-2 w-full border border-gray-300 rounded" >
-                    <option value="1" @if($item->ability_type == "1")selected @endif>ძირითადი საშუალება</option>
-                    <option value="2" @if($item->ability_type == "2")selected @endif>ხარჯმასალა</option>
-                </select>
+        <div class="flex flex-wrap -mx-3 mb-6">
+            <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                <label class="font-bold font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
+                  საშუალების ტიპი
+                </label>
+                <div class="relative">
+                  <select required  disabled class="font-medium text-xs block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
+                    <option value="1" @if($product->type == "1") selected @endif >ძირითადი საშუალება</option>
+                    <option value="2" @if($product->type == "2") selected @endif>ხარჯმასალა</option>
+                  </select>
+                  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                  </div>
+                </div>
+              </div>
+              <div class="w-full md:w-1/3 px-3">
+                <label class="font-bold font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
+                  დასახელება
+                </label>
+                <input required value="{{$product->{"title_".app()->getLocale()} }}" disabled autocomplete="off" class="font-medium text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="text" placeholder="დასახელება">
+              </div>
+              <div class="w-full md:w-1/3 px-3">
+                <div>
+                    <label for="price" class="block  leading-5 font-medium text-gray-700 font-bold font-caps text-xs">ფასი</label>
+                    <div class="mt-1 relative rounded-md shadow-sm">
+                      <input autocomplete="off" disabled  value="{{$product->price/100}}"  min="0" step="0.01" class="block font-medium text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="xxx.xx">
+                      <div class="absolute inset-y-0 right-0 flex items-center">
+                        <select   disabled aria-label="Currency" class="form-select h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm sm:leading-5">
+                          <option value="gel" @if($product->currency_type == "gel") selected @endif >GEL</option>
+                          <option value="usd" @if($product->currency_type == "usd") selected @endif>USD</option>
+                          <option value="eur" @if($product->currency_type == "eur") selected @endif>EUR</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  </div>
+                  <div class="w-full md:w-1/3 px-3 mb-6 mt-3 md:mb-0">
+                    <label class="font-bold font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
+                      ზომის ერთეული
+                    </label>
+                    <div class="relative">
+                      <select required  disabled class="block font-medium text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
+                        <option value="unit" @if($product->unit == "unit") selected @endif >ცალი</option>
+                        <option value="kilo" @if($product->unit == "kilo") selected @endif>კილოგრამი</option>
+                        <option value="metre" @if($product->unit == "metre") selected @endif>მეტრი</option>
+                      </select>
+                      <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                      </div>
+                    </div>
+                  </div>
+          <div class="w-full md:w-1/3 mt-3 px-3">
+            <label class="font-bold font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
+              რაოდენობა
+            </label>
+            <input disabled required value="{{$product->stock}}" autocomplete="off"  class="font-medium text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="number" min="0" step="0.1" placeholder="xxx.x">
+          </div>
+          <div class="w-full md:w-1/3 px-3 mb-6 mt-3 md:mb-0">
+            <label class="font-bold font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
+              კატეგორია
+            </label>
+            <div class="relative">
+                
+              <select required disabled class="block font-medium text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
+                
+                <option selected >{{$product->category->{"title_".app()->getLocale()} }}</option>
+
+              </select>
+              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+              </div>
+            </div>
+          </div>
+         
+        <div class="w-full px-4 mt-2">
+            <label class="font-bold font-caps text-xs text-gray-700">აღწერა ქართულად <span class="text-red-500">*</span> </label>
+            <div class="mt-2 font-normal text-xs text-gray-700">
+                {!! $product->{"description_".app()->getLocale()} !!}
             </div>
         </div>
-        <div class="col-span-1 p-2 ">
-            <label class="font-helvetica">დასახელება</label>
-        <input required type="text" class="input w-full border mt-2" value="{{$item->title}}" name="title[]">
-        </div>
-        <div class="col-span-1 p-2">
-            <label class="font-helvetica">ზომის ერთეული</label>
-            <div class="mt-2">
-                <select required data-placeholder="აირჩიეთ დეპარტამენტი" name="unit[]" class="font-helvetica select2 p-2 w-full border border-gray-300 rounded" >
-                    <option value="unit" @if($item->unit == "unit")selected @endif>ცალი</option>
-                    <option value="kg" @if($item->unit == "kg")selected @endif>კგ</option>
-                    <option value="metre" @if($item->unit == "metre")selected @endif>მეტრი</option>
-                </select>
-            </div>
-        </div>
-        <div class="col-span-3 grid grid-cols-2">
-            <div class="col-span-1 p-2">
-                <label class="font-helvetica">რაოდენობა</label>
-            <input required type="number" min="0" value="{{$item->quantity}}" step="1"class="input w-full border mt-2" name="quantity[]">
-            </div>
-            <div class="col-span-1 p-2">
-                <label class="font-helvetica">ერთ.ფასი</label>
-                <input required type="number" min="0" value="{{$item->unit_price/100}}" step="0.01" class="input w-full border mt-2" name="unit_price[]">
-            </div>
         </div>
     </div>
+        
     @endforeach
+
+
     <div id="units">
         
     </div>
@@ -322,7 +384,7 @@
             
         });
         $('#selectoffice').change(function(){
-            $.ajaxSetup({
+          $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 }
@@ -348,48 +410,123 @@
         $('#addunit').click(function(){
             let randomid= Date.now();
             $('#units').append(`
-            <div class="relative grid mt-3 grid-cols-3 w-full box p-4" id="`+randomid+`">
-        <button type="button" onclick="removeunit('`+randomid+`')" class="absolute right-0 top-0 dropdown-toggle button px-2 box  bg-red-300 text-red-900">
-            <span class="w-5 h-5 flex items-center justify-center"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus w-4 h-2"><line x1="5" y1="12" x2="19" y2="12"></line></svg> </span>
-        </button>
-        <div class="col-span-1 p-2">
-            <label class="font-helvetica">საშუალების ტიპი</label>
-            <div class="mt-2">
-                <select required data-placeholder="აირჩიეთ ოფისი" name="ability_type[]" class="font-helvetica select2 w-full  p-2 w-full border border-gray-300 rounded" >
-                    <option value="1">ძირითადი საშუალება</option>
-                    <option value="2">ხარჯმასალა</option>
-                </select>
+            <div class="relative w-full mt-3 box p-4" id="`+randomid+`">
+            <button type="button" onclick="removeunit('`+randomid+`')" class="absolute right-0 top-0 dropdown-toggle button px-2 box  bg-red-300 focus:bg-red-900 text-red-900">
+                <span class="w-3 h-3 flex items-center justify-center "> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus w-4 h-2"><line x1="5" y1="12" x2="19" y2="12"></line></svg> </span>
+            </button>
+            <div class="flex flex-wrap -mx-3 mb-6">
+                <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                    <label class="font-bold font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
+                      საშუალების ტიპი
+                    </label>
+                    <div class="relative">
+                      <select required name="ability_type[]" class="font-medium text-xs block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
+                        <option value="1">ძირითადი საშუალება</option>
+                        <option value="2">ხარჯმასალა</option>
+                      </select>
+                      <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="w-full md:w-1/3 px-3">
+                    <label class="font-bold font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
+                      დასახელება
+                    </label>
+                    <input required autocomplete="off" name="title[]" class="font-medium text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="text" placeholder="დასახელება">
+                  </div>
+                  <div class="w-full md:w-1/3 px-3">
+                    <div>
+                        <label for="price" class="block  leading-5 font-medium text-gray-700 font-bold font-caps text-xs">ფასი</label>
+                        <div class="mt-1 relative rounded-md shadow-sm">
+                          <input autocomplete="off" name="unit_price[]" min="0" step="0.01" class="block font-medium text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="xxx.xx">
+                          <div class="absolute inset-y-0 right-0 flex items-center">
+                            <select name="currency[]" aria-label="Currency" class="form-select h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm sm:leading-5">
+                              <option value="gel" >GEL</option>
+                              <option value="usd" >USD</option>
+                              <option value="eur" >EUR</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                      </div>
+                      <div class="w-full md:w-1/3 px-3 mb-6 mt-3 md:mb-0">
+                        <label class="font-bold font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
+                          ზომის ერთეული
+                        </label>
+                        <div class="relative">
+                          <select required name="unit[]" class="block font-medium text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
+                            <option value="unit" selected >ცალი</option>
+                            <option value="kilo">კილოგრამი</option>
+                            <option value="metre">მეტრი</option>
+                          </select>
+                          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                          </div>
+                        </div>
+                      </div>
+              <div class="w-full md:w-1/3 mt-3 px-3">
+                <label class="font-bold font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
+                  რაოდენობა
+                </label>
+                <input required autocomplete="off" name="quantity[]" class="font-medium text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="number" min="0" step="0.1" placeholder="xxx.x">
+              </div>
+              <div class="w-full md:w-1/3 px-3 mb-6 mt-3 md:mb-0">
+                <label class="font-bold font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
+                  კატეგორია
+                </label>
+                <div class="relative">
+                  <select required name="category[]" class="block font-medium text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
+                    @if($categories)
+                        @foreach($categories as $cat)
+                    <option value="{{$cat->id}}" selected >{{$cat->{'title_'.app()->getLocale()} }}</option>
+                        @endforeach
+                    @endif
+                  </select>
+                  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                  </div>
+                </div>
+              </div>
+             
+            <div class="w-full px-4 mt-2">
+                <label class="font-bold font-caps text-xs text-gray-700">აღწერა ქართულად <span class="text-red-500">*</span> </label>
+                <div class="mt-2 font-medium text-xs">
+                    <textarea required data-feature="basic" class="summernote" name="body[]" style="display: none;"></textarea>
+                </div>
+            </div>
             </div>
         </div>
-        <div class="col-span-1 p-2 ">
-            <label class="font-helvetica">დასახელება</label>
-            <input required type="text" class="input w-full border mt-2" name="title[]">
-        </div>
-        <div class="col-span-1 p-2">
-            <label class="font-helvetica">ზომის ერთეული</label>
-            <div class="mt-2">
-                <select required data-placeholder="აირჩიეთ დეპარტამენტი" name="unit[]" class="font-helvetica select2 p-2 w-full border border-gray-300 rounded" >
-                    <option value="unit" selected>ცალი</option>
-                    <option value="kg">კგ</option>
-                    <option value="metre">მეტრი</option>
-                </select>
-            </div>
-        </div>
-        <div class="col-span-3 grid grid-cols-2">
-            <div class="col-span-1 p-2">
-                <label class="font-helvetica">რაოდენობა</label>
-                <input required type="number" min="0" step="1"class="input w-full border mt-2" name="quantity[]">
-            </div>
-            <div class="col-span-1 p-2">
-                <label class="font-helvetica">ერთ.ფასი</label>
-                <input required type="number" min="0" step="0.01" class="input w-full border mt-2" name="unit_price[]">
-            </div>
-        </div>
-    </div>
             `);
+            $('.summernote').summernote({
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'underline', 'clear']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                ]
+            });
         });
-        
     });
+    function removeproduct($id){
+      $.ajaxSetup({
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+      });
+      $.ajax({
+        url: "/product/removeproduct/"+$id,
+        method: 'get',
+        success: function(result){
+          if(result.status == true){
+            removeunit('remove'+$id);
+          }
+        }
+      });                                                                                    
+                  
+            
+    }
      function removeunit($id){
         $('#'+$id).remove();
     }

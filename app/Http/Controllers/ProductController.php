@@ -16,6 +16,7 @@ use App\Department;
 use App\DistributionCompany;
 use Carbon\Carbon;
 use App\Image;
+use App\Purchase;
 use App\Exports\ProductExport;
 use Maatwebsite\Excel\Facades\Excel;
 class ProductController extends Controller
@@ -58,9 +59,9 @@ class ProductController extends Controller
                 $queries[$req] = request($req);
             }
         }
-        $products = $products->orderBy('id', 'DESC')->paginate(25);
+        $products = $products->orderBy('id', 'DESC')->paginate(30)->appends($queries);
         $departments = Department::whereNull('deleted_at')->get();
-        $categories = Category::where('categoryable_type', 'App\Product')->whereNull('deleted_at')->get();
+        $categories = Category::whereNull('deleted_at')->get();
         return view('theme.template.product.products', compact('products', 'categories', 'departments', 'queries'));
     }
 
@@ -77,71 +78,6 @@ class ProductController extends Controller
         return view('theme.template.product.add_product', compact('departments', 'categories', 'distributions'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $this->validate($request, [
-            'title_ge' => 'required|string',
-            'title_ru' => '',
-            'title_en' => '',
-            'get_department' => '',
-            'get_distributor' => '',
-            'get_type' => 'required|string',
-            'unit' => 'required|string',
-            'stock' => 'required|between:0,99999.99',
-            'get_category' => '',
-            'new_category-ge' => '',
-            'new_category-ru' => '',
-            'new_category-en' => '',
-            'editor-ge' => 'required',
-            'editor-ru' => '',
-            'editor-en' => '',
-            'price' => 'required',
-            'images[]' => 'image'
-        ]);
-        $product = new Product;
-        $product->title_ge = $request->input('title_ge');
-        $product->title_ru = $request->input('title_ru');
-        $product->title_en = $request->input('title_en');
-        $product->description_ge = $request->input('editor-ge');
-        $product->description_ru = $request->input('editor-ru');
-        $product->description_en = $request->input('editor-en');
-        $product->type = $request->input('get_type');
-        $product->stock = $request->input('stock');
-        $product->unit = $request->input('unit');
-        $product->department_id = $request->input('get_department');
-        $product->distributor_id = $request->input('get_distributor');
-        $product->price = intval($request->input('price')*100);
-        $product->save();
-        if($request->input('new_category_ge') || $request->input('new_category_ru') || $request->input('new_category_en')){
-            $cat = $product->category()->create([
-                'title_ge' => $request->input('new_category_ge'),
-                'title_ru' => $request->input('new_category_ru'),
-                'title_en' => $request->input('new_category_en'),
-            ]);
-            $product->category_id = $cat->id;
-            $product->save();
-        }else if($request->input('get_category')){
-            $product->category_id = (int)$request->input('get_category');
-            $product->save();
-        }
-        if($request->file('images')){
-            foreach($request->file('images') as $image){
-                $imagename = date('Ymhs').$image->getClientOriginalName();
-                $destination = base_path() . '/storage/app/public/productimage';
-                $image->move($destination, $imagename);
-                $product->images()->create([
-                    'name' => $imagename
-                ]);
-            }
-        }
-        return redirect('/products');
-    }
 
     /**
      * Display the specified resource.
@@ -164,8 +100,9 @@ class ProductController extends Controller
     {
         $distributions = DistributionCompany::whereNull('deleted_at')->get();
         $departments = Department::whereNull('deleted_at')->get();
-        $categories = Category::where('categoryable_type', 'App\Product')->whereNull('deleted_at')->get();
-        return view('theme.template.product.edit_product', compact('departments', 'categories', 'product', 'distributions'));
+        $categories = Category::all();
+        $purchases = Purchase::all();
+        return view('theme.template.product.edit_product', compact('departments', 'categories', 'product', 'distributions', 'purchases'));
     }
 
     /**
@@ -182,19 +119,16 @@ class ProductController extends Controller
             'title_ge' => 'required|string',
             'title_ru' => '',
             'title_en' => '',
-            'get_department' => '',
-            'get_distributor' => '',
             'get_category' => '',
+            'purchase' => 'required|integer',
             'get_type' => 'required|string',
             'unit' => 'required|string',
-            'stock' => 'required|between:0,99999.99',
-            'new_category-ge' => '',
-            'new_category-ru' => '',
-            'new_category-en' => '',
+            'stock' => 'required|between:0,99.99|min:0',
             'editor-ge' => 'required',
             'editor-ru' => '',
             'editor-en' => '',
-            'price' => 'required',
+            'price' => 'required|between:0,99.99|min:0',
+            'currency' => 'required|string',
             'images[]' => 'image'
         ]);
         $product->title_ge = $request->input('title_ge');
@@ -204,24 +138,14 @@ class ProductController extends Controller
         $product->description_ru = $request->input('editor-ru');
         $product->description_en = $request->input('editor-en');
         $product->type = $request->input('get_type');
+        $product->purchase_id = $request->input('purchase');
         $product->unit = $request->input('unit');
         $product->stock = $request->input('stock');
-        $product->department_id = intval($request->input('get_department'));
-        $product->distributor_id = intval($request->input('get_distributor'));
+        $product->category_id = intval($request->input('get_category'));
         $product->price = intval($request->input('price')*100);
+        $product->currency_type = $request->input('currency' );
         $product->save();
-        if($request->input('new_category_ge') || $request->input('new_category_ru') || $request->input('new_category_en')){
-            $cat = $product->category()->create([
-                'title_ge' => $request->input('new_category_ge'),
-                'title_ru' => $request->input('new_category_ru'),
-                'title_en' => $request->input('new_category_en'),
-            ]);
-            $product->category_id = $cat->id;
-            $product->save();
-        }else if($request->input('get_category')){
-            $product->category_id = (int)$request->input('get_category');
-            $product->save();
-        }
+
         if($request->file('images')){
             foreach($request->file('images') as $image){
                 $imagename = date('Ymhs').$image->getClientOriginalName();
@@ -243,8 +167,7 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        $product->deleted_at = Carbon::now('Asia/Tbilisi');
-        $product->save();
+        $product->delete();
         return redirect('/products');
     }
     public function removeimg(Request $request){
@@ -278,5 +201,10 @@ class ProductController extends Controller
     public function productexport() 
     {
         return Excel::download(new ProductExport, 'products.xlsx');
+    }
+    public function removeproductajax($id){
+        $product = Product::findOrFail(intval($id));
+        $product->delete();
+        return response()->json(array('status'=> true), 200);
     }
 }

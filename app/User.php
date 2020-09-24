@@ -11,9 +11,10 @@ use App\Office;
 use App\Department;
 use App\SalaryToService;
 use App\Company;
+use Illuminate\Database\Eloquent\SoftDeletes;
 class User extends Authenticatable
 {
-    use Notifiable, HasRoles;
+    use Notifiable, HasRoles, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -77,7 +78,6 @@ class User extends Authenticatable
     {
         return $this->hasAnyRole('user'); // ?? something like this! should return true or false
     }
-
     /**
      * @return string
      */

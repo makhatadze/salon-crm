@@ -32,10 +32,10 @@
                 
            <tr class="intro-x">
             <td>
-                @if ($purchase->overhead_number)
+                @if ($purchase->purchase_type == "overhead")
                 <h6 class="font-bolder text-black">#{{$purchase->overhead_number}}</h6>
                 <small class="font-normal">ზედნადების ნომერი</small>
-                @elseif($purchase->purchase_number)
+                @elseif($purchase->purchase_type == "purchase")
                 <h6 class="font-bolder text-black">#{{$purchase->purchase_number}}</h6>
                 <small class="font-normal">ნასყიდობის ნომერი</small>
                 @endif
@@ -43,21 +43,15 @@
             <td class="font-normal">
                 {{$purchase->updated_at}} <br>
                 @if ($purchase->dgg)
-                    <span class="bg-green-500 text-xs p-1 rounded font-normal font-caps text-white">დღღ</span>
+                    <span class="bg-green-500 text-xs p-1 rounded font-normal font-caps text-white" >დღგ</span>
                 @endif
             </td>
-            <td class="font-normal">
-                {{$purchase->getDistributorName($purchase->distributor_id)}}
+            <td class="font-medium text-gray-800">
+              {{$purchase->distributor->{'name_'.app()->getLocale()} }} <br>
+              <span class="font-normal text-xs font-gray-300">{{$purchase->department->{"name_".app()->getLocale()} }}</span>
             </td>
             <td class="text-center whitespace-no-wrap font-normal">
-                <?php
-                $sum = 0;
-                foreach ( json_decode($purchase->array) as $receipt )
-                {
-                    $sum += $receipt->quantity * ($receipt->unit_price/100);
-                }
-                echo $sum;
-                ?> ₾
+                {{$purchase->getPrice()}} ₾
             </td>
             <td class="text-center whitespace-no-wrap font-normal">
                 <div class="flex items-center justify-center w-full">

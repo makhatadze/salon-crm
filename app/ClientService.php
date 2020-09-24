@@ -5,8 +5,10 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use App\Service;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\SoftDeletes;
 class ClientService extends Model
 {
+    use SoftDeletes;
     protected $fillable = ['user_id','service_id','session_start_time'];
     
     protected $table = 'client_services';

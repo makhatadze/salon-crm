@@ -16,11 +16,9 @@ class MoneyController extends Controller
         //Purchases
         $units = 0;
         $cost = 0;
-        foreach(Purchase::whereNull('deleted_at')->get() as $purchase){
-            $units += count(json_decode($purchase->array));
-            foreach(json_decode($purchase->array) as $unit){
-                $cost += $unit->quantity + $unit->unit_price/100;
-            }
+        foreach(Purchase::all() as $purchase){
+            $units += $purchase->products->count();
+            $cost += $purchase->products->sum('price')/100;
         }
         $purchase =[
             'total' => Purchase::whereNull('deleted_at')->count(),
