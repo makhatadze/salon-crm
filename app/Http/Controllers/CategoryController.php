@@ -25,7 +25,7 @@ class CategoryController extends Controller
         $this->validate($request, [
             'title' => 'nullable|string',
         ]);
-        $categories = Category::query()->whereNull('deleted_at')->orderBy('id', 'DESC');
+        $categories = Category::query()->orderBy('id', 'DESC');
         if ($request->title) {
             $categoryTitle = 'title_' . App()->getLocale();
             $categories = $categories->where($categoryTitle, 'LIKE', '%' . $request->title . '%');
