@@ -76,7 +76,7 @@ class HomeController extends Controller
                         $queries[$req] = request($req);
                     }
                 }
-                $todayservices = $todayservices->paginate(40);
+                $todayservices = $todayservices->paginate(40)->appends($queries);
             }else{
                 $todayservices = ClientService::whereDate('session_start_time', Carbon::today())->whereNull('deleted_at')->paginate(40);
             }

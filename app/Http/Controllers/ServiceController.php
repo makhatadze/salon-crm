@@ -29,8 +29,29 @@ class ServiceController extends Controller
      */
     public function index()
     {
-        $services = Service::whereNull('deleted_at')->orderBy('id', 'DESC')->paginate(30);
-        return view('theme.template.service.services', compact('services'));
+        $queries = [
+            'title',
+            'unit',
+            'pricefrom',
+            'pricetill'
+        ];
+        $services = Service::orderBy('id', 'DESC');
+        foreach ($queries as $req) {
+            if(request($req)){
+                if($req == 'title'){
+                    $services = $services->where('title_'.app()->getLocale(), 'like', '%'.request($req).'%');
+                }elseif($req == "unit"){
+                    $services = $services->where('unit_'.app()->getLocale(), 'like', '%'.request($req).'%');
+                }elseif($req == "pricefrom"){
+                    $services = $services->where('price', '>=', request($req)*100);
+                }elseif($req == "pricetill"){
+                    $services = $services->where('price', '<=', request($req)*100);
+                }
+                $queries[$req] = request($req);
+            }
+        }
+        $services = $services->paginate(30)->appends($queries);
+        return view('theme.template.service.services', compact('services', 'queries'));
     }
 
     /**
@@ -41,7 +62,7 @@ class ServiceController extends Controller
     public function create()
     {
         $categories = Category::all();
-        $inventories = Product::where('type', 2)->whereNull('deleted_at')->get();
+        $inventories = Product::where('type', 2)->where('published', true)->get();
         $action = "post";
         return view('theme.template.service.add_service', compact('action', 'categories', 'inventories'));
     }
@@ -54,7 +75,6 @@ class ServiceController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
         $this->validate($request,[
             'title_ge' => 'required',
             'title_en' => '',
@@ -121,7 +141,7 @@ class ServiceController extends Controller
     public function edit(Service $service)
     {
         $categories = Category::whereNull('deleted_at')->get();
-        $inventories = Product::whereIn('type', ['inventory', 'both'])->whereNull('deleted_at')->get();
+        $inventories = Product::where('type', 2)->where('published', true)->get();
         return view('theme.template.service.edit_service', compact('service', 'inventories', 'categories'));
     }
 
@@ -134,10 +154,7 @@ class ServiceController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $service = Service::findorFail($id);
-        if($service->first()->deleted_at != null){
-            return redirect('/services');
-        }
+        $service = Service::findOrFail($id);
         $this->validate($request,[
             'title_ge' => 'required',
             'title_en' => '',
@@ -147,7 +164,8 @@ class ServiceController extends Controller
             'editor-ru' => '',
             'duration_count' => 'required|between:0,99.99',
             'duration_type' => 'required|string',
-            'price' => 'required|between:0,99.99',
+            'category' => '',
+            'price' => 'required|between:0,9999.99',
             'unit-ge' => '',
             'unit-en' => '',
             'unit-ru' => '',
@@ -161,12 +179,16 @@ class ServiceController extends Controller
         $service->body_ge = $request->input('editor-ge');
         $service->body_en = $request->input('editor-en');
         $service->body_ru = $request->input('editor-ru');
+        $service->category_id = $request->input('category');
         $service->duration_count = $request->input('duration_count');
         $service->duration_type = $request->input('duration_type');
         $service->unit_ge = $request->input('unit-ge');
         $service->unit_ru = $request->input('unit-ru');
         $service->unit_en = $request->input('unit-en');
         $service->price = intval($request->input('price')*100);
+
+
+        $service->save();
         $array = array();
         if($request->input('inventory') && $request->input('quantity')){
             foreach($request->input('inventory') as $key => $item){
@@ -177,38 +199,14 @@ class ServiceController extends Controller
             }
             $service->inventories()->createMany($array);
         }
-        if($request->input('category-ge') || $request->input('category-en') || $request->input('category-ru')){
-            if($service->category()->first()){
-                $servicecat = $service->category()->first();
-                $servicecat->title_ge = $request->input('category-ge');
-                $servicecat->title_ru = $request->input('category-ru');
-                $servicecat->title_en = $request->input('category-en');
-                $servicecat->save();
-            }else{
-                $service->category()->create([
-                    'title_ge' => $request->input('category-ge'),
-                    'title_ru' => $request->input('category-ru'),
-                    'title_en' => $request->input('category-en'),
-                ]);
-            }
-        }elseif(!$request->input('category-ge') & !$request->input('category-en') && !$request->input('category-ru') && $service->category()->first()){
-            $service->category()->first()->delete();
-        }
-        $service->save();
 
         if($request->hasFile('file')){
             $imagename = date('Ymhs').$request->file('file')->getClientOriginalName();
             $destination = base_path() . '/storage/app/public/serviceimg';
             $request->file('file')->move($destination, $imagename);
-            if($service->first()->image()->first()){
-                $firstimg = $service->first()->image()->first();
-                $firstimg->name = $imagename;
-                $firstimg->save();
-            }else{
-                $service->first()->image()->create([
-                    'name' => $imagename
-                ]);
-            }
+            $service->image()->create([
+                'name' => $imagename
+            ]);
         }
         return redirect('/services');
     }
@@ -240,20 +238,6 @@ class ServiceController extends Controller
         return redirect('/services');
     }
 
-    //For Ajax
-    public function getcategory(Request $request){
-        $data = Category::where('title', 'like', '%'.$request->input('value').'%')->orderBy('id', 'DESC')->take(4);
-
-        return response()->json($data);
-    }
-
-
-    public function removecategory($id){
-        $Category = Category::findorfail($id);
-        $Category->delete_at = Carbon::now('Asia/Tbilisi');
-        $Category->save();
-        return redirect('/categories');
-    }
 
     //Get Unit Name for Inventory Product
     public function getunitname($id){

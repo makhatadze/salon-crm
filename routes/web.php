@@ -26,8 +26,6 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
 
         //Service COntroller
         Route::get('/services/turn/{service}/{status}', 'ServiceController@turn');
-        Route::get('/getcategories', ['uses'=> 'ServiceController@getcategory', 'as' => 'GetCategory']);
-        Route::delete('/servicescategory/{id}', 'ServiceController@removecategory');
         Route::resource('/services', 'ServiceController')->except('show', 'update');
         Route::delete('/services/{id}', 'ServiceController@destroy')->name('RemoveService');
         Route::put('/services/update/{id}', 'ServiceController@update')->name('UpdateService');

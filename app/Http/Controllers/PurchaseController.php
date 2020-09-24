@@ -44,7 +44,7 @@ class PurchaseController extends Controller
             }
         }
         
-        $purchases = $purchases->paginate(25);
+        $purchases = $purchases->paginate(25)->appends($queries);
 
         $distributors = DistributionCompany::whereNull('deleted_at')->get();
         return view('theme.template.purchase.purchases', compact('purchases', 'distributors', 'queries'));

@@ -24,8 +24,8 @@ class PurchaseExport implements FromCollection, WithHeadings
                 $purchase->purchase_type = 'შესყიდვის აქტით';
                 unset($purchase->overhead_number);
             }
-            $purchase['distributor_name'] = $purchase->getDistributorName($purchase->distributor_id);
-            $purchase['department_name'] = $purchase->getDepartmentName($purchase->department_id);
+            $purchase['distributor_name'] = $purchase->distributor->{"name_".app()->getLocale()};
+            $purchase['department_name'] = $purchase->department->{"name_".app()->getLocale()};
             $purchase['responsible_person'] = $purchase->getPersonName($purchase->responsible_person_id);
             $purchase['getter_person'] = $purchase->getPersonName($purchase->getter_person_id);
             unset($purchase->responsible_person_id);

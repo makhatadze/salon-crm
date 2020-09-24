@@ -128,7 +128,7 @@
                       <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="productname">
                         სახელი
                       </label>
-                      <input class="appearance-none block w-full font-normal text-xs bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="productname" name="productname" type="text" placeholder="Name">
+                      <input @if(isset($queries['productname'])) value="{{$queries['productname']}}" @endif class="appearance-none block w-full font-normal text-xs bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="productname" name="productname" type="text" placeholder="Name">
                     </div>
                     <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="product_category">
@@ -151,26 +151,6 @@
                         </div>
                       </div>
                   </div>
-                  <div class="w-full mb-6 md:mb-0">
-                      <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="departments">
-                        დეპარტამენტები
-                      </label>
-                      <div class="relative">
-                        <select class="block font-normal text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="departments" name="departments">
-                          <option value="">ყველა</option>
-                          @foreach ($departments as $dept)
-                          @if (isset($queries['departments']) && $queries['departments'] == $dept->id)
-                          <option value="{{$dept->id }}" selected>{{$dept->{"name_".app()->getLocale()} }}</option>
-                          @else 
-                          <option value="{{$dept->id }}">{{$dept->{"name_".app()->getLocale()} }}</option>
-                          @endif
-                          @endforeach
-                        </select>
-                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                          <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-                        </div>
-                      </div>
-                    </div>
                     <div class="flex mt-3 flex-wrap -mx-3 mb-1">
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                           <label for="pricefrom"  class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">

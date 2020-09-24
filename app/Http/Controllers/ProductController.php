@@ -59,7 +59,7 @@ class ProductController extends Controller
                 $queries[$req] = request($req);
             }
         }
-        $products = $products->orderBy('id', 'DESC')->paginate(25);
+        $products = $products->orderBy('id', 'DESC')->paginate(30)->appends($queries);
         $departments = Department::whereNull('deleted_at')->get();
         $categories = Category::whereNull('deleted_at')->get();
         return view('theme.template.product.products', compact('products', 'categories', 'departments', 'queries'));
@@ -143,7 +143,7 @@ class ProductController extends Controller
         $product->stock = $request->input('stock');
         $product->category_id = intval($request->input('get_category'));
         $product->price = intval($request->input('price')*100);
-        $product->currency_type = intval($request->input('currency'));
+        $product->currency_type = $request->input('currency');
         $product->save();
 
         if($request->file('images')){

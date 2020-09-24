@@ -22,7 +22,7 @@
         </div>
         <div class="w-full sm:w-auto mt-3 sm:mt-0 sm:ml-auto md:ml-0">
             <form action="" class="flex box p-2">
-                <input class="appearance-none font-normal text-xs block w-56 bg-gray-200 text-gray-700 border rounded py-3 px-4  leading-tight focus:outline-none focus:bg-white" type="text" placeholder="სახელი ან ნომერი">
+                <input @if(isset($queries['search'])) value="{{$queries['search']}}" @endif class="appearance-none font-normal text-xs block w-56 bg-gray-200 text-gray-700 border rounded py-3 px-4  leading-tight focus:outline-none focus:bg-white" type="text" name="search" placeholder="სახელი ან ნომერი">
                 <input class="appearance-none font-normal text-xs font-caps block w-56 ml-3 bg-indigo-500 text-white border rounded py-3 px-4  leading-tight " type="submit" value="ძებნა">
                   
             </form>

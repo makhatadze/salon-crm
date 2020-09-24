@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Product extends Model
 {
     use SoftDeletes;
-    protected $fillable = ['title_ge', 'title_ru', 'title_en', 'description_ge', 'description_ru', 'description_en', 'price', 'purchase_id', 'type', 'stock', 'unit', 'category_id', 'department_id'];
+    protected $fillable = ['title_ge', 'title_ru', 'title_en', 'description_ge', 'description_ru', 'description_en', 'price', 'purchase_id', 'type', 'stock', 'unit', 'category_id', 'currency', 'department_id'];
     protected $table = 'products';
     public function category(){
         return $this->belongsTo('App\Category');

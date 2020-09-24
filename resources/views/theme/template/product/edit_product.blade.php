@@ -78,7 +78,7 @@
                   <input autocomplete="off" value="{{$product->price/100}}" name="price" min="0" step="0.01" class="block font-medium text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="xxx.xx">
                   <div class="absolute inset-y-0 right-0 flex items-center">
                     <select name="currency" aria-label="Currency" class="form-select h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm sm:leading-5">
-                      <option value="gel" @if($product->currency_type == "gel") selected @endif >GEL</option>
+                      <option value="gel" selected @if($product->currency_type == "gel") selected @endif >GEL</option>
                       <option value="usd" @if($product->currency_type == "usd") selected @endif >USD</option>
                       <option value="eur" @if($product->currency_type == "eur") selected @endif >EUR</option>
                     </select>

@@ -10,8 +10,9 @@
 </div>
 <div class="grid grid-cols-12 gap-6 mt-5">
     <div class="intro-y col-span-12 lg:col-span-8">
-    <form  action="{{route('StoreService')}}"  method="POST" enctype="multipart/form-data">
+    <form  action="{{route('UpdateService', $service->id)}}"  method="POST" enctype="multipart/form-data">
         @csrf
+        @method('PUT')
         <div class="flex">
           <div class="w-1/3 p-2">
           <input type="text" required  name="title_ge" value="{{$service->title_ge}}"  class="font-normal text-sm intro-y input input--lg w-full box pr-10 placeholder-theme-13 m-0 mb-3" placeholder="სათაური-GE">
@@ -285,6 +286,25 @@
             `);
         });
     });
+    function removeinventoryajax($id){
+        $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                url: "{{ route('RemoveInventory') }}",
+                method: 'post',
+                data:{
+                    'invid':$id
+                },
+                success: function(result){
+                    if(result.status == true){
+                        removeinventory("remove"+$id);
+                    }
+                } 
+            });
+    }
     function removeinventory($id){
         $('#'+$id).remove();
     }
@@ -302,8 +322,8 @@
                       if(result.status == true){
                           if(result.data == "unit"){
                               $('#unit'+$id).val("ცალი");
-                          }else if(result.data == "gram"){
-                              $('#unit'+$id).val("გრამი");
+                          }else if(result.data == "kilo"){
+                              $('#unit'+$id).val("კილოგრამი");
                           }else if(result.data == "metre"){
                               $('#unit'+$id).val("მეტრი");
                           }

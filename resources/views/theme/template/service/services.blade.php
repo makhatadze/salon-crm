@@ -124,31 +124,40 @@
                       <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="title">
                         სათაური
                       </label>
-                      <input class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="title" type="text" name="title">
+                    <input value="@if(isset($queries['title'])) {{$queries['title']}} @endif" class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="title" type="text" name="title">
                     </div>
                     <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                       <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="unit">
                         ერთეული
                       </label>
-                      <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="unit" type="text" name="unit">
+                      <input value="@if(isset($queries['unit'])) {{$queries['unit']}} @endif" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="unit" type="text" name="unit">
                     </div>
                   </div>
                   <div class="flex flex-wrap -mx-3 mt-2">
                       <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="unit">
+                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="pricefrom">
                           ფასი <small>დან</small>
                         </label>
-                        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="pricefrom" type="number" name="pricefrom">
+                        <input @if(isset($queries['pricefrom'])) value="{{$queries['pricefrom']}}"@endif class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="pricefrom" type="number" name="pricefrom">
                       </div>
                       <div class="w-full md:w-1/2 px-3">
-                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="unit">
+                        <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="pricetill">
                           ფასი <small>მდე</small>
                         </label>
-                        <input class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="pricetill" type="number" name="pricetill">
+                        <input @if(isset($queries['pricetill'])) value="{{$queries['pricetill']}}"@endif class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="pricetill" type="number" name="pricetill">
                       </div>
                     </div>
-                    <input class="appearance-none block w-full bg-indigo-500 font-bold font-caps text-xs text-white border border-gray-200 rounded py-3 px-4 leading-tight" value="ძებნა" type="submit">
-            </form>
+                    <div class="flex">
+                        <button class="w-3/4 mt-2 block appearance-none font-bold font-caps bg-indigo-500 text-xs text-white bg-gray-200 border border-gray-200  py-3 px-4 rounded leading-tight">
+                            ძებნა
+                          </button>   
+                          <a href="{{url()->current()}}" class="w-1/4 mt-2 block appearance-none flex items-center justify-center font-bold font-caps bg-red-500 text-xs text-white bg-gray-200 border border-gray-200  py-3 px-4  rounded leading-tight">
+                            <svg width="1.3em" height="1.3em" viewBox="0 0 16 16" class="bi bi-x-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                <path fill-rule="evenodd" d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                              </svg>
+                            </a>   
+                    </div> </form>
         </div>
     </div>
 </div>
