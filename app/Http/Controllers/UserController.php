@@ -298,11 +298,12 @@ class UserController extends Controller
     public function showprofile($id){
         $user = User::findOrFail($id);
         $userclients = ClientService::where('user_id', $user->id);
+        $queries = [
+            'date',
+            'status'
+        ];
         if(request()->all()){
-            $queries = [
-                'date',
-                'status'
-            ];
+
             foreach ($queries as $req) {
                 if(request($req)){
                     if($req == "date"){

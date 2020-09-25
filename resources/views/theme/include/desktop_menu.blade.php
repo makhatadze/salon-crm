@@ -138,15 +138,21 @@
             </a>
             <ul class="">
                 <li>
-                    <a href="index.html" class="side-menu custom-nav-item">
+                    <a href="{{ route('Sales') }}" class="side-menu custom-nav-item">
                         <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
-                        <div class="side-menu__title"> შეკვეთები </div>
+                        <div class="side-menu__title"> გაყიდვები </div>
                     </a>
                 </li>
                 <li>
                     <a href="/products" class="side-menu custom-nav-item">
                         <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
                         <div class="side-menu__title"> პროდუქცია </div>
+                    </a>
+                </li>
+                <li>
+                <a href="{{ route('AddToCart') }}" class="side-menu custom-nav-item">
+                        <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
+                        <div class="side-menu__title"> პროდუქტის დამატება </div>
                     </a>
                 </li>
                 <li>

@@ -44,57 +44,7 @@
                </div>
                <!-- Choose Service -->
                <div id="services">
-                <div class="flex">
-                    <div class="w-1/4 p-2">
-                        <div class="flex justify-between align-items-center">
-                            <label class="font-bold font-caps text-xs text-gray-700">აირჩიეთ სერვისი <span class="text-red-500">*</span></label>
-                        </div>
-                        <div class="mt-2">
-                            <select required name="servicepicker[]" class="select2 w-full">
-                                @foreach ($services as $service)
-                            <option value="{{$service->id}}">{{$service->{"title_".app()->getLocale()} }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                      
-                    </div>
-                    
-                    <div class="w-1/4 p-2">
-                        <div class="flex justify-between align-items-center">
-                            <label class="font-bold font-caps text-xs text-gray-700">ჩაწერის თარიღი <span class="text-red-500">*</span></label>
-                        </div>
-                        
-                        <div class="w-full mt-2">
-                            <input required name="datepicker[]" id="datepicker" type="date" class=" input w-full border block mx-auto"> 
-                        </div>
-                      
-                    </div>
-                    <div class="w-1/4 p-2">
-                        <div class="flex justify-between align-items-center">
-                            <label class="font-bold font-caps text-xs text-gray-700">ჩაწერის დრო <span class="text-red-500">*</span></label>
-                        </div>
-                        
-                        <div class="w-full mt-2">
-                            <input required type="time" name="timepicker[]" id="datepicker"  class=" input w-full border block mx-auto"> 
-                        </div>
-                      
-                    </div>
-                    
-                    <div class="w-1/4 p-2">
-                        <div class="flex justify-between align-items-center">
-                            <label class="font-bold font-caps text-xs text-gray-700">აირჩიეთ სტილისტი <span class="text-red-500">*</span></label>
-                        </div>
-                        <div class="mt-2">
-                            <select required name="userpicker[]" class="select2 w-full">
-                                <option value=""></option>
-                                @foreach ($workers as $per)
-                                <option value="{{$per->id}}">{{$per->profile()->first()->first_name}} {{$per->profile()->first()->last_name}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                      
-                    </div>
-                  </div>
+                
                </div>
               
               <br>

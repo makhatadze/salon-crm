@@ -1,4 +1,5 @@
 <?php
+
 /**
  *  app/Http/Controllers/ProductController.php
  *
@@ -7,6 +8,7 @@
  * Time: 13:57
  * @author Vito Makhatadze <vitomaxatadze@gmail.com>
  */
+
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -16,9 +18,17 @@ use App\Department;
 use App\DistributionCompany;
 use Carbon\Carbon;
 use App\Image;
+use App\Client;
+use App\Sale;
+use App\Order;
 use App\Purchase;
 use App\Exports\ProductExport;
+
+use Auth;
+use Cart;
+
 use Maatwebsite\Excel\Facades\Excel;
+
 class ProductController extends Controller
 {
     /**
@@ -29,31 +39,31 @@ class ProductController extends Controller
     public function index()
     {
         $queries = [
-        "productname",
-        "product_category",
-        "departments",
-        "pricefrom",
-        "pricetill",
-        "amout",
-        "unit"
-    ];
+            "productname",
+            "product_category",
+            "departments",
+            "pricefrom",
+            "pricetill",
+            "amout",
+            "unit"
+        ];
         $products = Product::whereNull('deleted_at');
 
         foreach ($queries as $key => $req) {
-            if(request($req)){
-                if($req == "productname"){
-                    $products = $products->where('title_'.app()->getLocale(), 'like', '%'.request($req).'%');
-                }elseif($req == "product_category"){
+            if (request($req)) {
+                if ($req == "productname") {
+                    $products = $products->where('title_' . app()->getLocale(), 'like', '%' . request($req) . '%');
+                } elseif ($req == "product_category") {
                     $products = $products->where('category_id', request($req));
-                }elseif($req == "departments"){
+                } elseif ($req == "departments") {
                     $products = $products->where('department_id', request($req));
-                }elseif($req == "pricefrom"){
-                    $products = $products->where('price', '>=', request($req)*100);
-                }elseif($req == "pricetill"){
-                    $products = $products->where('price', '<=', request($req)*100);
-                }elseif($req == "amout"){
+                } elseif ($req == "pricefrom") {
+                    $products = $products->where('price', '>=', request($req) * 100);
+                } elseif ($req == "pricetill") {
+                    $products = $products->where('price', '<=', request($req) * 100);
+                } elseif ($req == "amout") {
                     $products = $products->where('stock', '<=', request($req));
-                }elseif($req == "unit"){
+                } elseif ($req == "unit") {
                     $products = $products->where('unit', request($req));
                 }
                 $queries[$req] = request($req);
@@ -142,13 +152,13 @@ class ProductController extends Controller
         $product->unit = $request->input('unit');
         $product->stock = $request->input('stock');
         $product->category_id = intval($request->input('get_category'));
-        $product->price = intval($request->input('price')*100);
-        $product->currency_type = $request->input('currency' );
+        $product->price = intval($request->input('price') * 100);
+        $product->currency_type = $request->input('currency');
         $product->save();
 
-        if($request->file('images')){
-            foreach($request->file('images') as $image){
-                $imagename = date('Ymhs').$image->getClientOriginalName();
+        if ($request->file('images')) {
+            foreach ($request->file('images') as $image) {
+                $imagename = date('Ymhs') . $image->getClientOriginalName();
                 $destination = base_path() . '/storage/app/public/productimage';
                 $image->move($destination, $imagename);
                 $product->images()->create([
@@ -170,41 +180,163 @@ class ProductController extends Controller
         $product->delete();
         return redirect('/products');
     }
-    public function removeimg(Request $request){
+    public function removeimg(Request $request)
+    {
         $this->validate($request, [
-           'imgid' => 'required|integer' 
+            'imgid' => 'required|integer'
         ]);
         $img = Image::findOrFail($request->input('imgid'));
         $img->deleted_at = Carbon::now('Asia/Tbilisi');
         $img->save();
-        return response()->json(array('status'=> true), 200);
+        return response()->json(array('status' => true), 200);
     }
-    public function turn(Product $product, $status){
-        
+    public function turn(Product $product, $status)
+    {
+
         $product->published = $status;
         $product->save();
         return redirect('/products');
     }
-    public function getproductsajax(Request $request){
+    public function getproductsajax(Request $request)
+    {
         $lang = app()->getLocale();
-        $products = Product::where('title_'.app()->getLocale(), 'like', '%'.$request->input('val').'%')->whereNull('deleted_at')->orderBy('id', 'desc')->take(30)->get();
+        $products = Product::where('title_' . app()->getLocale(), 'like', '%' . $request->input('val') . '%')->whereNull('deleted_at')->orderBy('id', 'desc')->take(30)->get();
         foreach ($products as $key => $prod) {
-            if($prod->category_id){
+            if ($prod->category_id) {
                 $prod['category_name'] = $prod->getCategoryName($prod->category_id);
-            } 
-            if($prod->images()->count() > 0){
+            }
+            if ($prod->images()->count() > 0) {
                 $prod['product_images[]'] = $prod->images()->whereNull('deleted_at')->take(3)->get();
             }
         }
-        return response()->json(array('status'=>true, 'data'=>$products, 'lang'=>$lang));
+        return response()->json(array('status' => true, 'data' => $products, 'lang' => $lang));
     }
-    public function productexport() 
+
+    public function productexport()
     {
         return Excel::download(new ProductExport, 'products.xlsx');
     }
-    public function removeproductajax($id){
+
+    public function removeproductajax($id)
+    {
         $product = Product::findOrFail(intval($id));
         $product->delete();
-        return response()->json(array('status'=> true), 200);
+        return response()->json(array('status' => true), 200);
+    }
+    public function addtocartget(){
+        $user_id = Auth()->user()->id;
+        $cart = Cart::session($user_id)->getContent();
+        $products = Product::all();
+        $cartsum = 0;
+        foreach ($cart as $item) {
+            $cartsum += $item->price * $item->quantity;
+        }
+        $clients = Client::all();
+        return view('theme.template.product.add_to_cart', compact('products', 'cart', 'cartsum', 'clients'));
+    }
+    public function removefromCart(Product $product){
+        $user_id = Auth()->user()->id;
+        Cart::session($user_id)->remove($product->id);
+        
+        $cartsum = 0;
+        $cart = Cart::session($user_id)->getContent();
+        foreach ($cart as $item) {
+            $cartsum += $item->price * $item->quantity;
+        }
+        $cartsum = $cartsum/100;
+        return response()->json(array('status' => true, 'cartsum' => $cartsum));
+    }
+    public function addtocartupdate(Request $request, $id){
+
+        $this->validate($request, [
+            'quantity' => 'required|min:0',
+        ]);
+        $product = Product::findOrFail($id);
+        $user_id = Auth()->user()->id;
+        $currentquantity = Cart::session($user_id)->getContent($id);
+        if($currentquantity->first()){
+            if($product->stock < $currentquantity->first()->quantity + $request->quantity){
+                return redirect()->back()->with('errors', 'არასაკმარისი რაოდენობა');
+            }
+        }
+        Cart::session($user_id)->update($id,[
+            'quantity' => array(
+                'relative' => false,
+                'value' => $request->quantity, 
+            ),
+        ]);
+        return redirect()->route('AddToCart');
+    }
+    public function addtocart(Request $request)
+    {
+        $user_id = Auth()->user()->id;
+        $method = $request->method();
+
+        if ($request->isMethod('post')){
+            $this->validate($request, [
+                'select_product' => 'required|integer',
+                'prod_unit' => 'required|string',
+                'quantity' => 'required|min:0',
+            ]);
+            $product = Product::findOrFail($request->select_product);
+            $currentquantity = Cart::session($user_id)->getContent($product->id);
+            if($currentquantity->first()){
+                if($product->stock < $currentquantity->first()->quantity + $request->quantity){
+                    return redirect()->back()->with('error', 'არასაკმარისი რაოდენობა');
+                }
+            }else if($product->stock < $request->quantity){
+                return redirect()->back()->with('error', 'არასაკმარისი რაოდენობა');
+            }
+                $addtocart = [
+                    'id' => $product->id,
+                    'name' => $product->{'title_' . app()->getLocale()},
+                    'price' => $product->price  ,
+                    'quantity' =>  $request->quantity,
+                    'attributes' => array(
+                        'unit' => $product->unit
+                    ),
+                ];
+                Cart::session($user_id)->add($addtocart);
+          
+        }
+        return redirect()->route('AddToCart');
+    }
+
+    public function addtosales(Request $request){
+        $this->validate($request, [
+            'client_id' => 'required|integer',
+            'address' => ''
+        ]);
+        $client = Client::findOrFail($request->client_id);
+        
+        $user_id = Auth()->user()->id;
+        $cart = Cart::session($user_id)->getContent();
+        $sale = new Sale();
+        $sale->client_id = $request->client_id;
+        $sale->address = $request->address;
+        $sale->save();
+        foreach($cart as $order){
+            $product = Product::findOrFail($order->id);
+            $item = new Order;
+            $item->sale_id = $sale->id;
+            $item->product_id = $order->id;
+            $item->quantity = $order->quantity;
+            $item->price = $order->price;
+            $item->save();
+            $product->stock = $product->stock - $order->quantity;
+            $product->save();
+            Cart::session($user_id)->remove($order->id);
+        }
+
+        return redirect()->route('Sales');
+    }
+
+    public function chooseforcart(Request $request){
+        $this->validate($request, [
+            'product_id' => 'required|integer'
+        ]);
+        $lang = app()->getLocale();
+        $product = Product::findOrFail($request->product_id);
+        return response()->json(array('status' => true, 'product' => $product, 'lang' => $lang));
     }
 }

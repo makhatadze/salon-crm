@@ -6,12 +6,12 @@ use Illuminate\Support\Facades\Route;
 
 //HOME CONTROLLER
 // removed
-Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['web', 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath']], function(){
+Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['web', 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath']], function () {
     Route::group(['prefix' => '/'], function () {
-    	//HOME CONTROLLER
+        //HOME CONTROLLER
         Route::get('/', 'HomeController@ActionHome')->name('ActionHome');
         //USERS CONTROLLER
-        Route::get('/user', ['uses'=>'UserController@ActionUser', 'as' => 'ActionUser']);
+        Route::get('/user', ['uses' => 'UserController@ActionUser', 'as' => 'ActionUser']);
         Route::get('/profile/turn/{status}', 'UserController@turnprofile');
         Route::get('/profile/accountsettings', 'UserController@accountsetting');
         Route::get('/profile/changepassword', 'UserController@changepassword');
@@ -43,14 +43,20 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
         Route::post('/products/getproductsajax', 'ProductController@getproductsajax')->name('GetProductsAjax');
         Route::get('/products/productexport', 'ProductController@productexport')->name('ProductExport');
         Route::get('/product/removeproduct/{id}', 'ProductController@removeproductajax')->name('RemoveProductAjax');
+        Route::get('/addtocart', 'ProductController@addtocartget')->name('AddToCart');
+        Route::post('/addtocart', 'ProductController@addtocart')->name('AddToCart');
+        Route::put('/addtocart/{id}', 'ProductController@addtocartupdate')->name('UpdateCart');
+        Route::post('/chooseforcart', 'ProductController@chooseforcart')->name('ChooseForCart');
+        Route::get('/removefromcart/{product}', 'ProductController@removefromCart')->name('RemoveFromCart');
+        Route::post('/addtosales', 'ProductController@addtosales')->name('addToSales');
         //Company Controller
-          //Distribution
-            Route::get('/companies/distcompany', 'CompanyController@distcompany'); 
-            Route::get('/companies/dist/create', 'CompanyController@distcreate'); 
-            Route::get('/companies/dist/edit/{id}', 'CompanyController@distedit'); 
-            Route::get('/companies/dist/remove/{id}', 'CompanyController@distdelete'); 
-            Route::post('/companies/dist/store', 'CompanyController@diststore')->name('addDistCompany'); 
-            Route::put('/companies/dist/update/{id}', 'CompanyController@distupdate')->name('UpdateDistCompany'); 
+        //Distribution
+        Route::get('/companies/distcompany', 'CompanyController@distcompany');
+        Route::get('/companies/dist/create', 'CompanyController@distcreate');
+        Route::get('/companies/dist/edit/{id}', 'CompanyController@distedit');
+        Route::get('/companies/dist/remove/{id}', 'CompanyController@distdelete');
+        Route::post('/companies/dist/store', 'CompanyController@diststore')->name('addDistCompany');
+        Route::put('/companies/dist/update/{id}', 'CompanyController@distupdate')->name('UpdateDistCompany');
         Route::get('/companies/offices', 'CompanyController@getoffices');
         Route::resource('/companies', 'CompanyController')->except('show');
         Route::get('/companies/addoffice/{id}', 'CompanyController@createoffice')->name('CreateOffice');
@@ -76,7 +82,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
         Route::get('/purchases/purchaseexport', 'PurchaseController@purchaseexport')->name('PurchaseExport');
         //Client Controller
         Route::get('/clients', 'ClientController@index');
-        Route::get('/clients/create', 'ClientController@create');
+        Route::get('/clients/create', 'ClientController@create')->name('CreateClient');
         Route::post('/clients/turnon', 'ClientController@turnon')->name('turnonawqa');;
         Route::get('/clients/delete/{id}', 'ClientController@destroy');
         Route::get('/clients/deleteclient/{id}', 'ClientController@destroyclient')->name('DeleteClient');
@@ -86,6 +92,9 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
         Route::post('/clients/store', 'ClientController@store')->name('StoreClient');
         Route::post('/clinets/getbydate', 'ClientController@getbydate')->name('GetServiceByDate');
         Route::any('/clients/services', 'ClientController@services')->name('Finances');
+        //Sale Controller
+        Route::get('/sales', 'SaleController@index')->name('Sales');
+        Route::get('/removesale/{id}', 'SaleController@destroy');
         //Money Controller
         Route::get('/company/money', 'MoneyController@index')->name('MoneyController');
         //Statistic Controller
@@ -99,9 +108,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
         Route::resource('/category', 'CategoryController')->except('destroy', 'update');
         Route::delete('/category/destroy/{id}', 'CategoryController@destroy')->name('CategoryDelete');
         Route::put('/category/update/{id}', 'CategoryController@update')->name('CategoryUpdate');
-
     });
     Auth::routes();
     Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout');
 });
-
