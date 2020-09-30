@@ -322,10 +322,10 @@
                       if(result.status == true){
                           if(result.data == "unit"){
                               $('#unit'+$id).val("ცალი");
-                          }else if(result.data == "kilo"){
-                              $('#unit'+$id).val("კილოგრამი");
+                          }else if(result.data == "gram"){
+                              $('#unit'+$id).val("გრამი");
                           }else if(result.data == "metre"){
-                              $('#unit'+$id).val("მეტრი");
+                              $('#unit'+$id).val("სანტიმეტრი");
                           }
                           $('#quantity'+$id).prop('disabled', false);
                       }

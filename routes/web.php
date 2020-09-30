@@ -15,6 +15,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
         Route::get('/profile/turn/{status}', 'UserController@turnprofile');
         Route::get('/profile/accountsettings', 'UserController@accountsetting');
         Route::get('/profile/changepassword', 'UserController@changepassword');
+        Route::get('/user/export/{user}', 'UserController@oneuserexport');
         Route::post('/profile/storenewpassword', 'UserController@storenewpassword')->name('ChangePassword');
         Route::post('/profile/filter', 'UserController@profilefilter')->name('ProfileFilter');
         Route::any('/user/add', ['uses' => 'UserController@ActionUserAdd', 'as' => 'ActionUserAdd']);
@@ -33,6 +34,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
         Route::get('/services/unitname/{id}', 'ServiceController@getunitname')->name('GetUnitName');
         Route::post('/services/removeinventory', 'ServiceController@removeinventory')->name('RemoveInventory');
         Route::post('/services/removeimage', 'ServiceController@removeimage')->name('RemoveServiceImage');
+        Route::get('/services/export/{id}', 'ServiceController@exportservice');
         //Product Controller
         Route::get('/products/turn/{product}/{status}', 'ProductController@turn');
         Route::post('/products/removeimg', 'ProductController@removeimg')->name('RemoveImage');
@@ -49,6 +51,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
         Route::post('/chooseforcart', 'ProductController@chooseforcart')->name('ChooseForCart');
         Route::get('/removefromcart/{product}', 'ProductController@removefromCart')->name('RemoveFromCart');
         Route::post('/addtosales', 'ProductController@addtosales')->name('addToSales');
+        Route::get('/sale/export/{sale}', 'ProductController@saleexport');
         //Company Controller
         //Distribution
         Route::get('/companies/distcompany', 'CompanyController@distcompany');
@@ -69,6 +72,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
         Route::delete('/companies/departments/{department}', 'DepartmentController@destroy')->name('RemoveDepartment');
         Route::get('/companies/departments/create', 'DepartmentController@create')->name('CreateDepartment');
         Route::post('/companies/departments/store', 'DepartmentController@store')->name('AddDepartment');
+        Route::get('/companies/departments/{department}', 'DepartmentController@exportdepartment');
         //Purchase Controller
         Route::get('/purchases', 'PurchaseController@index');
         Route::get('/purchases/edit/{id}', 'PurchaseController@edit');
@@ -80,6 +84,9 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
         Route::post('/purchases/getdistributors', 'PurchaseController@getdistributors')->name('GetDistributors');
         Route::post('/purchases/getprofiles', 'PurchaseController@getprofiles')->name('GetProfilesForPurchase');
         Route::get('/purchases/purchaseexport', 'PurchaseController@purchaseexport')->name('PurchaseExport');
+        // WareHouse Controller
+        Route::view('/warehouse', 'theme.template.warehouse.index')->name('Warehouse');
+        Route::post('/warehouse/adddepartment/{id}', 'WarehouseController@departmentToHouse')->name('DepartmentToProduct');
         //Client Controller
         Route::get('/clients', 'ClientController@index');
         Route::get('/clients/create', 'ClientController@create')->name('CreateClient');
@@ -100,10 +107,8 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
         //Statistic Controller
         Route::get('/statistics', 'StatisticController@index')->name('StatisticController');
         Route::get('/clients/financeExport', 'ClientController@financeExport')->name('FinanceExport');
-
         //Export Controller
         Route::get('/clients/export', 'ClientController@export')->name('ClientExcel');
-
         // Category Controller
         Route::resource('/category', 'CategoryController')->except('destroy', 'update');
         Route::delete('/category/destroy/{id}', 'CategoryController@destroy')->name('CategoryDelete');

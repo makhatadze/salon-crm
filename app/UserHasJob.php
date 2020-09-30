@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\User;
 class UserHasJob extends Model
 {
     use SoftDeletes;
@@ -14,6 +15,6 @@ class UserHasJob extends Model
     
     
     public function user(){
-        return $this->belongsTo('App/User');
+        return $this->belongsTo('App\User');
     }
 }

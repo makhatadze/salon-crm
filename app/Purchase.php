@@ -15,12 +15,7 @@ class Purchase extends Model
     public function products(){
         return $this->hasMany('App\Product', 'purchase_id');
     }
-    public function department(){
-        return $this->belongsTo('App\Department');
-    }
-    public function office(){
-        return $this->belongsTo('App\Office');
-    }
+  
     public function distributor(){
         return $this->belongsTo('App\DistributionCompany');
     }

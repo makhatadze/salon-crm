@@ -16,6 +16,9 @@ class Service extends Model
     public function image(){
         return $this->morphOne('App\Image', 'imageable');
     }
+    public function clientsOnService(){
+        return $this->hasMany('App\ClientService', 'service_id');
+    }
     protected $casts = [
         'price' => 'integer',
     ];

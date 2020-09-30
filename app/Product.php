@@ -17,13 +17,26 @@ class Product extends Model
     public function purchase(){
         return $this->belongsTo('App\Purchase');
     }
+    public function department(){
+        return $this->belongsTo('App\Department');
+    }
     public function images(){
         return $this->morphMany('App\Image', 'imageable');
     }
     public function getDepartmentName(){
-        $depname = Department::whereNull('deleted_at')->find($this->department_id);
+        $depname = Department::find($this->department_id);
         if($depname){
             return $depname->{"name_".app()->getLocale()};
+        }
+        return;
+    }
+    public function getResponsiblePerson(){
+        $username = User::find($this->user_id);
+        if($username){
+            if($username->profile){
+                return $username->profile->first_name .' '. $username->profile->last_name;
+            }
+            return $username->name;
         }
         return;
     }

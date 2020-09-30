@@ -31,7 +31,7 @@
               <div class="flex">
                   <div class="w-1/3 p-3">
                       <h6 class="font-bold font-caps text-base text-black">{{$user->getEarnedMoney()}} <sup>₾</sup></h6>
-                      <span class="font-normal text-xs">შემოსული</span>
+                      <span class="font-normal text-xs">გამომუშავებული</span>
                   </div>
                   <div class="w-1/3 p-3">
                       <h6 class="font-bold font-caps text-base text-black">{{$user->ClientCount()}}</h6>

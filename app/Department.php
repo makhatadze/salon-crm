@@ -12,7 +12,7 @@ class Department extends Model
     public function departmentable(){
         return $this->morphTo();
     }
-    public function purchases(){
-        return $this->hasMany('App\Purchase', 'department_id');
+    public function products(){
+        return $this->hasMany('App\Product', 'department_id');
     }
 }

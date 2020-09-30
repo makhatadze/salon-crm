@@ -14,10 +14,12 @@ use Illuminate\Http\Request;
 use App\Service;
 use App\ClientService;
 use App\Category;
+use App\Exports\ServiceExport;
 use App\Product;
 use App\Image;
 use App\Inventory;
 use Carbon\Carbon;
+use Maatwebsite\Excel\Facades\Excel;
 use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 
 class ServiceController extends Controller
@@ -82,14 +84,15 @@ class ServiceController extends Controller
             'editor-ge' => 'required',
             'editor-en' => '',
             'editor-ru' => '',
-            'duration_count' => 'required|between:0,99.99',
+            'duration_count' => 'required|between:0,999.99|numeric',
             'duration_type' => 'required|string',
             'category' => '',
-            'price' => 'required|between:0,9999.99',
+            'price' => 'required|between:0,9999.99|numeric',
             'unit-ge' => '',
             'unit-en' => '',
             'unit-ru' => '',
             'file' => 'image',
+            'currency' => 'required|string',
             'inventory' => '',
             'quantity' => '',
         ]);
@@ -100,6 +103,7 @@ class ServiceController extends Controller
         $service->body_ge = $request->input('editor-ge');
         $service->body_en = $request->input('editor-en');
         $service->body_ru = $request->input('editor-ru');
+        $service->currency_type = $request->input('currency');
         $service->category_id = $request->input('category');
         $service->duration_count = $request->input('duration_count');
         $service->duration_type = $request->input('duration_type');
@@ -162,10 +166,11 @@ class ServiceController extends Controller
             'editor-ge' => 'required',
             'editor-en' => '',
             'editor-ru' => '',
-            'duration_count' => 'required|between:0,99.99',
+            'duration_count' => 'required|between:0,999.99|numeric',
             'duration_type' => 'required|string',
             'category' => '',
-            'price' => 'required|between:0,9999.99',
+            'price' => 'required|between:0,9999.99|numeric',
+            'currency' => 'required|string',
             'unit-ge' => '',
             'unit-en' => '',
             'unit-ru' => '',
@@ -178,6 +183,7 @@ class ServiceController extends Controller
         $service->title_ru = $request->input('title_ru');
         $service->body_ge = $request->input('editor-ge');
         $service->body_en = $request->input('editor-en');
+        $service->currency_type = $request->input('currency');
         $service->body_ru = $request->input('editor-ru');
         $service->category_id = $request->input('category');
         $service->duration_count = $request->input('duration_count');
@@ -267,5 +273,11 @@ class ServiceController extends Controller
             return response()->json(array('status' => true));
         }
         return;
+    }
+
+    // Export Service
+    public function exportservice($id)
+    {
+        return Excel::download(new ServiceExport($id), 'Service.xlsx');
     }
 }

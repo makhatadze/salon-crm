@@ -17,6 +17,7 @@
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.2",
         "laravelcollective/html": "^6.1",
+        "livewire/livewire": "^2.2",
         "maatwebsite/excel": "^3.1",
         "mcamara/laravel-localization": "^1.5",
         "melihovv/laravel-shopping-cart": "^7.0",

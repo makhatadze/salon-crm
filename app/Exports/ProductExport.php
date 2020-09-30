@@ -22,7 +22,7 @@ class ProductExport implements FromCollection, WithHeadings
             unset($prod['deleted_at']);
             $prod['price'] = $prod->price/100;
             $prod['category_id'] = $prod->category->{"title_".app()->getLocale()};
-            $prod['department_id'] = $prod->purchase->department->{"name_".app()->getLocale()};
+            $prod['department_id'] = $prod->department->{"name_".app()->getLocale()};
             if($prod->purchase->purchase_type == "overhead"){
             $prod['purchase_number'] = $prod->purchase->overhead_number;
             }elseif($prod->purchase->purchase_type == "purchase"){
@@ -35,7 +35,10 @@ class ProductExport implements FromCollection, WithHeadings
             foreach(Inventory::where('product_id', $prod->id)->get() as $service){
                 $prod['services'] .= ", ".$service->inventoriable()->first()->{'title_'.app()->getLocale()};
             }
+            $prod['responsible'] = $prod->getResponsiblePerson();
             unset($prod['purchase_id']);
+            unset($prod['warehouse']);
+            unset($prod['user_id']);
         }
         return $products;
     }
@@ -56,8 +59,11 @@ class ProductExport implements FromCollection, WithHeadings
             'განახლების თარიღი',
             'ვატულა',
             'დეპარტამენტი',
+            'ექსპლუატაციის დაწყების თარითი',
+            'ცვეთის ხანგრძლივობა (დღე)',
             'შესყიდვის ნომერი',
             'დაკავშირებული სერვისებთან',
+            'პასუხისმგებელი პირი',
         ];
     }
 }

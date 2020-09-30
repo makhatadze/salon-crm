@@ -97,7 +97,7 @@ class HomeController extends Controller
                         $queries[$req] = request($req);
                     }
                 }
-                $todayservices = $todayservices->select('client_services.id','client_services.status', 'client_services.status', 'services.title_'.app()->getLocale(), 'client_services.session_start_time', 'clients.number', 'clients.full_name_'.app()->getLocale(), 'services.price', 'profiles.first_name', 'profiles.last_name');
+                $todayservices = $todayservices->select('client_services.id', 'client_services.service_id', 'client_services.status', 'client_services.status', 'services.title_'.app()->getLocale(), 'client_services.session_start_time', 'clients.number', 'clients.full_name_'.app()->getLocale(), 'services.price', 'profiles.first_name', 'profiles.last_name');
                 $todayservices = $todayservices->paginate(40)->appends($queries);
 
             }else{
@@ -106,7 +106,7 @@ class HomeController extends Controller
                 ->join('services', 'client_services.service_id', '=', 'services.id')
                 ->join('clients', 'client_services.clinetserviceable_id', '=', 'clients.id')
                 ->join('profiles', 'client_services.user_id', '=', 'profiles.profileable_id');
-                $todayservices = $todayservices->select('client_services.id','client_services.status', 'client_services.status', 'services.title_'.app()->getLocale(), 'client_services.session_start_time', 'clients.number', 'clients.full_name_'.app()->getLocale(), 'services.price', 'profiles.first_name', 'profiles.last_name');
+                $todayservices = $todayservices->select('client_services.id','client_services.status', 'client_services.service_id', 'client_services.status', 'services.title_'.app()->getLocale(), 'client_services.session_start_time', 'clients.number', 'clients.full_name_'.app()->getLocale(), 'services.price', 'profiles.first_name', 'profiles.last_name');
                 $todayservices = $todayservices->whereDate('session_start_time', Carbon::today());
                 $todayservices = $todayservices->paginate(40)->appends($queries);
             }

@@ -87,7 +87,7 @@
                     </div>
                     <div class="col-span-1 flex items-center justify-center">
                             <div>
-                                <h4 class="text-xl font-bolder">0 <sup>₾</sup></h4>
+                                <h4 class="text-xl font-bolder">{{round($products['orders'], 2)}} <sup>₾</sup></h4>
                                 <span class="font-normal text-xs">შემოსავალი</span>
                             </div>
                     </div>

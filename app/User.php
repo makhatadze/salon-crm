@@ -95,6 +95,10 @@ class User extends Authenticatable
         }
         return;
     }
+    public function sales(){
+        return $this->hasMany('App\Sale', 'seller_id');    
+    }
+
     public function SalaryToServices(){
         return $this->hasMany('App\SalaryToService', 'user_id');
     }
@@ -102,32 +106,6 @@ class User extends Authenticatable
         $hasjob = $this->userHasJob;
         if($hasjob){
             return $hasjob->department_id;
-        }
-        return;
-    }
-    /**
-     * @return string
-     */
-    public function getOfficeName(){
-        $hasjob = $this->userHasJob;
-        if($office_id){
-            $office = Office::find($office_id);
-            if($office){
-                return $office->first()->{"name_".app()->getLocale()} ;
-            }
-        }
-        return;
-    }
-    /**
-     * @return string
-     */
-    public function getCompanyName(){
-        $hasjob = $this->userHasJob;
-        if($company_id){
-            $company = Company::find($company_id);
-            if($company){
-                return $company->first()->{"title_".app()->getLocale()} ;
-            }
         }
         return;
     }

@@ -20,7 +20,7 @@ class Inventory extends Model
             }elseif($unit == "gram"){
                 return "გრამი";
             }else if($unit == "metre"){
-                return "მეტრი";
+                return "სანტიმეტრი";
             }
             return;
         }

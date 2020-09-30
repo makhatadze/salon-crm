@@ -44,14 +44,16 @@
                                 ერთეული
                             </label>
                             <div class="relative">
-                                <select name="unit"
+                                <select name="unit" readonly 
                                     class="block font-medium text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
                                     <option value="unit" @if ($product->unit == 'unit')
                                         selected @endif>ცალი</option>
-                                    <option value="kilo" @if ($product->unit == 'kilo')
-                                        selected @endif>კილოგრამი</option>
-                                    <option value="metre" @if ($product->unit == 'metre')
-                                        selected @endif>მეტრი</option>
+                                        @if($product->type != 1)
+                                         <option value="gram" @if ($product->unit == 'kilo')
+                                        selected @endif>გრამი</option>
+                                         <option value="metre" @if ($product->unit == 'metre')
+                                        selected @endif>სანტიმეტრი</option>
+                                        @endif
                                 </select>
                                 <div
                                     class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -67,30 +69,26 @@
                             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
                                 რაოდენობა
                             </label>
-                            <input
+                            <input @if($product->type == 1) readonly @endif
                                 class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                                 type="number" required min="0" value="{{ $product->stock }}" step="0.1" name="stock">
                         </div>
                         <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
                             <label
                                 class="block font-bold font-caps uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                                შესყიდვა
+                                დეპარტამენტი
                             </label>
                             <div class="relative">
-                                <select name="purchase"
+                                <select name="department"
                                     class="block font-medium text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                                    @foreach ($purchases as $item)
-                                        @if ($product->purchase_id == $item->id)
+                                    @foreach ($departments as $item)
+                                        @if ($product->department_id == $item->id)
                                             <option value="{{ $item->id }}" selected>
-                                                @if ($item->purchase_type == 'overhead')
-                                                #{{ $item->overhead_number }} @else #{{ $item->purchase_number }}
-                                                @endif
+                                                {{ $item->{"name_".app()->getLocale()} }}
                                             </option>
                                         @else
                                             <option value="{{ $item->id }}">
-                                                @if ($item->purchase_type == 'overhead')
-                                                #{{ $item->overhead_number }} @else #{{ $item->purchase_number }}
-                                                @endif
+                                                {{ $item->{"name_".app()->getLocale()} }}
                                             </option>
                                         @endif
                                     @endforeach
@@ -120,11 +118,11 @@
                                         <select name="currency" aria-label="Currency"
                                             class="form-select h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm sm:leading-5">
                                             <option value="gel" selected @if ($product->currency_type == 'gel') selected </beautify
-                                                    end="@endif"> >GEL</option>
+                                                    end="@endif"> GEL</option>
                                             <option value="usd" @if ($product->currency_type == 'usd') selected </beautify
-                                                    end="@endif"> >USD</option>
+                                                    end="@endif"> USD</option>
                                             <option value="eur" @if ($product->currency_type == 'eur') selected </beautify
-                                                    end="@endif"> >EUR</option>
+                                                    end="@endif"> EUR</option>
                                         </select>
                                     </div>
                                 </div>

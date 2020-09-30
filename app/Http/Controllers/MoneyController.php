@@ -5,6 +5,7 @@ use App\Purchase;
 use App\User;
 use App\ClientService;
 use App\Client;
+use App\Order;
 use App\Product;
 use App\Profile;
 use Illuminate\Http\Request;
@@ -26,9 +27,14 @@ class MoneyController extends Controller
             'cost' => $cost
         ];
         //Products
+        $orders = 0;
+        foreach (Order::all() as  $item) {
+            $orders += $item->quantity * $item->price;
+        }
         $products = [
             'total' => Product::whereNull('deleted_at')->count(),
-            'sum' => Product::whereNull('deleted_at')->sum('price')/100
+            'sum' => Product::whereNull('deleted_at')->sum('price')/100,
+            'orders'=> $orders/100
         ];
         //Personal
         $users = User::whereNull('users.deleted_at')

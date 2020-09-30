@@ -48,7 +48,6 @@
             </td>
             <td class="font-medium text-gray-800">
               {{$purchase->distributor->{'name_'.app()->getLocale()} }} <br>
-              <span class="font-normal text-xs font-gray-300">{{$purchase->department->{"name_".app()->getLocale()} }}</span>
             </td>
             <td class="text-center whitespace-no-wrap font-normal">
                 {{$purchase->getPrice()}} ₾

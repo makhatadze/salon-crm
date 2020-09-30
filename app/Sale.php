@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\User;
+
 use Illuminate\Database\Eloquent\Model;
 
 class Sale extends Model
@@ -10,6 +12,14 @@ class Sale extends Model
     protected $table = 'sales';
     public function client(){
         return $this->belongsTo('App\Client');
+    }
+    public function getSellerName(){
+        $user = User::find($this->seller_id);
+        if($user->profile){
+        return $user->profile->first_name .' '.$user->profile->last_name;
+        }else{
+            return $user->name;
+        }
     }
     public function orders(){
         return $this->hasMany('App\Order', 'sale_id');

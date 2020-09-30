@@ -39,7 +39,7 @@
         </div>
         <div class="col-span-1 p-2">
             <label class="font-bold font-caps text-xs text-gray-700">შეძენის თარიღი</label>
-            <input required class="mt-2 datepicker input w-56 border block mx-auto" name="purchase_date">
+            <input required class="mt-2 datepicker input border block mx-auto" name="purchase_date">
             
             @error('purchase_date')
                 <span class="invalid-feedback" role="alert">
@@ -49,68 +49,6 @@
         </div>
        </div>
     
-   <div class="grid grid-cols-4 w-full">
-    <div class="col-span-1 p-2">
-        <label class="font-bold font-caps text-xs text-gray-700">ოფისი</label>
-        <div class="mt-2">
-            <select required data-placeholder="აირჩიეთ ოფისი" id="selectoffice" name="office_id" class="font-helvetica select2 w-full" >
-                <option value="" selected disabled></option>
-                @foreach ($offices as $office)
-             <option value="{{$office->id}}">{{$office->{"name_".app()->getLocale()} }}</option>
-                @endforeach
-            </select>
-        </div>
-        
-        @error('office_id')
-        <span class="invalid-feedback" role="alert">
-            <strong style="color: tomato">{{ $message }}</strong>
-        </span>
-    @enderror
-    </div>
-    <div class="col-span-1 p-2">
-        <label class="font-bold font-caps text-xs text-gray-700">დეპარტამენტი</label>
-        <div class="mt-2">
-            <select required data-placeholder="აირჩიეთ ოფისი" name="department_id" class="font-helvetica select2 w-full" id="showdepartments">
-
-            </select>
-            
-            @error('department_id')
-                <span class="invalid-feedback" role="alert">
-                    <strong style="color: tomato">{{ $message }}</strong>
-                </span>
-            @enderror
-        </div>
-    </div>
-    <div class="col-span-1 p-2 relative">
-        <label class="font-bold font-caps text-xs text-gray-700">პასუხისმგებელი პირი</label>
-        <input type="hidden" name="responsible_person_id" id="responsible_person_id">
-        <input required type="text" class="input w-full border mt-2" autocomplete="off" name="responsible_person_search" id="responsible_person_search">
-        <ul class="hidden shadow-sm absolute w-11/12 p-2 bg-white z-50" id="showresponsiveperson">
-
-        </ul>
-        @error('responsive_person_id')
-        <span class="invalid-feedback" role="alert">
-            <strong style="color: tomato">{{ $message }}</strong>
-        </span>
-        @enderror
-        <small class="font-normal">აუცილებელია ბაზიდან არჩევა</small>
-    </div>
-    <div class="col-span-1 p-2 relative">
-        <label class="font-bold font-caps text-xs text-gray-700">მიმღები პირი</label>
-        <input type="hidden" name="getter_person_id" id="getter_person_id">
-        <input required type="text" class="input w-full border mt-2" autocomplete="off" name="getter_person_search" id="getter_person_search">
-        <ul class="hidden shadow-sm absolute w-11/12 p-2 bg-white z-50" id="showgetterperson">
-
-        </ul>
-        
-        @error('getter_person_id')
-        <span class="invalid-feedback" role="alert">
-            <strong style="color: tomato">{{ $message }}</strong>
-        </span>
-    @enderror
-        <small class="font-normal">აუცილებელია ბაზიდან არჩევა</small>
-    </div>
-   </div>
    <div class="flex items-center text-gray-700 p-2 mt-3">
     <input  type="checkbox" class="input border border-black mr-2" id="dgg" name="dgg">
     <label class="cursor-pointer select-none font-normal text-xs" for="dgg">დამატებული ღირებულების გადასახადი (დღგ)</label>
@@ -387,8 +325,8 @@
                         <div class="relative">
                           <select required name="unit[]" class="block font-medium text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
                             <option value="unit" selected >ცალი</option>
-                            <option value="kilo">გრამი</option>
-                            <option value="metre">მეტრი</option>
+                            <option value="gram">გრამი</option>
+                            <option value="metre">სანტიმეტრი</option>
                           </select>
                           <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                             <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>

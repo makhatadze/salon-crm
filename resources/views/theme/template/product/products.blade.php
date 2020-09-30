@@ -24,7 +24,7 @@
     </div>
     <!-- BEGIN: Data List -->
         <div class="col-span-12 xxl:col-span-9 grid grid-cols-12 gap-6">
-            <table class="table table-report -mt-2 col-span-12 ">
+          <table class="table table-report -mt-2 col-span-12 ">
             <thead>
                 <tr>
                     <th class="whitespace-no-wrap font-bold font-caps text-xs text-gray-700">სურათები</th>
@@ -38,31 +38,38 @@
             <tbody id="products">
                 @foreach ($products as $prod)
                 <tr class="intro-x" >
-                    <td class="w-40" @if($prod->stock == 0)  style="background-color: #ffaeae" @endif>
-                        <div class="flex">
-                            @foreach ($prod->images()->whereNull('deleted_at')->get() as $key => $image)
-                            <div class="w-10 h-10 image-fit zoom-in">
-                                <img class="tooltip rounded-full tooltipstered" src="{{asset('../storage/productimage/'.$image->name)}}">
-                            </div>
-                            @if ($key == 3)
-                            @break;
-                            @endif
-                            @endforeach
-                            
-                            
+                  <td class="w-40" @if($prod->stock == 0)  style="background-color: #ffaeae" @endif>
+                    <div class="flex">
+                        @foreach ($prod->images()->whereNull('deleted_at')->get() as $key => $image)
+                        <div class="w-10 h-10 image-fit zoom-in">
+                            <img class="tooltip rounded-full tooltipstered" src="{{asset('../storage/productimage/'.$image->name)}}">
                         </div>
+                        @if ($key == 3)
+                        @break;
+                        @endif
+                        @endforeach
                         
-                    </td>
+                        
+                    </div>
+                    
+                </td>
                     <td @if($prod->stock == 0)  style="background-color: #ffaeae" @endif>
                         <a href="" class="font-medium whitespace-no-wrap font-bold text-black">{{$prod->{"title_".app()->getLocale()} }}</a> 
                         <div class="text-gray-600 text-xs whitespace-no-wrap font-normal"> </div>
                     </td>
-                    <td  @if($prod->stock == 0)  style="background-color: #ffaeae" @endif class="text-center font-normal">{{$prod->price/100}} ₾</td>
+                    <td  @if($prod->stock == 0)  style="background-color: #ffaeae" @endif class="text-center font-normal">{{$prod->price/100}} 
+                      @if ($prod->currency_type == 'gel')
+                      ₾
+                      @elseif($prod->currency_type == 'usd')
+                      $
+                      @elseif($prod->currency_type == 'eur')
+                      €
+                      @endif</td>
                     <td @if($prod->stock == 0)  style="background-color: #ffaeae" @endif class="text-center font-normal ">
                         <h6 class="text-xs text-gray-900 font-black">
-                          {{ $prod->purchase->department->{"name_".app()->getLocale()} }} </h6>
+                          @if($prod->department){{ $prod->department->{'name_'.app()->getLocale()} }}@endif </h6>
                             <span class="ml-1 text-xs font-normal">
-                              {{ $prod->purchase->office->{"name_".app()->getLocale()} }}
+                              @if($prod->department){{ $prod->department->departmentable()->first()->{'name_'.app()->getLocale()} }}@endif
                             </span>
                         
                     </td>
@@ -71,10 +78,10 @@
                             {{$prod->stock}} 
                             @if($prod->unit == "unit")
                             ერთეული
-                            @elseif($prod->unit == "kilo")
-                            კილოგრამი
+                            @elseif($prod->unit == "gram")
+                            გრამი
                             @elseif($prod->unit == "metre")
-                            მეტრი
+                            სანტიმეტრი
                             @endif
                         </span>
                              <br>
@@ -96,11 +103,13 @@
                         </td>
                         <td @if($prod->stock == 0)  style="background-color: #ffaeae" @endif class="table-report__action w-56">
                             <div class="flex justify-center items-center">
-                            <button id="{{$prod->id}}" class="addcart p-2 bg-gray-300 rounded-lg ml-2" href="javascript:;"> 
-                                 <svg width="1.18em" height="1.18em" viewBox="0 0 16 16" class="bi bi-basket-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                     <path fill-rule="evenodd" d="M5.071 1.243a.5.5 0 0 1 .858.514L3.383 6h9.234L10.07 1.757a.5.5 0 1 1 .858-.514L13.783 6H15.5a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5H15v5a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V9H.5a.5.5 0 0 1-.5-.5v-2A.5.5 0 0 1 .5 6h1.717L5.07 1.243zM3.5 10.5a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0v-3zm2.5 0a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0v-3zm2.5 0a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0v-3zm2.5 0a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0v-3zm2.5 0a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0v-3z"/>
-                                   </svg>
-                                </button>
+                           @if ($prod->type == 1)
+                           <a  href="javascript:;" data-toggle="modal" class="p-2 bg-gray-300 rounded-lg ml-2" data-target="#info{{$prod->id}}">
+                            <svg width="1.18em" height="1.18em" viewBox="0 0 16 16" class="bi bi-info-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                              <path fill-rule="evenodd" d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM8 5.5a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
+                            </svg>
+                          </a>   
+                           @endif
                                 <a href=" {{route('ProductEdit', $prod->id)}} "  class="p-2 bg-gray-300 rounded-lg ml-2" href="javascript:;"> 
                                     <svg width="1.18em" height="1.18em" viewBox="0 0 16 16" class="bi bi-pencil-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                         <path fill-rule="evenodd" d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
@@ -108,16 +117,64 @@
                                    </a>
                                 <form action="{{route('DeleteProduct', $prod->id)}}" method="get">
                                     @csrf
-                                        <button type="submit"  class="p-2 bg-gray-300 rounded-lg ml-2" href="javascript:;" data-toggle="modal" data-target="#delete-confirmation-modal">
-                                            <svg width="1.18em" height="1.18em" viewBox="0 0 16 16" class="bi bi-trash2" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                                <path fill-rule="evenodd" d="M3.18 4l1.528 9.164a1 1 0 0 0 .986.836h4.612a1 1 0 0 0 .986-.836L12.82 4H3.18zm.541 9.329A2 2 0 0 0 5.694 15h4.612a2 2 0 0 0 1.973-1.671L14 3H2l1.721 10.329z"/>
-                                                <path d="M14 3c0 1.105-2.686 2-6 2s-6-.895-6-2 2.686-2 6-2 6 .895 6 2z"/>
-                                                <path fill-rule="evenodd" d="M12.9 3c-.18-.14-.497-.307-.974-.466C10.967 2.214 9.58 2 8 2s-2.968.215-3.926.534c-.477.16-.795.327-.975.466.18.14.498.307.975.466C5.032 3.786 6.42 4 8 4s2.967-.215 3.926-.534c.477-.16.795-.327.975-.466zM8 5c3.314 0 6-.895 6-2s-2.686-2-6-2-6 .895-6 2 2.686 2 6 2z"/>
-                                              </svg>
-                                           </button>
+                                    <button type="submit"  class="p-2 bg-gray-300 rounded-lg ml-2" href="javascript:;" data-toggle="modal" data-target="#delete-confirmation-modal">
+                                      <svg width="1.18em" height="1.18em" viewBox="0 0 16 16" class="bi bi-trash2" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                          <path fill-rule="evenodd" d="M3.18 4l1.528 9.164a1 1 0 0 0 .986.836h4.612a1 1 0 0 0 .986-.836L12.82 4H3.18zm.541 9.329A2 2 0 0 0 5.694 15h4.612a2 2 0 0 0 1.973-1.671L14 3H2l1.721 10.329z"/>
+                                          <path d="M14 3c0 1.105-2.686 2-6 2s-6-.895-6-2 2.686-2 6-2 6 .895 6 2z"/>
+                                          <path fill-rule="evenodd" d="M12.9 3c-.18-.14-.497-.307-.974-.466C10.967 2.214 9.58 2 8 2s-2.968.215-3.926.534c-.477.16-.795.327-.975.466.18.14.498.307.975.466C5.032 3.786 6.42 4 8 4s2.967-.215 3.926-.534c.477-.16.795-.327.975-.466zM8 5c3.314 0 6-.895 6-2s-2.686-2-6-2-6 .895-6 2 2.686 2 6 2z"/>
+                                        </svg>
+                                     </button>
                                 </form>
                                 </div>
                         </td>
+                       @if($prod->type == 1)
+                       <div class="modal" id="info{{$prod->id}}">
+                        <div class="modal__content modal__content--xl p-10 text-center"> 
+                          {{-- Calcluated Info --}}
+                          <div class="flex flex-wrap -mx-3 mb-6">
+                            <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                              <label class="text-left block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                                ექპლუატაციის დაწყების თარითი
+                              </label>
+                            <input value="{{Carbon\Carbon::parse($prod->expluatation_date)->isoFormat('DD-MM-Y')}}"
+                               class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="text" readonly>
+                            </div>
+                            <div class="w-full md:w-1/2 px-3">
+                              <label class="text-left block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                                ექპლუატაციის დასრულების თარითი
+                              </label>
+                              <input value="{{Carbon\Carbon::parse($prod->expluatation_date)->addDays(intval($prod->expluatation_days))->isoFormat('DD-MM-Y')}}"
+                               class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="text" readonly>
+                            </div>
+                          </div>
+                         
+                          <div class="flex flex-wrap -mx-3 mb-2">
+                            <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                              <label class="text-left block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                                ცვეთის პერიოდი <small>(დღე)</small>
+                              </label>
+                              <input value="{{$prod->expluatation_days}}"
+                               class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="text" readonly>
+                            </div>
+                            <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                              <label class="text-left block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                                თვითღირებულება
+                              </label>
+                            <input value="{{$prod->price/100}} @if ($prod->currency_type == 'gel')₾@elseif($prod->currency_type == 'usd')$@elseif($prod->currency_type == 'eur') €@endif"
+                              class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="text" readonly>
+                            </div>
+                            <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                              <label class="text-left block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                                ცვეთის ფასი <SMALl>(დღე)</SMALl>
+                              </label>
+                             
+                              <input value="{{($prod->price/100)/$prod->expluatation_days}} @if ($prod->currency_type == 'gel')₾@elseif($prod->currency_type == 'usd')$@elseif($prod->currency_type == 'eur') €@endif"
+                              class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="text" readonly>
+                           </div>
+                          </div>
+                         </div>
+                     </div>
+                       @endif
                 </tr> 
                 @endforeach
             </tbody>
@@ -184,9 +241,9 @@
                             <div class="relative">
                               <select name="unit" class="block font-normal text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
                                 <option value="">ნებისმიერი</option>
-                                <option value="kilo"  @if(isset($queries['unit']) && $queries['unit'] == "kilo") selected @endif>გრამი</option>
+                                <option value="gram"  @if(isset($queries['unit']) && $queries['unit'] == "gram") selected @endif>გრამი</option>
                                 <option value="unit" @if(isset($queries['unit']) && $queries['unit'] == "unit") selected @endif>ერთეული</option>
-                                <option value="metre" @if(isset($queries['unit']) && $queries['unit'] == "metre") selected @endif>მეტრი</option>
+                                <option value="metre" @if(isset($queries['unit']) && $queries['unit'] == "metre") selected @endif>სანტიმეტრი</option>
                               </select>
                               <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                                 <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>

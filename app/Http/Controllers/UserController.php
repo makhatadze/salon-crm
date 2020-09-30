@@ -16,6 +16,8 @@ use App\Profile;
 use App\User;
 use App\Department;
 use App\ClientService;
+use App\Exports\OneUserExport;
+use App\Exports\ServiceExport;
 use App\UserHasJob;
 use Carbon\Carbon;
 
@@ -364,5 +366,8 @@ class UserController extends Controller
     //User Exports
     public function userexport(){
         return Excel::download(new UserExport, 'users.xlsx');
+    }
+    public function oneuserexport(User $user){
+        return Excel::download(new OneUserExport($user->id), $user->profile->first_name.'_'.$user->profile->last_name.'.xlsx');
     }
 }

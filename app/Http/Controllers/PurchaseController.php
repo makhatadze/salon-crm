@@ -76,12 +76,6 @@ class PurchaseController extends Controller
             'purchases_number' => '',
             'distributor_id' => 'required|integer',
             'purchase_date' => 'required|date',
-            'office_id' => 'required|integer',
-            'department_id' => 'required|integer',
-            'responsible_person_id' => 'required|integer',
-            'responsible_person_search'=> 'required|string',
-            'getter_person_id' => 'required|integer',
-            'getter_person_search'=> 'required|string',
             'dgg' => '',
             //array
             'ability_type' => '',
@@ -121,10 +115,6 @@ class PurchaseController extends Controller
         }
         $purchase->purchase_date = Carbon::parse($request->input('purchase_date'));
         $purchase->distributor_id = $request->input('distributor_id');
-        $purchase->office_id = $request->input('office_id');
-        $purchase->department_id = $request->input('department_id');
-        $purchase->responsible_person_id = $request->input('responsible_person_id');
-        $purchase->getter_person_id = $request->input('getter_person_id');
         if($request->input('dgg')){
             $purchase->dgg = true;
         }else{
@@ -191,12 +181,6 @@ class PurchaseController extends Controller
             'purchases_number' => '',
             'distributor_id' => 'required|integer',
             'purchase_date' => 'required|date',
-            'office_id' => 'required|integer',
-            'department_id' => 'required|integer',
-            'responsible_person_id' => 'required|integer',
-            'responsible_person_search'=> 'required|string',
-            'getter_person_id' => 'required|integer',
-            'getter_person_search'=> 'required|string',
             'dgg' => '',
             //array
             'ability_type' => '',
@@ -235,11 +219,7 @@ class PurchaseController extends Controller
         }
         $purchase->purchase_date = Carbon::parse($request->input('purchase_date'));
         $purchase->distributor_id = $request->input('distributor_id');
-        $purchase->office_id = $request->input('office_id');
-        $purchase->department_id = $request->input('department_id');
-        $purchase->responsible_person_id = $request->input('responsible_person_id');
-        $purchase->getter_person_id = $request->input('getter_person_id');
-        if($request->input('dgg')){
+       if($request->input('dgg')){
             $purchase->dgg = true;
         }else{
             $purchase->dgg = false;

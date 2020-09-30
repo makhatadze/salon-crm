@@ -23,7 +23,7 @@ use App\Sale;
 use App\Order;
 use App\Purchase;
 use App\Exports\ProductExport;
-
+use App\Exports\SaleExport;
 use Auth;
 use Cart;
 
@@ -47,7 +47,7 @@ class ProductController extends Controller
             "amout",
             "unit"
         ];
-        $products = Product::whereNull('deleted_at');
+        $products = Product::where('warehouse', 0)->whereNull('deleted_at');
 
         foreach ($queries as $key => $req) {
             if (request($req)) {
@@ -111,8 +111,8 @@ class ProductController extends Controller
         $distributions = DistributionCompany::whereNull('deleted_at')->get();
         $departments = Department::whereNull('deleted_at')->get();
         $categories = Category::all();
-        $purchases = Purchase::all();
-        return view('theme.template.product.edit_product', compact('departments', 'categories', 'product', 'distributions', 'purchases'));
+        $departments = Department::all();
+        return view('theme.template.product.edit_product', compact('departments', 'categories', 'product', 'distributions', 'departments'));
     }
 
     /**
@@ -130,7 +130,7 @@ class ProductController extends Controller
             'title_ru' => '',
             'title_en' => '',
             'get_category' => '',
-            'purchase' => 'required|integer',
+            'department' => 'required|integer',
             'get_type' => 'required|string',
             'unit' => 'required|string',
             'stock' => 'required|between:0,99.99|min:0',
@@ -148,9 +148,11 @@ class ProductController extends Controller
         $product->description_ru = $request->input('editor-ru');
         $product->description_en = $request->input('editor-en');
         $product->type = $request->input('get_type');
-        $product->purchase_id = $request->input('purchase');
-        $product->unit = $request->input('unit');
-        $product->stock = $request->input('stock');
+        $product->department_id = $request->input('department');
+        if($product->unit != "unit"){
+            $product->unit = $request->input('unit');
+            $product->stock = $request->input('stock');
+        }
         $product->category_id = intval($request->input('get_category'));
         $product->price = intval($request->input('price') * 100);
         $product->currency_type = $request->input('currency');
@@ -200,7 +202,7 @@ class ProductController extends Controller
     public function getproductsajax(Request $request)
     {
         $lang = app()->getLocale();
-        $products = Product::where('title_' . app()->getLocale(), 'like', '%' . $request->input('val') . '%')->whereNull('deleted_at')->orderBy('id', 'desc')->take(30)->get();
+        $products = Product::where('warehouse', 0)->where('title_' . app()->getLocale(), 'like', '%' . $request->input('val') . '%')->whereNull('deleted_at')->orderBy('id', 'desc')->take(30)->get();
         foreach ($products as $key => $prod) {
             if ($prod->category_id) {
                 $prod['category_name'] = $prod->getCategoryName($prod->category_id);
@@ -223,10 +225,11 @@ class ProductController extends Controller
         $product->delete();
         return response()->json(array('status' => true), 200);
     }
+    //View Render
     public function addtocartget(){
         $user_id = Auth()->user()->id;
         $cart = Cart::session($user_id)->getContent();
-        $products = Product::all();
+        $products = Product::where([['warehouse', 0], ['type', '!=', 1]])->get();
         $cartsum = 0;
         foreach ($cart as $item) {
             $cartsum += $item->price * $item->quantity;
@@ -254,9 +257,10 @@ class ProductController extends Controller
         $product = Product::findOrFail($id);
         $user_id = Auth()->user()->id;
         $currentquantity = Cart::session($user_id)->getContent($id);
+        // განახლების დროს დამატებული რაოდენობა მეტია
         if($currentquantity->first()){
-            if($product->stock < $currentquantity->first()->quantity + $request->quantity){
-                return redirect()->back()->with('errors', 'არასაკმარისი რაოდენობა');
+            if($product->stock <  $request->quantity){
+                return redirect()->back()->with('error', 'არასაკმარისი რაოდენობა. სულ:'.$product->stock);
             }
         }
         Cart::session($user_id)->update($id,[
@@ -282,10 +286,10 @@ class ProductController extends Controller
             $currentquantity = Cart::session($user_id)->getContent($product->id);
             if($currentquantity->first()){
                 if($product->stock < $currentquantity->first()->quantity + $request->quantity){
-                    return redirect()->back()->with('error', 'არასაკმარისი რაოდენობა');
+                    return redirect()->back()->with('error', 'არასაკმარისი რაოდენობა. სულ:'.$product->stock);
                 }
             }else if($product->stock < $request->quantity){
-                return redirect()->back()->with('error', 'არასაკმარისი რაოდენობა');
+                return redirect()->back()->with('error', 'არასაკმარისი რაოდენობა. დარჩენილია:'.$product->stock);
             }
                 $addtocart = [
                     'id' => $product->id,
@@ -301,7 +305,7 @@ class ProductController extends Controller
         }
         return redirect()->route('AddToCart');
     }
-
+    //Store
     public function addtosales(Request $request){
         $this->validate($request, [
             'client_id' => 'required|integer',
@@ -314,6 +318,7 @@ class ProductController extends Controller
         $sale = new Sale();
         $sale->client_id = $request->client_id;
         $sale->address = $request->address;
+        $sale->seller_id = Auth()->user()->id;
         $sale->save();
         foreach($cart as $order){
             $product = Product::findOrFail($order->id);
@@ -330,7 +335,7 @@ class ProductController extends Controller
 
         return redirect()->route('Sales');
     }
-
+    // Choosing Product for cart
     public function chooseforcart(Request $request){
         $this->validate($request, [
             'product_id' => 'required|integer'
@@ -338,5 +343,10 @@ class ProductController extends Controller
         $lang = app()->getLocale();
         $product = Product::findOrFail($request->product_id);
         return response()->json(array('status' => true, 'product' => $product, 'lang' => $lang));
+    }
+    // Sale Export
+    public function saleexport(Sale $sale)
+    {
+        return Excel::download(new SaleExport($sale->id), 'sale.xlsx');
     }
 }

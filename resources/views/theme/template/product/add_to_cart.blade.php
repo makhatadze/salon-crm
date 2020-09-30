@@ -52,6 +52,9 @@
                             <input
                                 class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                                 id="quantity1" name="quantity" type="number" required min="0" placeholder="xxxxxx">
+                                @if(session('error'))
+                                    <p class="text-red-500 font-normal text-xs">{{session('error')}}</p>
+                                @endif
                         </div>
                     </div>
                     <button id="submitcat" type="submit"
@@ -79,7 +82,7 @@
                             <a  href="javascript:;" class=" px-5 py-3 mb-3 flex items-center  " data-toggle="modal" data-target="#basic-modal-{{$item->id}}">
                                         <div class="ml-4 mr-auto">
                                             <div class="font-medium font-caps">{{ $item->name }}</div>
-                                            <div class="text-gray-600 text-xs font-normal">{{ $item->quantity }} @if($item->attributes['unit'] == "kilo") კილოგრამი @elseif($item->attributes['unit'] == "metre") მეტრი @elseif($item->attributes['unit'] == "unit") ერთეული @endif</div>
+                                            <div class="text-gray-600 text-xs font-normal">{{ $item->quantity }} @if($item->attributes['unit'] == "gram") გრამი @elseif($item->attributes['unit'] == "metre") სანტიმეტრი @elseif($item->attributes['unit'] == "unit") ერთეული @endif</div>
                                         </div>
                                         <div >
                                             <h6 class="text-theme-9">{{ number_format(($item->price * $item->quantity)/100, 2)}} <sup>₾</sup></h6>
@@ -155,7 +158,7 @@
                                     <a  href="javascript:;" class=" px-5 py-3 mb-3 flex items-center  " >
                                                 <div class="ml-4 mr-auto">
                                                     <div class="font-medium font-caps">{{ $item->name }}</div>
-                                                    <div class="text-gray-600 text-xs font-normal">{{ $item->quantity }} @if($item->attributes['unit'] == "kilo") კილოგრამი @elseif($item->attributes['unit'] == "metre") მეტრი @elseif($item->attributes['unit'] == "unit") ერთეული @endif</div>
+                                                    <div class="text-gray-600 text-xs font-normal">{{ $item->quantity }} @if($item->attributes['unit'] == "gram") გრამი @elseif($item->attributes['unit'] == "metre") სანტიმეტრი @elseif($item->attributes['unit'] == "unit") ერთეული @endif</div>
                                                 </div>
                                                 <div >
                                                     <h6 class="text-theme-9">{{ number_format(($item->price * $item->quantity)/100, 2)}} <sup>₾</sup></h6>
@@ -198,10 +201,10 @@
                         if (result.status == true) {
                             let prod = result.product;
                             $unit = prod['unit'];
-                            if($unit == "kilo"){
-                                $('#prod_unit').val('კილოგრამი')
+                            if($unit == "gram"){
+                                $('#prod_unit').val('გრამი')
                             }else if($unit == "metre"){
-                                $('#prod_unit').val('მეტრი')
+                                $('#prod_unit').val('სანტიმეტრი')
                             }else if($unit == "unit"){
                                 $('#prod_unit').val('ერთეული')
                             }
