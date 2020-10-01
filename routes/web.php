@@ -52,6 +52,8 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
         Route::get('/removefromcart/{product}', 'ProductController@removefromCart')->name('RemoveFromCart');
         Route::post('/addtosales', 'ProductController@addtosales')->name('addToSales');
         Route::get('/sale/export/{sale}', 'ProductController@saleexport');
+        // Brand Controller 
+        Route::view('/brands', 'theme.template.brand.index');
         //Company Controller
         //Distribution
         Route::get('/companies/distcompany', 'CompanyController@distcompany');
@@ -64,7 +66,6 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
         Route::resource('/companies', 'CompanyController')->except('show');
         Route::get('/companies/addoffice/{id}', 'CompanyController@createoffice')->name('CreateOffice');
         Route::delete('/companies/removeoffice/{id}', 'CompanyController@removeoffice')->name('RemoveOffice');
-        Route::post('/companies/add', 'CompanyController@store')->name('AddCompany');
         Route::any('/companies/update/{id}', 'CompanyController@update')->name('EditCompany');
         Route::post('/companies/addoffice/store/{id}', 'CompanyController@storeoffice')->name('AddOffice');
         // Company Department Controllers

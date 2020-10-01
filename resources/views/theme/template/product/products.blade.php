@@ -55,7 +55,7 @@
                 </td>
                     <td @if($prod->stock == 0)  style="background-color: #ffaeae" @endif>
                         <a href="" class="font-medium whitespace-no-wrap font-bold text-black">{{$prod->{"title_".app()->getLocale()} }}</a> 
-                        <div class="text-gray-600 text-xs whitespace-no-wrap font-normal"> </div>
+                        <div class="text-gray-600 text-xs whitespace-no-wrap font-normal"> @if($prod->brand){{$prod->brand->name}}@endif </div>
                     </td>
                     <td  @if($prod->stock == 0)  style="background-color: #ffaeae" @endif class="text-center font-normal">{{$prod->price/100}} 
                       @if ($prod->currency_type == 'gel')

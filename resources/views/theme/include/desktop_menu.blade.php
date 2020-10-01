@@ -103,7 +103,7 @@
             </ul>
         </li>
         <li>
-            <a href="javascript:;" class="side-menu" data-menu="companies">
+            <a href="javascript:;" class="side-menu" data-menu="bugalteria">
                 <div class="side-menu__icon"> <i data-feather="credit-card"></i> </div>
                 <div class="side-menu__title"> ბუღალტერია <i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
             </a>
@@ -157,7 +157,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="top-menu-dashboard.html" class="side-menu custom-nav-item">
+                    <a href="/brands" class="side-menu custom-nav-item">
                         <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
                         <div class="side-menu__title"> ბრენდები </div>
                     </a>

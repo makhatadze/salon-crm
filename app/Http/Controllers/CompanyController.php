@@ -38,42 +38,7 @@ class CompanyController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        $this->validate($request, [
-            'title-ge' => 'required|string',
-            'title-ru' => '',
-            'title-en' => '',
-            'code' => '',
-            'editor-ge' => 'required',
-            'editor-ru' => '',
-            'editor-en' => '',
-            'office-name-ge' => 'required|string',
-            'address-ge' => 'required|string',
-            'office-name-en' => '',
-            'address-en' => '',
-            'office-name-ru' => '',
-            'address-ru' => '',
-        ]);
-        $company = new Company;
-        $company->title_ge = $request->input('title-ge');
-        $company->title_ru = $request->input('title-ru');
-        $company->title_en = $request->input('title-en');
-        $company->code = $request->input('code');
-        $company->description_ge = $request->input('editor-ge');
-        $company->description_ru = $request->input('editor-ru');
-        $company->description_en = $request->input('editor-en');
-        $company->save();
-        $company->offices()->create([
-            'name_ge' => $request->input('office-name-ge'),
-            'address_ge' => $request->input('address-ge'),
-            'name_en' => $request->input('office-name-en'),
-            'address_en' => $request->input('address-en'),
-            'name_ru' => $request->input('office-name-ru'),
-            'address_ru' => $request->input('address-ru'),
-        ]);
-        return redirect('/companies');
-    }
+
 
     /**
      * Show the form for editing the specified resource.

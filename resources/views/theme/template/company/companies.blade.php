@@ -1,36 +1,46 @@
 @extends('theme.layout.layout')
 
 @section('content')
-<div class="intro-y flex flex-col sm:flex-row items-center mt-8">
-    <h2 class="text-lg font-medium mr-auto font-helvetica">
-        ახალი კომპანია
-    </h2>
-    <div class="w-full sm:w-auto flex mt-4 sm:mt-0">
-           <a href="/companies/create" type="button" class="button button--lg block text-white bg-theme-1 font-helvetica mx-auto mt-8"> 
-               დამატება
-           </a>
-    </div>
-</div>
-<div class="intro-y box flex flex-col lg:flex-row mt-5">
+
+<div class="grid grid-cols-12 gap-6 mt-5">
 
     <!-- Companies -->
     @if ($companies)
    @foreach ($companies as $company)
-   <div class="intro-y flex-1 px-5 py-16">
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-credit-card w-12 h-12 text-theme-1 mx-auto"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg> 
-    <div class="text-xl font-helvetica text-center mt-10 "><b>{{$company->{"title_".app()->getLocale()} }}</b></div>
-    <div class="text-gray-700 text-center mt-5 font-helvetica"> {{$company->offices()->first()->{"name_".app()->getLocale()} }} | {{$company->offices()->first()->{"address_".app()->getLocale()} }} </div>
-    <div class="text-gray-600 px-10 text-center mx-auto mt-2">{!! $company->{"description_".app()->getLocale()} !!}</div>
-    <div class="flex grid text-center">
-    <a href="companies/addoffice/{{$company->id}}" class="w-full button  text-white bg-green-500 rounded-2 mt-4 font-helvetica">ოფისის დამატება</a>
-        <a href="companies/{{$company->id}}/edit" class="w-full button  text-white bg-blue-700 rounded-2 mt-4 font-helvetica">რედაქტირება</a>
-    <form action="/companies/{{$company->id}}" method="post">
-        @csrf
-        @method('DELETE')
-        <button type="submit" class="button w-full text-white bg-red-500 rounded-2 mt-4 font-helvetica">წაშლა</button>
-        </form>
+   <div class="intro-y col-span-12 lg:col-span-3 box pt-10 border-2 border-theme-1">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shield w-12 h-12 text-theme-1 mx-auto"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg> 
+    <div class="font-medium text-center text-base mt-3 font-bold">{{$company->{"title_".app()->getLocale()} }}</div>
+    <div class="text-gray-600 mt-2 w-3/4 text-center mx-auto font-normal text-xs">{!! $company->{"description_".app()->getLocale()}  !!}</div>
+    <div class="flex mt-2">
+        <div class="font-bold bg-green-400 py-2 text-center text-xs fotn-caps w-1/2">
+            <a href="companies/addoffice/{{$company->id}}">ოფისის დამატება</a>
+        </div>
+        <div class="font-bold bg-green-400 py-2 text-center text-xs fotn-caps w-1/2">
+            <a href="companies/{{$company->id}}/edit">რედაქტირება</a>
+        </div>
     </div>
-</div>
+    @foreach ($company->offices as $office)
+    <div class="flex bg-gray-200 w-full py-3 px-4">
+        <div class="text-center font-medium text-gray-800 text-xs fotn-caps w-1/2">
+            <a href="companies/addoffice/{{$company->id}}">
+                <h4 class="w-full font-bold text-xs">{{$office->{"name_".app()->getLocale()} }}</h4>
+                <small class="font-normal">{{ $office->{"address_".app()->getLocale()} }}</small>
+            </a>
+        </div>
+        <div class="font-normal text-center text-xs fotn-caps w-1/2">
+            <div class="mb-3">
+                <span class="font-bolder">დეპარტამენტები <small>{{$office->departments()->count()}}</small></span>
+            </div>
+            @foreach ($office->departments as $dept)
+                <div class="mt-3">
+                    <span>{{$dept->{"name_".app()->getLocale()} }}</span>
+                </div>
+            @endforeach
+        </div>
+    </div>
+    @endforeach
+    
+   </div>
    @endforeach
     @endif
    

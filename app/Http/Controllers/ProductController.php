@@ -11,6 +11,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Brand;
 use Illuminate\Http\Request;
 use App\Product;
 use App\Category;
@@ -112,7 +113,8 @@ class ProductController extends Controller
         $departments = Department::whereNull('deleted_at')->get();
         $categories = Category::all();
         $departments = Department::all();
-        return view('theme.template.product.edit_product', compact('departments', 'categories', 'product', 'distributions', 'departments'));
+        $brands = Brand::all();
+        return view('theme.template.product.edit_product', compact('departments', 'categories', 'product', 'distributions', 'brands', 'departments'));
     }
 
     /**
@@ -143,7 +145,17 @@ class ProductController extends Controller
             'expluatation_date' => '',
             'expluatation_days' => '',
             'unlimited_expluatation' => '',
+            'brand' => '',
+            'new_brand' => ''
         ]);
+        if($request->input('new_brand') != "" && is_string($request->input('new_brand'))){
+            $brand = new Brand;   
+            $brand->name = $request->input('new_brand');
+            $brand->save();
+            $product->brand_id = $brand->id;
+        }else{
+            $product->brand_id = $request->input('brand');
+        }
         $product->title_ge = $request->input('title_ge');
         $product->title_ru = $request->input('title_ru');
         $product->title_en = $request->input('title_en');
