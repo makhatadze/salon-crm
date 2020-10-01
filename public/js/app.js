@@ -108,17 +108,21 @@ $(document).ready(function () {
         $('.user-percent').val(0);
       }
     });
-    $('.percent-container').css('display', 'none');
     $('.user-salary').focusout(function (e) {
       if (!e.target.value) {
         $('user-salary').val(0);
       }
     });
     $("#salary_type").change(function (e) {
-      if (e.target.value == 1) {
+      if (e.target.value == 3) {
         $('.user-percent').val(0);
+        $('#salary-container').css('display', 'block');
         $('.percent-container').css('display', 'none');
-      } else {
+      } else if (e.target.value == 2) {
+        $('#salary-container').css('display', 'none');
+        $('.percent-container').css('display', 'block');
+      } else if (e.target.value == 1) {
+        $('#salary-container').css('display', 'block');
         $('.percent-container').css('display', 'block');
       }
     });
@@ -162,17 +166,16 @@ $(document).ready(function () {
 /***/ }),
 
 /***/ 0:
-        /*!*************************************************************!*\
-          !*** multi ./resources/js/app.js ./resources/sass/app.scss ***!
-          \*************************************************************/
-        /*! no static exports found */
-        /***/ (function (module, exports, __webpack_require__) {
+/*!*************************************************************!*\
+  !*** multi ./resources/js/app.js ./resources/sass/app.scss ***!
+  \*************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
 
-            __webpack_require__(/*! /home/administrator/www/CRM-DIMOND/resources/js/app.js */"./resources/js/app.js");
-            module.exports = __webpack_require__(/*! /home/administrator/www/CRM-DIMOND/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\xampp\htdocs\CRM-DIMOND\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! C:\xampp\htdocs\CRM-DIMOND\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
-            /***/
-        })
+/***/ })
 
 /******/ });

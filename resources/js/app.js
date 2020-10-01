@@ -15,7 +15,6 @@ $(document).ready(function () {
             }
         })
 
-        $('.percent-container').css('display', 'none');
 
 
         $('.user-salary').focusout(function (e) {
@@ -25,10 +24,15 @@ $(document).ready(function () {
         })
 
         $("#salary_type").change(function (e) {
-            if (e.target.value == 1) {
+            if (e.target.value == 3) {
                 $('.user-percent').val(0)
+                $('#salary-container').css('display', 'block');
                 $('.percent-container').css('display', 'none');
-            } else {
+            } else if(e.target.value == 2) {
+                $('#salary-container').css('display', 'none');
+                $('.percent-container').css('display', 'block');
+            }else if(e.target.value == 1) {
+                $('#salary-container').css('display', 'block');
                 $('.percent-container').css('display', 'block');
             }
         })

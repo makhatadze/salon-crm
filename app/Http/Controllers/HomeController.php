@@ -64,6 +64,8 @@ class HomeController extends Controller
                         }
                         $queries[$req] = request($req);
                     }
+                }else{
+                    $userclients = $userclients->whereDate('session_start_time', Carbon::today());
                 }
                 $userclients =  $userclients->paginate(30)->appends($queries);
                 return view('theme.template.user.user_profile', compact('user', 'userclients', 'queries'));
@@ -98,6 +100,7 @@ class HomeController extends Controller
                     }
                 }
                 $todayservices = $todayservices->select('client_services.id','client_services.user_id', 'client_services.service_id', 'client_services.status', 'client_services.status', 'services.title_'.app()->getLocale(), 'client_services.session_start_time', 'clients.number', 'clients.full_name_'.app()->getLocale(), 'services.price', 'profiles.first_name', 'profiles.last_name');
+                
                 $todayservices = $todayservices->paginate(40)->appends($queries);
 
             }else{

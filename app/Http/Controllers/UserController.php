@@ -78,7 +78,7 @@ class UserController extends Controller
                     'pid' => 'required',
                     'position' => 'required|string',
                     'phone' => 'required',
-                    'salary' => 'min:0|integer',
+                    'salary' => '',
                     'percent' => 'required|numeric|between:0,99.99',
                     'password' => 'required|min:8',
                     'password_confirmation' => 'required_with:password|same:password|min:8',
@@ -110,7 +110,7 @@ class UserController extends Controller
                     'position' => $data['position'],
                     'phone' => $data['phone'],
                     'pid' => $data['pid'],
-                    'salary' => $data['salary'],
+                    'salary' => $data['salary'] ? $data['salary'] : 0,
                     'salary_type' => $data['salary_type'],
                     'percent' => $data['percent'],
                 ]);
@@ -317,6 +317,8 @@ class UserController extends Controller
                 }
                 $queries[$req] = request($req);
             }
+        }else{
+            $userclients = $userclients->whereDate('session_start_time', Carbon::today());
         }
         $userclients =  $userclients->paginate(30)->appends($queries);
         return view('theme.template.user.user_profile', compact('user', 'userclients', 'queries'));
