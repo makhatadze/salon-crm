@@ -139,7 +139,10 @@ class ProductController extends Controller
             'editor-en' => '',
             'price' => 'required|between:0,99.99|min:0',
             'currency' => 'required|string',
-            'images[]' => 'image'
+            'images[]' => 'image',
+            'expluatation_date' => '',
+            'expluatation_days' => '',
+            'unlimited_expluatation' => '',
         ]);
         $product->title_ge = $request->input('title_ge');
         $product->title_ru = $request->input('title_ru');
@@ -149,6 +152,15 @@ class ProductController extends Controller
         $product->description_en = $request->input('editor-en');
         $product->type = $request->input('get_type');
         $product->department_id = $request->input('department');
+
+        if(isset($request->unlimited_expluatation)){
+            $product->unlimited_expluatation = true;
+        }else{
+            $product->expluatation_date = $request->input('expluatation_date');
+            $product->expluatation_days = $request->input('expluatation_days');
+            $product->unlimited_expluatation = false;
+        }
+
         if($product->unit != "unit"){
             $product->unit = $request->input('unit');
             $product->stock = $request->input('stock');
@@ -197,7 +209,7 @@ class ProductController extends Controller
 
         $product->published = $status;
         $product->save();
-        return redirect('/products');
+        return redirect()->back();
     }
     public function getproductsajax(Request $request)
     {

@@ -185,6 +185,42 @@
                             </div>
                         </div>
                     </div>
+                    @if ($product->type == 1)
+                    <div class="flex flex-wrap mt-3 mb-6">
+                        
+                        <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                            <label
+                                class="block font-bold font-caps uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                                ექსპლუიატაციის დაწყება
+                            </label>
+                            <input 
+                            class="appearance-none block w-full text-xs font-normal bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                             required type="date" name="expluatation_date" value="{{ Carbon\Carbon::parse($product->expluatation_date)->isoFormat("Y-MM-DD")}}">
+                        </div>
+                        <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                            <label
+                                class="block font-bold font-caps uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                                 ხანგრძლოვობა <small>(დღე)</small>
+                            </label>
+                            <input 
+                            class="appearance-none block w-full text-sm font-normal bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                             required type="number" value="1" min="1" step="1" name="expluatation_days" value="{{ $product->expluatation_days }}">
+                        </div>
+                        <div>
+                            <label
+                                class="block font-bold font-caps uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                                ექსპლუატაცია</label>
+                            <div class="py-3 flex font-normal items-center">
+                                
+                            <input type="checkbox" name="unlimited_expluatation" @if($product->unlimited_expluatation) checked @endif class="mr-3"> უსასრულო ექსპლუატაცია
+                            </div>
+                        </div>
+                    </div>
+                    <p class="w-full py-2 font-normal text-xs m-0 px-4">
+                        <strong class="text-red-500">შენიშვნა:</strong> უსასრულო ექსპლუიატაციის პრედიოდის მონიშვნის შემთხვევაში პროდუქტის ექსპლუატაციის დაწყების თარიღი
+                         და ხანგრძლივობა წაიშლება.
+                    </p>
+                    @endif
 
 
 

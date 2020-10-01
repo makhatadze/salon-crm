@@ -128,23 +128,35 @@
                                 </div>
                         </td>
                        @if($prod->type == 1)
+                       
                        <div class="modal" id="info{{$prod->id}}">
                         <div class="modal__content modal__content--xl p-10 text-center"> 
+                          @if ($prod->unlimited_expluatation)
+                        <p class="text-center font-normal text-xs">
+                          ექსპლუატაციის პერიოდი უსასრულოა.
+                        </p>
+                       @else
                           {{-- Calcluated Info --}}
                           <div class="flex flex-wrap -mx-3 mb-6">
                             <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                               <label class="text-left block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                                ექპლუატაციის დაწყების თარითი
+                                ექსპლუატაციის დაწყების თარითი
                               </label>
                             <input value="{{Carbon\Carbon::parse($prod->expluatation_date)->isoFormat('DD-MM-Y')}}"
                                class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="text" readonly>
                             </div>
                             <div class="w-full md:w-1/2 px-3">
                               <label class="text-left block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                                ექპლუატაციის დასრულების თარითი
+                                ექსპლუატაციის დასრულების თარითი
                               </label>
                               <input value="{{Carbon\Carbon::parse($prod->expluatation_date)->addDays(intval($prod->expluatation_days))->isoFormat('DD-MM-Y')}}"
-                               class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="text" readonly>
+                               class="
+                               @if(Carbon\Carbon::parse($prod->expluatation_date)->addDays(intval($prod->expluatation_days)) < Carbon\Carbon::now())
+                               bg-red-500 text-white font-bold
+                               @else 
+                               bg-gray-200 text-gray-700 font-normal
+                               @endif
+                               appearance-none block w-full border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:text-gray-700 focus:bg-white focus:border-gray-500"  type="text" readonly>
                             </div>
                           </div>
                          
@@ -172,6 +184,7 @@
                               class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="text" readonly>
                            </div>
                           </div>
+                          @endif
                          </div>
                      </div>
                        @endif

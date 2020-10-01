@@ -15,8 +15,9 @@ class WarehouseController extends Controller
         $prod = Product::findOrFail(intval($id));
         if($prod->type == 1){
             $this->validate($request,[
-                'expluatation_date' => 'required',
-                'expluatation_days' => 'required|integer',
+                'expluatation_date' => '',
+                'expluatation_days' => '',
+                'unlimited_expluatation' => '',
                 'typeamout' => 'required',
             ]);
             $date = Carbon::parse($request->expluatation_date);
@@ -26,6 +27,14 @@ class WarehouseController extends Controller
             if($prod->type == 1){
                 for ($i = 0; $i < intval($request->typeamout); $i++) { 
                     $product = new Product;
+
+                    if(isset($request->unlimited_expluatation)){
+                        $product->unlimited_expluatation = true;
+                    }else{
+                        $product->expluatation_date = $request->input('expluatation_date');
+                        $product->expluatation_days = $request->input('expluatation_days');
+                    }
+
                     $product->title_ge = $prod->title_ge;
                     $product->description_ge = $prod->description_ge;
                     $product->price = $prod->price;
