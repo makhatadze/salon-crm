@@ -31,9 +31,9 @@ class ClientController extends Controller
         $queries = [
             'search'
         ];
-        if(request($queries[0])){
-            $clients = $clients->where('full_name_'.app()->getLocale(), 'LIKE', '%'.request($queries[0]).'%')
-            ->orWhere('number', 'LIKE', '%'.request($queries[0]).'%');
+        if (request($queries[0])) {
+            $clients = $clients->where('full_name_' . app()->getLocale(), 'LIKE', '%' . request($queries[0]) . '%')
+                ->orWhere('number', 'LIKE', '%' . request($queries[0]) . '%');
             $queries[$queries[0]] = request($queries[0]);
         }
         $clients = $clients->paginate(50)->appends($queries);
@@ -79,12 +79,12 @@ class ClientController extends Controller
             'departments' => ''
         ]);
         $client = new Client;
-        if($request->input('group_name') != ""){
+        if ($request->input('group_name') != "") {
             $group = new MemberGroup;
             $group->name = $request->input('group_name');
             $group->save();
             $client->group_id = $group->id;
-        }else{
+        } else {
             $client->group_id = $request->input('group');
         }
         $client->full_name_ge = $request->input('client_name_ge');
@@ -168,12 +168,12 @@ class ClientController extends Controller
             'departments' => ''
         ]);
         $client = Client::findOrFail($id);
-        if($request->input('group_name') != ""){
+        if ($request->input('group_name') != "") {
             $group = new MemberGroup;
             $group->name = $request->input('group_name');
             $group->save();
             $client->group_id = $group->id;
-        }else{
+        } else {
             $client->group_id = $request->input('group');
         }
         $client->full_name_ge = $request->input('client_name_ge');
@@ -248,34 +248,34 @@ class ClientController extends Controller
 
         $message = '';
         $service = Service::find($clientservice->service_id);
-        
+
         if ($service) {
-            
+
             $inventories = $service->inventories()->get();
-            if(count($inventories) > 0){
+            if (count($inventories) > 0) {
                 $message = '';
-            foreach ($inventories as $prods) {
-                $prod = Product::find($prods->product_id);
-                if ($prod) {
-                    $success = false;
-                    if ($prod->stock == 0 || $prod->stock < $prods->quantity) {
-                        return redirect('/')->with('error', $prod->id . ' | ' . $prod->{"title_" . app()->getLocale()} . ' მარაგი ცარიელია ან არასაკმარისი');
-                    }elseif($prod->published == false){
-                        return redirect('/')->with('error', $prod->id . ' | ' . $prod->{"title_" . app()->getLocale()} . ' სტატუსი გათიშულია');
-                    } else if ($prod->stock - $prods->quantity == 0 || $prod->stock - $prods->quantity <= $prods->quantity) {
-                        $message .= $prod->id . ' | ' . $prod->{"title_" . app()->getLocale()} . ' მარაგი შესავსევბია <br>';
-                    } else {
-                        $success = true;
-                        $message .= 'სტატუსი წარმატებით განახლდა';
+                foreach ($inventories as $prods) {
+                    $prod = Product::find($prods->product_id);
+                    if ($prod) {
+                        $success = false;
+                        if ($prod->stock == 0 || $prod->stock < $prods->quantity) {
+                            return redirect('/')->with('error', $prod->id . ' | ' . $prod->{"title_" . app()->getLocale()} . ' მარაგი ცარიელია ან არასაკმარისი');
+                        } elseif ($prod->published == false) {
+                            return redirect('/')->with('error', $prod->id . ' | ' . $prod->{"title_" . app()->getLocale()} . ' სტატუსი გათიშულია');
+                        } else if ($prod->stock - $prods->quantity == 0 || $prod->stock - $prods->quantity <= $prods->quantity) {
+                            $message .= $prod->id . ' | ' . $prod->{"title_" . app()->getLocale()} . ' მარაგი შესავსევბია <br>';
+                        } else {
+                            $success = true;
+                            $message .= 'სტატუსი წარმატებით განახლდა';
+                        }
+                        $prod->stock = $prod->stock - $prods->quantity;
+                        $prod->save();
                     }
-                    $prod->stock = $prod->stock - $prods->quantity;
-                    $prod->save();
                 }
-            }
-            }else{
+            } else {
                 return redirect('/')->with('error', 'სერვის არ გააჩნია ინვენტარი');
             }
-        }else{
+        } else {
             return back()->with('error', 'დაფიქსირდა შეცდომა');
         }
         if ($user) {
@@ -352,19 +352,17 @@ class ClientController extends Controller
         ]);
         $services = ClientService::query()
             ->join('profiles', 'profiles.profileable_id', '=', 'client_services.user_id')
-            ->join('services', 'services.id', '=', 'client_services.service_id');
+            ->join('services', 'services.id', '=', 'client_services.service_id')
+            ->join('clients', 'clients.id', '=', 'client_services.clinetserviceable_id');
         if ($request) {
             if ($request->client_name) {
-                $name = explode(' ', $request->client_name);
-                $services = $services->where('profiles.first_name', 'like', '%' . $name[0] . '%');
-                if (isset($name[1])) {
-                    $services = $services->where('profiles.last_name', 'like', '%' . $name[1] . '%');
-                }
+                $clientName = 'clients.full_name_' . App()->getLocale();
+                $services = $services->where($clientName, 'like', '%' . $request->client_name . '%');
             }
 //            $services = $services->where('CONCAT(profiles.first_name, ", ", profiles.last_name)', 'LIKE',  'ჯოხაძე');
             if ($request->service) {
                 $serviceTitle = 'services.title_' . App()->getLocale();
-                $services = $services->where('services.title_en', 'LIKE', '%' . $request->service . '%');
+                $services = $services->where($serviceTitle, 'LIKE', '%' . $request->service . '%');
             }
             if ($request->date_from) {
                 $services = $services->whereDate('client_services.session_start_time', '>=', Carbon::parse($request->date_from));
@@ -395,7 +393,6 @@ class ClientController extends Controller
                 }
             }
         }
-
         $services = $services->paginate(20);
 
 //        $services = ClientService::whereNull('deleted_at')->paginate(20);
@@ -416,8 +413,10 @@ class ClientController extends Controller
     {
         return Excel::download(new FinanceExport(), 'finance.xlsx');
     }
-    public function clientserviceexport(Client $client){
-        return Excel::download(new ClientServices($client->id), $client->{"full_name_".app()->getLocale()}.'.xlsx');
+
+    public function clientserviceexport(Client $client)
+    {
+        return Excel::download(new ClientServices($client->id), $client->{"full_name_" . app()->getLocale()} . '.xlsx');
     }
 
 
