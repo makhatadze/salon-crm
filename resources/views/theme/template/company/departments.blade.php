@@ -30,7 +30,12 @@
                     </td>
                  <td class="text-right border-b w-32 font-medium">
                     <div class="text-gray-600 text-xs whitespace-no-wrap flex">
-                        <a href="/companies/departments/{{$department->id}}" class="p-2 bg-gray-300 rounded-lg ml-2" >
+                        <a href="/companies/departments/exportservices/{{$department->id}}" class="p-2 bg-gray-300 rounded-lg ml-2">
+                            <svg width="1.18em" height="1.18em" viewBox="0 0 16 16" class="bi bi-file-earmark-arrow-down-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M2 2a2 2 0 0 1 2-2h5.293A1 1 0 0 1 10 .293L13.707 4a1 1 0 0 1 .293.707V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm7 2l.5-2.5 3 3L10 5a1 1 0 0 1-1-1zm-.5 3.5a.5.5 0 0 0-1 0v3.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 2a.5.5 0 0 0 .708 0l2-2a.5.5 0 0 0-.708-.708L8.5 11.293V7.5z"/>
+                              </svg>
+                        </a>
+                        <a href="/companies/departments/exportuser/{{$department->id}}" class="p-2 bg-gray-300 rounded-lg ml-2" >
                             <svg width="1.18em" height="1.18em" viewBox="0 0 16 16" class="bi bi-file-arrow-down-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" d="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM8 5a.5.5 0 0 1 .5.5v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 9.293V5.5A.5.5 0 0 1 8 5z"/>
                               </svg>

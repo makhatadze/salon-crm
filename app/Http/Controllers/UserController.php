@@ -211,11 +211,10 @@ class UserController extends Controller
     /**
      * Turn Profile On or Off
      */
-    public function turnprofile($status){
-        $user = auth::user();
+    public function turnprofile(User $user, $status){
         $user->active = $status;
         $user->save();
-        return redirect('/');
+        return redirect()->back();
     }
     public function profilefilter(Request $request){
         $this->validate($request,[
@@ -328,12 +327,13 @@ class UserController extends Controller
         return view('theme.template.user.user_account_settings', compact('user', 'departments'));
     }
     public function updateuserprofile(Request $request, $id){
+
         $this->validate($request,[
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'user_percent' => 'required|numeric|between:0,99.99',
             'user_salary' => 'required|integer|min:0',
-            'department_id' => ''
+            'department_id' => '',
         ]);
         $user = User::findOrFail($id);
         $profile = $user->profile()->first();
@@ -354,6 +354,14 @@ class UserController extends Controller
         $profile->first_name = $request->input('first_name');
         $profile->last_name = $request->input('last_name');
         $profile->salary = $request->input('user_salary');
+
+        
+
+        if(empty($request->input('salary_status'))){
+            $profile->salary_status = 0;
+        }else{
+            $profile->salary_status = 1;
+        }
         $profile->percent = $request->input('user_percent');
 
         $userhasjobs = $user->userHasJob;

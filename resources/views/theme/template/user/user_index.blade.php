@@ -1,7 +1,7 @@
 @extends('theme.layout.layout')
 @section('content')
     <h2 class="intro-y text-lg font-medium mt-10 font-helvetica">
-        მომხმარებელთა ჩამონათვალი
+        თანამშრომლები
     </h2>
     <div class="intro-y col-span-12 flex flex-wrap sm:flex-no-wrap items-center mt-2 user-header">
         <a href="{{ route('ActionUserAdd') }}" class="button text-white bg-theme-1 shadow-md mr-2 font-helvetica">ახალი
@@ -39,10 +39,10 @@
                             
                         </div>
                         <div class="lg:ml-2 lg:mr-auto text-center lg:text-left mt-3 lg:mt-0">
-                            <a href="" class="font-bolder text-xs text-gray-700 uppercase font-caps">{{$user->name}} @if($user->profile()->first()) {{$user->profile()->first()->last_name}} @endif</a><br>
+                            <a @if ($user->profile) href="{{route('ShowUserProfile', $user->id)}}" @endif class="font-bolder text-xs text-gray-700 uppercase font-caps">{{$user->name}} @if($user->profile()->first()) {{$user->profile()->first()->last_name}} @endif</a><br>
                             @if($user->profile()->first())
                             <span class="text-xs font-normal">ხელფასი: {{$user->profile()->first()->salary}} <sup>₾</sup></span> <br>
-                            <span class="text-xs font-normal">გამოიმუშავა: {{$user->getEarnedMoney() ? $user->getEarnedMoney() : 0 }} <sup>₾</sup></span> <br>
+                            <span class="text-xs font-normal">გამოიმუშავა: {{$user->getEarnedMoney() ? round($user->getEarnedMoney(), 2) : 0 }} <sup>₾</sup></span> <br>
                             <span class="text-xs font-normal">მოვიდა: {{Carbon\Carbon::parse($user->created_at)->isoFormat('Y-MM-DD')}}</span>
                             @endif
                         </div>

@@ -21,29 +21,21 @@
                 <li>
                     <a href="{{ route('ActionUser') }}" class="side-menu custom-nav-item">
                         <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
-                        <div class="side-menu__title"> ჩამონათვალი </div>
+                        <div class="side-menu__title"> თანამშრომლები </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="/clients" class="side-menu custom-nav-item">
+                        <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
+                        <div class="side-menu__title"> კლიენტები </div>
                     </a>
                 </li>
             </ul>
         </li>
         @endif
         <li>
-            <a href="javascript:;" class="side-menu" data-menu="news">
-                <div class="side-menu__icon"> <i data-feather="box"></i> </div>
-                <div class="side-menu__title"> სიახლეები <i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
-            </a>
-            <ul class="">
-                <li>
-                    <a href="#" class="side-menu custom-nav-item">
-                        <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
-                        <div class="side-menu__title"> ჩამონათვალი </div>
-                    </a>
-                </li>
-            </ul>
-        </li>
-        <li>
             <a href="javascript:;" class="side-menu" data-menu="purchases">
-                <div class="side-menu__icon"> <i data-feather="box"></i> </div>
+                <div class="side-menu__icon"> <i data-feather="archive"></i> </div>
                 <div class="side-menu__title"> შესყიდვა <i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
             </a>
             <ul class="">
@@ -51,6 +43,18 @@
                     <a href="/purchases" class="side-menu custom-nav-item" data-menu="companies">
                         <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
                         <div class="side-menu__title">ჩამონათვალი </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{route('Warehouse')}}" class="side-menu custom-nav-item">
+                        <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
+                        <div class="side-menu__title"> საწყობი </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="/companies/distcompany" class="side-menu custom-nav-item" data-menu="companies">
+                        <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
+                        <div class="side-menu__title"> მომწოდებლები </div>
                     </a>
                 </li>
             </ul>
@@ -67,12 +71,6 @@
                         <div class="side-menu__title">ჩამონათვალი </div>
                     </a>
                 </li>
-                <li>
-                    <a href="/clients" class="side-menu custom-nav-item">
-                        <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
-                        <div class="side-menu__title"> კლიენტები </div>
-                    </a>
-                </li>
             </ul>
         </li>
         <li>
@@ -87,12 +85,7 @@
                         <div class="side-menu__title"> კომპანიები </div>
                     </a>
                 </li>
-                <li>
-                    <a href="/companies/distcompany" class="side-menu custom-nav-item" data-menu="companies">
-                        <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
-                        <div class="side-menu__title"> სადისტრიბუციო </div>
-                    </a>
-                </li>
+                
                 <li>
                     <a href="/companies/offices" class="side-menu custom-nav-item" data-menu="offices">
                         <div class="side-menu__icon"><i data-feather="circle" style="width: 15px; height: 15px;"></i>
@@ -107,6 +100,14 @@
                         <div class="side-menu__title"> დეპარტამენტები</div>
                     </a>
                 </li>
+            </ul>
+        </li>
+        <li>
+            <a href="javascript:;" class="side-menu" data-menu="companies">
+                <div class="side-menu__icon"> <i data-feather="credit-card"></i> </div>
+                <div class="side-menu__title"> ბუღალტერია <i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
+            </a>
+            <ul class="">
                 <li>
                     <a href="{{route('Finances')}}" class="side-menu custom-nav-item" data-menu="departments">
                         <div class="side-menu__icon"><i data-feather="circle" style="width: 15px; height: 15px;"></i>
@@ -133,10 +134,16 @@
         <li>
             <a href="javascript:;" class="side-menu" data-menu="shop">
                 <div class="side-menu__icon"><i data-feather="shopping-cart"></i></div>
-                <div class="side-menu__title"> ონლაინ მაღაზია <i data-feather="chevron-down"
+                <div class="side-menu__title"> ვაჭრობა <i data-feather="chevron-down"
                                                                  class="side-menu__sub-icon"></i></div>
             </a>
             <ul class="">
+                <li>
+                <a href="{{ route('AddToCart') }}" class="side-menu custom-nav-item">
+                        <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
+                        <div class="side-menu__title"> ახალი გაყიდვა </div>
+                    </a>
+                </li>
                 <li>
                     <a href="{{ route('Sales') }}" class="side-menu custom-nav-item">
                         <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
@@ -150,43 +157,9 @@
                     </a>
                 </li>
                 <li>
-                <a href="{{ route('AddToCart') }}" class="side-menu custom-nav-item">
-                        <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
-                        <div class="side-menu__title"> პროდუქტის დამატება </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="top-menu-dashboard.html" class="side-menu custom-nav-item">
-                        <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
-                        <div class="side-menu__title"> დამატებითი ველები </div>
-                    </a>
-                </li>
-                <li>
                     <a href="top-menu-dashboard.html" class="side-menu custom-nav-item">
                         <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
                         <div class="side-menu__title"> ბრენდები </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{route('Warehouse')}}" class="side-menu custom-nav-item">
-                        <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
-                        <div class="side-menu__title"> საწყობი </div>
-                    </a>
-                </li>
-            </ul>
-        </li>
-        <li>
-            <a href="javascript:;" class="side-menu" data-menu="settings">
-                <div class="side-menu__icon"> <i data-feather="settings"></i> </div>
-                <div class="side-menu__title"> პარამეტრები <i data-feather="chevron-down"
-                                                              class="side-menu__sub-icon"></i></div>
-            </a>
-            <ul class="">
-                <li>
-                    <a href="/options" class="side-menu custom-nav-item">
-                        <div class="side-menu__icon"><i data-feather="circle" style="width: 15px; height: 15px;"></i>
-                        </div>
-                        <div class="side-menu__title"> პარამეტრები</div>
                     </a>
                 </li>
                 <li>
@@ -196,21 +169,7 @@
                         <div class="side-menu__title"> კატეგორიები</div>
                     </a>
                 </li>
-                <li>
-                    <a href="#" class="side-menu custom-nav-item">
-                        <div class="side-menu__icon"><i data-feather="circle" style="width: 15px; height: 15px;"></i>
-                        </div>
-                        <div class="side-menu__title"> საიტის პარამეტრები</div>
-                    </a>
-                </li>
-                <li>
-                    <a href="simple-menu-dashboard.html" class="side-menu custom-nav-item">
-                        <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
-                        <div class="side-menu__title"> სტატიკური გვერდები </div>
-                    </a>
-                </li>
             </ul>
-            
         </li>
     </ul>
 </nav>

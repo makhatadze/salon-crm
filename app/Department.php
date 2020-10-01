@@ -15,4 +15,7 @@ class Department extends Model
     public function products(){
         return $this->hasMany('App\Product', 'department_id');
     }
+    public function services(){
+        return $this->hasMany('App\ClientService', 'department_id');
+    }
 }

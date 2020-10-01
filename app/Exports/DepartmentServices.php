@@ -2,25 +2,25 @@
 
 namespace App\Exports;
 
-use App\Service;
+use App\Department;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
-class ServiceExport implements FromCollection, WithHeadings
+class DepartmentServices implements FromCollection, WithHeadings
 {
-    protected $id;
+    public $id;
 
     function __construct($id) {
-            $this->id = $id;
+        $this->id = $id;
     }
     /**
     * @return \Illuminate\Support\Collection
     */
     public function collection()
     {
-        $service = Service::findOrFail($this->id);
-        $export = $service->clientsOnService;
-        foreach ($export as  $item) {
+        $department = Department::findOrFail($this->id);
+        $services = $department->services;
+        foreach ($services as  $item) {
             $item['service_name'] = $item->getServiceName();
             $item['client'] = $item->clinetserviceable()->first()->{'full_name_'.app()->getLocale()};
             $item['worker'] = $item->getWorkerName();
@@ -38,7 +38,8 @@ class ServiceExport implements FromCollection, WithHeadings
             unset($item->service_id);
             unset($item->department_id);
         }
-        return $export;
+
+           return $services;
     }
     public function headings(): array
     {

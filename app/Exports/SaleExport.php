@@ -12,8 +12,8 @@ class SaleExport implements FromCollection, WithHeadings
     protected $id;
 
     function __construct($id) {
-            $this->id = $id;
-    }
+        $this->id = $id;
+}
     /**
     * @return \Illuminate\Support\Collection
     */

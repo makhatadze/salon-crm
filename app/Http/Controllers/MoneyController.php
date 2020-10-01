@@ -40,20 +40,16 @@ class MoneyController extends Controller
         $users = User::whereNull('users.deleted_at')
         ->join('salary_to_services', 'salary_to_services.user_id', '=', 'users.id')
         ->get();
-        $salary = 0;
+        $salary = Profile::where('salary_status', true)->sum('salary');
         $userearn = 0;
         foreach($users as $user){
-            $profile = Profile::where('profileable_id', $user->user_id)->first(); 
-            if($profile){
-               $salary += $profile->salary;
-            }
             if($user->service_price && $user->percent){
                 $userearn += $user->service_price * $user->percent/100;
             }
         }
 
         $users = [
-            'total' => User::whereNull('deleted_at')->count(),
+            'total' => Profile::where('salary_status', true)->count(),
             'salary' => $salary,
             'userearn' => round($userearn/100,2)
         ];

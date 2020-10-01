@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Client;
 use App\ClientService;
+use App\Department;
 use App\Exports\ClientExport;
+use App\Exports\ClientServices;
 use App\Exports\FinanceExport;
+use App\MemberGroup;
 use App\Product;
 use App\SalaryToService;
 use App\Service;
@@ -45,8 +48,9 @@ class ClientController extends Controller
     public function create()
     {
         $services = Service::where('published', true)->get();
+        $departments = Department::all();
         $workers = User::role('user')->where('active', true)->whereNull('deleted_at')->get();
-        return view('theme.template.client.add_client', compact('workers', 'services'));
+        return view('theme.template.client.add_client', compact('workers', 'departments', 'services'));
     }
 
     /**
@@ -60,21 +64,36 @@ class ClientController extends Controller
     {
         $this->validate($request, [
             'client_name_ge' => 'required|string',
+            'client_number' => 'required|string',
+            'sex' => 'required|string',
+            'group' => '',
+            'group_name' => '',
             'client_name_ru' => '',
             'client_name_en' => '',
             'client_address' => '',
-            'client_number' => 'required|string',
+            'client_mail' => '',
             'userpicker' => '',
             'datepicker' => '',
             'timepicker' => '',
             'servicepicker' => '',
+            'departments' => ''
         ]);
         $client = new Client;
+        if($request->input('group_name') != ""){
+            $group = new MemberGroup;
+            $group->name = $request->input('group_name');
+            $group->save();
+            $client->group_id = $group->id;
+        }else{
+            $client->group_id = $request->input('group');
+        }
         $client->full_name_ge = $request->input('client_name_ge');
         $client->full_name_ru = $request->input('client_name_ru');
         $client->full_name_en = $request->input('client_name_en');
         $client->number = $request->input('client_number');
         $client->address = $request->input('client_address');
+        $client->email = $request->input('client_mail');
+        $client->sex = $request->input('sex');
         $client->save();
         $clientservices = array();
         if ($request->input('userpicker') && $request->input('datepicker') && $request->input('timepicker') && $request->input('servicepicker')) {
@@ -84,6 +103,7 @@ class ClientController extends Controller
                     'user_id' => $request->userpicker[$key],
                     'service_id' => $request->servicepicker[$key],
                     'session_start_time' => $time,
+                    'department_id' => $request->departments[$key]
                 ];
             }
             $client->clientservices()->createMany($clientservices);
@@ -112,10 +132,12 @@ class ClientController extends Controller
      */
     public function edit($id)
     {
+        $departments = Department::all();
+        $groups = MemberGroup::all();
         $client = Client::findOrFail($id);
         $services = Service::where('published', true)->get();
         $workers = User::role('user')->where('active', true)->whereNull('deleted_at')->get();
-        return view('theme.template.client.edit_client', compact('workers', 'services', 'client'));
+        return view('theme.template.client.edit_client', compact('departments', 'workers', 'services', 'client', 'groups'));
     }
 
     /**
@@ -128,23 +150,39 @@ class ClientController extends Controller
      */
     public function update(Request $request, $id)
     {
+        dd($request->all());
         $this->validate($request, [
             'client_name_ge' => 'required|string',
+            'client_number' => 'required|string',
+            'sex' => 'required|string',
+            'group' => '',
+            'group_name' => '',
             'client_name_ru' => '',
             'client_name_en' => '',
             'client_address' => '',
-            'client_number' => 'required|string',
+            'client_mail' => '',
             'userpicker' => '',
             'datepicker' => '',
             'timepicker' => '',
             'servicepicker' => '',
+            'departments' => ''
         ]);
         $client = Client::findOrFail($id);
+        if($request->input('group_name') != ""){
+            $group = new MemberGroup;
+            $group->name = $request->input('group_name');
+            $group->save();
+            $client->group_id = $group->id;
+        }else{
+            $client->group_id = $request->input('group');
+        }
         $client->full_name_ge = $request->input('client_name_ge');
         $client->full_name_ru = $request->input('client_name_ru');
         $client->full_name_en = $request->input('client_name_en');
         $client->number = $request->input('client_number');
         $client->address = $request->input('client_address');
+        $client->email = $request->input('client_mail');
+        $client->sex = $request->input('sex');
         $client->save();
         $clientservices = array();
 
@@ -155,7 +193,8 @@ class ClientController extends Controller
                 $clientservices[] = [
                     'user_id' => $request->userpicker[$key],
                     'service_id' => $request->servicepicker[$key],
-                    'session_start_time' => $time
+                    'session_start_time' => $time,
+                    'department_id' => $request->departments[$key]
                 ];
             }
             $client->clientservices()->createMany($clientservices);
@@ -368,16 +407,18 @@ class ClientController extends Controller
     /**
      * Convert to Excel
      */
-    public
-    function export()
+    public function export()
     {
         return Excel::download(new ClientExport, 'client.xlsx');
     }
 
-    public
-    function financeExport()
+    public function financeExport()
     {
         return Excel::download(new FinanceExport(), 'finance.xlsx');
     }
+    public function clientserviceexport(Client $client){
+        return Excel::download(new ClientServices($client->id), $client->{"full_name_".app()->getLocale()}.'.xlsx');
+    }
+
 
 }

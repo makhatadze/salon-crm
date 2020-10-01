@@ -108,11 +108,20 @@
                 @foreach ($todayservices as $service)
                     <tr class="intro-x">
                         <td>
-                            <h6 class="font-bolder text-black">{{$service->{"full_name_".app()->getLocale()} }}</h6>
+                            <h6 class="font-bolder text-black">
+                                <a href="/clients/edit/{{$service->id}}">
+                                    {{$service->{"full_name_".app()->getLocale()} }}
+                                </a>
+                            </h6>
                             <small class="font-normal">{{$service->number}}</small>
                         </td>
                         <td class="font-normal">
-                            <h6 class="font-bolder text-black">{{$service->first_name}} {{$service->last_name}}</h6>
+                            <h6 class="font-bolder text-black">
+                                
+                                <a href="{{route('ShowUserProfile', $service->user_id)}}">
+                                  {{$service->first_name}} {{$service->last_name}}
+                                </a>
+                            </h6>
                             <small class="font-normal">
                                 დან: {{$service->session_start_time}} <br>
                                 მდე: {{$service->getEndTime()}}

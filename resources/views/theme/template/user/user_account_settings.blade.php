@@ -50,8 +50,8 @@
                         <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"></path>
                       </svg>აქტიური
                     </div>
-                    @if ($user->id == Auth::user()->id)
-                    <a href="/profile/turn/0" class="button button--sm border text-gray-700 ml-auto font-bold font-caps text-xs">გათიშვა</a>
+                    @if ($user->id != Auth::user()->id)
+                    <a href="/profile/turn/{{$user->id}}/0" class="button button--sm border text-gray-700 ml-auto font-bold font-caps text-xs">გათიშვა</a>
                     @endif
                 @else
                 <div class="flex items-center justify-center h-full font-normal text-xs">
@@ -59,8 +59,8 @@
                         <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM4.5 7.5a.5.5 0 0 0 0 1h7a.5.5 0 0 0 0-1h-7z"></path>
                       </svg>არა აქტიური
                     </div>
-                    @if ($user->id == Auth::user()->id)
-               <a href="/profile/turn/1" class="button button--sm border text-gray-700 ml-auto font-bold font-caps text-xs">ჩართვა</a>
+                    @if ($user->id != Auth::user()->id)
+               <a href="/profile/turn/{{$user->id}}/1" class="button button--sm border text-gray-700 ml-auto font-bold font-caps text-xs">ჩართვა</a>
                @endif     
                 @endif
             </div>
@@ -195,6 +195,17 @@
                       </span>
                   @enderror
                 </div>
+                </div>
+                <div class="w-full my-3 flex justify-center items-center font-medium text-xs">
+                  <input type="checkbox" @if($user->id == Auth::user()->id) disabled @endif name="salary_status" @if ($user->profile->salary_status) checked @endif>
+                  <span class="ml-3">ხელფასის მიღების სტატუსი 
+                    <small class="text-x"> 
+                      @if ($user->profile->salary_status) 
+                        (ჩართულია)
+                      @else
+                        (გამორთულია) 
+                      @endif
+                     </small></span>
                 </div>
                 
                

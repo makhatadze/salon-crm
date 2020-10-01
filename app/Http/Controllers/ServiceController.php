@@ -64,7 +64,7 @@ class ServiceController extends Controller
     public function create()
     {
         $categories = Category::all();
-        $inventories = Product::where('type', 2)->where('published', true)->get();
+        $inventories = Product::where([['published', true], ['type', 2], ['warehouse', false]])->get();
         $action = "post";
         return view('theme.template.service.add_service', compact('action', 'categories', 'inventories'));
     }
@@ -95,8 +95,17 @@ class ServiceController extends Controller
             'currency' => 'required|string',
             'inventory' => '',
             'quantity' => '',
+            'new_category' => ''
         ]);
         $service = new Service;
+        if($request->input('new_category') != ""){
+         $category = new Category;
+         $category->title_ge = $request->input('new_category');
+         $category->save();
+         $service->category_id = $category->id;
+        }else{
+         $service->category_id = $request->input('category');
+        }
         $service->title_ge = $request->input('title_ge');
         $service->title_en = $request->input('title_en');
         $service->title_ru = $request->input('title_ru');
@@ -104,7 +113,6 @@ class ServiceController extends Controller
         $service->body_en = $request->input('editor-en');
         $service->body_ru = $request->input('editor-ru');
         $service->currency_type = $request->input('currency');
-        $service->category_id = $request->input('category');
         $service->duration_count = $request->input('duration_count');
         $service->duration_type = $request->input('duration_type');
         $service->unit_ge = $request->input('unit-ge');
@@ -145,7 +153,7 @@ class ServiceController extends Controller
     public function edit(Service $service)
     {
         $categories = Category::whereNull('deleted_at')->get();
-        $inventories = Product::where('type', 2)->where('published', true)->get();
+        $inventories = Product::where([['published', true], ['type', 2], ['warehouse', false]])->get();
         return view('theme.template.service.edit_service', compact('service', 'inventories', 'categories'));
     }
 
@@ -177,7 +185,16 @@ class ServiceController extends Controller
             'file' => 'image',
             'inventory' => '',
             'quantity' => '',
+            'new_category' => ''
         ]);
+        if($request->input('new_category') != ""){
+         $category = new Category;
+         $category->title_ge = $request->input('new_category');
+         $category->save();
+         $service->category_id = $category->id;
+        }else{
+         $service->category_id = $request->input('category');
+        }
         $service->title_ge = $request->input('title_ge');
         $service->title_en = $request->input('title_en');
         $service->title_ru = $request->input('title_ru');
@@ -185,7 +202,6 @@ class ServiceController extends Controller
         $service->body_en = $request->input('editor-en');
         $service->currency_type = $request->input('currency');
         $service->body_ru = $request->input('editor-ru');
-        $service->category_id = $request->input('category');
         $service->duration_count = $request->input('duration_count');
         $service->duration_type = $request->input('duration_type');
         $service->unit_ge = $request->input('unit-ge');

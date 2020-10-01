@@ -12,7 +12,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
         Route::get('/', 'HomeController@ActionHome')->name('ActionHome');
         //USERS CONTROLLER
         Route::get('/user', ['uses' => 'UserController@ActionUser', 'as' => 'ActionUser']);
-        Route::get('/profile/turn/{status}', 'UserController@turnprofile');
+        Route::get('/profile/turn/{user}/{status}', 'UserController@turnprofile');
         Route::get('/profile/accountsettings', 'UserController@accountsetting');
         Route::get('/profile/changepassword', 'UserController@changepassword');
         Route::get('/user/export/{user}', 'UserController@oneuserexport');
@@ -72,7 +72,8 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
         Route::delete('/companies/departments/{department}', 'DepartmentController@destroy')->name('RemoveDepartment');
         Route::get('/companies/departments/create', 'DepartmentController@create')->name('CreateDepartment');
         Route::post('/companies/departments/store', 'DepartmentController@store')->name('AddDepartment');
-        Route::get('/companies/departments/{department}', 'DepartmentController@exportdepartment');
+        Route::get('/companies/departments/exportuser/{department}', 'DepartmentController@exportdepartment');
+        Route::get('/companies/departments/exportservices/{department}', 'DepartmentController@exportservices');
         //Purchase Controller
         Route::get('/purchases', 'PurchaseController@index');
         Route::get('/purchases/edit/{id}', 'PurchaseController@edit');
@@ -99,6 +100,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
         Route::post('/clients/store', 'ClientController@store')->name('StoreClient');
         Route::post('/clinets/getbydate', 'ClientController@getbydate')->name('GetServiceByDate');
         Route::any('/clients/services', 'ClientController@services')->name('Finances');
+        Route::any('/clients/export/{client}', 'ClientController@clientserviceexport')->name('ClientExport');
         //Sale Controller
         Route::get('/sales', 'SaleController@index')->name('Sales');
         Route::get('/removesale/{id}', 'SaleController@destroy');

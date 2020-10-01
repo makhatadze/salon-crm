@@ -40,11 +40,11 @@
         <div class="intro-y box p-5">
                 
             <div class="flex">
-                <div class="w-1/3 p-2">
+                <div class="w-1/4 p-2">
                     <label class="font-bold font-caps text-xs text-gray-700">ხანგრძლივობა <span class="text-red-500">*</span></label>
                     <input required type="number" min="0" step="0.1" name="duration_count" id="duration_count" class="mt-2 font-normal text-sm appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" placeholder="მიუთითეთ დრო">
                 </div>
-                <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                <div class="w-full md:w-1/4 px-3 mb-6 md:mb-0">
                  <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-5" for="grid-state">
                    ხანგრძლივობის ტიპი
                  </label>
@@ -59,7 +59,7 @@
                    </div>
                  </div>
                </div>
-               <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+               <div class="w-full md:w-1/4 px-3 mb-6 md:mb-0">
                 <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-5" for="grid-state">
                   კატეგორიები
                 </label>
@@ -76,7 +76,15 @@
                   </div>
                 </div>
               </div>
+              <div class="w-1/4 p-2">
+                <label class="font-bold font-caps text-xs text-gray-700">ახალი კატეგორია</label>
+                <input required type="text" name="new_category" id="new_category" class="mt-2 font-normal text-sm appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" placeholder="ახალი კატეგორია">
+               
             </div>
+          </div>
+          <p class="text-xs font-normal text-center">
+              <strong class="text-red-500">შენიშვნა:</strong> ახალი კატეგორიის შეყვანის შემთხვევაში არჩეული კატეგორია არ იქნება დამახსოვრებული.
+          </p>
                <div class="w-full p-2">
                     <div>
                         <label for="price" class="block  leading-5 font-medium text-gray-700 font-bold font-caps text-xs">ფასი</label>
