@@ -337,7 +337,7 @@
                 <label class="font-bold font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
                   რაოდენობა
                 </label>
-                <input required autocomplete="off" name="quantity[]" class="font-medium text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="number" min="0" step="0.1" placeholder="xxx.x">
+                <input required autocomplete="off" name="quantity[]" class="font-medium text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="number" min="0" step="1" placeholder="xxx">
               </div>
               <div class="w-full md:w-1/3 px-3 mb-6 mt-3 md:mb-0">
                 <label class="font-bold font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >

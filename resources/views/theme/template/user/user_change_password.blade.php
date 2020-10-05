@@ -30,7 +30,7 @@
             <div class="p-5 border-t border-gray-200">
               <div class="flex">
                   <div class="w-1/3 p-3">
-                      <h6 class="font-bold font-caps text-base text-black">{{$user->getEarnedMoney()}} <sup>₾</sup></h6>
+                      <h6 class="font-bold font-caps text-base text-black">{{ $user->getEarnedMoney() ? $user->getEarnedMoney() : 0 }} <sup>₾</sup></h6>
                       <span class="font-normal text-xs">შემოსული</span>
                   </div>
                   <div class="w-1/3 p-3">

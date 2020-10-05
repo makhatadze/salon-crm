@@ -47,39 +47,13 @@ class User extends Authenticatable
      *
      * @return boolean
      */
-    public function isAdministrator()
+    public function isAdmin()
     {
-        return $this->hasAnyRole('administrator'); // ?? something like this! should return true or false
+        return $this->hasAnyRole('admin');
     }
-
-    /**
-     *
-     * @return boolean
-     */
-    public function isAccountant()
-    {
-        return $this->hasAnyRole('accountant'); // ?? something like this! should return true or false
-    }
-
-    /**
-     *
-     * @return boolean
-     */
-    public function isManager()
-    {
-        return $this->hasAnyRole('manager'); // ?? something like this! should return true or false
-    }
-
-    /**
-     *
-     * @return boolean
-     */
     public function isUser()
     {
-        return $this->hasAnyRole('user'); // ?? something like this! should return true or false
-    }
-    public function userHasJob(){
-        return $this->hasOne('App\UserHasJob', 'user_id');
+        return $this->hasAnyRole('user');
     }
     
     /**

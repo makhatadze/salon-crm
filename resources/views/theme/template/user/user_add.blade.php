@@ -70,7 +70,7 @@
                     <div class="sm:grid grid-cols-2 gap-2 mb-4">
                         <div class="relative mt-2 {{ $errors->has('position') ? ' has-error' : '' }}">
                             {{ Form::label('position', 'თანამდებობა', ['class' => 'font-bold font-caps text-xs text-gray-800']) }}
-                            {{ Form::select('position', ['2' => 'სალონის ადმინისტრატორი', '4' => 'სტილისტი'], null, ['class' => 'font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500']) }}
+                            {{ Form::select('position', ['2' => 'თანამშრომელი'], null, ['class' => 'font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500']) }}
                             @if ($errors->has('position'))
                                 <span class="help-block">
                                             {{ $errors->first('position') }}
@@ -78,7 +78,7 @@
                             @endif
                         </div>
                         <div class="relative mt-2 {{ $errors->has('salary_type') ? ' has-error' : '' }}">
-                            {{ Form::label('salary_type', 'თანამდებობა', ['class' => 'font-bold font-caps text-xs text-gray-800']) }}
+                            {{ Form::label('salary_type', 'ხელფასი', ['class' => 'font-bold font-caps text-xs text-gray-800']) }}
                             {{ Form::select('salary_type', ['1' => 'ორივე', '2' => 'პროცენტი', '3' => 'ფიქსირებული'], null, ['class' => 'font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500']) }}
                             @if ($errors->has('salary_type'))
                                 <span class="help-block">

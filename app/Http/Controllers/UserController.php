@@ -22,6 +22,7 @@ use App\UserHasJob;
 use Carbon\Carbon;
 
 use App\Exports\UserExport;
+use App\Role;
 use Maatwebsite\Excel\Facades\Excel;
 
 use Illuminate\Support\Facades\Hash;
@@ -68,7 +69,7 @@ class UserController extends Controller
     public function ActionUserAdd(Request $request)
     {
         if (view()->exists('theme.template.user.user_add')) {
-            if ($request->isMethod('post') && auth()->user()->isAdministrator()) {
+            if ($request->isMethod('post') && auth()->user()->isAdmin()) {
                 $data = $request->all();
                 $this->validate($request, [
                     'first_name' => 'required|string',
@@ -325,8 +326,9 @@ class UserController extends Controller
     }
     public function showprofilesettings($id){
         $user = User::findOrFail($id);
-        $departments = Department::whereNull('deleted_at')->get();
-        return view('theme.template.user.user_account_settings', compact('user', 'departments'));
+        $departments = Department::all();
+        $roles = Role::all();
+        return view('theme.template.user.user_account_settings', compact('user', 'departments', 'roles'));
     }
     public function updateuserprofile(Request $request, $id){
 
@@ -336,8 +338,10 @@ class UserController extends Controller
             'user_percent' => 'required|numeric|between:0,99.99',
             'user_salary' => 'required|integer|min:0',
             'department_id' => '',
+            'rolename' => 'required|string'
         ]);
         $user = User::findOrFail($id);
+        $user->syncRoles(['user', $request->input('rolename')]);
         $profile = $user->profile()->first();
         
         if(trim($request->input('phone')," ") != trim($profile->phone," ")){
@@ -366,9 +370,11 @@ class UserController extends Controller
         }
         $profile->percent = $request->input('user_percent');
 
-        $userhasjobs = $user->userHasJob;
-        $userhasjobs->department_id = $request->input('department_id');
-        $userhasjobs->save();
+        if($request->input('department_id')){
+            $userhasjobs = $user->userHasJob;
+            $userhasjobs->department_id = $request->input('department_id');
+            $userhasjobs->save();
+        }
         $profile->save();
         $user->save();
         return redirect()->back();

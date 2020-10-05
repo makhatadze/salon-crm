@@ -42,13 +42,7 @@ class ClientService extends Model
     public function getEndTime(){
         $duration = Service::find($this->service_id);
         if($duration){
-            if ($duration->duration_type == "minute") {
-                return Carbon::parse($this->session_start_time)->addminutes($duration->duration_count)->isoFormat('Y-MM-DD hh:mm:ss');
-            } elseif ($duration->duration_type == "hours") {
-                return Carbon::parse($this->session_start_time)->addHours($duration->duration_count)->addminutes(($duration->duration_count - round($duration->duration_count)) * 60)->isoFormat('Y-MM-DD hh:mm:ss');
-            } elseif ($duration->duration_type == "day") {
-                return Carbon::parse($this->session_start_time)->addDays($duration->duration_count)->isoFormat('Y-MM-DD hh:mm:ss');
-            }
+          return Carbon::parse($this->session_start_time)->addminutes($duration->duration_count);
         }
         return;
     }

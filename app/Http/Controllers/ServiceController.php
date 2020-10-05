@@ -84,7 +84,9 @@ class ServiceController extends Controller
             'editor-ge' => 'required',
             'editor-en' => '',
             'editor-ru' => '',
-            'duration_count' => 'required|between:0,999.99|numeric',
+            'duration_days' => 'required|integer|min:0',
+            'duration_hours' => 'required|integer|min:0|max:24',
+            'duration_minutes' => 'required|integer|min:0|max:60',
             'duration_type' => 'required|string',
             'category' => '',
             'price' => 'required|between:0,9999.99|numeric',
@@ -97,6 +99,7 @@ class ServiceController extends Controller
             'quantity' => '',
             'new_category' => ''
         ]);
+        $duration = ($request->input('duration_days')*24*60)+($request->input('duration_hours')*60)+$request->input('duration_minutes');
         $service = new Service;
         if($request->input('new_category') != ""){
          $category = new Category;
@@ -113,8 +116,7 @@ class ServiceController extends Controller
         $service->body_en = $request->input('editor-en');
         $service->body_ru = $request->input('editor-ru');
         $service->currency_type = $request->input('currency');
-        $service->duration_count = $request->input('duration_count');
-        $service->duration_type = $request->input('duration_type');
+        $service->duration_count = $duration;
         $service->unit_ge = $request->input('unit-ge');
         $service->unit_ru = $request->input('unit-ru');
         $service->unit_en = $request->input('unit-en');
@@ -174,8 +176,9 @@ class ServiceController extends Controller
             'editor-ge' => 'required',
             'editor-en' => '',
             'editor-ru' => '',
-            'duration_count' => 'required|between:0,999.99|numeric',
-            'duration_type' => 'required|string',
+            'duration_days' => 'required|integer|min:0',
+            'duration_hours' => 'required|integer|min:0|max:24',
+            'duration_minutes' => 'required|integer|min:0|max:60',
             'category' => '',
             'price' => 'required|between:0,9999.99|numeric',
             'currency' => 'required|string',
@@ -187,6 +190,8 @@ class ServiceController extends Controller
             'quantity' => '',
             'new_category' => ''
         ]);
+        
+        $duration = ($request->input('duration_days')*24*60)+($request->input('duration_hours')*60)+$request->input('duration_minutes');
         if($request->input('new_category') != ""){
          $category = new Category;
          $category->title_ge = $request->input('new_category');
@@ -202,8 +207,7 @@ class ServiceController extends Controller
         $service->body_en = $request->input('editor-en');
         $service->currency_type = $request->input('currency');
         $service->body_ru = $request->input('editor-ru');
-        $service->duration_count = $request->input('duration_count');
-        $service->duration_type = $request->input('duration_type');
+        $service->duration_count = $duration;
         $service->unit_ge = $request->input('unit-ge');
         $service->unit_ru = $request->input('unit-ru');
         $service->unit_en = $request->input('unit-en');

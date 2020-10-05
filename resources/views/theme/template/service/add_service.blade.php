@@ -40,31 +40,26 @@
         <div class="intro-y box p-5">
                 
             <div class="flex">
-                <div class="w-1/4 p-2">
-                    <label class="font-bold font-caps text-xs text-gray-700">ხანგრძლივობა <span class="text-red-500">*</span></label>
-                    <input required type="number" min="0" step="0.1" name="duration_count" id="duration_count" class="mt-2 font-normal text-sm appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" placeholder="მიუთითეთ დრო">
+                <div class="w-1/2 flex">
+                    <div class="w-1/3 p-2">
+                        <label class="font-bold font-caps text-xs text-gray-700">დღე</label>
+                        <input required type="number" name="duration_days" min="0" step="1" class="font-normal text-xs mt-2 appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white">
+                    </div>
+                    <div class="w-1/3 p-2">
+                        <label class="font-bold font-caps text-xs text-gray-700">საათი</label>
+                        <input required type="number" name="duration_hours" min="0" step="1" class="font-normal text-xs mt-2 appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white">
+                    </div>
+                    <div class="w-1/3 p-2">
+                        <label class="font-bold font-caps text-xs text-gray-700">წუთი</label>
+                        <input required type="number" name="duration_minutes" min="0" step="1" class="font-normal text-xs mt-2 appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white">
+                    </div>
                 </div>
-                <div class="w-full md:w-1/4 px-3 mb-6 md:mb-0">
-                 <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-5" for="grid-state">
-                   ხანგრძლივობის ტიპი
-                 </label>
-                 <div class="relative ">
-                   <select name="duration_type" class="font-normal text-sm appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-state">
-                     <option value="minute">წუთი</option>
-                     <option value="hours">საათი</option>
-                     <option value="day">დღე</option>
-                   </select>
-                   <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                     <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-                   </div>
-                 </div>
-               </div>
                <div class="w-full md:w-1/4 px-3 mb-6 md:mb-0">
                 <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-5" for="grid-state">
                   კატეგორიები
                 </label>
                 <div class="relative ">
-                  <select name="category" class="font-normal text-sm appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-state">
+                  <select name="category" class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-state">
                     @if ($categories)
                     @foreach ($categories as $cat)
                       <option value="{{$cat->id}}">{{$cat->{"title_".app()->getLocale()} }}</option>
@@ -78,7 +73,7 @@
               </div>
               <div class="w-1/4 p-2">
                 <label class="font-bold font-caps text-xs text-gray-700">ახალი კატეგორია</label>
-                <input required type="text" name="new_category" id="new_category" class="mt-2 font-normal text-sm appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" placeholder="ახალი კატეგორია">
+                <input type="text" name="new_category" id="new_category" class="mt-2 font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" placeholder="ახალი კატეგორია">
                
             </div>
           </div>
@@ -111,21 +106,21 @@
                     <div class="flex justify-between align-items-center">
                         <label class="font-bold font-caps text-xs text-gray-700">ერთეული_GE</label>
                     </div>
-                    <input type="text" name="unit-ge"  class="font-normal text-sm appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white mt-2" placeholder="ჩაწერეთ ერთეულის სახელი">
+                    <input type="text" name="unit-ge"  class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white mt-2" placeholder="ჩაწერეთ ერთეულის სახელი">
                   
                 </div>
                 <div class="w-1/3 p-2">
                     <div class="flex justify-between align-items-center">
                         <label class="font-bold font-caps text-xs text-gray-700">ერთეული_RU</label>
                     </div>
-                    <input type="text" name="unit-ru"  class="font-normal text-sm appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white mt-2" placeholder="ჩაწერეთ ერთეულის სახელი">
+                    <input type="text" name="unit-ru"  class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white mt-2" placeholder="ჩაწერეთ ერთეულის სახელი">
                   
                 </div>
                 <div class="w-1/3 p-2">
                     <div class="flex justify-between align-items-center">
                         <label class="font-bold font-caps text-xs text-gray-700">ერთეული_EN</label>
                     </div>
-                    <input type="text" name="unit-en"  class="font-normal text-sm appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white mt-2" placeholder="ჩაწერეთ ერთეულის სახელი">
+                    <input type="text" name="unit-en"  class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white mt-2" placeholder="ჩაწერეთ ერთეულის სახელი">
                   
                 </div>
               </div>

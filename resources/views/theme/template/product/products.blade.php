@@ -57,14 +57,21 @@
                         <a href="" class="font-medium whitespace-no-wrap font-bold text-black">{{$prod->{"title_".app()->getLocale()} }}</a> 
                         <div class="text-gray-600 text-xs whitespace-no-wrap font-normal"> @if($prod->brand){{$prod->brand->name}}@endif </div>
                     </td>
-                    <td  @if($prod->stock == 0)  style="background-color: #ffaeae" @endif class="text-center font-normal">{{$prod->price/100}} 
+                    <td  @if($prod->stock == 0)  style="background-color: #ffaeae" @endif class="text-center font-normal">
+                      <h6>
+                        {{$prod->price/100}} 
                       @if ($prod->currency_type == 'gel')
                       ₾
                       @elseif($prod->currency_type == 'usd')
                       $
                       @elseif($prod->currency_type == 'eur')
                       €
-                      @endif</td>
+                      @endif
+                      </h6>
+                      @if ($prod->purchase->dgg)
+                      <small>დღგ: {{($prod->price*1.8/100)/100}}</small>
+                      @endif
+                    </td>
                     <td @if($prod->stock == 0)  style="background-color: #ffaeae" @endif class="text-center font-normal ">
                         <h6 class="text-xs text-gray-900 font-black">
                           @if($prod->department){{ $prod->department->{'name_'.app()->getLocale()} }}@endif </h6>

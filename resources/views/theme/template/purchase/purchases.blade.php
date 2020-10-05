@@ -50,7 +50,10 @@
               {{$purchase->distributor->{'name_'.app()->getLocale()} }} <br>
             </td>
             <td class="text-center whitespace-no-wrap font-normal">
-                {{$purchase->getPrice()}} ₾
+                <h6>{{$purchase->getPrice()}} ₾</h6>
+                @if ($purchase->dgg)
+                <small>დღგ: {{$purchase->getPrice()*1.8/100}}</small>
+                @endif
             </td>
             <td class="text-center whitespace-no-wrap font-normal">
                 <div class="flex items-center justify-center w-full">

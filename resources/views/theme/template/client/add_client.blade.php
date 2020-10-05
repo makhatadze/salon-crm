@@ -141,7 +141,7 @@
                                 <label class="font-bold font-caps text-xs text-gray-700">ჩაწერის დრო </label>
                             </div>
                             <div class="w-full mt-2">
-                                <input required type="time" required name="timepicker[]"  @if($serv->status) disabled @endif  value="{{Carbon\Carbon::now()->isoformat('hh:mm')}}"  class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 font-normal text-xs"> 
+                                <input required type="time" required name="timepicker[]"  value="{{Carbon\Carbon::now()->isoformat('hh:mm')}}"  class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 font-normal text-xs"> 
                             </div>
                         </div>
 
@@ -183,11 +183,7 @@
                                 <select name="departments[]" required class="block appearance-none font-normal text-xs w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="">
                                     <option value="">აირჩიეთ დეპარტამენტი</option>
                                     @foreach ($departments as $department)
-                                    @if ($serv->department_id == $department->id)
-                                    <option value="{{$department->id}}" selected>{{$department->{"name_".app()->getLocale()} }}</option>
-                                    @else 
                                     <option value="{{$department->id}}">{{$department->{"name_".app()->getLocale()} }}</option>
-                                    @endif
                                     @endforeach
                                 </select>
                                 <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">

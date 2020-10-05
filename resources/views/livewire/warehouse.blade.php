@@ -72,6 +72,7 @@
                               </div>
                             </div>
                           </div>
+                          @if($isUnit)
                           <div class="w-full md:w-1/3">
                           
                             <label class="block font-caps text-left uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
@@ -82,6 +83,7 @@
                               ულიმიტო ექსპლუატაცია
                             </div> 
                           </div>
+                          @endif
                       </div>
                     </div>
                     <div class="w-full">
