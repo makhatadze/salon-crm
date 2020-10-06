@@ -4,7 +4,7 @@
 <div class="grid grid-cols-12 gap-6">
     <div class="col-span-12 lg:col-span-4 xl:col-span-3">
         <div class="box mt-5 p-5">
-        <form action="{{ route('AddRole') }}" method="POST">
+        <form @if (isset($role)) action="{{ route('UpdateRole', $role->id) }}" @else action="{{ route('AddRole') }}" @endif method="POST">
             @csrf
                 <div class="w-full">
                     <input
@@ -12,6 +12,7 @@
                        type="text"
                        name="rolename"
                        required
+                @if(isset($role)) value="{{$role->name}}" @endif
                        placeholder="როლის სახელი">
                   </div>
                   @error('rolename')
@@ -69,15 +70,15 @@
                     </div>
                     <div class="mt-3 flex justify-between items-center font-normal text-xs">
                      <div class="flex  items-center">
-                         <input type="checkbox" name="see_products" id="see_products" class="mr-3">
+                         <input type="checkbox" @if (isset($role) && $role->checkPermission('see_product')) checked @endif name="see_products" id="see_products" class="mr-3">
                          <label for="see_product">ნახვა</label>
                      </div>
                      <div class="flex  items-center">
-                         <input type="checkbox" name="add_product" id="add_product" class="mr-3">
+                         <input type="checkbox" @if (isset($role) && $role->checkPermission('add_product')) checked @endif name="add_product" id="add_product" class="mr-3">
                          <label for="add_product">დამატება & რედაქტირება</label>
                      </div>
                      <div class="flex items-center">
-                         <input type="checkbox" name="delete_product" id="delete_product" class="mr-3">
+                         <input type="checkbox" name="delete_product" @if (isset($role) && $role->checkPermission('delete_product')) checked @endif id="delete_product" class="mr-3">
                          <label for="delete_product">წაშლა</label>
                      </div>
                     </div>
@@ -91,15 +92,15 @@
                     </span>
                     <div class="mt-3 flex justify-between items-center font-normal text-xs">
                      <div class="flex  items-center">
-                         <input type="checkbox" name="see_purchases" id="see_purchases" class="mr-3">
+                         <input type="checkbox" name="see_purchases" @if (isset($role) && $role->checkPermission('see_purchases')) checked @endif  id="see_purchases" class="mr-3">
                          <label for="see_purchases">ნახვა</label>
                      </div>
                      <div class="flex  items-center">
-                         <input type="checkbox" name="add_purchase" id="add_purchase" class="mr-3">
+                         <input type="checkbox" name="add_purchase" @if (isset($role) && $role->checkPermission('add_purchase')) checked @endif  id="add_purchase" class="mr-3">
                          <label for="add_purchase">დამატება & რედაქტირება</label>
                      </div>
                      <div class="flex items-center">
-                         <input type="checkbox" name="delete_purchase" id="delete_purchase" class="mr-3">
+                         <input type="checkbox" name="delete_purchase" @if (isset($role) && $role->checkPermission('delete_purchase')) checked @endif  id="delete_purchase" class="mr-3">
                          <label for="delete_purchase">წაშლა</label>
                      </div>
                     </div>
@@ -113,15 +114,15 @@
                     </span>
                     <div class="mt-3 flex justify-between items-center font-normal text-xs">
                      <div class="flex  items-center">
-                         <input type="checkbox" name="see_clients" id="see_clients" class="mr-3">
+                         <input type="checkbox" name="see_clients" @if (isset($role) && $role->checkPermission('see_clients')) checked @endif  id="see_clients" class="mr-3">
                          <label for="see_clients">ნახვა</label>
                      </div>
                      <div class="flex  items-center">
-                         <input type="checkbox" name="add_client" id="add_client" class="mr-3">
+                         <input type="checkbox" name="add_client" @if (isset($role) && $role->checkPermission('add_client')) checked @endif  id="add_client" class="mr-3">
                          <label for="add_client">დამატება & რედაქტირება</label>
                      </div>
                      <div class="flex items-center">
-                         <input type="checkbox" name="delete_client" id="delete_client" class="mr-3">
+                         <input type="checkbox" name="delete_client" @if (isset($role) && $role->checkPermission('delete_client')) checked @endif  id="delete_client" class="mr-3">
                          <label for="delete_client">წაშლა</label>
                      </div>
                     </div>
@@ -135,15 +136,15 @@
                     </span>
                     <div class="mt-3 flex justify-between items-center font-normal text-xs">
                      <div class="flex  items-center">
-                         <input type="checkbox" name="see_company" id="see_company" class="mr-3">
+                         <input type="checkbox" name="see_company" @if (isset($role) && $role->checkPermission('see_company')) checked @endif id="see_company" class="mr-3">
                          <label for="see_company">ნახვა</label>
                      </div>
                      <div class="flex  items-center">
-                         <input type="checkbox" name="add_company" id="add_company" class="mr-3">
+                         <input type="checkbox" name="add_company" @if (isset($role) && $role->checkPermission('add_company')) checked @endif id="add_company" class="mr-3">
                          <label for="add_company">დამატება & რედაქტირება</label>
                      </div>
                      <div class="flex items-center">
-                         <input type="checkbox" name="delete_company" id="delete_company" class="mr-3">
+                         <input type="checkbox" name="delete_company" @if (isset($role) && $role->checkPermission('delete_company')) checked @endif id="delete_company" class="mr-3">
                          <label for="delete_company">წაშლა</label>
                      </div>
                     </div>
@@ -157,15 +158,15 @@
                     </span>
                     <div class="mt-3 flex justify-between items-center font-normal text-xs">
                      <div class="flex  items-center">
-                         <input type="checkbox" name="see_sms" id="see_sms" class="mr-3">
+                         <input type="checkbox" name="see_sms" id="see_sms" @if (isset($role) && $role->checkPermission('see_sms')) checked @endif  class="mr-3">
                          <label for="see_sms">ნახვა</label>
                      </div>
                      <div class="flex  items-center">
-                         <input type="checkbox" name="send_sms" id="send_sms" class="mr-3">
+                         <input type="checkbox" name="send_sms" id="send_sms" @if (isset($role) && $role->checkPermission('send_sms')) checked @endif  class="mr-3">
                          <label for="send_sms">დამატება & რედაქტირება</label>
                      </div>
                      <div class="flex items-center">
-                         <input type="checkbox" name="delete_sms" id="delete_sms" class="mr-3">
+                         <input type="checkbox" name="delete_sms" id="delete_sms" @if (isset($role) && $role->checkPermission('delete_sms')) checked @endif  class="mr-3">
                          <label for="delete_sms">წაშლა</label>
                      </div>
                     </div>
@@ -177,13 +178,13 @@
                     </span>
                     <div class="mt-3 flex justify-between items-center font-normal text-xs">
                      <div class="flex  items-center">
-                         <input type="checkbox" name="export_finances" id="export_finances" class="mr-3">
+                         <input type="checkbox" name="export_finances" @if (isset($role) && $role->checkPermission('export_finances')) checked @endif  id="export_finances" class="mr-3">
                          <label for="export_finances">ექსპორტი</label>
                      </div>
                     </div>
                 </div>
                 <button type="submit" class="mt-3 w-full p-3 bg-indigo-500 text-white text-center font-bolder text-xs font-caps">
-                    დამატება
+                    @if(isset($role)) განახლება @else დამატება @endif
                 </button>
             </form>
         </div>
@@ -192,13 +193,23 @@
         <div class="col-span-12 grid grid-cols-12 gap-6 mt-5">
             
             @foreach ($roles as $role)
-                <div class="col-span-12 sm:col-span-6 xxl:col-span-3 intro-y relative">
+                <div  class="col-span-12 sm:col-span-6 xxl:col-span-3 intro-y relative">
                     @if (!in_array($role->name, ['admin', 'user']))
-                    <a href="{{ route('RemoveRole', $role->id )}}" class="bg-red-500 absolute h-5 text-white flex items-center justify-center w-5 font-bolder top-0 right-0 z-50">
-                        x
-                    </a>
+                        <div class="flex absolute top-0 right-0">
+                            <a href="/roles/{{$role->id}}/edit" class="bg-red-500 p-2 text-white flex items-center justify-center font-bolder z-50">
+                                <svg width="0.9em" height="0.9em" viewBox="0 0 16 16" class="bi bi-pencil-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
+                                  </svg>
+                            </a>
+                            <a href="{{ route('RemoveRole', $role->id )}}" class="bg-red-500  p-2 text-white flex items-center justify-center font-bolder  z-50">
+                                <svg width="0.9em" height="0.9m" viewBox="0 0 16 16" class="bi bi-trash2-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M2.037 3.225l1.684 10.104A2 2 0 0 0 5.694 15h4.612a2 2 0 0 0 1.973-1.671l1.684-10.104C13.627 4.224 11.085 5 8 5c-3.086 0-5.627-.776-5.963-1.775z"/>
+                                    <path fill-rule="evenodd" d="M12.9 3c-.18-.14-.497-.307-.974-.466C10.967 2.214 9.58 2 8 2s-2.968.215-3.926.534c-.477.16-.795.327-.975.466.18.14.498.307.975.466C5.032 3.786 6.42 4 8 4s2.967-.215 3.926-.534c.477-.16.795-.327.975-.466zM8 5c3.314 0 6-.895 6-2s-2.686-2-6-2-6 .895-6 2 2.686 2 6 2z"/>
+                                  </svg>
+                            </a>
+                        </div>
                     @endif
-                    <div class="mini-report-chart box p-5 flex items-center justify-between zoom-in">
+                    <div class="mini-report-chart box p-5 flex items-center justify-between ">
                             <div class="w-2/4 flex-none">
                             <div class="font-bold text-xs">{{$role->name}}</div>
                             </div>

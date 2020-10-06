@@ -15,6 +15,8 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
             
             Route::get('/roles', 'RoleController@index')->name('Role');
             Route::post('/role/add', 'RoleController@store')->name('AddRole');
+            Route::get('/roles/{role}/edit', 'RoleController@edit');
+            Route::post('/role/update/{role}', 'RoleController@update')->name('UpdateRole');
             Route::get('/removerole/{role}', 'RoleController@destroy')->name('RemoveRole');
 
         });

@@ -6,8 +6,14 @@ use App\User;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Sale extends Model
+use Illuminate\Database\Eloquent\SoftDeletes;
+use OwenIt\Auditing\Contracts\Auditable;
+
+class Sale extends Model implements Auditable
 {
+    
+use SoftDeletes, OwenIt\Auditing\Contracts\Auditable;
+
     protected $fillable = ['client_id', 'address'];
     protected $table = 'sales';
     public function client(){

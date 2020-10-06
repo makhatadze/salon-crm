@@ -11,10 +11,11 @@ use App\Office;
 use App\Department;
 use App\SalaryToService;
 use App\Company;
+use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\SoftDeletes;
-class User extends Authenticatable
+class User extends Authenticatable implements Auditable
 {
-    use Notifiable, HasRoles, SoftDeletes;
+    use Notifiable, HasRoles, SoftDeletes, \OwenIt\Auditing\Auditable;
 
     /**
      * The attributes that are mass assignable.

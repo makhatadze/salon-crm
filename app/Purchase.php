@@ -6,9 +6,10 @@ use App\Department;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-class Purchase extends Model
+use OwenIt\Auditing\Contracts\Auditable;
+class Purchase extends Model implements Auditable
 {
-    use SoftDeletes;
+    use SoftDeletes, \OwenIt\Auditing\Auditable;
     protected $fillable = ['purchase_type', 'overhead_number', 'purchase_number', 'distributor_id', 'purchase_date', 'office_id', 'department_id', 'responsible_person_id', 'getter_person_id', 'dgg', 'array', 'deleted_at'];
     protected $table = 'purchases';
     protected $primarykey = 'id';

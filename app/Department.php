@@ -4,9 +4,10 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-class Department extends Model
+use OwenIt\Auditing\Contracts\Auditable;
+class Department extends Model implements Auditable
 {
-    use SoftDeletes;
+    use SoftDeletes, \OwenIt\Auditing\Auditable;
     protected $fillable = ['name_ge', 'name_ru', 'name_en', 'address_ge', 'address_en', 'address_ru'];
     protected $table = 'departments';
     public function departmentable(){

@@ -4,9 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-class Service extends Model
+use OwenIt\Auditing\Contracts\Auditable;
+
+class Service extends Model implements Auditable
 {
-    use SoftDeletes;
+    use SoftDeletes, \OwenIt\Auditing\Auditable;
     protected $fillable = ['title_ge','title_ru','title_en', 'body_ge', 'body_en', 'body_ru', 'price', 'duration_ge', 'duration_ru', 'duration_en', 'unit-ge', 'unit-ru', 'unit-en'];
     protected $table = 'services';
     protected $primarykey = 'id';

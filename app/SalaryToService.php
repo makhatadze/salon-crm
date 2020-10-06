@@ -13,9 +13,10 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use App\ClientService;
 use Illuminate\Database\Eloquent\SoftDeletes;
-class SalaryToService extends Model
+use OwenIt\Auditing\Contracts\Auditable;
+class SalaryToService extends Model implements Auditable
 {
-    use SoftDeletes;
+    use SoftDeletes, \OwenIt\Auditing\Auditable;
     /**
      * The attributes that are mass assignable.
      *

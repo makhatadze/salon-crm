@@ -4,9 +4,10 @@ namespace App;
 use App\Product;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-class Inventory extends Model
+use OwenIt\Auditing\Contracts\Auditable;
+class Inventory extends Model implements Auditable
 {
-    use SoftDeletes;
+    use SoftDeletes, \OwenIt\Auditing\Auditable;
     protected $fillable = ['product_id', 'quantity'];
     protected $table = 'inventories';
     public function inventoriable(){

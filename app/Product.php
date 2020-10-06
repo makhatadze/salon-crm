@@ -6,9 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 use App\Category;
 use App\Department;
 use Illuminate\Database\Eloquent\SoftDeletes;
-class Product extends Model
+use OwenIt\Auditing\Contracts\Auditable;
+class Product extends Model implements Auditable
 {
-    use SoftDeletes;
+    use SoftDeletes, \OwenIt\Auditing\Auditable;
     protected $fillable = ['title_ge', 'title_ru', 'title_en', 'description_ge', 'description_ru', 'description_en', 'price', 'purchase_id', 'type', 'stock', 'unit', 'category_id', 'currency', 'department_id'];
     protected $table = 'products';
     public function category(){
