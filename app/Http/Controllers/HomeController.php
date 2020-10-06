@@ -15,6 +15,7 @@ use Spatie\Permission\Models\Role;
 use Auth;
 use App\ClientService;
 use App\Client;
+use App\PayController;
 use App\Service;
 use App\Product;
 use DB;
@@ -99,7 +100,7 @@ class HomeController extends Controller
                         $queries[$req] = request($req);
                     }
                 }
-                $todayservices = $todayservices->select('client_services.id','client_services.user_id', 'client_services.service_id', 'client_services.status', 'client_services.status', 'services.title_'.app()->getLocale(), 'client_services.session_start_time', 'clients.number', 'clients.full_name_'.app()->getLocale(), 'services.price', 'profiles.first_name', 'profiles.last_name');
+                $todayservices = $todayservices->select('client_services.id', 'client_services.clinetserviceable_id', 'client_services.user_id', 'client_services.service_id', 'client_services.status', 'client_services.status', 'services.title_'.app()->getLocale(), 'client_services.session_start_time', 'clients.number', 'clients.full_name_'.app()->getLocale(), 'services.price', 'profiles.first_name', 'profiles.last_name');
                 
                 $todayservices = $todayservices->paginate(40)->appends($queries);
 
@@ -109,7 +110,7 @@ class HomeController extends Controller
                 ->join('services', 'client_services.service_id', '=', 'services.id')
                 ->join('clients', 'client_services.clinetserviceable_id', '=', 'clients.id')
                 ->join('profiles', 'client_services.user_id', '=', 'profiles.profileable_id');
-                $todayservices = $todayservices->select('client_services.id', 'client_services.user_id', 'client_services.status', 'client_services.service_id', 'client_services.status', 'services.title_'.app()->getLocale(), 'client_services.session_start_time', 'clients.number', 'clients.full_name_'.app()->getLocale(), 'services.price', 'profiles.first_name', 'profiles.last_name');
+                $todayservices = $todayservices->select('client_services.id', 'client_services.clinetserviceable_id', 'client_services.user_id', 'client_services.status', 'client_services.service_id', 'client_services.status', 'services.title_'.app()->getLocale(), 'client_services.session_start_time', 'clients.number', 'clients.full_name_'.app()->getLocale(), 'services.price', 'profiles.first_name', 'profiles.last_name');
                 $todayservices = $todayservices->whereDate('session_start_time', Carbon::today());
                 $todayservices = $todayservices->paginate(40)->appends($queries);
             }
@@ -117,10 +118,11 @@ class HomeController extends Controller
             $totalproductcost = Product::sum('price')/100;
             $totalServiceCost = Service::sum('price')/100;
             $allclientservices = ClientService::count();
+            $paymethods = PayController::all();
             $income = ClientService::where('status', true)
             ->join('services', 'client_services.service_id', '=', 'services.id')
             ->sum('price')/100;
-            return view('theme.template.home.home_index', compact('totalclients', 'income', 'totalServiceCost', 'todayservices', 'totalproductcost', 'queries'));
+            return view('theme.template.home.home_index', compact('paymethods', 'totalclients', 'income', 'totalServiceCost', 'todayservices', 'totalproductcost', 'queries'));
         } else {
             abort('404');
         }

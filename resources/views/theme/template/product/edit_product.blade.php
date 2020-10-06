@@ -277,14 +277,14 @@
                         <div class="border-2 border-dashed rounded-md mt-3 pt-4">
                             <div class="flex flex-wrap px-4">
                                 @if ($product
-            ->images()
-            ->where('deleted_at', null)
-            ->count() > 0)
-                                    @foreach ($product
-            ->images()
-            ->where('deleted_at', null)
-            ->get()
-        as $image)
+                                        ->images()
+                                        ->where('deleted_at', null)
+                                        ->count() > 0)
+                                                                @foreach ($product
+                                        ->images()
+                                        ->where('deleted_at', null)
+                                        ->get()
+                                    as $image)
                                         <div id="img{{ $image->id }}"
                                             class="w-24 h-24 relative image-fit mb-5 mr-5 cursor-pointer zoom-in">
                                             <img class="rounded-md" alt="Midone Tailwind HTML Admin Template"
@@ -323,7 +323,33 @@
                             </div>
                         </div>
                     </div>
+                    <div class="my-4 items-center justify-between flex col-span-12">
+                        <h6 class="font-bolder">დამატებითი ველები</h6>
+                        <button type="button" id="addfields" class="bg-gray-200 p-2">
+                            <svg width="1.18em" height="1.18em" stroke="black" viewBox="0 0 16 16" class="bi bi-plus" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                              </svg>
+                        </button>
+                    </div>
+                    <div class="mt-3 w-full" id="fields">
 
+                        @foreach ($product->fields as $field)
+                            <div class="flex" id="{{$field->id}}">
+                                <div class="p-2 pl-0 w-3/12">
+                                <input value="{{$field->name}}" readonly class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text">
+                                </div>
+                                <div class="p-2 w-8/12">
+                                    <input value="{{$field->description}}" readonly class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text">
+                                </div>
+                                <div class="pr-2 w-1/12 py-2 flex items-center justify-center">
+                                    <span onclick="removefieldajax({{$field->id}})" class="flex items-center justify-center font-bolder text-xs cursor-pointer text-white bg-red-500 p-3 h-5 w-5 rounded-md">
+                                        X 
+                                    </span>
+                                </div>
+                            </div>
+                        @endforeach
+
+                    </div>
                     <div class="mt-3">
                         <label class="font-helvetica">აღწერა ქართულად <span class="text-red-500">*</span> </label>
                         <div class="mt-2">
@@ -381,8 +407,44 @@
                 });
 
             });
+            $('#addfields').click(function(){
+                $id = Date.now();
+                $('#fields').append(`
+                <div class="flex" id="`+$id+`">
+                    <div class="p-2 pl-0 w-3/12">
+                        <input required class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" name="field_name[]" type="text" placeholder="სახელი">
+                    </div>
+                    <div class="p-2 w-8/12">
+                        <input required class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" name="field_description[]" type="text" placeholder="აღწერა">
+                    </div>
+                    <div class="pr-2 w-1/12 py-2 flex items-center justify-center">
+                        <span onclick="removefield(`+$id+`)" class="flex items-center justify-center font-bolder text-xs cursor-pointer text-white bg-red-500 p-3 h-5 w-5 rounded-md">
+                            X 
+                        </span>
+                    </div>
+                </div>
+                `);
+            });
         });
-
+        function removefieldajax($id){
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                $.ajax({
+                    url: "/products/removefield/"+$id,
+                    method: 'get',
+                    success: function(result) {
+                        if (result.status == true) {
+                            removefield($id);
+                        }
+                    }
+                });
+        }
+        function removefield($id){
+            $('#'+$id).remove();
+        }
         function readURL(input) {
             if (input.files && input.files[0]) {
                 $("#preloadimages").html('');
@@ -399,7 +461,6 @@
                 });
             }
         }
-
         $("#imgInp").change(function() {
             readURL(this);
         });

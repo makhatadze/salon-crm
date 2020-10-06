@@ -17,7 +17,8 @@
                         </div>
                         <div class="w-3/12">
                             <h4 class="font-bolder font-caps"> {{$sale->getTotalPrice()}} <sup>₾</sup> </h4>
-                        <span class="font-normal text-xs">რაოდენობა: {{$sale->orders->sum('quantity')}}</span>
+                            <span class="font-normal text-xs">რაოდენობა: {{$sale->orders->sum('quantity')}}</span> <br>
+                            <span class="font-normal text-xs">გადახდის მეთოდი: {{$sale->pay_method}} </span>
                         </div>
                         <div class="w-3/12">
                             <h4 class="font-bolder font-caps"> {{$sale->getSellerName()}} </h4>
@@ -50,10 +51,10 @@
                         <h6 class="text-lg font-bold font-caps">ჯამი: {{$sale->getTotalPrice()}} <sup>₾</sup></h6>
                     </div>
                     @foreach ($sale->orders as $item)
-                    <div class="bg-gray-300 rounded-lg shadow w-full py-2 px-2 mt-3 flex justify-between">
+                    <div class="bg-gray-200 rounded-md shadow w-full py-2 px-2 mt-3 flex justify-between">
                         <div class="text-left">
-                        <h6 class="m-0 font-bold font-caps">{{$item->product->{"title_".app()->getLocale()} }}</h6>
-                        <span class="font-normal">
+                        <h6 class="m-0 font-bolder">{{$item->product->{"title_".app()->getLocale()} }}</h6>
+                        <span class="font-normal text-xs">
                             {{$item->quantity}}
                             @if($item->product->unit == "gram") გრამი @elseif($item->product->unit == "metre") სანტიმეტრი @elseif($item->product->unit== "unit") ერთეული @endif
                         </span>

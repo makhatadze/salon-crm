@@ -25,6 +25,8 @@ use App\Order;
 use App\Purchase;
 use App\Exports\ProductExport;
 use App\Exports\SaleExport;
+use App\Field;
+use App\PayController;
 use Auth;
 use Cart;
 
@@ -146,8 +148,19 @@ class ProductController extends Controller
             'expluatation_days' => '',
             'unlimited_expluatation' => '',
             'brand' => '',
-            'new_brand' => ''
+            'new_brand' => '',
+            'field_name' => '',
+            'field_description' => ''
         ]);
+        $fields = array();
+        if($request->input('field_name') && $request->input('field_description')){
+            foreach ($request->input('field_name') as $key => $value) {
+                $fields[] = [
+                    'name' => $request->input('field_name')[$key],
+                    'description' => $request->input('field_description')[$key],
+                ];
+            }
+        }
         if($request->input('new_brand') != "" && is_string($request->input('new_brand'))){
             $brand = new Brand;   
             $brand->name = $request->input('new_brand');
@@ -181,7 +194,7 @@ class ProductController extends Controller
         $product->price = intval($request->input('price') * 100);
         $product->currency_type = $request->input('currency');
         $product->save();
-
+        $product->fields()->createMany($fields);
         if ($request->file('images')) {
             foreach ($request->file('images') as $image) {
                 $imagename = date('Ymhs') . $image->getClientOriginalName();
@@ -249,6 +262,12 @@ class ProductController extends Controller
         $product->delete();
         return response()->json(array('status' => true), 200);
     }
+    // Remove Field
+    public function removefield(Field $field)
+    {
+        $field->delete();
+        return response()->json(array('status' => true), 200);
+    }
     //View Render
     public function addtocartget(){
         $user_id = Auth()->user()->id;
@@ -259,7 +278,8 @@ class ProductController extends Controller
             $cartsum += $item->price * $item->quantity;
         }
         $clients = Client::all();
-        return view('theme.template.product.add_to_cart', compact('products', 'cart', 'cartsum', 'clients'));
+        $paymethods = PayController::all();
+        return view('theme.template.product.add_to_cart', compact('products', 'cart', 'paymethods', 'cartsum', 'clients'));
     }
     public function removefromCart(Product $product){
         $user_id = Auth()->user()->id;
@@ -333,8 +353,19 @@ class ProductController extends Controller
     public function addtosales(Request $request){
         $this->validate($request, [
             'client_id' => 'required|integer',
-            'address' => ''
+            'address' => 'required|string',
+            'paymethod' => 'required|integer'
         ]);
+        // Check Cart 
+        $total = Cart::getTotal();
+        if($total > 0){
+            return redirect()->back()->with('danger', 'კალათა ცარიელია');
+        }
+        // Check Pay Method
+        $paymethods = PayController::find($request->paymethod);
+        if(!$paymethods){
+            return redirect()->back()->with('danger', 'გადახდის მეთოდი არ მოიძებნა');
+        }
         $client = Client::findOrFail($request->client_id);
         
         $user_id = Auth()->user()->id;
@@ -342,6 +373,8 @@ class ProductController extends Controller
         $sale = new Sale();
         $sale->client_id = $request->client_id;
         $sale->address = $request->address;
+        $sale->pay_method_id = $paymethods->id;
+        $sale->pay_method = $paymethods->{"name_".app()->getLocale()};
         $sale->seller_id = Auth()->user()->id;
         $sale->save();
         foreach($cart as $order){

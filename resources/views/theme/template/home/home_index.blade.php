@@ -109,7 +109,7 @@
                     <tr class="intro-x">
                         <td>
                             <h6 class="font-bolder text-black">
-                                <a href="/clients/edit/{{$service->id}}">
+                                <a href="/clients/edit/{{$service->clinetserviceable_id}}">
                                     {{$service->{"full_name_".app()->getLocale()} }}
                                 </a>
                             </h6>
@@ -217,9 +217,9 @@
                                 <div class="relative mt-2 {{ $errors->has('first_name') ? ' has-error' : '' }}">
                                     <select data-placeholder="Select a company" name="pay_method" id="pay_method"
                                             class="font-helvetica select2 w-full">
-                                        <option value="Card">{{__('pay.Card')}}</option>
-                                        <option value="Cash">{{__('pay.Cash')}}</option>
-                                        <option value="Bank">{{__('pay.Bank')}}</option>
+                                        @foreach ($paymethods as $pay)
+                                            <option value="{{$pay->id}}">{{ $pay->{"name_".app()->getLocale()} }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>

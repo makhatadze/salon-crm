@@ -101,6 +101,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
             Route::get('/products/edit/{product}', 'ProductController@edit')->name('ProductEdit');
             Route::get('/removefromcart/{product}', 'ProductController@removefromCart')->name('RemoveFromCart');
             Route::put('/products/update/{id}', 'ProductController@update')->name('UpdateProduct');
+            Route::get('/products/removefield/{field}', 'ProductController@removefield')->name('RemoveFieldAjax');
             Route::get('/removesale/{id}', 'SaleController@destroy');
              // Category Controller
             Route::resource('/category', 'CategoryController')->except('destroy', 'update');
@@ -123,6 +124,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
         Route::group(['middleware' => ['permission:add_purchase|delete_purchase|admin']], function () {
             Route::get('/purchases/edit/{id}', 'PurchaseController@edit');
             Route::get('/purchases/create', 'PurchaseController@create');
+            Route::view('/paymethods', 'theme.template.pay.index');
             Route::post('/purchases/store', 'PurchaseController@store')->name('StorePurchase');
             Route::put('/purchases/update/{purchase}', 'PurchaseController@update')->name('UpdatePurchase');
             Route::post('/purchases/getdepartment', 'PurchaseController@getdepartments')->name('GetDepartmentsByOffice');

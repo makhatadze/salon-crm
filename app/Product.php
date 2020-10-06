@@ -20,6 +20,9 @@ class Product extends Model
     public function department(){
         return $this->belongsTo('App\Department');
     }
+    public function fields(){
+        return $this->morphMany('App\Field', 'fieldable');
+    }
     public function brand(){
         return $this->belongsTo('App\Brand');
     }

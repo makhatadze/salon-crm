@@ -9,6 +9,7 @@ use App\Exports\ClientExport;
 use App\Exports\ClientServices;
 use App\Exports\FinanceExport;
 use App\MemberGroup;
+use App\PayController;
 use App\Product;
 use App\SalaryToService;
 use App\Service;
@@ -239,8 +240,13 @@ class ClientController extends Controller
         $data = $request->all();
         $this->validate($request, [
             'pay_id' => 'required',
-            'pay_method' => 'required|string',
+            'pay_method' => 'required|integer',
         ]);
+        // Check Pay Method
+        $paymethod = PayController::find($request->pay_method);
+        if(!$paymethod){
+            return redirect('/')->with('error', ' გადახდის მეთოდი არ მოიძებნა');
+        }
         $id = $request->pay_id;
         $clientservice = ClientService::where('status', false)->findOrFail($id);
         $user = $clientservice->getUser();
@@ -289,7 +295,8 @@ class ClientController extends Controller
             }
         }
         $clientservice->status = true;
-        $clientservice->pay_method = $request->pay_method;
+        $clientservice->pay_method_id = $paymethod->id;
+        $clientservice->pay_method = $paymethod->{"name_".app()->getLocale()};
         $clientservice->save();
         if ($success) {
             return redirect('/')->with('success', $message);
