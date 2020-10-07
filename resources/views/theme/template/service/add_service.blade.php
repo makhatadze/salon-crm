@@ -188,6 +188,7 @@
                           <input type="submit" class=" button text-white bg-theme-1 shadow-md mr-1" value="ატვირთვა">
             </form>
         </div>
+        
     </div>
 </div>
 @endsection

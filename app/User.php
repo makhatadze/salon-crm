@@ -56,7 +56,9 @@ class User extends Authenticatable implements Auditable
     {
         return $this->hasAnyRole('user');
     }
-    
+    public function salary(){
+        return $this->hasOne('App\Salary', 'user_id');
+    }
     /**
      * @return string
      */

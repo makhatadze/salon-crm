@@ -87,7 +87,6 @@ class ServiceController extends Controller
             'duration_days' => 'required|integer|min:0',
             'duration_hours' => 'required|integer|min:0|max:24',
             'duration_minutes' => 'required|integer|min:0|max:60',
-            'duration_type' => 'required|string',
             'category' => '',
             'price' => 'required|between:0,9999.99|numeric',
             'unit-ge' => '',
