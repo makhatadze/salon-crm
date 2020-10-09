@@ -67,7 +67,7 @@
                             @endif
                         </div>
                     </div>
-                    <div class="sm:grid grid-cols-2 gap-2 mb-4">
+                    <div class="sm:grid grid-cols-3 gap-2 mb-4">
                         <div class="relative mt-2 {{ $errors->has('position') ? ' has-error' : '' }}">
                             {{ Form::label('position', 'თანამდებობა', ['class' => 'font-bold font-caps text-xs text-gray-800']) }}
                             {{ Form::select('position', ['2' => 'თანამშრომელი'], null, ['class' => 'font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500']) }}
@@ -86,6 +86,18 @@
                                         </span>
                             @endif
                         </div>
+                        <div class="relative mt-2 {{ $errors->has('salary_type') ? ' has-error' : '' }}">
+                            {{ Form::label('position', 'სერვისი', ['class' => 'font-bold font-caps text-xs text-gray-800']) }}
+                            <select name="services" data-placeholder="Select your favorite actors" class="select2 font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" multiple>
+                                @foreach ($services as $service)
+                            <option value="{{$service->id}}">{{$service->{"title_".app()->getLocale()} }}</option>
+                                @endforeach
+                            </select>
+                            
+                        </div>
+                    </div>
+                    
+                    <div class="sm:grid grid-cols-2 gap-2 mb-4">
                         <div class="relative mt-2 {{ $errors->has('salary') ? ' has-error' : '' }}" id="salary-container">
                             {{ Form::label('salary', 'ხელფასი', ['class' => 'font-bold font-caps text-xs text-gray-800']) }}
                             {{ Form::text('salary', null, ['class' => 'font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500']) }}
@@ -104,7 +116,30 @@
                                         </span>
                             @endif
                         </div>
-
+                        
+                    </div>
+                    <div class="sm:grid grid-cols-3 gap-2 mb-4 font-normal text-xs text-center">
+                        <div class="relative mt-2 flex items-center  justify-content">
+                            <input type="checkbox" name="" class="mr-2" id="showschedule" checked> 
+                            <label for="showschedule" class="cursor-pointer">თანამშრომლის ცხრილში გამოჩენა</label>
+                        </div>
+                        <div class="relative mt-2 ">
+                            <div class="flex items-center justify-content">
+                                <input type="checkbox" name="" id="intervel" class="mr-2">
+                                <label for="intervel" class="cursor-pointer">
+                                    ინტერვალი მიღებებს შორის
+                                </label>
+                                <input placeholder="00:00" type="text" class="ml-3 font-normal text-xs appearance-none block w-16 bg-gray-200 text-gray-700 border border-gray-200 rounded py-2 px-1 text-center leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                            </div>
+                        </div>
+                        <div class="relative mt-2 flex items-center justify-content">
+                            <input type="checkbox" id="break" class="mr-2" name="">
+                            <label for="break" class="cursor-pointer">
+                                შესვენება მიღებებს შორის
+                            </label>
+                            
+                            <input placeholder="00:00" type="text" class="ml-3 font-normal text-xs appearance-none block w-16 bg-gray-200 text-gray-700 border border-gray-200 rounded py-2 px-1 text-center leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                        </div>
                     </div>
                     <div class="sm:grid grid-cols-2 gap-2">
                         <div class="w-1/2 p-2 {{ $errors->has('files') ? ' has-error' : '' }}">
@@ -169,7 +204,7 @@
                                 @if ($errors->has('password'))
                                     <span class="help-block">
                                             {{ $errors->first('password') }}
-                                        </span>
+                                    </span>
                                 @endif
                             </div>
                             <div class="relative mt-2 {{ $errors->has('password_confirmation') ? ' has-error' : '' }}">

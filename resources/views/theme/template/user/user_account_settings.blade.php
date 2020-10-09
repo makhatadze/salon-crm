@@ -144,7 +144,7 @@
                 @enderror 
               </div>
             </div>
-                <div class="flex flex-wrap -mx-3 mb-6">
+                <div class="flex flex-wrap -mx-3 mb-3">
                   <div class="w-full px-3">
                     <label class="block uppercase font-caps tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">
                       ნომერი
@@ -159,12 +159,12 @@
               </div>
                 </div>
                 <div class="flex flex-wrap -mx-3 mb-2">
-                  <div class="w-full md:w-1/2 px-3 mb-4 md:mb-0">
+                  <div class="w-full md:w-1/3 px-3 mb-4 md:mb-0">
                     <label class="block uppercase font-caps tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-city">
                       დეპარტამენტი
                     </label>
                   <div class="relative">
-                    <select class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-department" name="department_id">
+                    <select class="font-normal  text-xs block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-department" name="department_id">
                       @if ($user->id != Auth::user()->id)
                       <option value=""></option>
                       @foreach ($departments as $dept)
@@ -183,11 +183,11 @@
                     </div>
                   </div>
                   </div>
-                  <div class="w-full md:w-1/2 px-3 mb-4 md:mb-0">
+                  <div class="w-full md:w-1/3 px-3 mb-4 md:mb-0">
                     <label class="block font-caps uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-zip">
                       ელ-ფოსტა
                     </label>
-                  <input name="email" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 text-xs" id="grid-zip" type="text" @if($user->id == Auth::user()->id) readonly="true" @endif value="{{$user->email}}">
+                  <input name="email" class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 text-xs" id="grid-zip" type="text" @if($user->id == Auth::user()->id) readonly="true" @endif value="{{$user->email}}">
                   @error('email')
                   <span class="invalid-feedback" role="alert">
                       <strong style="color: tomato">{{ $message }}</strong>
@@ -195,26 +195,13 @@
                       </span>
                   @enderror
                 </div>
-                </div>
-                <div class="w-full my-3 flex justify-center items-center font-medium text-xs">
-                  <div class="w-full md:w-1/2">
-                    <input type="checkbox" @if($user->id == Auth::user()->id) disabled @endif name="salary_status" @if ($user->profile->salary_status) checked @endif>
-                    <span class="ml-3">ხელფასის მიღების სტატუსი 
-                      <small class="text-x"> 
-                        @if ($user->profile->salary_status) 
-                          (ჩართულია)
-                        @else
-                          (გამორთულია) 
-                        @endif
-                       </small></span>
-                      </div>
                       @if ($user->id != Auth::user()->id)
-                       <div class="w-full md:w-1/2 px-3 mb-4 md:mb-0">
+                       <div class="w-full md:w-1/3 px-3 mb-4 md:mb-0">
                         <label class="block uppercase font-caps tracking-wide text-gray-700 text-xs font-bold mb-2" for="rolename">
                           როლი
                         </label>
                        <div class="relative">
-                         <select class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="rolename" name="rolename">
+                         <select class="font-normal text-xs block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="rolename" name="rolename">
                            @if ($user->id != Auth::user()->id)
                            <option value=""></option>
                            @foreach ($roles as $role)
@@ -236,32 +223,26 @@
                        </div>
                        </div>
                        @endif 
-                       @if($user->id == Auth::user()->id)
-                       <div class="my-3 w-full md:w-1/2  ">
-                        <label class="block uppercase font-caps tracking-wide text-gray-700 text-xs font-bold mb-2">
-                          უფლებები
-                        </label>
-                        <p class="font-normal text-xs">
-                          @foreach ($user->getAllPermissions() as $permission)
-                        @lang('permissions.'.$permission->name),
-                        @endforeach
-                        </p>
-                      </div>
-                      @endif
+                      
                 </div>
                 
-                @if($user->id != Auth::user()->id)
-                <div class="my-3 w-full md:w-1/2  ">
-                 <label class="block uppercase font-caps tracking-wide text-gray-700 text-xs font-bold mb-2">
-                   უფლებები
-                 </label>
-                 <p class="font-normal text-xs">
-                   @foreach ($user->getAllPermissions() as $permission)
-                 @lang('permissions.'.$permission->name),
-                 @endforeach
-                 </p>
-               </div>
-               @endif
+                <div class="flex">
+                  <div class="my-3 w-full md:w-1/2 flex items-center justify-content font-normal text-xs">
+                    <input type="checkbox" name="status" class="mr-3" id="status">
+                    <label for="status">მომხმარებლის დაბლოკვა</label>
+                  </div>
+                  <div class="my-3 w-full md:w-1/2 flex items-center justify-content font-normal text-xs">
+                    <select data-placeholder="აირჩიეთ სერვისი" name="services[]" class="select2 w-full" multiple>
+                      @foreach ($services as $service)
+                        @if ($user->hasService($service->id))
+                          <option value="{{$service->id}}" selected>{{$service->{'title_'.app()->getLocale()} }}</option>
+                        @else 
+                          <option value="{{$service->id}}">{{$service->{'title_'.app()->getLocale()} }}</option>
+                        @endif
+                      @endforeach
+                  </select>
+                  </div>
+                </div>
                
                 
                

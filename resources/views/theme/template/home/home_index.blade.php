@@ -282,6 +282,108 @@
                         </div>
                 </form>
             </div>
+            <div class="mt-3 p-2 w-full">
+                <a href="javascript:;" data-toggle="modal" data-target="#add_client_modal" class="font-bolder text-white w-full text-xs rounded-sm bg-indigo-500 w-full py-3 px-4">
+                    კლიენტის დამატება
+                </a>
+                <div class="modal" id="add_client_modal">
+                    <div class="modal__content modal__content--xl p-5 text-center flex justify-center items-center">
+                    
+                        <div>
+                            <form class="w-full">
+                                <div class="flex  -mx-3 mb-6">
+                                  <div class="w-full flex items-center justify-center md:w-1/3 px-3 mb-6 md:mb-0">
+                                    <label  class="block mr-2 text-left uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="full_name_ge">
+                                      სრული სახელი
+                                    </label>
+                                    <input wire:model="client_name" name="full_name_ge" class="appearance-none block font-normal text-xs w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="full_name_ge" name="full_name_ge" type="text" placeholder="სახელი">
+                                  </div>
+                                  <div class="w-full flex items-center justify-center md:w-1/3 px-3">
+                                    <label class="block  mr-2 text-left uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="number">
+                                      ნომერი
+                                    </label>
+                                    <input name="number" wire:model="client_phone" class="appearance-none font-normal text-xs block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="number" name="number" type="text" placeholder="+995 555 11 22 33">
+                                  </div>
+                                  <div class="w-full flex items-center justify-center md:w-1/3 px-3">
+                                    <label class="block  mr-2 text-left uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="sex">
+                                      სქესი
+                                    </label>
+                                    <div class="relative">
+                                        <select wire:model="client_sex" class="block font-normal text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="sex" name="sex">
+                                          <option value="male">მამრობითი</option>
+                                          <option value="female">მდედრობითი</option>
+                                          <option value="other">სხვა</option>
+                                        </select>
+                                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                          <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                                        </div>
+                                      </div>    
+                                </div>
+                                </div>
+                                <div class="flex flex-wrap -mx-3 mb-6">
+                                  <div class="w-full px-3">
+                                    <div class="flex justify-between items-center">
+                                        <h6 class="font-bold">
+                                            სერვისის დამატება
+                                        </h6>
+                                        <button id="addnewservice" class="bg-gray-200 font-bold p-2 rounded-md h-8 w-8 focus:outline-none flex items-center justify-center" type="button">+</button>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div id="services">
+
+                                </div>
+                              </form>
+                              <script>
+                                  function gettime($id){
+                                    $val = $('#getthistime'+$id).val();
+                                    $a = $val.split(':');
+                                    $seconds = (+$a[0]) * 60 * 60 + (+$a[1]) * 60; 
+                                    $duration = parseInt($('#duration'+$id).html()) * 60;
+                                    $seconds = $seconds + $duration;
+                                    $hours = Math.floor($seconds / 3600);
+                                    $seconds %= 3600;
+                                    $minutes = Math.floor($seconds / 60);
+                                    $('#settime'+$id).html($hours+':'+$minutes);
+                                    console.log($hours+':'+$minutes);
+                                  }
+                                  function minustime($id){
+                                      if(parseInt($('#duration'+$id).html()) <= 15){
+                                        
+                                      }else{
+                                        $('#duration'+$id).html(parseInt($('#duration'+$id).html())-5);
+                                        $val = $('#getthistime'+$id).val();
+                                        console.log($val);
+                                        $a = $val.split(':');
+                                        $seconds = (+$a[0]) * 60 * 60 + (+$a[1]) * 60; 
+                                        $duration = parseInt($('#duration'+$id).html()) * 60;
+                                        $seconds = $seconds + $duration;
+                                        $hours = Math.floor($seconds / 3600);
+                                        $seconds %= 3600;
+                                        $minutes = Math.floor($seconds / 60);
+                                        $('#settime'+$id).html($hours+':'+$minutes);
+                                      }
+                                    }
+                                  function addtime($id){
+                                        $('#duration'+$id).html(parseInt($('#duration'+$id).html())+5);
+                                        $val = $('#getthistime'+$id).val();
+                                        $a = $val.split(':');
+                                        $seconds = (+$a[0]) * 60 * 60 + (+$a[1]) * 60; 
+                                        $duration = parseInt($('#duration'+$id).html()) * 60;
+                                        $seconds = $seconds + $duration;
+                                        $hours = Math.floor($seconds / 3600);
+                                        $seconds %= 3600;
+                                        $minutes = Math.floor($seconds / 60);
+                                        $('#settime'+$id).html($hours+':'+$minutes);
+                                    }
+                                    
+                              </script>
+                        </div>
+                        
+                        
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     </div>
@@ -297,6 +399,86 @@
             $('.select2').select2();
 
         });
-
+        $('#addnewservice').click(function(){
+            $id = Date.now();
+            $html = `
+            <div class="mt-3 box py-3 px-2 shadow flex" id="serv1">
+                                    <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                                        <label class="font-normal text-left block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                                          სერვისი
+                                        </label>
+                                        <div class="flex items-center justify-center relative">
+                                          <select onchange="selectservice(`+$id+`, this.value)" class="block text-xs font-normal appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
+                                            <option>აირჩიეთ სერვისი</option>
+                                            @foreach($services as $serv)
+                                            <option value="{{$serv->id}}">{{ $serv->{'title_'.app()->getLocale()} }}</option>
+                                            @endforeach
+                                          </select>
+                                          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                                          <label class="font-normal text-left block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                                            პერსონალი
+                                          </label>
+                                          <div class="flex items-center justify-center relative">
+                                            <select id="personal`+$id+`"  class="block text-xs font-normal appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
+                                              
+                                            </select>
+                                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                              <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      
+                                    <div class="w-full md:w-1/3 px-3  mb-6 md:mb-0">
+                                        <label class="font-normal text-left block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                                          დრო
+                                        </label>
+                                        <div class="relative text-left">
+                                        <input wire:model="date[]" type="date" value="{{Carbon\Carbon::now()->isoFormat('Y-MM-DD')}}">
+                                          <div class="font-medium flex items-center">
+                                              <input type="time"  id="getthistime`+$id+`" onchange="gettime(`+$id+`)" value="{{Carbon\Carbon::now('Asia/Tbilisi')->isoFormat('HH:MM')}}"> 
+                                              - 
+                                              <span id="settime`+$id+`"></span> </div>
+                                          <div class="flex items-center font-normal text-xs justify-content-start">
+                                            <h4 class="mr-3"><span id="duration`+$id+`">30</span> მინ</h4>
+                                            <span onclick="minustime('`+$id+`')" class="bg-gray-300 h-5 w-5 flex items-center justify-center hover:bg-gray-400 cursor-pointer"> - </span>
+                                            <span onclick="addtime('`+$id+`')" class="bg-gray-300 h-5 w-5  flex items-center justify-center hover:bg-gray-400 cursor-pointer"> + </span>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="w-full md:w-1/3 px-3 py-4 h-full">
+                                        <label class="font-normal text-left block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                                          ფასი
+                                        </label>
+                                        <div class="flex items-center">
+                                            <span class="font-normal text-xs">₾</span><input wire:model="price" type="number" min="0" class="w-12 text-base ml-2 font-bolder" value="30">
+                                        </div>
+                                      </div>
+                                </div>
+            `;
+            $('#services').append($html);
+        });
+        function selectservice($id, $servid){
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+        });
+        $.ajax({
+                  url: "{{ route('selectService') }}",
+                  method: 'POST',
+                  data: { id: $servid },
+                  success: function(data){
+                      if(data.status == true){
+                        $('#personal'+$id).html('');
+                          $('#personal'+$id).append(data.html);
+                      }
+                  } 
+        });
+        }
     </script>
 @endsection

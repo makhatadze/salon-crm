@@ -9,16 +9,12 @@
  */
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
 use Auth;
 use App\ClientService;
 use App\Client;
 use App\PayController;
 use App\Service;
 use App\Product;
-use DB;
 use Carbon\Carbon;
 
 class HomeController extends Controller
@@ -68,8 +64,9 @@ class HomeController extends Controller
                 }else{
                     $userclients = $userclients->whereDate('session_start_time', Carbon::today());
                 }
+                $services = Service::all();
                 $userclients =  $userclients->paginate(30)->appends($queries);
-                return view('theme.template.user.user_profile', compact('user', 'userclients', 'queries'));
+                return view('theme.template.user.user_profile', compact('services' ,'user', 'userclients', 'queries'));
             }
             
             $queries = [
@@ -119,10 +116,11 @@ class HomeController extends Controller
             $totalServiceCost = Service::sum('price')/100;
             $allclientservices = ClientService::count();
             $paymethods = PayController::all();
+            $services = Service::all();
             $income = ClientService::where('status', true)
             ->join('services', 'client_services.service_id', '=', 'services.id')
             ->sum('price')/100;
-            return view('theme.template.home.home_index', compact('paymethods', 'totalclients', 'income', 'totalServiceCost', 'todayservices', 'totalproductcost', 'queries'));
+            return view('theme.template.home.home_index', compact('services', 'paymethods', 'totalclients', 'income', 'totalServiceCost', 'todayservices', 'totalproductcost', 'queries'));
         } else {
             abort('404');
         }

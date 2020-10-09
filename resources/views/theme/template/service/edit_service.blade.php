@@ -44,17 +44,13 @@
                 
             <div class="flex">
                 <div class="w-1/2 flex">
-                    <div class="w-1/3 p-2">
-                        <label class="font-bold font-caps text-xs text-gray-700">დღე</label>
-                        <input required type="number" name="duration_days" value="{{floor($service->duration_count/1440)}}" min="0" step="1" class="font-normal text-xs mt-2 appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white">
-                    </div>
-                    <div class="w-1/3 p-2">
+                    <div class="w-1/2 p-2">
                         <label class="font-bold font-caps text-xs text-gray-700">საათი</label>
-                        <input required type="number" name="duration_hours" value="{{floor(($service->duration_count - ($service->duration_count/1440%2 * 24 * 60))/60)}}" min="0" max="24" step="1" class="font-normal text-xs mt-2 appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white">
+                        <input required type="number" name="duration_hours" value="{{floor($service->duration_count/60)}}" min="0"  step="1" class="font-normal text-xs mt-2 appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white">
                     </div>
-                    <div class="w-1/3 p-2">
+                    <div class="w-1/2 p-2">
                         <label class="font-bold font-caps text-xs text-gray-700">წუთი</label>
-                        <input required type="number" name="duration_minutes" value="{{(($service->duration_count - ($service->duration_count/1440%2 * 24 * 60))/60 - floor(($service->duration_count - ($service->duration_count/1440%2 * 24 * 60))/60))*60}}" min="0" max="60" step="1" class="font-normal text-xs mt-2 appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white">
+                        <input required type="number" name="duration_minutes" value="{{($service->duration_count/60 - floor($service->duration_count/60))*60}}" min="0" max="60" step="1" class="font-normal text-xs mt-2 appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white">
                     </div>
                 </div>
                <div class="w-full md:w-1/4 px-3 mb-6 md:mb-0">

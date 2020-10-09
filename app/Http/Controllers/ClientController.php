@@ -14,6 +14,7 @@ use App\Product;
 use App\SalaryToService;
 use App\Service;
 use App\User;
+use App\UserJob;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -66,7 +67,7 @@ class ClientController extends Controller
         $this->validate($request, [
             'client_name_ge' => 'required|string',
             'client_number' => 'required|string',
-            'sex' => 'required|string',
+            'sex' => '',
             'group' => '',
             'group_name' => '',
             'client_name_ru' => '',
@@ -77,7 +78,9 @@ class ClientController extends Controller
             'datepicker' => '',
             'timepicker' => '',
             'servicepicker' => '',
-            'departments' => ''
+            'departments' => '',
+            'personal_number' => '',
+            'birthday_date' => ''
         ]);
         $client = new Client;
         if ($request->input('group_name') != "") {
@@ -91,10 +94,17 @@ class ClientController extends Controller
         $client->full_name_ge = $request->input('client_name_ge');
         $client->full_name_ru = $request->input('client_name_ru');
         $client->full_name_en = $request->input('client_name_en');
+        $client->personal_number = $request->input('personal_number');
+        $client->birthday_date = $request->input('birthday_date');
         $client->number = $request->input('client_number');
         $client->address = $request->input('client_address');
         $client->email = $request->input('client_mail');
-        $client->sex = $request->input('sex');
+        if($request->input('sex') == ""){
+            $client->sex = "other";
+        }else{
+            $client->sex = $request->input('sex');
+        }
+        
         $client->save();
         $clientservices = array();
         if ($request->input('userpicker') && $request->input('datepicker') && $request->input('timepicker') && $request->input('servicepicker')) {
@@ -165,7 +175,9 @@ class ClientController extends Controller
             'datepicker' => '',
             'timepicker' => '',
             'servicepicker' => '',
-            'departments' => ''
+            'departments' => '',
+            'personal_number' => '',
+            'birthday_date' => ''
         ]);
         $client = Client::findOrFail($id);
         if ($request->input('group_name') != "") {
@@ -179,6 +191,8 @@ class ClientController extends Controller
         $client->full_name_ge = $request->input('client_name_ge');
         $client->full_name_ru = $request->input('client_name_ru');
         $client->full_name_en = $request->input('client_name_en');
+        $client->personal_number = $request->input('personal_number');
+        $client->birthday_date = $request->input('birthday_date');
         $client->number = $request->input('client_number');
         $client->address = $request->input('client_address');
         $client->email = $request->input('client_mail');
@@ -257,7 +271,7 @@ class ClientController extends Controller
         if ($service) {
 
             $inventories = $service->inventories()->get();
-            if (count($inventories) > 0) {
+            
                 $message = '';
                 foreach ($inventories as $prods) {
                     $prod = Product::find($prods->product_id);
@@ -277,9 +291,7 @@ class ClientController extends Controller
                         $prod->save();
                     }
                 }
-            } else {
-                return redirect('/')->with('error', 'სერვის არ გააჩნია ინვენტარი');
-            }
+            
         } else {
             return back()->with('error', 'დაფიქსირდა შეცდომა');
         }
@@ -407,6 +419,7 @@ class ClientController extends Controller
         return view('theme.template.company.finance', compact('services'));
     }
     public function showclients(){
+         
         $queries = [
             'date',
             'pricefrom',
@@ -435,7 +448,7 @@ class ClientController extends Controller
                     $queries[$req] = request($req);
                 }
             }
-            $todayservices = $todayservices->select('client_services.id','client_services.user_id', 'client_services.service_id', 'client_services.status', 'client_services.status', 'services.title_'.app()->getLocale(), 'client_services.session_start_time', 'clients.number', 'clients.full_name_'.app()->getLocale(), 'services.price', 'profiles.first_name', 'profiles.last_name');
+            $todayservices = $todayservices->select('client_services.id', 'client_services.clinetserviceable_id', 'client_services.user_id', 'client_services.service_id', 'client_services.status', 'client_services.status', 'services.title_'.app()->getLocale(), 'client_services.session_start_time', 'clients.number', 'clients.full_name_'.app()->getLocale(), 'services.price', 'profiles.first_name', 'profiles.last_name');
             
             $todayservices = $todayservices->paginate(40)->appends($queries);
 
@@ -445,7 +458,7 @@ class ClientController extends Controller
             ->join('services', 'client_services.service_id', '=', 'services.id')
             ->join('clients', 'client_services.clinetserviceable_id', '=', 'clients.id')
             ->join('profiles', 'client_services.user_id', '=', 'profiles.profileable_id');
-            $todayservices = $todayservices->select('client_services.id', 'client_services.user_id', 'client_services.status', 'client_services.service_id', 'client_services.status', 'services.title_'.app()->getLocale(), 'client_services.session_start_time', 'clients.number', 'clients.full_name_'.app()->getLocale(), 'services.price', 'profiles.first_name', 'profiles.last_name');
+            $todayservices = $todayservices->select('client_services.id', 'client_services.clinetserviceable_id', 'client_services.user_id', 'client_services.status', 'client_services.service_id', 'client_services.status', 'services.title_'.app()->getLocale(), 'client_services.session_start_time', 'clients.number', 'clients.full_name_'.app()->getLocale(), 'services.price', 'profiles.first_name', 'profiles.last_name');
             $todayservices = $todayservices->whereDate('session_start_time', Carbon::today());
             $todayservices = $todayservices->paginate(40)->appends($queries);
         }
@@ -453,12 +466,28 @@ class ClientController extends Controller
         $totalproductcost = Product::sum('price')/100;
         $totalServiceCost = Service::sum('price')/100;
         $allclientservices = ClientService::count();
+        $paymethods = PayController::all();
+        $services = Service::all();
         $income = ClientService::where('status', true)
         ->join('services', 'client_services.service_id', '=', 'services.id')
         ->sum('price')/100;
-        return view('theme.template.home.home_index', compact('totalclients', 'income', 'totalServiceCost', 'todayservices', 'totalproductcost', 'queries'));
+        return view('theme.template.home.home_index', compact('services', 'paymethods', 'totalclients', 'income', 'totalServiceCost', 'todayservices', 'totalproductcost', 'queries'));
     }
-
+    public function serviceselect(Request $request)
+    {
+        $this->validate($request, [
+            'id' => 'required|integer'
+        ]);
+        $users = UserJob::where('service_id', $request->id)
+                ->join('users', 'user_jobs.user_id', '=', 'users.id')
+                ->join('profiles', 'profiles.profileable_id', '=', 'user_jobs.user_id')
+                ->get();
+        $html = '';
+        foreach($users as $user){
+            $html .= '<option value="'.$user->id.'">'.$user->first_name.' '.$user->last_name.'</option>';
+        }
+        return response()->json(array('status' => true, 'html' => $html));
+    }
     /**
      * Convert to Excel
      */

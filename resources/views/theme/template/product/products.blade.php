@@ -179,14 +179,15 @@
                               <label class="text-left block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
                                 თვითღირებულება
                               </label>
-                            <input value="{{$prod->price/100}} @if ($prod->currency_type == 'gel')₾@elseif($prod->currency_type == 'usd')$@elseif($prod->currency_type == 'eur') €@endif"
+                              <input value="{{$prod->price/100}} @if ($prod->currency_type == 'gel')₾@elseif($prod->currency_type == 'usd')$@elseif($prod->currency_type == 'eur') €@endif"
                               class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="text" readonly>
                             </div>
                             <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
                               <label class="text-left block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
                                 ცვეთის ფასი <SMALl>(დღე)</SMALl>
                               </label>
-                             
+                              <input value="{{($prod->price/100)/$prod->expluatation_days}}"
+                              class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="text" readonly>
                               
                            </div>
                           </div>

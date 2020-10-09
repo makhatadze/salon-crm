@@ -23,6 +23,8 @@ use Carbon\Carbon;
 
 use App\Exports\UserExport;
 use App\Role;
+use App\Service;
+use App\UserJob;
 use Maatwebsite\Excel\Facades\Excel;
 
 use Illuminate\Support\Facades\Hash;
@@ -140,7 +142,6 @@ class UserController extends Controller
                     }
                 }
 
-
                 return redirect('user')->with('success', 'User added.');
 
 
@@ -152,8 +153,10 @@ class UserController extends Controller
 
             $companies = Company::whereNull('deleted_at')->get();
 
+            $services = Service::all();
             return view('theme.template.user.user_add', [
-                'companies' => $companies
+                'companies' => $companies,
+                'services' => $services
             ]);
         } else {
             abort('404');
@@ -327,18 +330,19 @@ class UserController extends Controller
     public function showprofilesettings($id){
         $user = User::findOrFail($id);
         $departments = Department::all();
+        $services = Service::all();
         $roles = Role::all();
-        return view('theme.template.user.user_account_settings', compact('user', 'departments', 'roles'));
+        return view('theme.template.user.user_account_settings', compact('user','services', 'departments', 'roles'));
     }
     public function updateuserprofile(Request $request, $id){
-
         $this->validate($request,[
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
             'user_percent' => 'required|numeric|between:0,99.99',
             'user_salary' => 'required|integer|min:0',
             'department_id' => '',
-            'rolename' => 'required|string'
+            'rolename' => 'required|string',
+            'services' => ''
         ]);
         $user = User::findOrFail($id);
         $user->syncRoles(['user', $request->input('rolename')]);
@@ -350,7 +354,17 @@ class UserController extends Controller
             ]);
             $profile->phone = $request->input('phone');
         }
-
+        if(sizeof($request->services) > 0){
+            foreach(UserJob::where('user_id', $id)->get() as $hasjob){
+                $hasjob->delete();
+            }
+            foreach($request->services as $serv){
+                UserJob::create([
+                    'user_id' => $id,
+                    'service_id' => $serv
+                ]);
+            }
+        }
         if($request->input('email') != $user->email){
             $this->validate($request,[
                 'email' => 'required|email|max:255|unique:users',

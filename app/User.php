@@ -6,7 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
-use App\UserHasJob;
+use App\UserJob;
 use App\Office;
 use App\Department;
 use App\SalaryToService;
@@ -58,6 +58,17 @@ class User extends Authenticatable implements Auditable
     }
     public function salary(){
         return $this->hasOne('App\Salary', 'user_id');
+    }
+    public function userHasJob(){
+        return $this->hasOne('App\userHasJob', 'user_id');
+    }
+    public function hasService($id)
+    {
+        $job = UserJob::where([['user_id', $this->id],['service_id', $id]])->first();
+        if($job){
+            return true;
+        }
+        return false;
     }
     /**
      * @return string

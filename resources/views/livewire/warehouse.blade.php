@@ -41,7 +41,7 @@
                         <label class="block text-left font-caps uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
                           ცვეთის პერიოდი <small>(დღე)</small>
                         </label>
-                        <input class="appearance-none block w-full text-xs font-normal bg-gray-200 text-gray-700 border border-gray-200 rounded py-4 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" value="0" name="expluatation_days" required type="number" min="0" step="1">
+                        <input class="appearance-none block w-full text-xs font-normal bg-gray-200 text-gray-700 border border-gray-200 rounded py-4 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" value="1" name="expluatation_days" required type="number" min="1" step="1">
                       </div>
                       @endif
                       <div class="mt-3 flex w-full">
@@ -233,13 +233,13 @@
                               <label for="pricefrom" class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
                                 ფასი <small>დან</small>
                               </label>
-                              <input wire:model="pricefrom" name="pricefrom" placeholder="xxxxxxxx" type="number" step="0.01" min="0" id="pricefrom" class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white">
+                              <input wire:model="pricefrom" name="pricefrom" placeholder="xxxxxxxx" type="number" step="0.01" min="1" id="pricefrom" class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white">
                             </div>
                             <div class="w-full md:w-1/2 px-3">
                               <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="pricetill">
                                 ფასი <small>მდე</small>
                               </label>
-                              <input type="number" placeholder="xxxxxxxx" step="0.01" min="0" id="pricetill" wire:model="pricetill" name="pricetill" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                              <input type="number" placeholder="xxxxxxxx" step="0.01" min="1" id="pricetill" wire:model="pricetill" name="pricetill" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
                             </div>
                           </div>
                           <div class="flex flex-wrap -mx-3 mb-1">
@@ -247,7 +247,7 @@
                               <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
                                 რაოდენობა
                               </label>
-                              <input type="number" placeholder="xxxxxxxx" step="0.01" min="0" id="amout" wire:model="amout" name="amout" class="appearance-none block w-full font-normal text-xs bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white">
+                              <input type="number" placeholder="xxxxxxxx" step="0.01" min="1" id="amout" wire:model="amout" name="amout" class="appearance-none block w-full font-normal text-xs bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white">
                             </div>
                             <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                                 <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-state">

@@ -63,7 +63,7 @@ class ServiceController extends Controller
      */
     public function create()
     {
-        $categories = Category::all();
+        $categories = Category::where('model_name', 'App\Service')->get();
         $inventories = Product::where([['published', true], ['type', 2], ['warehouse', false]])->get();
         $action = "post";
         return view('theme.template.service.add_service', compact('action', 'categories', 'inventories'));
@@ -84,8 +84,7 @@ class ServiceController extends Controller
             'editor-ge' => 'required',
             'editor-en' => '',
             'editor-ru' => '',
-            'duration_days' => 'required|integer|min:0',
-            'duration_hours' => 'required|integer|min:0|max:24',
+            'duration_hours' => 'required|integer|min:0',
             'duration_minutes' => 'required|integer|min:0|max:60',
             'category' => '',
             'price' => 'required|between:0,9999.99|numeric',
@@ -98,11 +97,12 @@ class ServiceController extends Controller
             'quantity' => '',
             'new_category' => ''
         ]);
-        $duration = ($request->input('duration_days')*24*60)+($request->input('duration_hours')*60)+$request->input('duration_minutes');
+        $duration = ($request->input('duration_hours')*60)+$request->input('duration_minutes');
         $service = new Service;
         if($request->input('new_category') != ""){
          $category = new Category;
          $category->title_ge = $request->input('new_category');
+         $category->model_name = "App\Service";
          $category->save();
          $service->category_id = $category->id;
         }else{
@@ -153,7 +153,7 @@ class ServiceController extends Controller
      */
     public function edit(Service $service)
     {
-        $categories = Category::whereNull('deleted_at')->get();
+        $categories = Category::where('model_name', 'App\Service')->get();
         $inventories = Product::where([['published', true], ['type', 2], ['warehouse', false]])->get();
         return view('theme.template.service.edit_service', compact('service', 'inventories', 'categories'));
     }
@@ -175,8 +175,7 @@ class ServiceController extends Controller
             'editor-ge' => 'required',
             'editor-en' => '',
             'editor-ru' => '',
-            'duration_days' => 'required|integer|min:0',
-            'duration_hours' => 'required|integer|min:0|max:24',
+            'duration_hours' => 'required|integer|min:0',
             'duration_minutes' => 'required|integer|min:0|max:60',
             'category' => '',
             'price' => 'required|between:0,9999.99|numeric',
@@ -190,10 +189,11 @@ class ServiceController extends Controller
             'new_category' => ''
         ]);
         
-        $duration = ($request->input('duration_days')*24*60)+($request->input('duration_hours')*60)+$request->input('duration_minutes');
+        $duration = ($request->input('duration_hours')*60)+$request->input('duration_minutes');
         if($request->input('new_category') != ""){
          $category = new Category;
          $category->title_ge = $request->input('new_category');
+         $category->model_name = "App\Service";
          $category->save();
          $service->category_id = $category->id;
         }else{

@@ -24,7 +24,8 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
         // User Controller
         Route::group(['middleware' => ['permission:user|admin']], function () {
             // User and Admin
-
+            
+            Route::get('/showclients', 'ClientController@showclients')->name('ShowClients');
             Route::post('/profile/filter', 'UserController@profilefilter')->name('ProfileFilter');
             Route::get('/', 'HomeController@ActionHome')->name('ActionHome');
             Route::get('/profile/accountsettings', 'UserController@accountsetting');
@@ -92,6 +93,8 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
         });
 
         Route::group(['middleware' => ['permission:add_product|delete_product|admin']], function () {
+            Route::get('/units', 'ProductController@units');
+            Route::post('/storeunits', 'ProductController@storeunits')->name('AddUnitReq');
             Route::post('/chooseforcart', 'ProductController@chooseforcart')->name('ChooseForCart');
             Route::post('/addtosales', 'ProductController@addtosales')->name('addToSales');
             Route::post('/warehouse/adddepartment/{id}', 'WarehouseController@departmentToHouse')->name('DepartmentToProduct');
@@ -143,11 +146,11 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
         Route::group(['middleware' => ['permission:see_clients|add_client|delete_client|admin']], function () {
             Route::get('/clients', 'ClientController@index');
             Route::post('/clinets/getbydate', 'ClientController@getbydate')->name('GetServiceByDate');
-            Route::get('/showclients', 'ClientController@showclients')->name('ShowClients');
         
         });
         Route::group(['middleware' => ['permission:add_client|delete_client|admin']], function () {
             Route::get('/clients/create', 'ClientController@create')->name('CreateClient');
+            Route::post('/clients/serviceselect', 'ClientController@serviceselect')->name('selectService');
             Route::post('/clients/turnon', 'ClientController@turnon')->name('turnonawqa');
             Route::get('/clients/edit/{id}', 'ClientController@edit')->name('EditClient');
             Route::post('/client/ajaxdelete', 'ClientController@removeservice')->name('AjaxServiceRemove');

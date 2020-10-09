@@ -27,6 +27,7 @@ use App\Exports\ProductExport;
 use App\Exports\SaleExport;
 use App\Field;
 use App\PayController;
+use App\Unit;
 use Auth;
 use Cart;
 
@@ -85,9 +86,9 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $distributions = DistributionCompany::whereNull('deleted_at')->get();
-        $departments = Department::whereNull('deleted_at')->get();
-        $categories = Category::where('categoryable_type', 'App\Product')->whereNull('deleted_at')->get();
+        $distributions = DistributionCompany::all();
+        $departments = Department::all();
+        $categories = Category::where('model_name', 'App\Product')->get();
         return view('theme.template.product.add_product', compact('departments', 'categories', 'distributions'));
     }
 
@@ -112,8 +113,7 @@ class ProductController extends Controller
     public function edit(Product $product)
     {
         $distributions = DistributionCompany::whereNull('deleted_at')->get();
-        $departments = Department::whereNull('deleted_at')->get();
-        $categories = Category::all();
+        $categories = Category::where('model_name', 'App\Product')->get();
         $departments = Department::all();
         $brands = Brand::all();
         return view('theme.template.product.edit_product', compact('departments', 'categories', 'product', 'distributions', 'brands', 'departments'));
@@ -140,6 +140,7 @@ class ProductController extends Controller
             'stock' => 'required|between:0,99.99|min:0',
             'editor-ge' => 'required',
             'editor-ru' => '',
+            'new_category' => '',
             'editor-en' => '',
             'price' => 'required|between:0,99.99|min:0',
             'currency' => 'required|string',
@@ -153,6 +154,16 @@ class ProductController extends Controller
             'field_description' => ''
         ]);
         $fields = array();
+        
+        if($request->input('new_category') != ""){
+         $category = new Category;
+         $category->title_ge = $request->input('new_category');
+         $category->model_name = "App\Product";
+         $category->save();
+         $product->category_id = $category->id;
+        }else{
+         $product->category_id = $request->input('get_category');
+        }
         if($request->input('field_name') && $request->input('field_description')){
             foreach ($request->input('field_name') as $key => $value) {
                 $fields[] = [
@@ -190,7 +201,6 @@ class ProductController extends Controller
             $product->unit = $request->input('unit');
             $product->stock = $request->input('stock');
         }
-        $product->category_id = intval($request->input('get_category'));
         $product->price = intval($request->input('price') * 100);
         $product->currency_type = $request->input('currency');
         $product->save();
@@ -405,5 +415,21 @@ class ProductController extends Controller
     public function saleexport(Sale $sale)
     {
         return Excel::download(new SaleExport($sale->id), 'sale.xlsx');
+    }
+    // Units
+    public function units(){
+        $units = Unit::all();
+        return view('theme.template.unit.index', compact('units'));
+    }
+    public function storeunits(Request $request)
+    {
+
+        $this->validate($request, [
+            'name' => 'required|string'
+        ]);
+        $unit = new Unit;
+        $unit->name = $request->input('name');
+        $unit->save();
+        return redirect()->back();
     }
 }

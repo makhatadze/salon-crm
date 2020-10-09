@@ -41,15 +41,11 @@
                 
             <div class="flex">
                 <div class="w-1/2 flex">
-                    <div class="w-1/3 p-2">
-                        <label class="font-bold font-caps text-xs text-gray-700">დღე</label>
-                        <input required type="number" name="duration_days" min="0" step="1" class="font-normal text-xs mt-2 appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white">
-                    </div>
-                    <div class="w-1/3 p-2">
+                    <div class="w-1/2 p-2">
                         <label class="font-bold font-caps text-xs text-gray-700">საათი</label>
                         <input required type="number" name="duration_hours" min="0" step="1" class="font-normal text-xs mt-2 appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white">
                     </div>
-                    <div class="w-1/3 p-2">
+                    <div class="w-1/2 p-2">
                         <label class="font-bold font-caps text-xs text-gray-700">წუთი</label>
                         <input required type="number" name="duration_minutes" min="0" step="1" class="font-normal text-xs mt-2 appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white">
                     </div>
