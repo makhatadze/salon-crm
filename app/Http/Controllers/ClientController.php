@@ -184,8 +184,9 @@ class ClientController extends Controller
             $imagename = date('Ymhs').$request->file('client_image')->getClientOriginalName();
             $destination = base_path() . '/storage/app/public/clientimg';
             $request->file('client_image')->move($destination, $imagename);
-            Storage::delete('public/clientimg/'.$client->image->name);
+           
             if($client->image){
+                Storage::delete('public/clientimg/'.$client->image->name);
                 $firstimg = $client->image;
                 $firstimg->name = $imagename;
                 $firstimg->save();
@@ -296,7 +297,7 @@ class ClientController extends Controller
                 SalaryToService::create([
                     'user_id' => $user->id,
                     'service_id' => $id,
-                    'service_price' => $clientservice->getServicePrice() * 100,
+                    'service_price' => $clientservice->new_price,
                     'percent' => $userProfile->percent
                 ]);
             }
@@ -417,120 +418,42 @@ class ClientController extends Controller
 
     public function services(Request $request)
     {
-        $this->validate($request, [
-            'client_name' => 'nullable|string|max:30',
-            'service' => 'nullable|string',
-            'date_from' => 'nullable|date',
-            'date_to' => 'nullable|date',
-            'price_from' => 'nullable|numeric|',
-            'price_to' => 'nullable|numeric|gt:price_from',
-            'pay_method' => "nullable|string",
-            'pay_status' => "nullable|string",
-        ]);
-        $services = ClientService::query()
-            ->join('profiles', 'profiles.profileable_id', '=', 'client_services.user_id')
-            ->join('services', 'services.id', '=', 'client_services.service_id')
-            ->join('clients', 'clients.id', '=', 'client_services.clinetserviceable_id');
-        if ($request) {
-            if ($request->client_name) {
-                $clientName = 'clients.full_name_' . App()->getLocale();
-                $services = $services->where($clientName, 'like', '%' . $request->client_name . '%');
-            }
-//            $services = $services->where('CONCAT(profiles.first_name, ", ", profiles.last_name)', 'LIKE',  'ჯოხაძე');
-            if ($request->service) {
-                $serviceTitle = 'services.title_' . App()->getLocale();
-                $services = $services->where($serviceTitle, 'LIKE', '%' . $request->service . '%');
-            }
-            if ($request->date_from) {
-                $services = $services->whereDate('client_services.session_start_time', '>=', Carbon::parse($request->date_from));
-            }
-            if ($request->date_to) {
-                $services = $services->whereDate('client_services.session_start_time', '<=', Carbon::parse($request->date_to));
-            }
-            if ($request->price_from) {
-                $services = $services->where('services.price', '>=', $request->price_from * 100);
-            }
-            if ($request->price_to) {
-                $services = $services->where('services.price', '<=', $request->price_to * 100);
-            }
-            if ($request->pay_method && $request->pay_method != 'all') {
-                $services = $services->where('client_services.pay_method', '=', $request->pay_method);
-            }
-            if ($request->pay_status != 0) {
-                if ($request->pay_status == 1) {
-                    $services = $services->where('client_services.status', '=', true);
-                }
-                if ($request->pay_status == 2) {
-                    $services = $services->where('client_services.status', '=', false);
-                    $services = $services->whereDate('client_services.session_start_time', '>', Carbon::now());
-                }
-                if ($request->pay_status == 3) {
-                    $services = $services->where('client_services.status', '=', false);
-                    $services = $services->whereDate('client_services.session_start_time', '<', Carbon::now());
-                }
-            }
-        }
-        $services = $services->paginate(20);
-
-//        $services = ClientService::whereNull('deleted_at')->paginate(20);
-
-//        $services = ClientService::whereNull('deleted_at')->paginate(20);
-        return view('theme.template.company.finance', compact('services'));
+        return view('theme.template.company.finance',);
     }
     public function showclients(){
-         
-        $queries = [
-            'date',
-            'pricefrom',
-            'pricetill',
-            'client_name',
-            'worker_name',
-        ];
-        if(request()->all()){
-            $todayservices = ClientService::query()
-            ->join('services', 'client_services.service_id', '=', 'services.id')
-            ->join('clients', 'client_services.clinetserviceable_id', '=', 'clients.id')
-            ->join('profiles', 'client_services.user_id', '=', 'profiles.profileable_id');
-            foreach ($queries as $req) {
-                if(request($req)){
-                    if($req == "date"){
-                        $date = explode(' - ',request($req));
-                        $todayservices = $todayservices->whereDate('session_start_time', '>=', Carbon::parse($date[0]))
-                        ->whereDate('session_start_time', '<=', Carbon::parse($date[1]));
-                    }elseif($req == "pricefrom"){
-                        $todayservices = $todayservices->where('price', '>=', request($req)*100);
-                    }elseif($req == "pricetill"){
-                        $todayservices = $todayservices->where('price', '<=', request($req)*100);
-                    }elseif($req == "client_name"){
-                        $todayservices = $todayservices->where('full_name_'.app()->getLocale(), 'like', '%'.request($req).'%');
-                    }
-                    $queries[$req] = request($req);
-                }
-            }
-            $todayservices = $todayservices->select('client_services.id', 'client_services.clinetserviceable_id', 'client_services.user_id', 'client_services.service_id', 'client_services.status', 'client_services.status', 'services.title_'.app()->getLocale(), 'client_services.session_start_time', 'clients.number', 'clients.full_name_'.app()->getLocale(), 'services.price', 'profiles.first_name', 'profiles.last_name');
-            
-            $todayservices = $todayservices->paginate(40)->appends($queries);
-
-        }else{
-            
-            $todayservices = ClientService::query()
-            ->join('services', 'client_services.service_id', '=', 'services.id')
-            ->join('clients', 'client_services.clinetserviceable_id', '=', 'clients.id')
-            ->join('profiles', 'client_services.user_id', '=', 'profiles.profileable_id');
-            $todayservices = $todayservices->select('client_services.id', 'client_services.clinetserviceable_id', 'client_services.user_id', 'client_services.status', 'client_services.service_id', 'client_services.status', 'services.title_'.app()->getLocale(), 'client_services.session_start_time', 'clients.number', 'clients.full_name_'.app()->getLocale(), 'services.price', 'profiles.first_name', 'profiles.last_name');
-            $todayservices = $todayservices->whereDate('session_start_time', Carbon::today());
-            $todayservices = $todayservices->paginate(40)->appends($queries);
+        $date = '';
+        if(request('date')){
+            $date = request('date');
         }
+        $selecteduser = '';
+        if(request('users')){
+            $selecteduser = request('users');
+        }
+
         $totalclients = Client::count();
         $totalproductcost = Product::sum('price')/100;
         $totalServiceCost = Service::sum('price')/100;
         $allclientservices = ClientService::count();
         $paymethods = PayController::all();
+        $alluser = User::permission('user')->get();;
         $services = Service::all();
+        if ( request('users')) {
+            
+        $users = User::permission('user')->where('id', intval(request('users')))
+        ->where('active', true)
+        ->get();
+        }else{
+            
+        $users = User::permission('user')
+        ->where('active', true)
+        ->get();
+        }
+        $clients = Client::all();
         $income = ClientService::where('status', true)
         ->join('services', 'client_services.service_id', '=', 'services.id')
         ->sum('price')/100;
-        return view('theme.template.home.home_index', compact('services', 'paymethods', 'totalclients', 'income', 'totalServiceCost', 'todayservices', 'totalproductcost', 'queries'));
+        return view('theme.template.home.home_index', compact('alluser', 'services', 'selecteduser', 'users', 'clients', 'paymethods', 'totalclients', 'income', 'totalServiceCost', 'totalproductcost', 'date'));
+
     }
     public function serviceselect(Request $request)
     {

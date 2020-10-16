@@ -29,7 +29,10 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
             Route::post('/profile/filter', 'UserController@profilefilter')->name('ProfileFilter');
             Route::get('/', 'HomeController@ActionHome')->name('ActionHome');
             Route::get('/profile/accountsettings', 'UserController@accountsetting');
+            Route::post('/clients/turnon', 'ClientController@turnon')->name('turnonawqa');
+            Route::post('/clients/checktime', 'ClientController@checktime')->name('checkTime');
             Route::get('/profile/changepassword', 'UserController@changepassword');
+            Route::post('/clients/addservice', 'ClientController@addservice')->name('AddClientService');
             Route::post('/profile/storenewpassword', 'UserController@storenewpassword')->name('ChangePassword');
 
         });
@@ -149,13 +152,10 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
         
         });
         Route::group(['middleware' => ['permission:add_client|delete_client|admin']], function () {
-            Route::post('/clients/addservice', 'ClientController@addservice')->name('AddClientService');
             Route::post('/clients/getUserServices', 'ClientController@getUserServices')->name('getUserServices');
             Route::get('/clients/create', 'ClientController@create')->name('CreateClient');
             Route::post('/clients/serviceselect', 'ClientController@serviceselect')->name('selectService');
-            Route::post('/clients/checktime', 'ClientController@checktime')->name('checkTime');
             Route::post('/clients/addconsignation/{ClientService}', 'ClientController@addconsignation')->name('addconsignation');
-            Route::post('/clients/turnon', 'ClientController@turnon')->name('turnonawqa');
             Route::get('/clients/edit/{id}', 'ClientController@edit')->name('EditClient');
             Route::post('/client/ajaxdelete', 'ClientController@removeservice')->name('AjaxServiceRemove');
             Route::post('/clients/update/{id}', 'ClientController@update')->name('UpdateClient');
@@ -171,7 +171,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
         // Export
         Route::group(['middleware' => ['permission:export_finances|admin']], function () {
         
-            Route::any('/clients/services', 'ClientController@services')->name('Finances');
+            Route::any('/clients/finances', 'ClientController@services')->name('Finances');
             Route::get('/statistics', 'StatisticController@index')->name('StatisticController');
             Route::get('/clients/export', 'ClientController@export')->name('ClientExcel');
             Route::get('/clients/financeExport', 'ClientController@financeExport')->name('FinanceExport');

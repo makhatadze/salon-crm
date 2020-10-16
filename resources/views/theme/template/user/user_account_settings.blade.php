@@ -81,7 +81,13 @@
                         {{$item->percent}} <sub>%</sub>
                     </div>
                     <div class="ml-4 mr-auto">
-                    <div class="font-medium">{{$item->getClientName()}}</div>
+                    <div class="font-medium">
+                      @if ($item->service_id)
+                      {{$item->getClientName()}}
+                      @elseif($item->sale_id)
+                      გაყიდვიდან
+                      @endif
+                    </div>
                         <div class="text-gray-600 text-xs">{{Carbon\Carbon::parse($item->created_at)->settings([
                             'toStringFormat' => 'jS \o\f F, Y',
                         ])}}</div>

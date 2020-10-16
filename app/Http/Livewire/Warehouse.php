@@ -73,7 +73,7 @@ class Warehouse extends Component
             ['unit', 'LIKE', '%'.$this->unit.'%'], 
             ['stock', '<=', floatval($this->amout)], 
             ['storage_id', 'like', '%'.$this->storage.'%']])
-        ->whereBetween('price', [$this->pricefrom*100, $this->pricetill*100])
+        ->whereBetween('price', [$this->pricefrom*100 != "" ? $this->pricefrom*100 : 1, $this->pricetill != "" ? $this->pricetill*100 : 1])
         ->paginate(15);
         $departments = Department::all();
         $storages = Storage::all();

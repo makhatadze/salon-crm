@@ -27,6 +27,7 @@ use App\Exports\ProductExport;
 use App\Exports\SaleExport;
 use App\Field;
 use App\PayController;
+use App\SalaryToService;
 use App\Unit;
 use Cart;
 use Illuminate\Support\Facades\Auth;
@@ -363,14 +364,18 @@ class ProductController extends Controller
     }
     //Store
     public function addtosales(Request $request){
+        
+        
         $this->validate($request, [
             'client_id' => 'required|integer',
             'address' => 'required|string',
             'paymethod' => 'required|integer'
         ]);
         // Check Cart 
-        $total = Cart::getTotal();
-        if($total > 0){
+        $user_id = Auth()->user()->id;
+        $total = Cart::session($user_id)->getTotal();
+        
+        if($total == 0){
             return redirect()->back()->with('danger', 'კალათა ცარიელია');
         }
         // Check Pay Method
@@ -380,7 +385,6 @@ class ProductController extends Controller
         }
         $client = Client::findOrFail($request->client_id);
         
-        $user_id = Auth()->user()->id;
         $cart = Cart::session($user_id)->getContent();
         $sale = new Sale();
         $sale->client_id = $request->client_id;
@@ -389,6 +393,12 @@ class ProductController extends Controller
         $sale->pay_method = $paymethods->{"name_".app()->getLocale()};
         $sale->seller_id = Auth()->user()->id;
         $sale->save();
+        SalaryToService::create([
+            'user_id' => Auth::user()->id,
+            'sale_id' => $sale->id,
+            'service_price' => $total,
+            'percent' => Auth::user()->profile->percent
+        ]);
         foreach($cart as $order){
             $product = Product::findOrFail($order->id);
             $item = new Order;

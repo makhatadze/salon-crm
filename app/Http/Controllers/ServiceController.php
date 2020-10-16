@@ -231,9 +231,9 @@ class ServiceController extends Controller
             $imagename = date('Ymhs').$request->file('file')->getClientOriginalName();
             $destination = base_path() . '/storage/app/public/serviceimg';
             $request->file('file')->move($destination, $imagename);
-            Storage::delete('public/serviceimg/'.$service->image->name);
             
             if($service->image){
+                Storage::delete('public/serviceimg/'.$service->image->name);
                 $firstimg = $service->image;
                 $firstimg->name = $imagename;
                 $firstimg->save();

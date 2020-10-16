@@ -12,9 +12,16 @@ use OwenIt\Auditing\Contracts\Auditable;
 class Sale extends Model implements Auditable
 {
     
-use SoftDeletes, OwenIt\Auditing\Contracts\Auditable;
+use SoftDeletes, \OwenIt\Auditing\Auditable;
 
-    protected $fillable = ['client_id', 'address'];
+    protected $fillable = [
+        'client_id',
+        'service_id',
+        'service_price',
+        'percent',
+        'sale_id',
+        'address'
+    ];
     protected $table = 'sales';
     public function client(){
         return $this->belongsTo('App\Client');

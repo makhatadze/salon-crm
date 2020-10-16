@@ -287,7 +287,7 @@
 
 
 
-
+                    @if ($product->warehouse == 1 && $product->type != 1 || $product->warehouse == 0)
                     <div class="mt-3">
                         <label class="font-helvetica">სურათები</label>
                         <div class="border-2 border-dashed rounded-md mt-3 pt-4">
@@ -339,6 +339,7 @@
                             </div>
                         </div>
                     </div>
+                    @endif
                     <div class="my-4 items-center justify-between flex col-span-12">
                         <h6 class="font-bolder">დამატებითი ველები</h6>
                         <button type="button" id="addfields" class="bg-gray-200 p-2">

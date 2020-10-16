@@ -43,7 +43,11 @@
                 <tr>
                 <td class="whitespace-no-wrap items-center">
                 <div class="flex">
-                    <img src="{{asset('../storage/clientimg/'.$client->image->name)}}" class="h-12 w-12 object-cover rounded-md mr-3">
+                    @if ($client->image)
+                        <img src="{{asset('../storage/clientimg/'.$client->image->name)}}" class="h-12 w-12 object-cover rounded-md mr-3">
+                    @else 
+                        <img src="{{asset('../storage/clientimg/user.jpg')}}" class="h-12 w-12 object-cover rounded-md mr-3">
+                    @endif
                 <div>
                     <h6 class="font-bold text-black uppercase text-sm">
                         <a href="{{route('EditClient', $client->id)}}">

@@ -121,7 +121,7 @@
                                           <input class="appearance-none block font-normal text-xs w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="full_name_ge" type="text" placeholder="კლიენტის სახელი" name="full_name_ge">
                                         </div>
                                         <div class="w-full md:w-1/2 px-3">
-                                          <input class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="clinet_number" type="text" placeholder="კლიენტის ნომერი" name="clinet_number">
+                                          <input class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="client_number" type="text" placeholder="კლიენტის ნომერი" name="client_number">
                                         </div>
                                       </div>
                                       <p class="font-normal text-xs mb-2">დაარეგისტრირეთ ან აირჩიეთ კლიენტი</p>
@@ -481,7 +481,7 @@
                             </span>               
                             <div class="w-full md:w-1/3 px-3 flex items-center justify-center">
                                 <div class="flex items-center justify-center relative">
-                                <input type="hidden" name="personal" id="personal`+$id+`" value="{{$user->id}}">
+                                <input type="hidden" name="personal" id="personal`+$id+`" value="`+getid+`">
                                     <select required name="service[]" id="getservice`+$id+`" class="block text-xs font-normal appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
                                     <option>აირჩიეთ</option>
                                     `+data.html+`
@@ -513,7 +513,7 @@
                                 </div>
                         </div>
                         
-                        <p class="font-normal w-full text-xs text-red-500" id="text{{$user->id}}"> </p>
+                        <p class="font-normal w-full text-xs text-red-500" id="text`+getid+`"> </p>
                         `;
                         $('#service'+getid+'add').append($html);
                     }
@@ -560,7 +560,7 @@
 
     }
     function minustime($id){
-        if(parseInt($('#duration'+$id).html()) <= 15){
+        if(parseInt($('#duration'+$id).val()) <= 15){
             
         }else{
             $('#duration'+$id).val(parseInt($('#duration'+$id).val())-5);

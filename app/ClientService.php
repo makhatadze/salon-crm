@@ -48,11 +48,7 @@ class ClientService extends Model implements Auditable
     }
     
     public function getEndTime(){
-        $duration = Service::find($this->service_id);
-        if($duration){
-          return Carbon::parse($this->session_start_time)->addminutes($duration->duration_count)->isoFormat('HH:MM');
-        }
-        return;
+          return Carbon::parse($this->session_start_time)->addMinutes($this->duration)->format('H:i');
     }
 
     /**

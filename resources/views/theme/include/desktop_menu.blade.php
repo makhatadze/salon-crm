@@ -127,6 +127,12 @@
                         <div class="side-menu__title font-normal text-xs"> დეპარტამენტები</div>
                     </a>
                 </li>
+                <li>
+                    <a href=" {{route('MoneyController')}} " class="side-menu custom-nav-item" data-menu="companies">
+                        <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
+                        <div class="side-menu__title font-normal text-xs"> თანხის ბრუნვა </div>
+                    </a>
+                </li>
             </ul>
         </li>
         @endif
@@ -206,13 +212,6 @@
                         <div class="side-menu__icon"><i data-feather="circle" style="width: 15px; height: 15px;"></i>
                         </div>
                         <div class="side-menu__title font-normal text-xs"> გადახდის მეთოდები</div>
-                    </a>
-                </li>
-                <li>
-                    <a href="/units" class="side-menu custom-nav-item">
-                        <div class="side-menu__icon"><i data-feather="circle" style="width: 15px; height: 15px;"></i>
-                        </div>
-                        <div class="side-menu__title font-normal text-xs">ერთეულები</div>
                     </a>
                 </li>
             </ul>

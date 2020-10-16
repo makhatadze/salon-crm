@@ -33,4 +33,16 @@ class SalaryToService extends Model implements Auditable
         }
         return;
     }
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
+    public function service()
+    {
+        return $this->belongsTo('App\ClientService');
+    }
+    public function sale()
+    {
+        return $this->belongsTo('App\Sale');
+    }
 }

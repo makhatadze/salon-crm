@@ -22,7 +22,8 @@
                     <br>
                     sign in to your account.
                 </div>
-                <div class="-intro-x mt-5 text-lg text-white">Manage all your e-commerce accounts in one place</div>
+                <div class="-intro-x mt-5 text-lg text-white">Manage all your e-commerce accounts in one place 
+                    <small style="font-size: 1px">ედო შე ბოზო</small></div>
             </div>
         </div>
         <div class="h-screen xl:h-auto flex py-5 xl:py-0 my-10 xl:my-0">
