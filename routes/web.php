@@ -149,8 +149,12 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
         
         });
         Route::group(['middleware' => ['permission:add_client|delete_client|admin']], function () {
+            Route::post('/clients/addservice', 'ClientController@addservice')->name('AddClientService');
+            Route::post('/clients/getUserServices', 'ClientController@getUserServices')->name('getUserServices');
             Route::get('/clients/create', 'ClientController@create')->name('CreateClient');
             Route::post('/clients/serviceselect', 'ClientController@serviceselect')->name('selectService');
+            Route::post('/clients/checktime', 'ClientController@checktime')->name('checkTime');
+            Route::post('/clients/addconsignation/{ClientService}', 'ClientController@addconsignation')->name('addconsignation');
             Route::post('/clients/turnon', 'ClientController@turnon')->name('turnonawqa');
             Route::get('/clients/edit/{id}', 'ClientController@edit')->name('EditClient');
             Route::post('/client/ajaxdelete', 'ClientController@removeservice')->name('AjaxServiceRemove');
@@ -233,4 +237,5 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
     });
     Auth::routes();
     Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout');
+
 });

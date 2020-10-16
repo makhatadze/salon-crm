@@ -28,9 +28,9 @@ use App\Exports\SaleExport;
 use App\Field;
 use App\PayController;
 use App\Unit;
-use Auth;
 use Cart;
-
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ProductController extends Controller
@@ -197,7 +197,9 @@ class ProductController extends Controller
             $product->unlimited_expluatation = false;
         }
 
-        if($product->unit != "unit"){
+        if($product->type == 1  && $product->warehouse == 0){
+        }else{
+            
             $product->unit = $request->input('unit');
             $product->stock = $request->input('stock');
         }
@@ -215,7 +217,7 @@ class ProductController extends Controller
                 ]);
             }
         }
-        return redirect('/products');
+        return redirect()->back();
     }
 
     /**
@@ -235,8 +237,8 @@ class ProductController extends Controller
             'imgid' => 'required|integer'
         ]);
         $img = Image::findOrFail($request->input('imgid'));
-        $img->deleted_at = Carbon::now('Asia/Tbilisi');
-        $img->save();
+        Storage::delete('public/productimage/'.$img->name);
+        $img->delete();
         return response()->json(array('status' => true), 200);
     }
     public function turn(Product $product, $status)

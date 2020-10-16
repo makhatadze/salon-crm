@@ -10,10 +10,13 @@ use OwenIt\Auditing\Contracts\Auditable;
 class Product extends Model implements Auditable
 {
     use SoftDeletes, \OwenIt\Auditing\Auditable;
-    protected $fillable = ['title_ge', 'title_ru', 'title_en', 'description_ge', 'description_ru', 'description_en', 'price', 'purchase_id', 'type', 'stock', 'unit', 'category_id', 'currency', 'department_id'];
+    protected $fillable = ['title_ge', 'title_ru', 'title_en', 'description_ge', 'description_ru', 'description_en', 'price', 'purchase_id', 'type', 'stock', 'unit', 'storage_id', 'currency', 'department_id'];
     protected $table = 'products';
     public function category(){
         return $this->belongsTo('App\Category');
+    }
+    public function storage(){
+        return $this->belongsTo('App\Storage');
     }
     public function purchase(){
         return $this->belongsTo('App\Purchase');

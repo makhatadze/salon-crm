@@ -32,13 +32,13 @@
                 
            <tr class="intro-x">
             <td>
-                @if ($purchase->purchase_type == "overhead")
-                <h6 class="font-bolder text-black">#{{$purchase->overhead_number}}</h6>
-                <small class="font-normal">ზედნადების ნომერი</small>
-                @elseif($purchase->purchase_type == "purchase")
-                <h6 class="font-bolder text-black">#{{$purchase->purchase_number}}</h6>
-                <small class="font-normal">ნასყიდობის ნომერი</small>
-                @endif
+              @if ($purchase->purchase_type == "overhead")
+              <h6 class="font-bolder text-black">#{{$purchase->overhead_number}}</h6>
+              <small class="font-normal">ზედნადების ნომერი</small>
+              @elseif($purchase->purchase_type == "purchase")
+              <h6 class="font-bolder text-black">#{{$purchase->purchase_number}}</h6>
+              <small class="font-normal">ნასყიდობის ნომერი</small>
+              @endif
             </td>
             <td class="font-normal">
                 {{$purchase->updated_at}} <br>

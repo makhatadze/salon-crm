@@ -11,6 +11,7 @@ use App\Office;
 use App\Department;
 use App\SalaryToService;
 use App\Company;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 class User extends Authenticatable implements Auditable
@@ -35,14 +36,6 @@ class User extends Authenticatable implements Auditable
         'password', 'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
     
     /**
      *
@@ -77,11 +70,18 @@ class User extends Authenticatable implements Auditable
         $hasjob = $this->userHasJob;
         if($hasjob){
             $department = Department::find($hasjob->department_id);
-            if($department->first()){
-                return $department->first()->{"name_".app()->getLocale()} ;
+            if($department){
+                return $department->{"name_".app()->getLocale()} ;
             }
         }
         return;
+    }
+    public function services($id){
+        $services = UserJob::select('services.id', 'services.title_ge', 'services.title_en', 'services.title_ru')
+                    ->where('user_id', $id)
+                    ->join('services', 'services.id', '=', 'user_jobs.service_id')
+                    ->get();
+        return $services;
     }
     public function sales(){
         return $this->hasMany('App\Sale', 'seller_id');    
@@ -130,9 +130,17 @@ class User extends Authenticatable implements Auditable
         }
         return;
     }
+    public function clientservices(){
+        return  $this->hasMany('App\ClientService', 'user_id');
+    }
     public function ClientCount(){
         $clients = ClientService::where([['user_id', $this->id], ['status', true]])->count();
         return $clients;
     }
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'interval_between_meeting' => 'integer',
+        'brake_between_meeting' => 'integer',
+    ];
 
 }

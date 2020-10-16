@@ -341,13 +341,13 @@
               </div>
               <div class="w-full md:w-1/3 px-3 mb-6 mt-3 md:mb-0">
                 <label class="font-bold font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
-                  კატეგორია
+                  საწყობი
                 </label>
                 <div class="relative">
-                  <select required name="category[]" class="block font-medium text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
-                    @if($categories)
-                        @foreach($categories as $cat)
-                    <option value="{{$cat->id}}" selected >{{$cat->{'title_'.app()->getLocale()} }}</option>
+                  <select required name="storage[]" class="block font-medium text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
+                    @if($storages)
+                        @foreach($storages as $cat)
+                    <option value="{{$cat->id}}" selected >{{$cat->name }}</option>
                         @endforeach
                     @endif
                   </select>

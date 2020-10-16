@@ -11,6 +11,7 @@ use App\Category;
 use App\DistributionCompany;
 
 use App\Exports\PurchaseExport;
+use App\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 
 use Carbon\Carbon;
@@ -57,9 +58,9 @@ class PurchaseController extends Controller
      */
     public function create()
     {
-        $categories = Category::whereNull('deleted_at')->get();
+        $storages = Storage::all();
         $offices = Office::whereNull('deleted_at')->get();
-        return view('theme.template.purchase.create_purchase', compact('offices', 'categories'));
+        return view('theme.template.purchase.create_purchase', compact('offices', 'storages'));
     }
 
     /**
@@ -84,7 +85,7 @@ class PurchaseController extends Controller
             'currency' => '',
             'unit' => '',
             'quantity' => '',
-            'category' => '',
+            'storage' => '',
             'body' => '',
         ],[
             'responsible_person_id.required' => 'აირჩიეთ პასუხისმგებელი პირი',
@@ -92,7 +93,7 @@ class PurchaseController extends Controller
             'distributor_id.required' => 'აირჩიეთ მომწოდებელი',
         ]);
         $json = array();
-        if($request->input('ability_type') && $request->input('title') && $request->input('unit') && $request->input('quantity') && $request->input('unit_price') && $request->input('currency') && $request->input('category') && $request->input('body')){
+        if($request->input('ability_type') && $request->input('title') && $request->input('unit') && $request->input('quantity') && $request->input('unit_price') && $request->input('currency') && $request->input('storage') && $request->input('body')){
             foreach($request->input('ability_type') as $key => $item){
                 $json[] =[
                     'ability_type' => $request->input('ability_type')[$key],
@@ -101,7 +102,7 @@ class PurchaseController extends Controller
                     'unit_price' => $request->input('unit_price')[$key]*100,
                     'currency' => $request->input('currency')[$key],
                     'quantity' => $request->input('quantity')[$key],
-                    'category' => $request->input('category')[$key],
+                    'storage_id' => $request->input('storage')[$key],
                     'body' => $request->input('body')[$key],
                 ];
             }
@@ -129,7 +130,7 @@ class PurchaseController extends Controller
                     'currency_type' => $product['currency'],
                     'unit' => $product['unit'],
                     'stock' => $product['quantity'],
-                    'category_id' => $product['category'],
+                    'storage_id' => $product['storage_id'],
                     'description_ge' => $product['body'],
                     'type' => $product['ability_type'],
                     'purchase_id' => $purchase->id
@@ -158,11 +159,11 @@ class PurchaseController extends Controller
      */
     public function edit($id)
     {
-        $categories = Category::whereNull('deleted_at')->get();
+        $storages = Storage::all();
         $purchase = Purchase::wherenull('deleted_at')->findOrFail($id);
         $offices = Office::whereNull('deleted_at')->get();
         $departments = Department::where('departmentable_id', $purchase->office_id)->whereNull('deleted_at')->get();
-        return view('theme.template.purchase.edit_purchase', compact('offices', 'purchase', 'departments', 'categories'));
+        return view('theme.template.purchase.edit_purchase', compact('offices', 'purchase', 'departments', 'storages'));
 
     }
 
@@ -189,7 +190,7 @@ class PurchaseController extends Controller
             'currency' => '',
             'unit' => '',
             'quantity' => '',
-            'category' => '',
+            'storage' => '',
             'body' => '',
         ],[
             'responsible_person_id.required' => 'აირჩიეთ პასუხისმგებელი პირი',
@@ -197,7 +198,7 @@ class PurchaseController extends Controller
             'distributor_id.required' => 'აირჩიეთ მომწოდებელი',
         ]);
         $json = array();
-        if($request->input('ability_type') && $request->input('title') && $request->input('unit') && $request->input('quantity') && $request->input('unit_price') && $request->input('currency') && $request->input('category') && $request->input('body')){
+        if($request->input('ability_type') && $request->input('title') && $request->input('unit') && $request->input('quantity') && $request->input('unit_price') && $request->input('currency') && $request->input('storage') && $request->input('body')){
             foreach($request->input('ability_type') as $key => $item){
                 $json[] =[
                     'ability_type' => $request->input('ability_type')[$key],
@@ -206,7 +207,7 @@ class PurchaseController extends Controller
                     'unit_price' => $request->input('unit_price')[$key]*100,
                     'currency' => $request->input('currency')[$key],
                     'quantity' => $request->input('quantity')[$key],
-                    'category' => $request->input('category')[$key],
+                    'storage_id' => $request->input('storage')[$key],
                     'body' => $request->input('body')[$key],
                 ];
             }
@@ -233,7 +234,7 @@ class PurchaseController extends Controller
                     'currency_type' => $product['currency'],
                     'unit' => $product['unit'],
                     'stock' => $product['quantity'],
-                    'category_id' => $product['category'],
+                    'storage_id' => $product['storage_id'],
                     'description_ge' => $product['body'],
                     'type' => $product['ability_type'],
                     'purchase_id' => $purchase->id

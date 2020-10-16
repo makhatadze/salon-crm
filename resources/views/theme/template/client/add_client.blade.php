@@ -11,7 +11,10 @@
     <form  action="{{route('StoreClient')}}"  method="POST" enctype="multipart/form-data">
         @csrf
         <div class="intro-y box p-5">
-                
+            <div class="w-full p-2">
+                <label class="font-bold font-caps text-xs text-gray-700">სურათის ატვირთვა</label> <br>
+            <input required type="file"name="client_image" class="font-normal text-sm input w-full border category mt-2">
+            </div>
             <div class="flex">
                 <div class="w-1/3 p-2">
                     <label class="font-bold font-caps text-xs text-gray-700">კლიენტის სრული სახელი GE <span class="text-red-500">*</span></label> <br>
@@ -58,7 +61,10 @@
                     <label class="font-bold font-caps text-xs text-gray-700">ჯგუფი </label>
                         <div class="relative">
                           <select class="font-normal text-xs  block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="group" name="group">
-                            <option value="male">აირჩიეთ ჯგუფი</option>
+                            <option value="">აირჩიეთ ჯგუფი</option>
+                            @foreach ($groups as $group)
+                          <option value="{{$group->id}}">{{$group->name}}</option>
+                            @endforeach
                           </select>
                           <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                             <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>

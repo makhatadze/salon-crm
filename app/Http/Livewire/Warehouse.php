@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Product;
 use App\Department;
+use App\Storage;
 use App\User;
 
 use Livewire\Component;
@@ -14,7 +15,7 @@ class Warehouse extends Component
     use WithPagination;
     //Filter
     public $name;
-    public $category;
+    public $storage;
     public $pricefrom;
     public $pricetill;
     public $amout;
@@ -26,6 +27,8 @@ class Warehouse extends Component
     public $updateId;
     public $modalState = false;
     
+    public $storagename;
+    
     //Initialize
     public function mount(){
         $this->pricefrom = Product::min('price')/100;
@@ -36,6 +39,13 @@ class Warehouse extends Component
     // Product Delete
     public function delete($id){
         Product::findOrFail($id)->delete();
+    }
+    public function addstorage()
+    {
+        Storage::create([
+            'name' => $this->storagename
+        ]);
+        $this->storagename = "";
     }
     //Update
     public function updatedTypeamout(){
@@ -62,11 +72,12 @@ class Warehouse extends Component
             ['title_'.app()->getLocale(), 'LIKE', '%'.$this->name.'%'], 
             ['unit', 'LIKE', '%'.$this->unit.'%'], 
             ['stock', '<=', floatval($this->amout)], 
-            ['category_id', 'like', '%'.$this->category.'%']])
+            ['storage_id', 'like', '%'.$this->storage.'%']])
         ->whereBetween('price', [$this->pricefrom*100, $this->pricetill*100])
         ->paginate(15);
         $departments = Department::all();
+        $storages = Storage::all();
         $users = User::role('user')->get();
-        return view('livewire.warehouse', compact('products', 'departments', 'users'));
+        return view('livewire.warehouse', compact('products', 'storages', 'departments', 'users'));
     }
 }

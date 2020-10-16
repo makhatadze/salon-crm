@@ -24,4 +24,8 @@ class Client extends Model implements Auditable
         }
         return $money;
     }
+    public function image(){
+        return $this->morphOne('App\Image', 'imageable');
+    }
+
 }

@@ -17,7 +17,7 @@ class CreateClientServicesTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('service_id')->constrained('services');
-            $table->timestamp('session_start_time');
+            $table->timestamp('session_start_time')->nullable();
             $table->boolean('status')->default(false);
             $table->string('clinetserviceable_type');
             $table->integer('clinetserviceable_id');

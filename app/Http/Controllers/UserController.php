@@ -28,8 +28,8 @@ use App\UserJob;
 use Maatwebsite\Excel\Facades\Excel;
 
 use Illuminate\Support\Facades\Hash;
-use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
@@ -71,7 +71,7 @@ class UserController extends Controller
     public function ActionUserAdd(Request $request)
     {
         if (view()->exists('theme.template.user.user_add')) {
-            if ($request->isMethod('post') && auth()->user()->isAdmin()) {
+            if ($request->isMethod('post') && Auth::user()->isAdmin()) {
                 $data = $request->all();
                 $this->validate($request, [
                     'first_name' => 'required|string',
@@ -82,21 +82,33 @@ class UserController extends Controller
                     'position' => 'required|string',
                     'phone' => 'required',
                     'salary' => '',
-                    'percent' => 'required|numeric|between:0,99.99',
+                    'percent' => '',
                     'password' => 'required|min:8',
                     'password_confirmation' => 'required_with:password|same:password|min:8',
                     'files' => 'image|mimes:jpeg,bmp,png,gif,svg',
+                    'interval_between_meeting' => '',
+                    'brake_between_meeting' => 'required|string'
                 ]);
                 $user = new User([
                     'name' => $data['first_name'],
                     'email' => $data['email'],
                     'password' => Hash::make($data['password']),
                 ]);
+                
 
                 $user->save();
 
                 $user->roles()->attach($data['position']);
 
+                if(isset($request->services) && sizeof($request->services) > 0){
+                    
+                    foreach($request->services as $serv){
+                        UserJob::create([
+                            'user_id' => $user->id,
+                            'service_id' => $serv
+                        ]);
+                    }
+                }
                 if ($request->hasFile('files')) {
                     $imagename = date('Ymhs') . $request->file('files')->getClientOriginalName();
                     $destination = base_path() . '/storage/app/public/profile/' . $user->id;
@@ -111,6 +123,10 @@ class UserController extends Controller
                     'last_name' => $data['last_name'],
                     'birthday' => $data['birthday'],
                     'position' => $data['position'],
+                    'show_user' => isset($data['showuser']) ? 1 : 0,
+                    'percent_from_sales' => isset($data['soldproduct']) ? 1 : 0,
+                    'interval_between_meeting' => isset($data['interval_between_meeting']) ? $data['interval_between_meeting'] : null,
+                    'brake_between_meeting' => $data['brake_between_meeting'],
                     'phone' => $data['phone'],
                     'pid' => $data['pid'],
                     'salary' => $data['salary'] ? $data['salary'] : 0,
@@ -188,7 +204,7 @@ class UserController extends Controller
      * User Profile 
      */
     public function profile(){
-        $user = auth::user();
+        $user = Auth::user();
         return view('theme.template.user.user_profile', compact('user'));
     }
     public function changepassword(){
@@ -209,8 +225,9 @@ class UserController extends Controller
     }
     public function accountsetting(){
         $user = auth::user();
+        $services = Service::all();
         $departments = Department::whereNull('deleted_at')->get();
-        return view('theme.template.user.user_account_settings', compact('user', 'departments'));
+        return view('theme.template.user.user_account_settings', compact('user', 'services', 'departments'));
     }
     /**
      * Turn Profile On or Off
@@ -334,6 +351,7 @@ class UserController extends Controller
         $roles = Role::all();
         return view('theme.template.user.user_account_settings', compact('user','services', 'departments', 'roles'));
     }
+    // I don't know too WTF is going here
     public function updateuserprofile(Request $request, $id){
         $this->validate($request,[
             'first_name' => 'required|string|max:255',
@@ -342,22 +360,35 @@ class UserController extends Controller
             'user_salary' => 'required|integer|min:0',
             'department_id' => '',
             'rolename' => 'required|string',
-            'services' => ''
+            'services' => '',
+            'soldproduct' => '',
+            'brake_between_meeting' => 'required|string|max:5',
+            'interval_between_meeting' => '',
+            'blockstatus' => ''
         ]);
         $user = User::findOrFail($id);
-        $user->syncRoles(['user', $request->input('rolename')]);
+        if($request->blockstatus){
+            $user->syncRoles();
+        }else{
+            $user->syncRoles(['user', $request->input('rolename')]);
+        }
         $profile = $user->profile()->first();
-        
+
         if(trim($request->input('phone')," ") != trim($profile->phone," ")){
             $this->validate($request,[
                 'phone' => 'required|string|unique:profiles',
             ]);
             $profile->phone = $request->input('phone');
         }
-        if(sizeof($request->services) > 0){
-            foreach(UserJob::where('user_id', $id)->get() as $hasjob){
-                $hasjob->delete();
-            }
+        foreach(UserJob::where('user_id', $id)->get() as $hasjob){
+            $hasjob->delete();
+        }
+        
+        $profile->show_user = isset($request->showtable) ? 1 : 0;
+        $profile->percent_from_sales = isset($request->soldproduct) ? 1 : 0;
+        
+        if(isset($request->services) && sizeof($request->services) > 0){
+            
             foreach($request->services as $serv){
                 UserJob::create([
                     'user_id' => $id,
@@ -374,7 +405,8 @@ class UserController extends Controller
         $profile->first_name = $request->input('first_name');
         $profile->last_name = $request->input('last_name');
         $profile->salary = $request->input('user_salary');
-
+        $profile->interval_between_meeting = $request->input('interval_between_meeting');
+        $profile->brake_between_meeting = $request->input('brake_between_meeting');
         
 
         if(empty($request->input('salary_status'))){

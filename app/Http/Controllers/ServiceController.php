@@ -19,6 +19,8 @@ use App\Product;
 use App\Image;
 use App\Inventory;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use phpDocumentor\Reflection\DocBlock\Tags\Var_;
 
@@ -229,9 +231,17 @@ class ServiceController extends Controller
             $imagename = date('Ymhs').$request->file('file')->getClientOriginalName();
             $destination = base_path() . '/storage/app/public/serviceimg';
             $request->file('file')->move($destination, $imagename);
-            $service->image()->create([
-                'name' => $imagename
-            ]);
+            Storage::delete('public/serviceimg/'.$service->image->name);
+            
+            if($service->image){
+                $firstimg = $service->image;
+                $firstimg->name = $imagename;
+                $firstimg->save();
+            }else{
+                $service->image()->create([
+                    'name' => $imagename
+                ]);
+            }
         }
         return redirect('/services');
     }

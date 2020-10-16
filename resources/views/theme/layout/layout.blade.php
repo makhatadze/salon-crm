@@ -19,7 +19,7 @@
 <div class="flex">
     @include('theme.include.mobile_menu')
     @include('theme.include.desktop_menu')
-    <div class="content overflow-hidden">
+    <div class="content overflow-auto">
 
         {{-- Cart Modal End --}}
        <x-navbar/>

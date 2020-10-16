@@ -41,13 +41,18 @@
             @if ($clients)
             @foreach ($clients as $client)
                 <tr>
-                <td class="whitespace-no-wrap">
+                <td class="whitespace-no-wrap items-center">
+                <div class="flex">
+                    <img src="{{asset('../storage/clientimg/'.$client->image->name)}}" class="h-12 w-12 object-cover rounded-md mr-3">
+                <div>
                     <h6 class="font-bold text-black uppercase text-sm">
                         <a href="{{route('EditClient', $client->id)}}">
                             {{$client->{"full_name_".app()->getLocale()} }}
                         </a>
                     </h6>
                     <span class="text-gray-700 text-xs">{{$client->number}}</span>
+                </div>
+                </div>
                 </td>
                 <td class="whitespace-no-wrap">
                     <h6 class="text-sm text-black font-normal"><span class="text-xs">რეგ:</span> {{$client->created_at}}</h6>

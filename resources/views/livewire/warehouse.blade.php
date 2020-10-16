@@ -217,10 +217,11 @@
                               კატეგორია
                             </label>
                             <div class="relative">
-                              <select wire:model="category" class="block font-normal text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="product_category" name="product_category">
+                              <select wire:model="storage" class="block font-normal text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="product_category" name="product_category">
                                 <option value="">ყველა</option>
-                                <option value="1">თმის მოვლა</option>
-                                <option value="2">ახალი კატეგორია</option>
+                                @foreach ($storages as $storage)
+                                <option value="{{$storage->id}}">{{$storage->name}}</option>
+                                @endforeach
                                 </select>
                               <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                                 <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"></path></svg>
@@ -270,6 +271,25 @@
                           </div>
                 </form>
             </div>
+            
+            <h6 class="font-bold font-caps text-gray-700 mt-3 text-xs">საწყობი</h6>
+            <div class="box p-2">
+            <form wire:submit.prevent="addstorage">
+                <div class="flex">
+                  <div class="w-full md:w-1/2 p-2">
+                    <input class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" name="storagename" wire:model="storagename" type="text" placeholder="საწყობის სახელი">
+                  </div>
+                  <div class="w-full md:w-1/2 p-2">
+                    <input class="appearance-none block w-full bg-indigo-500 font-bold font-caps text-xs text-white border border-gray-200 rounded py-3 px-4" value="ატვირთვა" type="submit">
+                  </div>
+                </div>
+              </form>
+            </div>
+            @foreach ($storages as $storage)
+            <div class="font-bolder text-xs text-gray-800 font-caps mt-2 box p-3 w-full">
+              {{$storage->name}}
+            </div>
+            @endforeach
         </div>
     </div>
 </div>

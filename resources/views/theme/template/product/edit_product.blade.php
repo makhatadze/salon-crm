@@ -7,6 +7,7 @@
                 @csrf
                 @method('PUT')
                 <div class="intro-y box mt-2 p-5">
+                    
 
                     <div class="flex flex-wrap  mb-6">
                         <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
@@ -69,7 +70,7 @@
                             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
                                 რაოდენობა
                             </label>
-                            <input @if($product->type == 1) readonly @endif
+                            <input @if($product->type == 1 && $product->warehouse == 0) readonly @endif
                                 class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                                 type="number" required min="0" value="{{ $product->stock }}" step="0.1" name="stock">
                         </div>
@@ -79,7 +80,7 @@
                                 დეპარტამენტი
                             </label>
                             <div class="relative">
-                                <select name="department"
+                                <select required name="department"
                                     class="block font-medium text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
                                     @foreach ($departments as $item)
                                         @if ($product->department_id == $item->id)
@@ -93,6 +94,11 @@
                                         @endif
                                     @endforeach
                                 </select>
+                                @error('department')
+                                <p class="text-xs text-red-500 font-normal">
+                                    {{$message}}
+                                </p>
+                                @enderror
                                 <div
                                     class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                                     <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"

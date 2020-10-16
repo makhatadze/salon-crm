@@ -9,13 +9,14 @@
  */
 namespace App\Http\Controllers;
 
-use Auth;
 use App\ClientService;
 use App\Client;
 use App\PayController;
 use App\Service;
 use App\Product;
+use App\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -40,7 +41,7 @@ class HomeController extends Controller
             $data = [
                 
             ];
-            if(Auth::user()->isUser()){
+            if(auth()->user()->isUser()){
                 $user = Auth::user();
                 $userclients = ClientService::where('user_id', $user->id);
                 $queries = [
@@ -69,58 +70,38 @@ class HomeController extends Controller
                 return view('theme.template.user.user_profile', compact('services' ,'user', 'userclients', 'queries'));
             }
             
-            $queries = [
-                'date',
-                'pricefrom',
-                'pricetill',
-                'client_name',
-                'worker_name',
-            ];
-            if(request()->all()){
-                $todayservices = ClientService::query()
-                ->join('services', 'client_services.service_id', '=', 'services.id')
-                ->join('clients', 'client_services.clinetserviceable_id', '=', 'clients.id')
-                ->join('profiles', 'client_services.user_id', '=', 'profiles.profileable_id');
-                foreach ($queries as $req) {
-                    if(request($req)){
-                        if($req == "date"){
-                            $date = explode(' - ',request($req));
-                            $todayservices = $todayservices->whereDate('session_start_time', '>=', Carbon::parse($date[0]))
-                            ->whereDate('session_start_time', '<=', Carbon::parse($date[1]));
-                        }elseif($req == "pricefrom"){
-                            $todayservices = $todayservices->where('price', '>=', request($req)*100);
-                        }elseif($req == "pricetill"){
-                            $todayservices = $todayservices->where('price', '<=', request($req)*100);
-                        }elseif($req == "client_name"){
-                            $todayservices = $todayservices->where('full_name_'.app()->getLocale(), 'like', '%'.request($req).'%');
-                        }
-                        $queries[$req] = request($req);
-                    }
-                }
-                $todayservices = $todayservices->select('client_services.id', 'client_services.clinetserviceable_id', 'client_services.user_id', 'client_services.service_id', 'client_services.status', 'client_services.status', 'services.title_'.app()->getLocale(), 'client_services.session_start_time', 'clients.number', 'clients.full_name_'.app()->getLocale(), 'services.price', 'profiles.first_name', 'profiles.last_name');
-                
-                $todayservices = $todayservices->paginate(40)->appends($queries);
-
-            }else{
-                
-                $todayservices = ClientService::query()
-                ->join('services', 'client_services.service_id', '=', 'services.id')
-                ->join('clients', 'client_services.clinetserviceable_id', '=', 'clients.id')
-                ->join('profiles', 'client_services.user_id', '=', 'profiles.profileable_id');
-                $todayservices = $todayservices->select('client_services.id', 'client_services.clinetserviceable_id', 'client_services.user_id', 'client_services.status', 'client_services.service_id', 'client_services.status', 'services.title_'.app()->getLocale(), 'client_services.session_start_time', 'clients.number', 'clients.full_name_'.app()->getLocale(), 'services.price', 'profiles.first_name', 'profiles.last_name');
-                $todayservices = $todayservices->whereDate('session_start_time', Carbon::today());
-                $todayservices = $todayservices->paginate(40)->appends($queries);
+            $date = '';
+            if(request('date')){
+                $date = request('date');
             }
+            $selecteduser = '';
+            if(request('users')){
+                $selecteduser = request('users');
+            }
+
             $totalclients = Client::count();
             $totalproductcost = Product::sum('price')/100;
             $totalServiceCost = Service::sum('price')/100;
             $allclientservices = ClientService::count();
             $paymethods = PayController::all();
+            $alluser = User::permission('user')->get();;
             $services = Service::all();
+            if ( request('users')) {
+                
+            $users = User::permission('user')->where('id', intval(request('users')))
+            ->where('active', true)
+            ->get();
+            }else{
+                
+            $users = User::permission('user')
+            ->where('active', true)
+            ->get();
+            }
+            $clients = Client::all();
             $income = ClientService::where('status', true)
             ->join('services', 'client_services.service_id', '=', 'services.id')
             ->sum('price')/100;
-            return view('theme.template.home.home_index', compact('services', 'paymethods', 'totalclients', 'income', 'totalServiceCost', 'todayservices', 'totalproductcost', 'queries'));
+            return view('theme.template.home.home_index', compact('alluser', 'services', 'selecteduser', 'users', 'clients', 'paymethods', 'totalclients', 'income', 'totalServiceCost', 'totalproductcost', 'date'));
         } else {
             abort('404');
         }

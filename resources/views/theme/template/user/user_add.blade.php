@@ -88,9 +88,9 @@
                         </div>
                         <div class="relative mt-2 {{ $errors->has('salary_type') ? ' has-error' : '' }}">
                             {{ Form::label('position', 'სერვისი', ['class' => 'font-bold font-caps text-xs text-gray-800']) }}
-                            <select name="services" data-placeholder="Select your favorite actors" class="select2 font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" multiple>
+                            <select name="services[]" data-placeholder="Select your favorite actors" class="select2 font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" multiple>
                                 @foreach ($services as $service)
-                            <option value="{{$service->id}}">{{$service->{"title_".app()->getLocale()} }}</option>
+                                    <option value="{{$service->id}}">{{$service->{"title_".app()->getLocale()} }}</option>
                                 @endforeach
                             </select>
                             
@@ -118,9 +118,9 @@
                         </div>
                         
                     </div>
-                    <div class="sm:grid grid-cols-3 gap-2 mb-4 font-normal text-xs text-center">
+                    <div class=" flex justify-between items-center gap-2 mb-4 font-normal text-xs text-center">
                         <div class="relative mt-2 flex items-center  justify-content">
-                            <input type="checkbox" name="" class="mr-2" id="showschedule" checked> 
+                            <input type="checkbox" name="showuser" class="mr-2" id="showschedule" checked> 
                             <label for="showschedule" class="cursor-pointer">თანამშრომლის ცხრილში გამოჩენა</label>
                         </div>
                         <div class="relative mt-2 ">
@@ -129,16 +129,23 @@
                                 <label for="intervel" class="cursor-pointer">
                                     ინტერვალი მიღებებს შორის
                                 </label>
-                                <input placeholder="00:00" type="text" class="ml-3 font-normal text-xs appearance-none block w-16 bg-gray-200 text-gray-700 border border-gray-200 rounded py-2 px-1 text-center leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                                <input disabled name="interval_between_meeting" id="interval_between_meeting" placeholder="00" type="number" max="60" min="0" class="ml-3 font-normal text-xs appearance-none block w-16 bg-gray-200 text-gray-700 border border-gray-200 rounded py-2 px-1 text-center leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
                             </div>
                         </div>
                         <div class="relative mt-2 flex items-center justify-content">
-                            <input type="checkbox" id="break" class="mr-2" name="">
-                            <label for="break" class="cursor-pointer">
-                                შესვენება მიღებებს შორის
+                            <label class="cursor-pointer">
+                                შესვენების დრო
                             </label>
-                            
-                            <input placeholder="00:00" type="text" class="ml-3 font-normal text-xs appearance-none block w-16 bg-gray-200 text-gray-700 border border-gray-200 rounded py-2 px-1 text-center leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                            <input name="brake_between_meeting" placeholder="00" value="60" type="number" max="60" min="0" class="ml-3 font-normal text-xs appearance-none block w-16 bg-gray-200 text-gray-700 border border-gray-200 rounded py-2 px-1 text-center leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                        </div>
+                        
+                        <div class="relative mt-2 ">
+                            <div class="flex items-center justify-content">
+                                <input type="checkbox" name="soldproduct" id="soldproduct" class="mr-2">
+                                <label for="soldproduct" class="cursor-pointer">
+                                    პროცენტი გაყიდვებიდან
+                                </label>
+                               </div>
                         </div>
                     </div>
                     <div class="sm:grid grid-cols-2 gap-2">
@@ -245,7 +252,9 @@
             $('select[name ="office[]"').change(function () {
                 getDropdownList($(this), '', $(this).val());
             })
-
+            $('#intervel').change(function(){
+                $('#interval_between_meeting').prop( "disabled", !$('#interval_between_meeting').prop( "disabled") );
+            });
             function getDropdownList(el, company = '', office = '', department = '') {
                 $.ajax({
                     url: "{{route('ActionUserData')}}",

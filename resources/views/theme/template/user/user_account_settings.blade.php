@@ -106,16 +106,16 @@
             @csrf
             <div class="flex flex-wrap -mx-3 mb-5">
               <div class="w-full md:w-1/2 px-3 mb-4 md:mb-0">
-                <label class="block font-caps uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
+                <label class="block font-caps uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="-name">
                   სახელი
                 </label>
-            <input name="first_name" value="{{$user->profile()->first()->first_name}}" class="font-normal appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name" type="text"  @if($user->id == Auth::user()->id) readonly="true" @endif >
+            <input name="first_name" value="{{$user->profile()->first()->first_name}}" class="font-normal appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="name" type="text"  @if($user->id == Auth::user()->id) readonly="true" @endif >
               </div>
               <div class="w-full md:w-1/2 px-3">
-                <label class="block uppercase font-caps tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
+                <label class="block uppercase font-caps tracking-wide text-gray-700 text-xs font-bold mb-2" for="last-name">
                   გვარი
                 </label>
-                <input name="last_name" value="{{$user->profile()->first()->last_name}}" class="font-normal appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder="Doe"  @if($user->id == Auth::user()->id) readonly="true" @endif>
+                <input name="last_name" value="{{$user->profile()->first()->last_name}}" class="font-normal appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="last-name" type="text" placeholder="Doe"  @if($user->id == Auth::user()->id) readonly="true" @endif>
               </div>
             </div>
             <div class="flex flex-wrap -mx-3 mb-5">
@@ -203,7 +203,6 @@
                        <div class="relative">
                          <select class="font-normal text-xs block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="rolename" name="rolename">
                            @if ($user->id != Auth::user()->id)
-                           <option value=""></option>
                            @foreach ($roles as $role)
                            @if ($role->name != 'admin')
                            @if ($user->hasRole($role->name))
@@ -228,8 +227,8 @@
                 
                 <div class="flex">
                   <div class="my-3 w-full md:w-1/2 flex items-center justify-content font-normal text-xs">
-                    <input type="checkbox" name="status" class="mr-3" id="status">
-                    <label for="status">მომხმარებლის დაბლოკვა</label>
+                    <input type="checkbox" name="blockstatus" class="mr-3" id="blockstatus" @if(sizeof($user->getAllPermissions()) == 0) checked @endif>
+                    <label for="blockstatus">მომხმარებლის დაბლოკვა</label>
                   </div>
                   <div class="my-3 w-full md:w-1/2 flex items-center justify-content font-normal text-xs">
                     <select data-placeholder="აირჩიეთ სერვისი" name="services[]" class="select2 w-full" multiple>
@@ -244,7 +243,27 @@
                   </div>
                 </div>
                
-                
+                <div class="flex items-center justify-between font-normal text-xs">
+                  <div class="p-2 flex items-center ">
+                    <input class="mr-1" type="checkbox" @if($user->profile->show_user) checked @endif name="showtable"  id="showtable">
+                    <label for="showtable">ცხრილში გამოჩენა</label>
+                  </div>
+                  <div class="p-2 flex items-center">
+                    <input class="mr-1" type="checkbox" name="soldproduct" id="soldproduct" @if($user->profile->percent_from_sales) checked @endif> 
+                    <label for="soldproduct">პროცენტი გაყიდვიდან</label> 
+                  </div>
+                </div>
+                <div class="flex justify-between items-center">
+                  
+                  <div class="p-2 flex items-center font-normal text-xs">
+                    <label for="" class="mr-2">შესვენების დრო</label>
+                  <input onkeyup="addminutetag('minute1')" id="minute1" class="font-normal text-xs block appearance-none w-16 bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="number" max="60" min="0" placeholder="00" required name="brake_between_meeting" value="{{$user->profile->brake_between_meeting}}">   
+                  </div>
+                  <div class="p-2 flex items-center font-normal text-xs">
+                    <label for="" class="mr-2">ინტერვალი მიღებებს შორის</label>
+                  <input onkeyup="addminutetag('minute2')" id="minute2" class="font-normal text-xs block appearance-none w-16 bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="number" max="60" min="0" placeholder="00" name="interval_between_meeting" value="{{$user->profile->interval_between_meeting}}">  
+                  </div>
+                </div>
                
                 @if($user->id != auth::user()->id)
                 <input type="submit" class="font-bold font-caps text-xs appearance-none block w-full bg-indigo-500 text-white border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none cursor-pointer" value="განახლება">
@@ -259,5 +278,10 @@
       $(document).ready(function () {
             
       });
+      function addminutetag($id){
+        if($('#'+$id).length == 2){
+          $('#'+$id).val($('#'+$id).val()+":");
+        }
+      }
 </script>
 @endsection

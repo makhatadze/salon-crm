@@ -11,6 +11,10 @@
     <form  action="{{route('UpdateClient', $client->id)}}"  method="POST" enctype="multipart/form-data">
         @csrf
         <div class="intro-y box p-5">
+            <div class="w-full p-2">
+                <label class="font-bold font-caps text-xs text-gray-700">სურათის ატვირთვა</label> <br>
+            <input required type="file"name="client_image" class="font-normal text-sm input w-full border category mt-2">
+            </div>
             <div class="flex">
                 <div class="w-1/3 p-2">
                     <label class="font-bold font-caps text-xs text-gray-700">კლიენტის სრული სახელი GE <span class="text-red-500">*</span></label> <br>

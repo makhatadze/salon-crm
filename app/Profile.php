@@ -26,6 +26,10 @@ class Profile extends Model implements Auditable
         'salary',
         'salary_type',
         'percent',
+        'show_user',
+        'interval_between_meeting',
+        'brake_between_meeting',
+        'percent_from_sales'
     ];
 
     /**

@@ -16,9 +16,15 @@ use App\Service;
 use App\User;
 use App\UserJob;
 use Carbon\Carbon;
+use DateTimeImmutable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
+
+
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Spatie\Period\Period;
 
 class ClientController extends Controller
 {
@@ -51,8 +57,9 @@ class ClientController extends Controller
     {
         $services = Service::where('published', true)->get();
         $departments = Department::all();
+        $groups = MemberGroup::all();
         $workers = User::role('user')->where('active', true)->whereNull('deleted_at')->get();
-        return view('theme.template.client.add_client', compact('workers', 'departments', 'services'));
+        return view('theme.template.client.add_client', compact('workers', 'groups', 'departments', 'services'));
     }
 
     /**
@@ -74,13 +81,7 @@ class ClientController extends Controller
             'client_name_en' => '',
             'client_address' => '',
             'client_mail' => '',
-            'userpicker' => '',
-            'datepicker' => '',
-            'timepicker' => '',
-            'servicepicker' => '',
-            'departments' => '',
-            'personal_number' => '',
-            'birthday_date' => ''
+            'client_image' => '',
         ]);
         $client = new Client;
         if ($request->input('group_name') != "") {
@@ -91,6 +92,7 @@ class ClientController extends Controller
         } else {
             $client->group_id = $request->input('group');
         }
+        
         $client->full_name_ge = $request->input('client_name_ge');
         $client->full_name_ru = $request->input('client_name_ru');
         $client->full_name_en = $request->input('client_name_en');
@@ -106,18 +108,14 @@ class ClientController extends Controller
         }
         
         $client->save();
-        $clientservices = array();
-        if ($request->input('userpicker') && $request->input('datepicker') && $request->input('timepicker') && $request->input('servicepicker')) {
-            foreach ($request->input('userpicker') as $key => $item) {
-                $time = Carbon::parse($request->datepicker[$key])->setTimeFromTimeString($request->timepicker[$key]);
-                $clientservices[] = [
-                    'user_id' => $request->userpicker[$key],
-                    'service_id' => $request->servicepicker[$key],
-                    'session_start_time' => $time,
-                    'department_id' => $request->departments[$key]
-                ];
-            }
-            $client->clientservices()->createMany($clientservices);
+
+        if($request->hasFile('client_image')){
+            $imagename = date('Ymhs').$request->file('client_image')->getClientOriginalName();
+            $destination = base_path() . '/storage/app/public/clientimg';
+            $request->file('client_image')->move($destination, $imagename);
+            $client->image()->create([
+                'name' => $imagename
+            ]);
         }
         return redirect('/clients');
     }
@@ -171,13 +169,7 @@ class ClientController extends Controller
             'client_name_en' => '',
             'client_address' => '',
             'client_mail' => '',
-            'userpicker' => '',
-            'datepicker' => '',
-            'timepicker' => '',
-            'servicepicker' => '',
-            'departments' => '',
-            'personal_number' => '',
-            'birthday_date' => ''
+            'client_image' => ''
         ]);
         $client = Client::findOrFail($id);
         if ($request->input('group_name') != "") {
@@ -187,6 +179,21 @@ class ClientController extends Controller
             $client->group_id = $group->id;
         } else {
             $client->group_id = $request->input('group');
+        }
+        if($request->hasFile('client_image')){
+            $imagename = date('Ymhs').$request->file('client_image')->getClientOriginalName();
+            $destination = base_path() . '/storage/app/public/clientimg';
+            $request->file('client_image')->move($destination, $imagename);
+            Storage::delete('public/clientimg/'.$client->image->name);
+            if($client->image){
+                $firstimg = $client->image;
+                $firstimg->name = $imagename;
+                $firstimg->save();
+            }else{
+                $client->image()->create([
+                    'name' => $imagename
+                ]);
+            }
         }
         $client->full_name_ge = $request->input('client_name_ge');
         $client->full_name_ru = $request->input('client_name_ru');
@@ -198,21 +205,7 @@ class ClientController extends Controller
         $client->email = $request->input('client_mail');
         $client->sex = $request->input('sex');
         $client->save();
-        $clientservices = array();
-
-        if ($request->input('userpicker') && $request->input('datepicker') && $request->input('timepicker') && $request->input('servicepicker')) {
-            foreach ($request->input('userpicker') as $key => $item) {
-
-                $time = Carbon::parse($request->datepicker[$key])->setTimeFromTimeString($request->timepicker[$key]);
-                $clientservices[] = [
-                    'user_id' => $request->userpicker[$key],
-                    'service_id' => $request->servicepicker[$key],
-                    'session_start_time' => $time,
-                    'department_id' => $request->departments[$key]
-                ];
-            }
-            $client->clientservices()->createMany($clientservices);
-        }
+     
         return redirect('/clients');
     }
 
@@ -253,30 +246,33 @@ class ClientController extends Controller
     {
         $data = $request->all();
         $this->validate($request, [
-            'pay_id' => 'required',
-            'pay_method' => 'required|integer',
+            'pay_id' => 'required|integer',
+            'pay_method' => 'required',
+            'paid' => '',
         ]);
         // Check Pay Method
-        $paymethod = PayController::find($request->pay_method);
-        if(!$paymethod){
-            return redirect('/')->with('error', ' გადახდის მეთოდი არ მოიძებნა');
+        if($request->pay_method != "consignation"){
+            $paymethod = PayController::find(intval($request->pay_method));
+            if(!$paymethod){
+                return redirect('/')->with('error', ' გადახდის მეთოდი არ მოიძებნა');
+            }    
         }
+        
         $id = $request->pay_id;
         $clientservice = ClientService::where('status', false)->findOrFail($id);
         $user = $clientservice->getUser();
 
         $message = '';
         $service = Service::find($clientservice->service_id);
-
+        $success = false;
         if ($service) {
-
+            $success = true;
             $inventories = $service->inventories()->get();
-            
+
                 $message = '';
                 foreach ($inventories as $prods) {
                     $prod = Product::find($prods->product_id);
                     if ($prod) {
-                        $success = false;
                         if ($prod->stock == 0 || $prod->stock < $prods->quantity) {
                             return redirect('/')->with('error', $prod->id . ' | ' . $prod->{"title_" . app()->getLocale()} . ' მარაგი ცარიელია ან არასაკმარისი');
                         } elseif ($prod->published == false) {
@@ -284,7 +280,6 @@ class ClientController extends Controller
                         } else if ($prod->stock - $prods->quantity == 0 || $prod->stock - $prods->quantity <= $prods->quantity) {
                             $message .= $prod->id . ' | ' . $prod->{"title_" . app()->getLocale()} . ' მარაგი შესავსევბია <br>';
                         } else {
-                            $success = true;
                             $message .= 'სტატუსი წარმატებით განახლდა';
                         }
                         $prod->stock = $prod->stock - $prods->quantity;
@@ -307,8 +302,15 @@ class ClientController extends Controller
             }
         }
         $clientservice->status = true;
-        $clientservice->pay_method_id = $paymethod->id;
-        $clientservice->pay_method = $paymethod->{"name_".app()->getLocale()};
+        if ($request->pay_method == "consignation") {
+            $clientservice->session_endtime = Carbon::now('Asia/Tbilisi');
+            $clientservice->pay_method = "consignation";
+            $clientservice->paid = intval($request->paid * 100);
+        }else{
+            $clientservice->pay_method_id = $paymethod->id;
+            $clientservice->session_endtime = Carbon::now('Asia/Tbilisi');
+            $clientservice->pay_method = $paymethod->{"name_".app()->getLocale()};
+        }
         $clientservice->save();
         if ($success) {
             return redirect('/')->with('success', $message);
@@ -316,7 +318,64 @@ class ClientController extends Controller
             return redirect('/')->with('warning', $message);
         }
     }
-
+    public function getUserServices(Request $request)
+    {
+        $this->validate($request, [
+            'userid' => 'required|integer'
+        ]);
+        $user = User::findOrFail($request->userid);
+        $html = '';
+        foreach ($user->services($request->userid) as $item) {
+            $html .= '<option value="'.$item->id.'">'.$item->{'title_'.app()->getLocale()} .'</option>';
+        }
+        return response()->json(array('status' => true, 'html' => $html));
+    }
+    public function checktime(Request $request)
+    { //დაასრულებელი ამის დედაც
+        $this->validate($request, [
+            'date' => 'required|string',
+            'start' => 'required|string',
+            'end' => 'required|string',
+            'user_id' => 'required',
+            'serv_id' => 'required',
+        ]);
+        $services = ClientService::where('user_id', '=', intval($request->user_id))
+            ->whereDay('session_start_time', '=', Carbon::parse($request->date))
+            ->get();
+        $chkStartTime = Carbon::parse($request->date.' '.$request->start);
+        $chkEndTime = Carbon::parse($request->date.' '.$request->end);
+        $message = '';
+        foreach ($services as $key => $serv) {
+            $startTime = Carbon::parse($serv->session_start_time);
+            $endTime = Carbon::parse($serv->session_start_time)->addMinutes($serv->duration);
+            if($chkStartTime > $startTime && $chkEndTime < $endTime)
+            {
+                $message = "არჩეული დრო უკვე დაჯავშნილი სერვისის შუალედშია";
+                break;
+            }
+            elseif($chkStartTime > $startTime && $chkStartTime < $endTime || $chkEndTime > $startTime && $chkEndTime < $endTime)
+            {
+                $message = "დაწყების ან დასრულების დრო დაჯავშნილი სერვისის შუალედშია";
+                break;
+            }
+            elseif($chkStartTime == $endTime || $chkStartTime == $startTime || $chkEndTime == $startTime  || $chkEndTime == $endTime )
+            {
+                $message = "დაწყების ან დასრულების დრო დაჯავშნილი სერვისის დაწყების ან დასრულების დროს ემთხვევა";
+                break;
+            }
+            elseif($chkStartTime==$startTime || $chkEndTime==$endTime)
+            {
+                $message = "დაწყების ან დასრულების უკვე დაჯავშნილი სერვისის საზღვარზეა";
+                break;
+            }
+            elseif($startTime > $chkStartTime && $endTime < $chkEndTime)
+            {
+                $message = "დაწყების და დასრულების დრო არის უკვე დაკავებულია";
+                break;
+            }
+        }
+        return response()->json(array('status' => true, 'message' => $message));
+    }
     /**
      * get Client Services By date
      */
@@ -478,7 +537,10 @@ class ClientController extends Controller
         $this->validate($request, [
             'id' => 'required|integer'
         ]);
-        $users = UserJob::where('service_id', $request->id)
+        $service = Service::findorFail($request->id);
+        $duration = $service->duration_count;
+        $price = $service->price/100;
+        $users = UserJob::where('service_id', $request->id)->select('users.id', 'profiles.first_name', 'profiles.last_name')
                 ->join('users', 'user_jobs.user_id', '=', 'users.id')
                 ->join('profiles', 'profiles.profileable_id', '=', 'user_jobs.user_id')
                 ->get();
@@ -486,7 +548,44 @@ class ClientController extends Controller
         foreach($users as $user){
             $html .= '<option value="'.$user->id.'">'.$user->first_name.' '.$user->last_name.'</option>';
         }
-        return response()->json(array('status' => true, 'html' => $html));
+        return response()->json(array('status' => true, 'html' => $html, 'duration' => $duration, 'price' => $price));
+    }
+    public function addservice(Request $request)
+    {
+        $this->validate($request, [
+            'service' => 'required',
+            'personal' => 'required|integer',
+            'date' => 'required',
+            'time' => 'required',
+            'duration' => 'required',
+            'price' => 'required',
+        ]);
+        if($request->client){
+            $client = Client::findOrFail(intval($request->client));
+        }elseif($request->input('full_name_ge') && $request->input('client_number')){
+            $client = Client::create([
+                'full_name_ge' => $request->input('full_name_ge'),
+                'number' => $request->input('client_number'),
+            ]);
+        }else{
+            return redirect()->back()->with('error', 'აირჩიეთ ან დაარეგისტრირეთ ახალი კლიენტი');
+        }
+
+        $services = array();
+        foreach($request->input('service') as $key => $service){
+            $time = explode(":", $request->input('time')[$key]);
+            $services[] = [
+                'service_id' => intval($request->service[$key]),
+                'user_id' => $request->personal,
+                'session_start_time' => Carbon::parse($request->input('date')[$key])->settime($time[0], $time[1]),
+                'duration' => intval($request->duration[$key]),
+                'new_price' => intval($request->price[$key]*100),
+                'paid' => 0,
+                'author' => Auth::user()->id
+            ]; 
+        }
+        $client->clientservices()->createMany($services);
+        return redirect()->back();
     }
     /**
      * Convert to Excel
@@ -505,6 +604,16 @@ class ClientController extends Controller
     {
         return Excel::download(new ClientServices($client->id), $client->{"full_name_" . app()->getLocale()} . '.xlsx');
     }
-
+    public function addconsignation(Request $request, ClientService $ClientService)
+    {
+        $this->validate($request, [
+            'paid' => 'required|numeric|min:0'
+        ]);
+        if($ClientService->pay_method == "consignation" && $ClientService->new_price > $ClientService->paid){
+            $ClientService->paid = intval($request->paid*100);
+            $ClientService->save();
+        }
+        return redirect()->back();
+    }
 
 }

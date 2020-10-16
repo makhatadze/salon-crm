@@ -10,7 +10,7 @@ use OwenIt\Auditing\Contracts\Auditable;
 class ClientService extends Model implements Auditable
 {
     use SoftDeletes, \OwenIt\Auditing\Auditable;
-    protected $fillable = ['user_id','service_id','session_start_time'];
+    protected $fillable = ['user_id','service_id', 'new_price', 'duration', 'author', 'department_id', 'paid', 'session_start_time'];
     
     protected $table = 'client_services';
     
@@ -39,11 +39,18 @@ class ClientService extends Model implements Auditable
         }
         return;
     }
+    public function getServicecurrency(){
+        $price = Service::find($this->service_id);
+        if($price){
+            return $price->currency_type;
+        }
+        return;
+    }
     
     public function getEndTime(){
         $duration = Service::find($this->service_id);
         if($duration){
-          return Carbon::parse($this->session_start_time)->addminutes($duration->duration_count);
+          return Carbon::parse($this->session_start_time)->addminutes($duration->duration_count)->isoFormat('HH:MM');
         }
         return;
     }
