@@ -143,21 +143,6 @@
                             </div>
                         </div>
                         </div>
-                        <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                            <label
-                            class="block font-bold font-caps uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                            დაამატეთ ბრენდი
-                        </label>
-                        <input
-                         class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" 
-                         type="text" name="new_brand" placeholder="ბრენდის სახელი">
-                        </div>
-                        <p class="w-full mt-3 font-normal text-xs px-4">
-                            <strong class="text-red-500 font-bold">შენიშვნა:</strong>
-                            ბრენდის დამატების შემთხვევაში მონიშნული ბრენდი არ ჩაითვლება არჩეულად.
-                        </p>
-                    </div>
-                    <div class="flex">
                         <div class="w-full md:w-1/4 px-3">
                             <div>
                                 <label for="price"
@@ -207,46 +192,6 @@
                             </div>
                         </div>
                         
-                        <div class="w-full md:w-1/4 px-3 mb-6 md:mb-0">
-                            <label
-                                class="block font-bold font-caps uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                                კატეგორია
-                            </label>
-                            <div class="relative">
-                                <select
-                                    class="block font-medium text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                    name="get_category">
-                                    @if ($categories)
-                                        @foreach ($categories as $cat)
-                                            @if ($product->category->id == $cat->id)
-                                                <option value="{{ $cat->id }}" selected>
-                                                    {{ $cat->{'title_' . app()->getLocale()} }}</option>
-                                            @else
-                                                <option value="{{ $cat->id }}">{{ $cat->{'title_' . app()->getLocale()} }}
-                                                </option>
-                                            @endif
-                                        @endforeach
-                                    @endif
-                                </select>
-                                <div
-                                    class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 20 20">
-                                        <path
-                                            d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                                        </svg>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="w-full md:w-1/4 px-3 mb-6 md:mb-0">
-                            <label
-                            class="block font-bold font-caps uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                            ახალი კატეგორია
-                        </label>
-                        <input
-                         class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" 
-                         type="text" name="new_category" placeholder="კატეგორიის სახელი">
-                        </div>
                     </div>
                     @if ($product->type == 1)
                     <div class="flex flex-wrap mt-3 mb-6">

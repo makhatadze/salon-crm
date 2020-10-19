@@ -170,9 +170,9 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
 
         // Export
         Route::group(['middleware' => ['permission:export_finances|admin']], function () {
-        
+            Route::post('/givesalary/{user}', 'ClientController@givesalary')->name('giveSalary');
             Route::any('/clients/finances', 'ClientController@services')->name('Finances');
-            Route::get('/statistics', 'StatisticController@index')->name('StatisticController');
+            Route::get('/salaries', 'StatisticController@index')->name('StatisticController');
             Route::get('/clients/export', 'ClientController@export')->name('ClientExcel');
             Route::get('/clients/financeExport', 'ClientController@financeExport')->name('FinanceExport');
             Route::get('/company/money', 'MoneyController@index')->name('MoneyController');

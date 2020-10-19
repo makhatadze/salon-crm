@@ -21,10 +21,10 @@ class ClientServices implements FromCollection, WithHeadings
         $Client = Client::findOrFail($this->id);
         $services = $Client->clientservices()->get();
         foreach ($services as  $item) {
-            $item['service_name'] = $item->getServiceName();
+            $item['service_name'] = $item->service->{"title_".app()->getLocale()};
             $item['client'] = $item->clinetserviceable()->first()->{'full_name_'.app()->getLocale()};
-            $item['worker'] = $item->getWorkerName();
-            $item['service_price'] = $item->getServicePrice();
+            $item['worker'] = $item->user->profile->first_name .' '. $item->user->profile->last_name;;
+            $item['service_price'] = $item->service->price/100;
             $item['start_tyime'] = $item->session_start_time;
             $item['end_time'] = $item->getEndTime();
             unset($item->id);

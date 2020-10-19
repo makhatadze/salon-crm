@@ -27,22 +27,23 @@
                     <a class="flex items-center mt-5 font-medium" href="/profile/changepassword"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-lock w-4 h-4 mr-2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg> პაროლის შეცვლა </a>
                 @endif
               </div>
-            <div class="p-5 border-t border-gray-200">
-              <div class="flex">
-                  <div class="w-1/3 p-3">
-                      <h6 class="font-bold font-caps text-base text-black">{{ round($user->getEarnedMoney(), 2) }} <sup>₾</sup></h6>
-                      <span class="font-normal text-xs">გამომუშავებული</span>
-                  </div>
-                  <div class="w-1/3 p-3">
-                      <h6 class="font-bold font-caps text-base text-black">{{$user->ClientCount()}}</h6>
-                      <span class="font-normal text-xs">კლიენი</span>
-                  </div>
-                  <div class="w-1/3 p-3">
-                      <h6 class="font-bold font-caps text-base text-black"> {{$user->profile()->first()->salary}} <sup>₾</sup></h6>
-                      <span class="font-normal text-xs">ხელფასი</span>
-                  </div>
+              <div class="p-5 border-t border-gray-200 relative">
+                <small class="bg-green-400 absolute top-0 right-0 p-1 font-bold text-x font-caps">სულ</small>
+                <div class="flex">
+                    <div class="w-1/3 p-3">
+                        <h6 class="font-bold font-caps text-base text-black">{{ $user->getEarnedMoney() }} <sup>₾</sup></h6>
+                        <span class="font-normal text-xs">გამომუშავებული</span>
+                    </div>
+                    <div class="w-1/3 p-3">
+                        <h6 class="font-bold font-caps text-base text-black">{{$user->ClientCount()}}</h6>
+                        <span class="font-normal text-xs">კლიენი</span>
+                    </div>
+                    <div class="w-1/3 p-3">
+                        <h6 class="font-bold font-caps text-base text-black"> {{$user->profile()->first()->salary}} <sup>₾</sup></h6>
+                        <span class="font-normal text-xs">ხელფასი</span>
+                    </div>
+                </div>
               </div>
-            </div>
             <div class="p-5 border-t flex items-center justify-center">
                 @if ($user->active)
                 <div class="flex items-center justify-center h-full font-normal text-xs">
@@ -83,7 +84,7 @@
                     <div class="ml-4 mr-auto">
                     <div class="font-medium">
                         @if ($item->service_id)
-                        {{$item->getClientName()}}
+                        სერვისიდან
                         @elseif($item->sale_id)
                         გაყიდვიდან
                         @endif</div>
@@ -145,8 +146,8 @@
                        <span class="text-xs">მდე: </span>{{$client->getEndTime()}}
                    </div>
                    <div class="col-span-1 ">
-                   <h6 class="font-bold">{{$client->getServicePrice()}} <sup>₾</sup></h6>
-                       <span class="font-normal">{{$client->getServiceName()}}</span>
+                   <h6 class="font-bold">{{$client->service->price/100}} <sup>₾</sup></h6>
+                       <span class="font-normal">{{$client->service->{"title_".app()->getLocale()}}}</span>
                    </div>
                    <div class="col-span-1 flex align-center justify-center">
                        @if ($client->status)

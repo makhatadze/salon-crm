@@ -157,8 +157,8 @@
                                         <div class="w-full md:w-1/3 px-3 flex items-center justify-center">
                                             <div class="flex items-center justify-center relative">
                                             <input type="hidden" name="personal" id="personal{{$user->id}}" value="{{$user->id}}">
-                                              <select required name="service[]" id="getservice{{$user->id}}" class="bg-gray-200 block text-xs font-normal appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                                                <option>აირჩიეთ</option>
+                                              <select required onchange="selectservice({{$user->id}})" name="service[]" id="getservice{{$user->id}}" class="bg-gray-200 block text-xs font-normal appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                                                <option value="">აირჩიეთ</option>
                                                 @foreach($user->services($user->id) as $serv)
                                                 <option value="{{$serv->id}}">{{ $serv->{'title_'.app()->getLocale()} }}</option>
                                                 @endforeach
@@ -250,15 +250,15 @@
                                             <div class="w-full md:w-1/3 text-left font-bold text-xs px-3 mb-6 md:mb-0">
                                                 <small class="font-normal text-xs">სახელი</small> <br>
                                                 <a href="/clients/edit/{{$item->clinetserviceable->id}}">
-                                                     {{$item->getServiceName() }}
+                                                     {{$item->service->{"title_".app()->getLocale()} }}
                                                 </a>
                                             </div>
                                             <div class="w-full md:w-1/3 text-left font-bold text-xs px-3 mb-6 md:mb-0">
                                                 <small class="font-normal text-xs">თანხა</small> <br>
                                                 <span class="font-bold text-xs">{{$item->new_price/100}}
-                                                    @if ($item->getServicecurrency() == "gel") ₾
-                                                    @elseif ($item->getServicecurrency() == "usd") $
-                                                    @elseif ($item->getServicecurrency() == "eur") €
+                                                    @if ($item->service->currency_type == "gel") ₾
+                                                    @elseif ($item->service->currency_type == "usd") $
+                                                    @elseif ($item->service->currency_type == "eur") €
                                                     
                                                     @endif
                                                 </span> 
@@ -583,6 +583,24 @@
         }
     function addtime($id){
             $('#duration'+$id).val(parseInt($('#duration'+$id).val())+5);
+            $val = $('#getthistime'+$id).val();
+            console.log($id);
+            $a = $val.split(':');
+            $seconds = (+$a[0]) * 60 * 60 + (+$a[1]) * 60; 
+            $duration = parseInt($('#duration'+$id).val()) * 60;
+            $seconds = $seconds + $duration;
+            $hours = Math.floor($seconds / 3600);
+            $seconds %= 3600;
+            $minutes = Math.floor($seconds / 60);
+            $('#settime'+$id).html($hours+':'+$minutes);
+            $start = $val;
+            $end = $hours+':'+$minutes;
+            $date = $('#getdate'+$id).val();
+            $user_id = $('#personal'+$id).val();
+            $serv_id = $('#getservice'+$id).val();
+            checktime($serv_id, $user_id, $id, $date, $start, $end);
+        }
+        function selectservice($id){
             $val = $('#getthistime'+$id).val();
             console.log($id);
             $a = $val.split(':');

@@ -14,7 +14,7 @@ class UserExport implements FromCollection, WithHeadings
     {
         $users =User::whereNull('deleted_at')->get();
         foreach($users as $key => $user){
-            
+            dd($user);
             unset($user->updated_at);
             unset($user->email_verified_at);
             unset($user->password);

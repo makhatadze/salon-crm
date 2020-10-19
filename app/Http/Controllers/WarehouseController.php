@@ -43,6 +43,7 @@ class WarehouseController extends Controller
                     $product->unit = $prod->unit;
                     $product->purchase_id = $prod->purchase_id;
                     $product->department_id = $request->dept_id;
+                    $product->brand_id = $prod->brand_id;
                     $product->category_id = $prod->category_id;
                     $product->currency_type = $prod->currency_type;
                     $product->user_id = $request->user_id;

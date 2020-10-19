@@ -1,3 +1,4 @@
+import 'alpinejs'
 $(document).ready(function () {
     if (window.File && window.FileList && window.FileReader) {
 

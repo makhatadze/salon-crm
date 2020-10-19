@@ -3,46 +3,7 @@
     <h2 class="intro-y text-lg font-medium mt-10 font-helvetica">
         თანამშრომლები
     </h2>
-    <div class="modal" id="small-modal-size-preview">
-        <div class="modal__content modal__content--lg p-10 text-center"> 
-            <form action="">
-                <div class="flex flex-wrap -mx-3 mb-6">
-                    <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                      <label class="text-left font-caps text-xs block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
-                        ხელფასის ტიპი
-                      </label>
-                      <div class="relative">
-                        <select onchange="salarytype(this.value)" class="block appearance-none w-full bg-gray-200 font-normal text-xs border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
-                          <option value="salary">სტანდარტული ხელფასი</option>
-                          <option value="avansi">ავანსი</option>
-                          <option value="other">სხვა თანხა</option>
-                        </select>
-                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                          <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="w-full md:w-1/2 px-3">
-                        <label class="block uppercase tracking-wide text-left font-caps text-xs text-gray-700 text-xs font-bold mb-2">
-                          რაოდენობა
-                        </label>
-                        <input readonly value="1000" class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text">
-                      </div>
-                  </div>
-                  <div class="w-full" style="display: none" id="salaryreason">
-                    <label class="block uppercase tracking-wide text-left font-caps text-xs text-gray-700 text-xs font-bold mb-2">
-                      მიზეზი
-                    </label>
-                    <input  class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" >
-                  </div>
-                  <div class="w-full flex justify-end">
-                    <button class="text-center  mt-3 py-2 px-4 bg-indigo-500 text-white font-bold text-xs font-caps">
-                        ატვირთვა
-                    </button>
-                  </div>
-            </form>    
-        </div>
-    </div>
+
     <div class="intro-y col-span-12 flex flex-wrap sm:flex-no-wrap items-center mt-2 user-header">
         <a href="{{ route('ActionUserAdd') }}" class="button text-white bg-theme-1 shadow-md mr-2 font-helvetica">ახალი
             მომხმარებლის რეგისტრაცია</a>
@@ -67,6 +28,7 @@
 
     <div class="grid grid-cols-12 gap-6 mt-5 user-list">
         @foreach($users as $user)
+            @if ($user->hasAnyPermission(['user']))
             <div class="intro-y col-span-12 md:col-span-4">
                 <div class="box">
                     <div class="flex flex-col lg:flex-row items-center p-5">
@@ -108,15 +70,99 @@
                                         <path fill-rule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z"/>
                                       </svg>
                                 </a>
-                                <a data-toggle="modal" data-target="#small-modal-size-preview" class="ml-1 button button--sm bg-gray-200 flex items-center justify-center text-gray-700 border border-gray-300 font-helvetica">
+                                <a data-toggle="modal" data-target="#salary_modal_{{$user->id}}" class="ml-1 button button--sm bg-gray-200 flex items-center justify-center text-gray-700 border border-gray-300 font-helvetica">
                                     <img src="{{asset('../img/salary.svg')}}" class="h-4 w-4 object-contain">
                                 </a>
+                            </div>
+                            <div class="modal" id="salary_modal_{{$user->id}}">
+                                <div class="modal__content modal__content--lg p-10 text-center"> 
+                                    <form action="{{ route('giveSalary', $user->id) }}" method="POST">
+                                        @csrf
+                                        <div class="flex flex-wrap -mx-3 mb-6">
+                                            <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                                              <label class="text-left font-caps text-xs block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
+                                                ხელფასის ტიპი
+                                              </label>
+                                              <div class="relative">
+                                                <select required onchange="salarytype(this.value)" name="salary_type" class="block appearance-none w-full bg-gray-200 font-normal text-xs border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
+                                                  <option value="salary">სტანდარტული ხელფასი</option>
+                                                  <option value="avansi">ავანსი</option>
+                                                  <option value="other">სხვა თანხა</option>
+                                                </select>
+                                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                                  <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                                                </div>
+                                              </div>
+                                            </div>
+                                            <div class="w-full md:w-1/3 px-3">
+                                                <label class="block uppercase tracking-wide text-left font-caps text-xs text-gray-700 text-xs font-bold mb-2">
+                                                  რაოდენობა
+                                                </label>
+                                                <input required value="{{$user->profile->salary}}" name="salary" class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="number" min="1" step="1">
+                                            </div>
+                                            <div class="w-full md:w-1/3 px-3">
+                                                <label class="block uppercase tracking-wide text-left font-caps text-xs text-gray-700 text-xs font-bold mb-2">
+                                                ბონუსი
+                                                </label>
+                                                <input required value="0" name="bonus" class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="number" min="0" step="1">
+                                            </div>
+                                          </div>
+                                          <div class="flex">
+                                              
+                                            <div class="w-full md:w-1/2" id="salaryreason">
+                                                <label class="block uppercase tracking-wide text-left font-caps text-xs text-gray-700 text-xs font-bold mb-2">
+                                                მიზეზი
+                                                </label>
+                                                <input name="reason" class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" >
+                                            </div>
+
+                                            <div class="w-full md:w-1/2 px-3">
+                                                <label class="block uppercase tracking-wide text-left font-caps text-xs text-gray-700 text-xs font-bold mb-2">
+                                                გამოიმუშავა <small class="font-normal text-x">[ამ თვეში]</small>
+                                                </label>
+                                                <input value="{{$user->getEarnedThisMoneth()}}" name="earn" class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="number" min="0" step="1">
+                                            </div>
+                                          </div>
+                                          <div class="w-full flex justify-end">
+                                            <button class="text-center  mt-3 py-2 px-4 bg-indigo-500 text-white font-bold text-xs font-caps">
+                                                ატვირთვა
+                                            </button>
+                                          </div>
+                                    </form>    
+                                    @foreach ($user->salaries()->orderBy('id', 'desc')->get() as $salary)
+                                    <hr class="my-2">
+                                    <div class="w-full flex items-center  justify-between">
+                                        <div class="text-left">
+                                            <small class="font-normal text-gray-600 text-xs">ხელფასი:</small>
+                                            <h6 class="font-bold text-sm text-gray-800">{{$salary->salary}}</h6>
+                                            <small class="font-normal text-xs text-gray-600">ბონუსი:</small>
+                                            <h6 class="font-bold text-sm text-gray-800">{{$salary->bonus}}</h6>
+                                        </div>
+                                        <div class="text-right">
+                                            <small class="font-normal text-gray-600 text-xs">ტიპი:</small>
+                                            <h6 class="font-bold text-sm text-gray-800">
+                                                @if ($salary->type == 'salary')
+                                                    სტანდარტული ხელფასი
+                                                    @elseif ($salary->type == 'avansi')
+                                                    ავანსი
+                                                    @elseif ($salary->type == 'other')
+                                                    სხვა თანხა
+                                                @endif
+                                            </h6>
+                                            <small class="font-normal text-gray-600 text-xs">თარიღი:</small>
+                                            <h6 class="font-bold text-sm text-gray-800">{{$salary->created_at}}</h6>
+                                        </div>
+                                        <p>{{$salary->reason}}</p>
+                                    </div>
+                                    @endforeach
+                                </div>
                             </div>
                             @endif
                         </div>
                     </div>
                 </div>
             </div>
+            @endif
         @endforeach
     </div>
     <div class="intro-y col-span-12 mt-4 flex flex-wrap sm:flex-row sm:flex-no-wrap items-center">
@@ -133,19 +179,11 @@
 
         $('input[name ="search"]').change(function (e) {
                 paintUsers();
-        })
+        });
 
         $('#user-count').change(function (e) {
             paintUsers();
-        })
-        function salarytype($name){
-            if($name == "other"){
-                $('#salaryreason').css('display', 'block');
-            }else{
-                
-                $('#salaryreason').css('display', 'none');
-            }
-        }
+        });
         function paintUsers() {
             $.ajax({
                 url: "{{route('ActionUser')}}",

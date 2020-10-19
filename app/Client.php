@@ -20,7 +20,7 @@ class Client extends Model implements Auditable
         $services = $this->clientservices()->where('status', true)->get();
         $money = 0;
         foreach($services as $service){
-            $money += $service->getServicePrice();
+            $money += $service->service->price/100;
         }
         return $money;
     }

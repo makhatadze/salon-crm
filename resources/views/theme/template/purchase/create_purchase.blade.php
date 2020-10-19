@@ -318,7 +318,7 @@
                         </div>
                       </div>
                       </div>
-                      <div class="w-full md:w-1/3 px-3 mb-6 mt-3 md:mb-0">
+                      <div class="w-full md:w-1/4 px-3 mb-6 mt-3 md:mb-0">
                         <label class="font-bold font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
                           ზომის ერთეული
                         </label>
@@ -333,13 +333,29 @@
                           </div>
                         </div>
                       </div>
-              <div class="w-full md:w-1/3 mt-3 px-3">
+                      <div class="w-full md:w-1/4 px-3 mb-6 mt-3 md:mb-0">
+                        <label class="font-bold font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
+                          ბრენდი
+                        </label>
+                        <div class="relative">
+                          <select required name="brand[]" class="block font-medium text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
+                            <option value="" selected >აირჩიეთ</option>
+                            @foreach($brands as $brand)
+                                <option value="{{$brand->id}}">{{$brand->name}}</option>
+                            @endforeach
+                          </select>
+                          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                          </div>
+                        </div>
+                      </div>
+              <div class="w-full md:w-1/4 mt-3 px-3">
                 <label class="font-bold font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
                   რაოდენობა
                 </label>
                 <input required autocomplete="off" name="quantity[]" class="font-medium text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="number" min="0" step="1" placeholder="xxx">
               </div>
-              <div class="w-full md:w-1/3 px-3 mb-6 mt-3 md:mb-0">
+              <div class="w-full md:w-1/4 px-3 mb-6 mt-3 md:mb-0">
                 <label class="font-bold font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
                   საწყობი
                 </label>

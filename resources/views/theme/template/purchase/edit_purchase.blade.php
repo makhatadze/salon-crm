@@ -106,7 +106,7 @@
                     </div>
                   </div>
                   </div>
-                  <div class="w-full md:w-1/3 px-3 mb-6 mt-3 md:mb-0">
+                  <div class="w-full md:w-1/4 px-3 mb-6 mt-3 md:mb-0">
                     <label class="font-bold font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
                       ზომის ერთეული
                     </label>
@@ -121,13 +121,28 @@
                       </div>
                     </div>
                   </div>
-          <div class="w-full md:w-1/3 mt-3 px-3">
+                  <div class="w-full md:w-1/4 px-3 mb-6 mt-3 md:mb-0">
+                    <label class="font-bold font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
+                      ბრენდები
+                    </label>
+                    <div class="relative">
+                      <select required  disabled class="block font-medium text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
+                        @foreach ($brands as $brand)
+                          <option  @if($product->brand_id == $brand->id) selected @endif >{{$brand->name}}</option>
+                        @endforeach
+                      </select>
+                      <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                      </div>
+                    </div>
+                  </div>
+          <div class="w-full md:w-1/4 mt-3 px-3">
             <label class="font-bold font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
               რაოდენობა
             </label>
             <input disabled required value="{{$product->stock}}" autocomplete="off"  class="font-medium text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="number" min="0" step="0.1" placeholder="xxx.x">
           </div>
-          <div class="w-full md:w-1/3 px-3 mb-6 mt-3 md:mb-0">
+          <div class="w-full md:w-1/4 px-3 mb-6 mt-3 md:mb-0">
             <label class="font-bold font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
               საწყობი
             </label>
@@ -345,6 +360,7 @@
         $('#addunit').click(function(){
             let randomid= Date.now();
             $('#units').append(`
+            
             <div class="relative w-full mt-3 box p-4" id="`+randomid+`">
             <button type="button" onclick="removeunit('`+randomid+`')" class="absolute right-0 top-0 dropdown-toggle button px-2 box  bg-red-300 focus:bg-red-900 text-red-900">
                 <span class="w-3 h-3 flex items-center justify-center "> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus w-4 h-2"><line x1="5" y1="12" x2="19" y2="12"></line></svg> </span>
@@ -377,7 +393,7 @@
                           <input autocomplete="off" name="unit_price[]" min="0" step="0.01" class="block font-medium text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="xxx.xx">
                           <div class="absolute inset-y-0 right-0 flex items-center">
                             <select name="currency[]" aria-label="Currency" class="form-select h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm sm:leading-5">
-                              <option value="gel" >GEL</option>
+                                <option value="gel" >GEL</option>
                               <option value="usd" >USD</option>
                               <option value="eur" >EUR</option>
                             </select>
@@ -385,7 +401,7 @@
                         </div>
                       </div>
                       </div>
-                      <div class="w-full md:w-1/3 px-3 mb-6 mt-3 md:mb-0">
+                      <div class="w-full md:w-1/4 px-3 mb-6 mt-3 md:mb-0">
                         <label class="font-bold font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
                           ზომის ერთეული
                         </label>
@@ -400,13 +416,29 @@
                           </div>
                         </div>
                       </div>
-              <div class="w-full md:w-1/3 mt-3 px-3">
+                      <div class="w-full md:w-1/4 px-3 mb-6 mt-3 md:mb-0">
+                        <label class="font-bold font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
+                          ბრენდი
+                        </label>
+                        <div class="relative">
+                          <select required name="brand[]" class="block font-medium text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
+                            <option value="" selected >აირჩიეთ</option>
+                            @foreach($brands as $brand)
+                                <option value="{{$brand->id}}">{{$brand->name}}</option>
+                            @endforeach
+                          </select>
+                          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                          </div>
+                        </div>
+                      </div>
+              <div class="w-full md:w-1/4 mt-3 px-3">
                 <label class="font-bold font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
                   რაოდენობა
                 </label>
-                <input required autocomplete="off" name="quantity[]" class="font-medium text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="number" min="0" step="0.1" placeholder="xxx.x">
+                <input required autocomplete="off" name="quantity[]" class="font-medium text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="number" min="0" step="1" placeholder="xxx">
               </div>
-              <div class="w-full md:w-1/3 px-3 mb-6 mt-3 md:mb-0">
+              <div class="w-full md:w-1/4 px-3 mb-6 mt-3 md:mb-0">
                 <label class="font-bold font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
                   საწყობი
                 </label>

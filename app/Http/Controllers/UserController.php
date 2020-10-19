@@ -255,8 +255,8 @@ class UserController extends Controller
         }
         foreach($clients as $client){
             $client['endtime'] = $client->getEndTime();
-            $client['servicename'] = $client->getServiceName();
-            $client['serviceprice'] = $client->getServicePrice();
+            $client['servicename'] = $client->service->{"title_".app()->getLocale()};
+            $client['serviceprice'] = $client->service->price/100;
             $client['clientnumber'] = $client->clinetserviceable()->first()->number;
             $client['clientname'] = $client->clinetserviceable()->first()->{"full_name_".app()->getLocale()};
         }

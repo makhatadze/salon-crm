@@ -28,11 +28,11 @@
             <ul class="">
                 @if (auth()->user()->can('admin'))
                <li>
-                <a href="{{ route('ActionUser') }}" class="side-menu custom-nav-item">
-                    <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
-                    <div class="font-normal text-xs side-menu__title"> თანამშრომლები </div>
-                </a>
-            </li>
+                    <a href="{{ route('ActionUser') }}" class="side-menu custom-nav-item">
+                        <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
+                        <div class="font-normal text-xs side-menu__title"> თანამშრომლები </div>
+                    </a>
+                </li>
             @endif
                 <li>
                     <a href="/clients" class="side-menu custom-nav-item">
@@ -127,17 +127,11 @@
                         <div class="side-menu__title font-normal text-xs"> დეპარტამენტები</div>
                     </a>
                 </li>
-                <li>
-                    <a href=" {{route('MoneyController')}} " class="side-menu custom-nav-item" data-menu="companies">
-                        <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
-                        <div class="side-menu__title font-normal text-xs"> თანხის ბრუნვა </div>
-                    </a>
-                </li>
             </ul>
         </li>
         @endif
         
-        @if (auth()->user()->can('export_finances'))
+        @if (auth()->user()->hasAnyPermission(['export_finances','admin']))
         <li>
             <a href="javascript:;" class="side-menu" data-menu="bugalteria">
                 <div class="side-menu__icon"> <i data-feather="credit-card"></i> </div>
@@ -162,7 +156,7 @@
                     <a href="{{route('StatisticController')}}" class="side-menu custom-nav-item" data-menu="departments">
                         <div class="side-menu__icon"><i data-feather="circle" style="width: 15px; height: 15px;"></i>
                         </div>
-                        <div class="side-menu__title font-normal text-xs"> სტატისტიკა</div>
+                        <div class="side-menu__title font-normal text-xs"> ხელფასები </div>
                     </a>
                 </li>
             </ul>

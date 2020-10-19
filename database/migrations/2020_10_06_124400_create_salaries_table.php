@@ -16,10 +16,10 @@ class CreateSalariesTable extends Migration
         Schema::create('salaries', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->float('salary');
-            $table->float('bonus');
+            $table->integer('salary');
+            $table->integer('bonus')->nullable();
             $table->string('type');
-            $table->float('description')->nullable();
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }

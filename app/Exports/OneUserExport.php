@@ -20,35 +20,50 @@ class OneUserExport implements FromCollection, WithHeadings
     {
         $services = ClientService::where('user_id', $this->id)->get();
         foreach ($services as  $item) {
-            $item['service_name'] = $item->getServiceName();
-            $item['client'] = $item->clinetserviceable()->first()->{'full_name_'.app()->getLocale()};
-            $item['worker'] = $item->getWorkerName();
-            $item['service_price'] = $item->getServicePrice();
-            $item['start_tyime'] = $item->session_start_time;
-            $item['end_time'] = $item->getEndTime();
-            unset($item->id);
+            $item['service_name'] = $item->service->{"title_".app()->getLocale()};
+            $item['service_price'] = $item->service->price/100;
+            $item['service_currency'] = $item->service->currency_type;
+            $item['service_endtime'] = $item->getEndTime();
+            $item['user_name'] = $item->user->profile->first_name .' '. $item->user->profile->last_name;
+            $item['department_name'] = $item->user->getDepartmentName();
+            $item['author_name'] = $item->getAuthorName();
+            $item['updated_price'] = $item->new_price / 100;
+            $item['client_number'] = $item->clinetserviceable->number;
+            $item['client_name'] = $item->clinetserviceable->{'full_name_'.app()->getLocale()};
+            unset($item->user_id);
+            unset($item->service_id);
+            unset($item->new_price);
+            unset($item->paid);
+            unset($item->department_id);
+            unset($item->pay_method_id);
+            unset($item->author);
             unset($item->clinetserviceable_type);
-            unset($item->created_at);
+            unset($item->session_endtime);
+            unset($item->clinetserviceable_id);
             unset($item->updated_at);
             unset($item->deleted_at);
-            unset($item->clinetserviceable_id);
-            unset($item->user_id);
-            unset($item->session_start_time);
-            unset($item->service_id);
         }
         return $services;
     }
     public function headings(): array
     {
         return [
+            '#',
+            'სერვისის დაწყების დრო',
             'სტატუსი',
+            'რეგისტრაციის დრო',
             'გადახდის მეთოდი',
-            'სერვისის სახელი',
-            'კლიენტი',
-            'მიმღები',
-            'ფასი',
-            'მისვლის დრო',
-            'სესსის დასრულების დრო',
+            'ხანგრძლივობა (წთ)',
+            'სერვისი',
+            'სერვისის ორიგინალი ფასი',
+            'სერვისის ფასის ვალუტა',
+            'დასრულების დრო',
+            'თანამშრომელი',
+            'დეპარტამენტი',
+            'ავტორი',
+            'განახლებული ფასი',
+            'კლიენტის ნომერი',
+            'კლიენტის სახელი',
         ];
     }
 }

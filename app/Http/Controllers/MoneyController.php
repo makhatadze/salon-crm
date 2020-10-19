@@ -56,7 +56,7 @@ class MoneyController extends Controller
         //Clients
         $earn = 0;
         foreach(ClientService::where('status', true)->whereNull('deleted_at')->get() as $service){
-            $earn += $service->getServicePrice();
+            $earn += $service->service->price/100;
          }
         $clients = [
             'total' => Client::whereNull('deleted_at')->count(),

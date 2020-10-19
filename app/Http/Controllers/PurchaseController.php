@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Brand;
 use App\Purchase;
 use App\Office;
 use App\Profile;
@@ -59,8 +60,8 @@ class PurchaseController extends Controller
     public function create()
     {
         $storages = Storage::all();
-        $offices = Office::whereNull('deleted_at')->get();
-        return view('theme.template.purchase.create_purchase', compact('offices', 'storages'));
+        $brands = Brand::all();
+        return view('theme.template.purchase.create_purchase', compact('storages', 'brands'));
     }
 
     /**
@@ -85,6 +86,7 @@ class PurchaseController extends Controller
             'currency' => '',
             'unit' => '',
             'quantity' => '',
+            'brand' => '',
             'storage' => '',
             'body' => '',
         ],[
@@ -100,13 +102,15 @@ class PurchaseController extends Controller
                     'title' => $request->input('title')[$key],
                     'unit' => $request->input('unit')[$key],
                     'unit_price' => $request->input('unit_price')[$key]*100,
-                    'currency' => $request->input('currency')[$key],
+                    'currency_val' => $request->input('currency')[$key],
                     'quantity' => $request->input('quantity')[$key],
                     'storage_id' => $request->input('storage')[$key],
+                    'brand_id' => $request->input('brand')[$key],
                     'body' => $request->input('body')[$key],
                 ];
             }
         }
+        dd($json);
         $purchase= new Purchase;
         $purchase->purchase_type = $request->input('purchase_type');
         if($request->input('purchase_type') == "overhead"){
@@ -127,12 +131,13 @@ class PurchaseController extends Controller
                 Product::create([
                     'title_ge' => $product['title'],
                     'price' => $product['unit_price'],
-                    'currency_type' => $product['currency'],
+                    'currency_type' => $product['currency_val'],
                     'unit' => $product['unit'],
                     'stock' => $product['quantity'],
                     'storage_id' => $product['storage_id'],
                     'description_ge' => $product['body'],
                     'type' => $product['ability_type'],
+                    'brand_id' => $product['brand_id'],
                     'purchase_id' => $purchase->id
                 ]);
             }
@@ -160,10 +165,11 @@ class PurchaseController extends Controller
     public function edit($id)
     {
         $storages = Storage::all();
+        $brands = Brand::all();
         $purchase = Purchase::wherenull('deleted_at')->findOrFail($id);
         $offices = Office::whereNull('deleted_at')->get();
         $departments = Department::where('departmentable_id', $purchase->office_id)->whereNull('deleted_at')->get();
-        return view('theme.template.purchase.edit_purchase', compact('offices', 'purchase', 'departments', 'storages'));
+        return view('theme.template.purchase.edit_purchase', compact('offices', 'purchase', 'departments', 'brands', 'storages'));
 
     }
 
@@ -205,9 +211,10 @@ class PurchaseController extends Controller
                     'title' => $request->input('title')[$key],
                     'unit' => $request->input('unit')[$key],
                     'unit_price' => $request->input('unit_price')[$key]*100,
-                    'currency' => $request->input('currency')[$key],
+                    'currency_val' => $request->input('currency')[$key],
                     'quantity' => $request->input('quantity')[$key],
                     'storage_id' => $request->input('storage')[$key],
+                    'brand_id' => $request->input('brand')[$key],
                     'body' => $request->input('body')[$key],
                 ];
             }
@@ -231,14 +238,16 @@ class PurchaseController extends Controller
                 Product::create([
                     'title_ge' => $product['title'],
                     'price' => $product['unit_price'],
-                    'currency_type' => $product['currency'],
+                    'currency_type' => $product['currency_val'],
                     'unit' => $product['unit'],
                     'stock' => $product['quantity'],
                     'storage_id' => $product['storage_id'],
                     'description_ge' => $product['body'],
                     'type' => $product['ability_type'],
+                    'brand_id' => $product['brand_id'],
                     'purchase_id' => $purchase->id
                 ]);
+                
             }
         }
         return redirect('/purchases');

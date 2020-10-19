@@ -17,6 +17,6 @@ class Department extends Model implements Auditable
         return $this->hasMany('App\Product', 'department_id');
     }
     public function services(){
-        return $this->hasMany('App\ClientService', 'department_id');
+        return $this->hasMany('App\ClientService', 'department_id', 'id');
     }
 }

@@ -11,6 +11,7 @@ use App\Exports\FinanceExport;
 use App\MemberGroup;
 use App\PayController;
 use App\Product;
+use App\Salary;
 use App\SalaryToService;
 use App\Service;
 use App\User;
@@ -224,7 +225,28 @@ class ClientController extends Controller
         $clientservice->save();
         return redirect('/clients');
     }
-
+    public function giveSalary(Request $request, User $user)
+    {
+        $this->validate($request, [
+            'salary_type' => 'required|string',
+            'salary' => 'required|integer|min:1',
+            'bonus' => '',
+            'reason' => '',
+            'earn' => ''
+        ]);
+        if ($user->profile) {
+            Salary::create([
+                'type' => $request->salary_type,
+                'salary' => $request->salary * 100,
+                'bonus' => $request->bonus * 100,
+                'user_id' => $user->id,
+                'made_salary' => $request->earn * 100,
+                'description' => $request->reason
+            ]);
+            return redirect()->back()->with('success', 'ხელფასის გაცემა წარმატებით დაფიქსირდა.');
+        }
+        return redirect()->back()->with('error', 'დაფიქსირდა შეცდომა');
+    }
     /**
      * Destroy Client with Client Services
      */
@@ -389,8 +411,8 @@ class ClientController extends Controller
         $services = ClientService::whereDate('session_start_time', Carbon::parse(Str::substr($date, 1, strlen($date) - 2)))->whereNull('deleted_at')->get();
         foreach ($services as $client) {
             $client['endtime'] = $client->getEndTime();
-            $client['workername'] = $client->getWorkerName();
-            $client['servicename'] = $client->getServiceName();
+            $client['workername'] = $client->user->profile->first_name .' '. $client->userlast_name;
+            $client['servicename'] = $client->service->{"title_".app()->getLocale()};
             $client['serviceprice'] = $client->getServicePrice();
             $client['clientid'] = $client->clinetserviceable()->first()->id;
             $client['clientnumber'] = $client->clinetserviceable()->first()->number;
@@ -493,7 +515,7 @@ class ClientController extends Controller
         }else{
             return redirect()->back()->with('error', 'აირჩიეთ ან დაარეგისტრირეთ ახალი კლიენტი');
         }
-
+        $personal = User::findOrFail($request->personal);
         $services = array();
         foreach($request->input('service') as $key => $service){
             $time = explode(":", $request->input('time')[$key]);
@@ -504,7 +526,8 @@ class ClientController extends Controller
                 'duration' => intval($request->duration[$key]),
                 'new_price' => intval($request->price[$key]*100),
                 'paid' => 0,
-                'author' => Auth::user()->id
+                'author' => Auth::user()->id,
+                'department_id' => $personal->userHasJob->department_id
             ]; 
         }
         $client->clientservices()->createMany($services);

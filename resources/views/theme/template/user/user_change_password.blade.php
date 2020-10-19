@@ -65,43 +65,7 @@
                 @endif
             </div>
         </div>
-        <div class="col-span-12 md:col-span-6 xl:col-span-4 xxl:col-span-12 mt-3 xxl:mt-8">
-          <div class="intro-x flex items-center h-10">
-              <h2 class="text-lg font-medium truncate mr-5">
-                  Transactions
-              </h2>
-          </div>
-          <div class="mt-5">
 
-            {{-- Transactions --}}
-            @forelse ($user->transacrions() as $item)
-            <div class="intro-x">
-                <div class="box px-5 py-3 mb-3 flex items-center zoom-in">
-                    <div class="w-10 h-10 flex bg-gray-300 font-bolder items-center justify-center image-fit rounded-full overflow-hidden">
-                        {{$item->percent}} <sub>%</sub>
-                    </div>
-                    <div class="ml-4 mr-auto">
-                    <div class="font-medium">
-                      
-                      @if ($item->service_id)
-                      {{$item->getClientName()}}
-                      @elseif($item->sale_id)
-                      გაყიდვიდან
-                      @endif
-                    </div>
-                        <div class="text-gray-600 text-xs">{{Carbon\Carbon::parse($item->created_at)->settings([
-                            'toStringFormat' => 'jS \o\f F, Y',
-                        ])}}</div>
-                    </div>
-                <div class="text-theme-9 font-normal">+{{round($item->service_price/100 * $item->percent/100, 2)}} <sup>₾</sup></div>
-                </div>
-            </div>
-            @empty
-                
-            @endforelse
-             
-          </div>
-      </div>
     </div>
     {{-- End of Profile --}}
     <div class="col-span-12 lg:col-span-8 xxl:col-span-9">

@@ -15,12 +15,12 @@ class ClientExport implements FromCollection, WithHeadings
         $array = array();
         $services =  ClientService::all();
         foreach($services as $service){
-            $service['service_name'] = $service->getServiceName();
-            $service['worker_name'] = $service->getWorkerName();
+            $service['service_name'] = $service->service->{"title_".app()->getLocale()};
+            $service['worker_name'] = $service->user->profile->first_name .' '. $service->user->profile->last_name;
             $service['client_name'] = $service->clinetserviceable()->first()->{'full_name_'.app()->getLocale()};
             $service['client_phone'] = $service->clinetserviceable()->first()->number;
             $service['client_address'] = $service->clinetserviceable()->first()->address;
-            $service['serviceprice'] = $service->getServicePrice();
+            $service['serviceprice'] = $service->service->price/100;
             unset($service['user_id']);
             unset($service['service_id']);
             unset($service['deleted_at']);
