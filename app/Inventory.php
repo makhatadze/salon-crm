@@ -8,11 +8,12 @@ use OwenIt\Auditing\Contracts\Auditable;
 class Inventory extends Model implements Auditable
 {
     use SoftDeletes, \OwenIt\Auditing\Auditable;
-    protected $fillable = ['product_id', 'quantity'];
+    protected $fillable = ['category_id',];
     protected $table = 'inventories';
     public function inventoriable(){
         return $this->morphTo();
     }
+    //ინვენტარებში პროდუქტის 
     public function getProductUnit(){
         $unit = Product::find($this->product_id)->first();
         if($unit){

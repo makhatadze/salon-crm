@@ -44,50 +44,19 @@
                 
             <div class="flex">
                 <div class="w-1/2 flex">
-                    <div class="w-1/2 p-2">
+                    <div class="w-full md:w-1/2 p-2">
                         <label class="font-bold font-caps text-xs text-gray-700">საათი</label>
                         <input required type="number" name="duration_hours" value="{{floor($service->duration_count/60)}}" min="0"  step="1" class="font-normal text-xs mt-2 appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white">
                     </div>
-                    <div class="w-1/2 p-2">
+                    <div class="w-full md:w-1/2 p-2">
                         <label class="font-bold font-caps text-xs text-gray-700">წუთი</label>
                         <input required type="number" name="duration_minutes" value="{{($service->duration_count/60 - floor($service->duration_count/60))*60}}" min="0" max="60" step="1" class="font-normal text-xs mt-2 appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white">
                     </div>
                 </div>
-               <div class="w-full md:w-1/4 px-3 mb-6 md:mb-0">
-                <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-5" for="grid-state">
-                  კატეგორიები
-                </label>
-                <div class="relative ">
-                  <select name="category" class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-state">
-                    @if ($categories)
-                    @foreach ($categories as $cat)
-                      @if($service->category->id == $cat->id)
-                      <option selected value="{{$cat->id}}">{{$cat->{"title_".app()->getLocale()} }}</option>
-                      @else 
-                      <option value="{{$cat->id}}">{{$cat->{"title_".app()->getLocale()} }}</option>
-                      @endif
-                    @endforeach   
-                @endif
-                  </select>
-                  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-                  </div>
-                </div>
-              </div>
-              <div class="w-1/4 p-2">
-                <label class="font-bold font-caps text-xs text-gray-700">ახალი კატეგორია</label>
-                <input type="text" name="new_category" id="new_category" class="mt-2 font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" placeholder="ახალი კატეგორია">
-               
-            </div>
-          </div>
-          <p class="text-xs font-normal text-center">
-              <strong class="text-red-500">შენიშვნა:</strong> ახალი კატეგორიის შეყვანის შემთხვევაში არჩეული კატეგორია არ იქნება დამახსოვრებული.
-          </p>
-               <div class="w-full p-2">
-                    <div>
+                <div class="w-full md:w-1/2 p-2">
                         <label for="price" class="block  leading-5 font-medium text-gray-700 font-bold font-caps text-xs">ფასი</label>
-                        <div class="mt-1 relative rounded-md shadow-sm">
-                          <input autocomplete="off" value="{{$service->price/100}}"  name="price" min="0" step="0.01" class="block font-medium text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="xxx.xx">
+                        <div class="mt-2 relative rounded-md shadow-sm">
+                          <input autocomplete="off" value="{{$service->price/100}}"  name="price" min="0" step="0.01" class="block border-gray-300 font-medium text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="xxx.xx">
                           <div class="absolute inset-y-0 right-0 flex items-center">
                             <select name="currency" aria-label="Currency" class="form-select h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm sm:leading-5">
                               <option value="gel" @if($service->currency_type == "gel") selected @endif>GEL</option>
@@ -154,35 +123,34 @@
                   <span class="w-5 h-5 flex items-center justify-center"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus w-4 h-4"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> </span>
               </button>
             </div>
+            <div id="inventory" class="grid grid-cols-4 gap-3">
             @foreach ($service->inventories()->get() as $key => $inv)
-                
-            <div class="w-full relative flex items-center mt-2" id="remove{{$inv->id}}">
-            <span class="text-white px-2 cursor-pointer rounded font-bold right-0 top-0 absolute bg-red-500" onclick="removeinventoryajax('{{$inv->id}}')">x</span>
-           <div class="mt-3 flex items-center w-full">
-              <div class="w-1/3 p-2">
-                  
-                  <select required data-placeholder="აირჩიეთ ინვენტარი" disabled class="font-normal text-xs select2 p-2 w-full border border-gray-300 rounded" >
-                      <option value="" selected></option>
-                      @foreach ($inventories as $item)
-                      @if ($inv->product_id == $item->id)
-                      <option value="{{$item->id}}" selected>{{$item->{"title_".app()->getLocale()} }}</option>
-                      @else 
-                      <option value="{{$item->id}}">{{$item->{"title_".app()->getLocale()} }}</option>
-                      @endif
-                      @endforeach
-                      
-                  </select>
-              </div>
-              <div class="w-1/3 p-2">
-              <input type="text" disabled  required  class="text-xs font-normal input w-full border" value="{{$inv->getProductUnit()}}" placeholder="ერთეული">
-              </div>
-              <div class="w-1/3 p-2">
-                <input type="number" disabled min="0" step="0.1" required  class="text-xs font-normal input w-full border" value="{{$inv->quantity}}" placeholder="რაოდენობა">
-              </div>
-           </div>
-            </div>
+                <div class="p-2 col-span-1" id="remove{{$inv->id}}">
+                    <div class="bg-white shadow relative p-2">
+                        <span class="text-white px-2 cursor-pointer rounded font-bold right-0 top-0 absolute bg-red-500" onclick="removeinventoryajax('{{$inv->id}}')" style="font-size: 0.7rem">წაშლა</span>
+                        <div class="w-full px-3 mb-6 md:mb-0">
+                        <label class="font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-state">
+                            კატეგორიები
+                        </label>
+                        <div class="relative">
+                            <select required name="categories[]" class="font-normal text-xs block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                            <option value="">აირჩიეთ</option>
+                            @foreach($categories as $cat)
+                                @if ($inv->category_id == $cat->id)
+                                    <option value="{{$cat->id}}" selected> {{$cat->{'title_'.app()->getLocale()} }} </option>
+                                @else
+                                    <option value="{{$cat->id}}"> {{$cat->{'title_'.app()->getLocale()} }} </option>
+                                @endif
+                            @endforeach
+                            </select>
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
             @endforeach
-           <div id="inventory">
              
            </div>
               <div class="mt-2">
@@ -227,6 +195,7 @@
                           <input type="submit" class=" button text-white bg-theme-1 shadow-md mr-1" value="ატვირთვა">
             </form>
         </div>
+        
     </div>
 </div>
 @endsection
@@ -261,26 +230,26 @@
         $('#addunit').click(function(){
             $id = Date.now();
             $('#inventory').append(`
-            <div class="w-full relative flex items-center mt-2" id="remove`+$id+`">
-                    <span class="text-white px-2 cursor-pointer rounded font-bold right-0 top-0 absolute bg-red-500" onclick="removeinventory('remove`+$id+`')">x</span>
-               <div class="mt-3 flex items-center w-full">
-                  <div class="w-1/3 p-2">
-                      
-                      <select required data-placeholder="აირჩიეთ ინვენტარი" onchange="selectinventary(this.value, '`+$id+`')" name="inventory[]" class="font-normal text-xs select2 p-2 w-full border border-gray-300 rounded" >
-                        <option value="" selected></option>
-                          @foreach ($inventories as $item)
-                        <option value="{{$item->id}}">{{$item->{"title_".app()->getLocale()} }}</option>
-                          @endforeach
-                          
-                      </select>
-                  </div>
-                  <div class="w-1/3 p-2">
-                    <input type="text" disabled  required name="unit[]" id="unit`+$id+`"  class="text-xs font-normal input w-full border" placeholder="ერთეული">
-                  </div>
-                  <div class="w-1/3 p-2">
-                    <input type="number" disabled min="0" step="0.1" required name="quantity[]" id="quantity`+$id+`"  class="text-xs font-normal input w-full border" placeholder="რაოდენობა">
-                  </div>
-               </div>
+                <div class="p-2 col-span-1" id="`+$id+`">
+                    <div class="bg-white shadow relative p-2">
+                        <span class="absolute top-0 right-0 w-5 h-5 flex items-center justify-center font-bold text-white cursor-pointer bg-red-500" onclick="removeinventory(`+$id+`)">x</span>
+                        <div class="w-full px-3 mb-6 md:mb-0">
+                        <label class="font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-state">
+                            კატეგორიები
+                        </label>
+                        <div class="relative">
+                            <select required name="categories[]" class="font-normal text-xs block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                            <option value="">აირჩიეთ</option>
+                            @foreach($categories as $cat)
+                                <option value="{{$cat->id}}"> {{$cat->{'title_'.app()->getLocale()} }} </option>
+                            @endforeach
+                            </select>
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
                 </div>
             `);
         });

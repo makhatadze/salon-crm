@@ -65,10 +65,9 @@ class ServiceController extends Controller
      */
     public function create()
     {
-        $categories = Category::where('model_name', 'App\Service')->get();
-        $inventories = Product::where([['published', true], ['type', 2], ['warehouse', false]])->get();
+        $categories = Category::where('model_name', 'App\Product')->get();
         $action = "post";
-        return view('theme.template.service.add_service', compact('action', 'categories', 'inventories'));
+        return view('theme.template.service.add_service', compact('action', 'categories'));
     }
 
     /**
@@ -101,15 +100,6 @@ class ServiceController extends Controller
         ]);
         $duration = ($request->input('duration_hours')*60)+$request->input('duration_minutes');
         $service = new Service;
-        if($request->input('new_category') != ""){
-         $category = new Category;
-         $category->title_ge = $request->input('new_category');
-         $category->model_name = "App\Service";
-         $category->save();
-         $service->category_id = $category->id;
-        }else{
-         $service->category_id = $request->input('category');
-        }
         $service->title_ge = $request->input('title_ge');
         $service->title_en = $request->input('title_en');
         $service->title_ru = $request->input('title_ru');
@@ -126,16 +116,14 @@ class ServiceController extends Controller
 
         $service->save();
         $array = array();
-        if($request->input('inventory') && $request->input('quantity')){
-            foreach($request->input('inventory') as $key => $item){
+        if($request->input('categories')){
+            foreach($request->input('categories') as $key => $item){
                 $array[] =[
-                    'product_id' => $request->input('inventory')[$key],
-                    'quantity' => $request->input('quantity')[$key],
+                    'category_id' => $request->input('categories')[$key],
                 ];
             }
             $service->inventories()->createMany($array);
         }
-
         if($request->hasFile('file')){
             $imagename = date('Ymhs').$request->file('file')->getClientOriginalName();
             $destination = base_path() . '/storage/app/public/serviceimg';
@@ -155,9 +143,8 @@ class ServiceController extends Controller
      */
     public function edit(Service $service)
     {
-        $categories = Category::where('model_name', 'App\Service')->get();
-        $inventories = Product::where([['published', true], ['type', 2], ['warehouse', false]])->get();
-        return view('theme.template.service.edit_service', compact('service', 'inventories', 'categories'));
+        $categories = Category::where('model_name', 'App\Product')->get();
+        return view('theme.template.service.edit_service', compact('service', 'categories'));
     }
 
     /**
