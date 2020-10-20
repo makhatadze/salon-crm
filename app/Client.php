@@ -16,16 +16,16 @@ class Client extends Model implements Auditable
     public function clientservices(){
         return $this->morphMany('App\ClientService', 'clinetserviceable');
     }
-    public function getPayedMoney(){
-        $services = $this->clientservices()->where('status', true)->get();
-        $money = 0;
-        foreach($services as $service){
-            $money += $service->service->price/100;
-        }
-        return $money;
-    }
     public function image(){
         return $this->morphOne('App\Image', 'imageable');
     }
-
+    public function sales()
+    {
+        return $this->hasMany('App\Sale', 'client_id');
+    }
+    public function getPayedMoney(){
+        $money = $this->clientservices()->where('status', true)->sum('new_price');
+        $money += $this->sales()->sum('total');
+        return $money;
+    }
 }

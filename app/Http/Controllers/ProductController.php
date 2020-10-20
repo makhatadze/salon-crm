@@ -166,7 +166,7 @@ class ProductController extends Controller
 
         if($product->type == 1  && $product->warehouse == 0){
         }else{
-            
+
             $product->unit = $request->input('unit');
             $product->stock = $request->input('stock');
         }
@@ -350,12 +350,12 @@ class ProductController extends Controller
             return redirect()->back()->with('danger', 'გადახდის მეთოდი არ მოიძებნა');
         }
         $client = Client::findOrFail($request->client_id);
-        
         $cart = Cart::session($user_id)->getContent();
         $sale = new Sale();
         $sale->client_id = $request->client_id;
         $sale->address = $request->address;
         $sale->pay_method_id = $paymethods->id;
+        $sale->total = $total;
         $sale->pay_method = $paymethods->{"name_".app()->getLocale()};
         $sale->seller_id = Auth()->user()->id;
         $sale->save();
@@ -363,7 +363,7 @@ class ProductController extends Controller
             'user_id' => Auth::user()->id,
             'sale_id' => $sale->id,
             'service_price' => $total,
-            'percent' => Auth::user()->profile->percent
+            'percent' => Auth::user()->profile->percent ?? 0
         ]);
         foreach($cart as $order){
             $product = Product::findOrFail($order->id);

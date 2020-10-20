@@ -229,7 +229,7 @@ class ClientController extends Controller
     {
         $this->validate($request, [
             'salary_type' => 'required|string',
-            'salary' => 'required|integer|min:1',
+            'salary' => 'required|integer|min:0',
             'bonus' => '',
             'reason' => '',
             'earn' => ''
@@ -283,7 +283,7 @@ class ClientController extends Controller
         
         $id = $request->pay_id;
         $clientservice = ClientService::where('status', false)->findOrFail($id);
-        $user = $clientservice->getUser();
+        $user = $clientservice->user;
 
         $message = '';
         $service = Service::find($clientservice->service_id);
@@ -336,9 +336,9 @@ class ClientController extends Controller
         }
         $clientservice->save();
         if ($success) {
-            return redirect('/')->with('success', $message);
+            return redirect()->back()->with('success', $message);
         } else {
-            return redirect('/')->with('warning', $message);
+            return redirect()->back()->with('warning', $message);
         }
     }
     public function getUserServices(Request $request)
@@ -505,6 +505,8 @@ class ClientController extends Controller
             'duration' => 'required',
             'price' => 'required',
         ]);
+        
+        $personal = User::findOrFail($request->personal);
         if($request->client){
             $client = Client::findOrFail(intval($request->client));
         }elseif($request->input('full_name_ge') && $request->input('client_number')){
@@ -515,7 +517,6 @@ class ClientController extends Controller
         }else{
             return redirect()->back()->with('error', 'აირჩიეთ ან დაარეგისტრირეთ ახალი კლიენტი');
         }
-        $personal = User::findOrFail($request->personal);
         $services = array();
         foreach($request->input('service') as $key => $service){
             $time = explode(":", $request->input('time')[$key]);

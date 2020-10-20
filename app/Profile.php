@@ -39,4 +39,8 @@ class Profile extends Model implements Auditable
     {
         return $this->morphTo();
     }
+    
+    protected $casts = [
+        'salary' => 'integer'
+    ];
 }

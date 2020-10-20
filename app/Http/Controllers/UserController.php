@@ -10,6 +10,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Client;
 use App\Company;
 use App\Office;
 use App\Profile;
@@ -22,6 +23,7 @@ use App\UserHasJob;
 use Carbon\Carbon;
 
 use App\Exports\UserExport;
+use App\PayController;
 use App\Role;
 use App\Service;
 use App\UserJob;
@@ -261,6 +263,18 @@ class UserController extends Controller
             $client['clientname'] = $client->clinetserviceable()->first()->{"full_name_".app()->getLocale()};
         }
         return response()->json(array('status' => true, 'data' => $clients));
+    }
+    
+    public function usertimetable(User $user)
+    {
+        if(request('date')){
+            $date = Carbon::parse(request('date'));
+        }else{
+            $date = Carbon::today();
+        } 
+        $clients = Client::all();
+        $paymethods = PayController::all();
+        return view('theme.template.user.user_timetable', compact('user', 'clients', 'date', 'paymethods'));
     }
     /**
      * Store a newly created resource in storage.

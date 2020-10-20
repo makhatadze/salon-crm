@@ -43,7 +43,7 @@
                         <div class="lg:ml-2 lg:mr-auto text-center lg:text-left mt-3 lg:mt-0">
                             <a @if ($user->profile) href="{{route('ShowUserProfile', $user->id)}}" @endif class="font-bolder text-xs text-gray-700 uppercase font-caps">{{$user->name}} @if($user->profile()->first()) {{$user->profile()->first()->last_name}} @endif</a><br>
                             @if($user->profile()->first())
-                            <span class="text-xs font-normal">ხელფასი: @if($user->salary) @else {{$user->profile()->first()->salary}} @endif <sup>₾</sup></span> <br>
+                            @if($user->profile->salary > 0) <span class="text-xs font-normal">ხელფასი:  {{$user->profile->salary}} <sup>₾</sup></span> <br> @endif
                             <span class="text-xs font-normal">გამოიმუშავა: {{$user->getEarnedMoney() ? round($user->getEarnedMoney(), 2) : 0 }} <sup>₾</sup></span> <br>
                             @if($user->salary)
                                 <span class="text-xs font-normal">
@@ -98,13 +98,13 @@
                                                 <label class="block uppercase tracking-wide text-left font-caps text-xs text-gray-700 text-xs font-bold mb-2">
                                                   რაოდენობა
                                                 </label>
-                                                <input required value="{{$user->profile->salary}}" name="salary" class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="number" min="1" step="1">
+                                                <input required value="{{$user->profile->salary}}" name="salary" class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="number" min="0" step="1">
                                             </div>
                                             <div class="w-full md:w-1/3 px-3">
                                                 <label class="block uppercase tracking-wide text-left font-caps text-xs text-gray-700 text-xs font-bold mb-2">
                                                 ბონუსი
                                                 </label>
-                                                <input required value="0" name="bonus" class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="number" min="0" step="1">
+                                                <input required value="0" name="bonus" class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="number" min="0" step="0.01">
                                             </div>
                                           </div>
                                           <div class="flex">
@@ -120,7 +120,7 @@
                                                 <label class="block uppercase tracking-wide text-left font-caps text-xs text-gray-700 text-xs font-bold mb-2">
                                                 გამოიმუშავა <small class="font-normal text-x">[ამ თვეში]</small>
                                                 </label>
-                                                <input value="{{$user->getEarnedThisMoneth()}}" name="earn" class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="number" min="0" step="1">
+                                                <input value="{{$user->getEarnedThisMoneth()}}" name="earn" class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="number" min="0" step="0.01">
                                             </div>
                                           </div>
                                           <div class="w-full flex justify-end">
@@ -131,26 +131,25 @@
                                     </form>    
                                     @foreach ($user->salaries()->orderBy('id', 'desc')->get() as $salary)
                                     <hr class="my-2">
-                                    <div class="w-full flex items-center  justify-between">
-                                        <div class="text-left">
-                                            <small class="font-normal text-gray-600 text-xs">ხელფასი:</small>
-                                            <h6 class="font-bold text-sm text-gray-800">{{$salary->salary}}</h6>
-                                            <small class="font-normal text-xs text-gray-600">ბონუსი:</small>
-                                            <h6 class="font-bold text-sm text-gray-800">{{$salary->bonus}}</h6>
-                                        </div>
-                                        <div class="text-right">
-                                            <small class="font-normal text-gray-600 text-xs">ტიპი:</small>
-                                            <h6 class="font-bold text-sm text-gray-800">
-                                                @if ($salary->type == 'salary')
-                                                    სტანდარტული ხელფასი
-                                                    @elseif ($salary->type == 'avansi')
-                                                    ავანსი
-                                                    @elseif ($salary->type == 'other')
-                                                    სხვა თანხა
-                                                @endif
-                                            </h6>
-                                            <small class="font-normal text-gray-600 text-xs">თარიღი:</small>
-                                            <h6 class="font-bold text-sm text-gray-800">{{$salary->created_at}}</h6>
+                                    <div class="w-full block">
+                                        <div class="flex justify-between">
+                                            <div class="text-left">
+                                                <small class="font-normal text-gray-600 text-xs">ხელფასი: <span class="text-gray-800">{{$salary->salary/100}} <sup>₾</sup></span></small> <br>
+                                                <small class="font-normal text-xs text-gray-600">ბონუსი: <span class="text-gray-800">{{$salary->bonus/100}} <sup>₾</sup></span></small> <br>
+                                                <small class="font-normal text-xs text-gray-600">გამომუშავებული: <span class="text-gray-800">{{$salary->made_salary/100}} <sup>₾</sup></span></small>
+                                            </div>
+                                            <div class="text-right">
+                                                <h6 class="font-normal text-xs text-gray-800">
+                                                    @if ($salary->type == 'salary')
+                                                        სტანდარტული ხელფასი
+                                                        @elseif ($salary->type == 'avansi')
+                                                        ავანსი
+                                                        @elseif ($salary->type == 'other')
+                                                        სხვა თანხა
+                                                    @endif
+                                                </h6>
+                                                <h6 class="font-normal text-xs text-gray-800">{{$salary->created_at}}</h6>
+                                            </div>
                                         </div>
                                         <p>{{$salary->reason}}</p>
                                     </div>

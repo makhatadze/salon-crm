@@ -29,6 +29,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
             Route::post('/profile/filter', 'UserController@profilefilter')->name('ProfileFilter');
             Route::get('/', 'HomeController@ActionHome')->name('ActionHome');
             Route::get('/profile/accountsettings', 'UserController@accountsetting');
+            Route::get('/clients/usertimetable/{user}', 'UserController@usertimetable')->name('userTimeTable');
             Route::post('/clients/turnon', 'ClientController@turnon')->name('turnonawqa');
             Route::post('/clients/checktime', 'ClientController@checktime')->name('checkTime');
             Route::get('/profile/changepassword', 'UserController@changepassword');

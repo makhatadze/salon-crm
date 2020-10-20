@@ -63,32 +63,73 @@
                     <h6 class="text-sm text-black font-normal"><span class="text-xs">გან:</span> {{$client->created_at}}</h6>
                 </td>
                 <td>
-                <h6 class="text-sm text-black font-bold">{{$client->getPayedMoney()}} <sup>₾</sup></h6>
+                <h6 class="text-sm text-black font-bold">{{$client->getPayedMoney()/100}} <sup>₾</sup></h6>
                 <span class="text-xs font-normal">რაოდენობა: {{$client->clientservices()->where('status', true)->whereNull('deleted_at')->count()}}</span><br>
                 <span class="text-xs font-normal">შეკვეთები: {{$client->clientservices()->whereNull('deleted_at')->count()}}</span>
                 </td>
                 <td>
-                    <div class="flex justify-center items-center">
-                        <a href="{{ route('ClientExport', $client->id) }}" class="p-2 bg-gray-300 rounded-lg">
-                            <svg width="1.18em" height="1.18em" viewBox="0 0 16 16" class="bi bi-file-arrow-down-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <div class="flex justify-center items-center" x-data="{modal:false}">
+                        <button @click="modal=true" class="p-2 bg-gray-300 rounded-lg">
+                            <svg width="1.18em" height="1.18em" viewBox="0 0 16 16" class="bi bi-eye-fill" fill="#444" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
+                                <path fill-rule="evenodd" d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
+                              </svg>
+                        </button>
+                        <x-modal x-show="modal">
+                            <div class="grid grid-cols-2">
+                                <div class="col-span-1 px-2">
+                                    <h6 class="w-full font-bold mb-2 font-caps text-xs">სერვისები</h6>
+                                    @foreach ($client->clientservices as $item)
+                                        <div class="w-full border-l-2 @if($item->status == 1) border-green-500 @elseif($item->session_start_time < Carbon\Carbon::now('Asia/Tbilisi')) border-red-500 @elseif($item->session_start_time < Carbon\Carbon::now('Asia/Tbilisi')) border-orange-500 @endif mt-2 bg-gray-200 p-2 flex justify-between">
+                                            <div>
+                                                <h6 class="font-bold text-xs">
+                                                    {{$item->service->{"title_".app()->getLocale()} }}
+                                                </h6>
+                                                <small class="font-normal">{{$item->session_endtime}}</small>
+                                            </div>
+                                            <span class="font-normal text-xs">
+                                                {{$item->new_price/100}} @if ($item->service->currency_type == "gel") ₾ @elseif ($item->service->currency_type == "eur") € @elseif ($item->service->currency_type == "usd") $ @endif
+                                            </span>
+                                        </div>
+                                    @endforeach
+                                </div>
+                                <div class="col-span-1 px-2">
+                                    <h6 class="w-full font-bold mb-2 font-caps text-xs">გაყიდვები</h6>
+                                    @foreach ($client->sales as $item)
+                                    <div class="w-full mt-2 bg-gray-200 p-2 flex items-center justify-between">
+                                        <div>
+                                            <small class="font-normal">{{$item->created_at}}</small>
+                                        </div>
+                                        <span class="font-normal text-xs">
+                                            {{$item->total/100}} <sup>₾</sup>
+                                        </span>
+                                    </div>
+                                @endforeach
+                                </div>
+                            </div>
+                        </x-modal>
+                        <a href="{{ route('ClientExport', $client->id) }}" class="ml-2 p-2 bg-gray-300 rounded-lg">
+                            <svg width="1.18em" height="1.18em" viewBox="0 0 16 16" class="bi bi-file-arrow-down-fill" fill="#444" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" d="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM8 5a.5.5 0 0 1 .5.5v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 9.293V5.5A.5.5 0 0 1 8 5z"/>
                             </svg>
                         </a>
                         <a href=" {{route('EditClient', $client->id)}} "  class="p-2 bg-gray-300 rounded-lg ml-2" href="javascript:;"> 
-                            <svg width="1.18em" height="1.18em" viewBox="0 0 16 16" class="bi bi-pencil-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <svg width="1.18em" height="1.18em" viewBox="0 0 16 16" class="bi bi-pencil-fill" fill="#444" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
                             </svg>
                             </a>
-                        <form action="{{route('DeleteClient', $client->id)}}" method="get">
+                        {{-- 
+                            DELETE
+                            <form action="{{route('DeleteClient', $client->id)}}" method="get">
                             @csrf
                                 <button type="submit"  class="p-2 bg-gray-300 rounded-lg ml-2" href="javascript:;" data-toggle="modal" data-target="#delete-confirmation-modal">
-                                    <svg width="1.18em" height="1.18em" viewBox="0 0 16 16" class="bi bi-trash2" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <svg width="1.18em" height="1.18em" viewBox="0 0 16 16" class="bi bi-trash2" fill="#444" xmlns="http://www.w3.org/2000/svg">
                                         <path fill-rule="evenodd" d="M3.18 4l1.528 9.164a1 1 0 0 0 .986.836h4.612a1 1 0 0 0 .986-.836L12.82 4H3.18zm.541 9.329A2 2 0 0 0 5.694 15h4.612a2 2 0 0 0 1.973-1.671L14 3H2l1.721 10.329z"/>
                                         <path d="M14 3c0 1.105-2.686 2-6 2s-6-.895-6-2 2.686-2 6-2 6 .895 6 2z"/>
                                         <path fill-rule="evenodd" d="M12.9 3c-.18-.14-.497-.307-.974-.466C10.967 2.214 9.58 2 8 2s-2.968.215-3.926.534c-.477.16-.795.327-.975.466.18.14.498.307.975.466C5.032 3.786 6.42 4 8 4s2.967-.215 3.926-.534c.477-.16.795-.327.975-.466zM8 5c3.314 0 6-.895 6-2s-2.686-2-6-2-6 .895-6 2 2.686 2 6 2z"/>
                                     </svg>
                                     </button>
-                        </form>
+                        </form> --}}
                         </div>
                 </td>
                 </tr>

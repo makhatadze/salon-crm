@@ -50,7 +50,7 @@
                                     <option value="unit" @if ($product->unit == 'unit')
                                         selected @endif>ცალი</option>
                                         @if($product->type != 1)
-                                         <option value="gram" @if ($product->unit == 'kilo')
+                                         <option value="gram" @if ($product->unit == 'gram')
                                         selected @endif>გრამი</option>
                                          <option value="metre" @if ($product->unit == 'metre')
                                         selected @endif>სანტიმეტრი</option>

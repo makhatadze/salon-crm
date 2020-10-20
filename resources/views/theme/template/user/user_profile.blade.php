@@ -147,7 +147,7 @@
                    </div>
                    <div class="col-span-1 ">
                    <h6 class="font-bold">{{$client->service->price/100}} <sup>₾</sup></h6>
-                       <span class="font-normal">{{$client->service->{"title_".app()->getLocale()}}}</span>
+                       <span class="font-normal">{{$client->service->{"title_".app()->getLocale()} }}</span>
                    </div>
                    <div class="col-span-1 flex align-center justify-center">
                        @if ($client->status)
