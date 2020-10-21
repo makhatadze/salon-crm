@@ -165,6 +165,9 @@ class CompanyController extends Controller
             'name_ge' => 'required',
             'name_ru' => '',
             'name_en' => '',
+            'address' => '',
+            'phone' => '',
+            'contact_to' => '',
         ]);
 
         $discompany = new DistributionCompany;
@@ -172,6 +175,9 @@ class CompanyController extends Controller
         $discompany->name_ge = $request->input('name_ge');
         $discompany->name_ru = $request->input('name_ru');
         $discompany->name_en = $request->input('name_en');
+        $discompany->address = $request->input('address');
+        $discompany->phone = $request->input('phone');
+        $discompany->contact_to = $request->input('contact_to');
         $discompany->save();
         return redirect('/companies/distcompany');
     }
@@ -180,13 +186,19 @@ class CompanyController extends Controller
             'code' => 'required',
             'name_ge' => 'required',
             'name_ru' => '',
-            'name_en' => ''
+            'name_en' => '',
+            'address' => '',
+            'phone' => '',
+            'contact_to' => '',
         ]);
         $discompany = DistributionCompany::wherenull('deleted_at')->findOrFail($id);
         $discompany->code = $request->input('code');
         $discompany->name_ge = $request->input('name_ge');
         $discompany->name_ru = $request->input('name_ru');
         $discompany->name_en = $request->input('name_en');
+        $discompany->address = $request->input('address');
+        $discompany->phone = $request->input('phone');
+        $discompany->contact_to = $request->input('contact_to');
         $discompany->save();
         return redirect('/companies/distcompany');
     }

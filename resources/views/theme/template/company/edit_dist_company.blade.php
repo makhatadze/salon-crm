@@ -29,6 +29,22 @@
             </div>
         </div>
         
+        <div class="flex">
+            <div class="w-1/3 p-2">
+                <label class="font-helvetica">მობილური</label>
+            <input  type="text" onkeyup="this.value = this.value.replace(/[^0-9\.]/g, '');" minlength="9" maxlength="9" class="input w-full border mt-2" value="{{$distribution->phone}}" name="phone">
+            </div>
+            
+            <div class="w-1/3 p-2">
+                <label class="font-helvetica">მისამართი</label>
+                <input  type="text"  class="input w-full border mt-2" value="{{$distribution->name_en}}" name="address">
+            </div>
+            <div class="w-1/3 p-2">
+                <label class="font-helvetica">საკონტაქტო პირი</label>
+                <input  type="text"  class="input w-full border mt-2" value="{{$distribution->contact_to}}" name="contact_to">
+            </div>
+        </div>
+        
     
         <div class="relative mt-3">
             <button type="submit" class="button w-25 bg-theme-1 text-white font-helvetica">შენახვა</button>
@@ -41,8 +57,10 @@
 @section('custom_scripts')
 <script type="text/javascript">
 	$(document).ready(function() {
-		$('.side-menu').removeClass('side-menu--active');
-		$('.side-menu[data-menu="companies"]').addClass('side-menu--active');
+        $('.side-menu').removeClass('side-menu--active');
+        $('.side-menu[data-menu="companies"]').addClass('side-menu--active');
+        $('#menucompanies ul').addClass('side-menu__sub-open');
+        $('#menucompanies ul').css('display', 'block');
         
 	});
 

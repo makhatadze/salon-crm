@@ -29,7 +29,7 @@ class SalaryToService extends Model implements Auditable
     public function getClientName(){
         $name = ClientService::find($this->service_id)->first();
         if($name){
-            return $name->clinetserviceable()->first()->{"full_name_".app()->getLocale()};
+            return $name->clinetserviceable->{"full_name_".app()->getLocale()};
         }
         return;
     }

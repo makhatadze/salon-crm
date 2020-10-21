@@ -41,8 +41,8 @@
                             
                         </div>
                         <div class="lg:ml-2 lg:mr-auto text-center lg:text-left mt-3 lg:mt-0">
-                            <a @if ($user->profile) href="{{route('ShowUserProfile', $user->id)}}" @endif class="font-bolder text-xs text-gray-700 uppercase font-caps">{{$user->name}} @if($user->profile()->first()) {{$user->profile()->first()->last_name}} @endif</a><br>
-                            @if($user->profile()->first())
+                            <a @if ($user->profile) href="{{route('ShowUserProfile', $user->id)}}" @endif class="font-bolder text-xs text-gray-700 uppercase font-caps">{{$user->name}} @if($user->profile) {{$user->profile->last_name}} @endif</a><br>
+                            @if($user->profile)
                             @if($user->profile->salary > 0) <span class="text-xs font-normal">ხელფასი:  {{$user->profile->salary}} <sup>₾</sup></span> <br> @endif
                             <span class="text-xs font-normal">გამოიმუშავა: {{$user->getEarnedMoney() ? round($user->getEarnedMoney(), 2) : 0 }} <sup>₾</sup></span> <br>
                             @if($user->salary)
@@ -54,7 +54,9 @@
                             @endif
                         </div>
                         <div class="flex mt-4 lg:mt-0">
-                            @if ($user->profile()->first())
+                            @if ($user->profile)
+                            
+                        
                             <div class="flex">
                                @if ($user->isUser())
                                <a href="/user/export/{{$user->id}}" class="button button--sm bg-gray-200 text-gray-700 border border-gray-300 font-helvetica">
@@ -173,6 +175,8 @@
         $(document).ready(function () {
             $('.side-menu').removeClass('side-menu--active');
             $('.side-menu[data-menu="user"]').addClass('side-menu--active');
+            $('#menuuser ul').addClass('side-menu__sub-open');
+            $('#menuuser ul').css('display', 'block');
         });
 
 

@@ -79,7 +79,9 @@
     <script type="text/javascript">
         $(document).ready(function() {
             $('.side-menu').removeClass('side-menu--active');
-            $('.side-menu[data-menu="products"]').addClass('side-menu--active');
+            $('.side-menu[data-menu="shop"]').addClass('side-menu--active');
+            $('#menushop ul').addClass('side-menu__sub-open');
+            $('#menushop ul').css('display', 'block');
             $('.removesale').click(function(){
                 let id = $(this).attr('id');
                 $.ajaxSetup({

@@ -12,13 +12,14 @@
                   @endif
                 </div>
                 <div class="ml-4 mr-auto">
-                <div class="font-bold text-sm "> {{$user->profile()->first()->first_name}} {{$user->profile()->first()->last_name}}</div>
+                <div class="font-bold text-sm "> {{$user->profile->first_name}} {{$user->profile->last_name}}</div>
                     <div class="text-gray-600 font-normal text-xs"> 
                         @if ($user->isUser())
                             სტილისტი
                         @endif
                     </div>
                 </div>
+                
             </div>
             <div class="p-5 border-t border-gray-200">
             <a class="flex items-center font-medium text-theme-1" @if($user->id != Auth::user()->id) href="/show/accountsettings/{{$user->id}}" @else href="/profile/accountsettings" @endif> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity w-4 h-4 mr-2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg> სამუშაო ცხრილი </a>
@@ -39,7 +40,7 @@
                         <span class="font-normal text-xs">კლიენი</span>
                     </div>
                     <div class="w-1/3 p-3">
-                        <h6 class="font-bold font-caps text-base text-black"> {{$user->profile()->first()->salary}} <sup>₾</sup></h6>
+                        <h6 class="font-bold font-caps text-base text-black"> {{$user->profile->salary}} <sup>₾</sup></h6>
                         <span class="font-normal text-xs">ხელფასი</span>
                     </div>
                 </div>
@@ -66,6 +67,46 @@
                 @endif
             </div>
         </div>
+        @if (auth()->user()->hasAnyPermission(['admin']))
+        <div x-data="{modal: false}">
+            <button @click="modal = true" class="my-2 p-2 bg-indigo-500 text-center text-white w-full font-bold text-xs ">
+                შეტყობინების გაგზავნა
+            </button>
+                <x-modal x-show="modal" class="z-50">
+                    <form action="{{ route('smsSendPost') }}" method="POST" class="bg-white mx-auto" autocomplete="off">
+                        @csrf
+                        <div class="w-full px-3 mb-2">
+                        <label class=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="phone">
+                            <h6 class="font-caps">
+                                ნომერი
+                            </h6> 
+                        </label>
+                        <input name="phone" value="{{$user->profile->phone}}" readonly required class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" onkeyup="this.value = this.value.replace(/[^0-9\.]/g, '');" id="phone" type="text" minlength="9" maxlength="9" placeholder="555 11 22 33">
+                        <small class="font-normal">გაგზავნამდე გადაამოწმეთ ნომერი</small> 
+                        @error('phone')
+                            <p class="font-normal text-xs text-red-500">
+                                {{$message}}
+                            </p>
+                        @enderror
+                    </div>
+                        <div class="w-full px-3">
+                            <label class="font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="text">
+                            ტექსტი
+                            </label>
+                            <textarea name="text" id="text" cols="30" rows="5" class="appearance-none resize-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"></textarea>
+                            @error('text')
+                                <p class="font-normal text-xs text-red-500">
+                                    {{$message}}
+                                </p>
+                            @enderror
+                        </div>
+                        <div class="px-3 mt-2">
+                            <button type="submit" class="w-full bg-indigo-500 py-3 px-4 text-white font-bold font-caps text-xs">გაგზავნა</button>
+                        </div>
+                    </form>
+                </x-modal>
+            </div>
+        @endif
         <div class="col-span-12 md:col-span-6 xl:col-span-4 xxl:col-span-12 mt-3 xxl:mt-8">
           <div class="intro-x flex items-center h-10">
               <h2 class="font-bolder text-sm font-caps truncate mr-5">
@@ -138,8 +179,8 @@
                @foreach ($userclients as $client)
                <div class="grid grid-cols-4 my-3">
                    <div class="col-span-1 ">
-                   <h6 class="font-bold text-gray-800">{{$client->clinetserviceable()->first()->{'full_name_'.app()->getLocale()} }}</h6>
-                   <span class="text-sm text-gray-700 font-normal">{{$client->clinetserviceable()->first()->number}}</span>
+                   <h6 class="font-bold text-gray-800">{{$client->clinetserviceable->{'full_name_'.app()->getLocale()} }}</h6>
+                   <span class="text-sm text-gray-700 font-normal">{{$client->clinetserviceable->number}}</span>
                    </div>
                    <div class="col-span-1 font-normal">
                        <span class="text-xs">დან: </span>{{$client->session_start_time}} <br>
@@ -186,6 +227,8 @@
       $(document).ready(function () {
             $('.side-menu').removeClass('side-menu--active');
             $('.side-menu[data-menu="user"]').addClass('side-menu--active');
+            $('#menuuser ul').addClass('side-menu__sub-open');
+            $('#menuuser ul').css('display', 'block');
             $('#clientfilter').select2();
             $("#clientfilter").change(function() {
                 $value = $('#clientfilter').val();

@@ -82,7 +82,7 @@ class UserController extends Controller
                     'email' => 'required|email|unique:users',
                     'pid' => 'required',
                     'position' => 'required|string',
-                    'phone' => 'required',
+                    'phone' => 'required|string|min:9|max:9',
                     'salary' => '',
                     'percent' => '',
                     'password' => 'required|min:8',
@@ -259,8 +259,8 @@ class UserController extends Controller
             $client['endtime'] = $client->getEndTime();
             $client['servicename'] = $client->service->{"title_".app()->getLocale()};
             $client['serviceprice'] = $client->service->price/100;
-            $client['clientnumber'] = $client->clinetserviceable()->first()->number;
-            $client['clientname'] = $client->clinetserviceable()->first()->{"full_name_".app()->getLocale()};
+            $client['clientnumber'] = $client->clinetserviceable->number;
+            $client['clientname'] = $client->clinetserviceable->{"full_name_".app()->getLocale()};
         }
         return response()->json(array('status' => true, 'data' => $clients));
     }
@@ -372,6 +372,7 @@ class UserController extends Controller
             'last_name' => 'required|string|max:255',
             'user_percent' => 'required|numeric|between:0,99.99',
             'user_salary' => 'required|integer|min:0',
+            'phone' => 'required|string|min:9|max:9',
             'department_id' => '',
             'rolename' => 'required|string',
             'services' => '',
@@ -386,14 +387,10 @@ class UserController extends Controller
         }else{
             $user->syncRoles(['user', $request->input('rolename')]);
         }
-        $profile = $user->profile()->first();
+        $profile = $user->profile;
+        
+        $profile->phone = $request->input('phone');
 
-        if(trim($request->input('phone')," ") != trim($profile->phone," ")){
-            $this->validate($request,[
-                'phone' => 'required|string|unique:profiles',
-            ]);
-            $profile->phone = $request->input('phone');
-        }
         foreach(UserJob::where('user_id', $id)->get() as $hasjob){
             $hasjob->delete();
         }

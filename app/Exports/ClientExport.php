@@ -17,9 +17,9 @@ class ClientExport implements FromCollection, WithHeadings
         foreach($services as $service){
             $service['service_name'] = $service->service->{"title_".app()->getLocale()};
             $service['worker_name'] = $service->user->profile->first_name .' '. $service->user->profile->last_name;
-            $service['client_name'] = $service->clinetserviceable()->first()->{'full_name_'.app()->getLocale()};
-            $service['client_phone'] = $service->clinetserviceable()->first()->number;
-            $service['client_address'] = $service->clinetserviceable()->first()->address;
+            $service['client_name'] = $service->clinetserviceable->{'full_name_'.app()->getLocale()};
+            $service['client_phone'] = $service->clinetserviceable->number;
+            $service['client_address'] = $service->clinetserviceable->address;
             $service['serviceprice'] = $service->service->price/100;
             unset($service['user_id']);
             unset($service['service_id']);

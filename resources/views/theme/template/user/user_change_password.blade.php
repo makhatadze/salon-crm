@@ -12,7 +12,7 @@
                   @endif
                 </div>
                 <div class="ml-4 mr-auto">
-                <div class="font-bold text-sm "> {{$user->profile()->first()->first_name}} {{$user->profile()->first()->last_name}}</div>
+                <div class="font-bold text-sm "> {{$user->profile->first_name}} {{$user->profile->last_name}}</div>
                     <div class="text-gray-600 font-normal text-xs"> 
                         @if ($user->isUser())
                             სტილისტი
@@ -38,7 +38,7 @@
                       <span class="font-normal text-xs">კლიენი</span>
                   </div>
                   <div class="w-1/3 p-3">
-                      <h6 class="font-bold font-caps text-base text-black"> {{$user->profile()->first()->salary}} <sup>₾</sup></h6>
+                      <h6 class="font-bold font-caps text-base text-black"> {{$user->profile->salary}} <sup>₾</sup></h6>
                       <span class="font-normal text-xs">ხელფასი</span>
                   </div>
               </div>
@@ -115,7 +115,10 @@
 @section('custom_scripts')
 <script>
       $(document).ready(function () {
-            
+            $('.side-menu').removeClass('side-menu--active');
+            $('.side-menu[data-menu="user"]').addClass('side-menu--active');
+            $('#menuuser ul').addClass('side-menu__sub-open');
+            $('#menuuser ul').css('display', 'block');
       });
 </script>
 @endsection

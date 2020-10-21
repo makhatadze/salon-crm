@@ -87,7 +87,7 @@
                       </div>
                     </div>
                     <div class="w-full">
-                        <input type="submit" value="ატვირთვა" class="appearance-none block w-full text-xs font-bold font-caps bg-indigo-500  text-white border border-gray-200 rounded py-3 px-4 leading-tight">
+                        <input type="submit" value="დამატება" class="appearance-none block w-full text-xs font-bold font-caps bg-indigo-500  text-white border border-gray-200 rounded py-3 px-4 leading-tight">
                     </div>
                 </form>
              </div>

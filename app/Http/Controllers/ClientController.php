@@ -74,7 +74,7 @@ class ClientController extends Controller
     {
         $this->validate($request, [
             'client_name_ge' => 'required|string',
-            'client_number' => 'required|string',
+            'client_number' => 'required|string|min:9|max:9',
             'sex' => '',
             'group' => '',
             'group_name' => '',
@@ -162,7 +162,7 @@ class ClientController extends Controller
     {
         $this->validate($request, [
             'client_name_ge' => 'required|string',
-            'client_number' => 'required|string',
+            'client_number' => 'required|string|min:9|max:9',
             'sex' => 'required|string',
             'group' => '',
             'group_name' => '',
@@ -314,7 +314,7 @@ class ClientController extends Controller
             return back()->with('error', 'დაფიქსირდა შეცდომა');
         }
         if ($user) {
-            $userProfile = $user->profile()->first();
+            $userProfile = $user->profile;
             if ($userProfile) {
                 SalaryToService::create([
                     'user_id' => $user->id,
@@ -414,9 +414,9 @@ class ClientController extends Controller
             $client['workername'] = $client->user->profile->first_name .' '. $client->userlast_name;
             $client['servicename'] = $client->service->{"title_".app()->getLocale()};
             $client['serviceprice'] = $client->getServicePrice();
-            $client['clientid'] = $client->clinetserviceable()->first()->id;
-            $client['clientnumber'] = $client->clinetserviceable()->first()->number;
-            $client['clientname'] = $client->clinetserviceable()->first()->{"full_name_" . app()->getLocale()};
+            $client['clientid'] = $client->clinetserviceable->id;
+            $client['clientnumber'] = $client->clinetserviceable->number;
+            $client['clientname'] = $client->clinetserviceable->{"full_name_" . app()->getLocale()};
         }
         return response()->json(array('status' => true, 'data' => $services));
     }
@@ -528,7 +528,7 @@ class ClientController extends Controller
                 'new_price' => intval($request->price[$key]*100),
                 'paid' => 0,
                 'author' => Auth::user()->id,
-                'department_id' => $personal->userHasJob->department_id
+                'department_id' => $personal->userHasJob->department_id ?? null
             ]; 
         }
         $client->clientservices()->createMany($services);

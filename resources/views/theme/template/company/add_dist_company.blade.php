@@ -27,6 +27,21 @@
                 <input  type="text"  class="input w-full border mt-2" name="name_en">
             </div>
         </div>
+        <div class="flex">
+            <div class="w-1/3 p-2">
+                <label class="font-helvetica">მობილური</label>
+            <input type="text" onkeyup="this.value = this.value.replace(/[^0-9\.]/g, '');" minlength="9" maxlength="9" class="input w-full border mt-2"  name="phone">
+            </div>
+            
+            <div class="w-1/3 p-2">
+                <label class="font-helvetica">მისამართი</label>
+                <input  type="text" class="input w-full border mt-2" name="address">
+            </div>
+            <div class="w-1/3 p-2">
+                <label class="font-helvetica">საკონტაქტო პირი</label>
+                <input  type="text" class="input w-full border mt-2" name="contact_to">
+            </div>
+        </div>
         
     
         <div class="relative mt-3">
@@ -40,8 +55,10 @@
 @section('custom_scripts')
 <script type="text/javascript">
 	$(document).ready(function() {
-		$('.side-menu').removeClass('side-menu--active');
-		$('.side-menu[data-menu="companies"]').addClass('side-menu--active');
+        $('.side-menu').removeClass('side-menu--active');
+        $('.side-menu[data-menu="purchases"]').addClass('side-menu--active');
+        $('#menupurchases ul').addClass('side-menu__sub-open');
+        $('#menupurchases ul').css('display', 'block');
         
 	});
 

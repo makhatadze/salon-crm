@@ -20,7 +20,7 @@
     </li>
        @endif
         @if (auth()->user()->hasAnyPermission(['see_clients', 'add_clients', 'delete_clients','admin']))
-        <li>
+        <li id="menuuser">
             <a href="javascript:;" class="side-menu" data-menu="user">
                 <div class="side-menu__icon"> <i data-feather="users"></i> </div>
                 <div class="font-medium text-xs font-caps side-menu__title font-medium text-xs font-caps"> მომხმარებლები <i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
@@ -52,7 +52,7 @@
         </li>
         @endif
         @if (auth()->user()->hasAnyPermission(['see_purchases', 'add_purchases', 'delete_purchases','admin']))
-        <li>
+        <li id="menupurchases">
             <a href="javascript:;" class="side-menu" data-menu="purchases">
                 <div class="side-menu__icon"> <i data-feather="archive"></i> </div>
                 <div class="side-menu__title font-medium text-xs font-caps"> შესყიდვა <i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
@@ -84,7 +84,7 @@
         @endif
         
         @if (auth()->user()->hasAnyPermission(['see_services', 'add_service', 'delete_service','admin']))
-        <li>
+        <li id="menuservices">
             <a href="javascript:;" class="side-menu" data-menu="services">
                 <div class="side-menu__icon"> <i data-feather="box"></i> </div>
                 <div class="side-menu__title font-medium text-xs font-caps"> სერვისები <i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
@@ -100,7 +100,7 @@
         </li>
         @endif
         @if (auth()->user()->hasAnyPermission(['see_company', 'add_company','delete_company','admin']))
-        <li>
+        <li id="menucompanies">
             <a href="javascript:;" class="side-menu" data-menu="companies">
                 <div class="side-menu__icon"> <i data-feather="box"></i> </div>
                 <div class="side-menu__title font-medium text-xs font-caps"> კომპანია <i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
@@ -132,7 +132,7 @@
         @endif
         
         @if (auth()->user()->hasAnyPermission(['export_finances','admin']))
-        <li>
+        <li id="menubugalteria">
             <a href="javascript:;" class="side-menu" data-menu="bugalteria">
                 <div class="side-menu__icon"> <i data-feather="credit-card"></i> </div>
                 <div class="side-menu__title font-medium text-xs font-caps"> ბუღალტერია <i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
@@ -163,7 +163,7 @@
         </li>
         @endif
         @if (auth()->user()->hasAnyPermission(['see_products', 'add_product', 'delete_product','admin']))
-        <li>
+        <li id="menushop">
             <a href="javascript:;" class="side-menu" data-menu="shop">
                 <div class="side-menu__icon"><i data-feather="shopping-cart"></i></div>
                 <div class="side-menu__title font-medium text-xs font-caps"> ვაჭრობა <i data-feather="chevron-down"
@@ -208,6 +208,24 @@
                         <div class="side-menu__title font-normal text-xs"> გადახდის მეთოდები</div>
                     </a>
                 </li>
+            </ul>
+        </li>
+        @endif
+        @if (auth()->user()->hasAnyPermission(['admin']))
+        <li id="menusms">
+            <a href="javascript:;" class="side-menu" data-menu="sms">
+                <div class="side-menu__icon"><i data-feather="message-circle"></i></div>
+                <div class="side-menu__title font-medium text-xs font-caps"> მარკეტინგი <i data-feather="chevron-down"
+                                                                 class="side-menu__sub-icon"></i></div>
+            </a>
+            <ul class="">
+                <li>
+                <a href="{{ route('sendSms') }}" class="side-menu custom-nav-item">
+                        <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
+                        <div class="side-menu__title font-normal text-xs"> SMS გაგზავნა </div>
+                    </a>
+                </li>
+               
             </ul>
         </li>
         @endif

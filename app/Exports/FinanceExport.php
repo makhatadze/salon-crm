@@ -25,7 +25,7 @@ class FinanceExport implements FromCollection, WithHeadings
             unset($clService['created_at']);
             unset($clService['updated_at']);
 
-            $clService['full_name'] = $clService->clinetserviceable()->first()->{"full_name_" . app()->getLocale()};
+            $clService['full_name'] = $clService->clinetserviceable->{"full_name_" . app()->getLocale()};
             $clService['service_name'] = $clService->service->{"title_".app()->getLocale()};
             $clService['price'] = $clService->service->price/100;
             $clService['pay_method'] = __('pay.' . $payMethod);

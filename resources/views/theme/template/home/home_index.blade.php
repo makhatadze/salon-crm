@@ -126,7 +126,7 @@
                                           <input class="appearance-none block font-normal text-xs w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="full_name_ge" type="text" placeholder="კლიენტის სახელი" name="full_name_ge">
                                         </div>
                                         <div class="w-full md:w-1/2 px-3">
-                                          <input class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="client_number" type="text" placeholder="კლიენტის ნომერი" name="client_number">
+                                          <input minlength="9" onkeyup="this.value = this.value.replace(/[^0-9\.]/g, '');" maxlength="9" class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="client_number" type="text" placeholder="კლიენტის ნომერი" name="client_number">
                                         </div>
                                       </div>
                                       <p class="font-normal text-xs mb-2">დაარეგისტრირეთ ან აირჩიეთ კლიენტი</p>

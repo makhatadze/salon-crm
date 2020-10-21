@@ -66,8 +66,10 @@
 @section('custom_scripts')
 <script type="text/javascript">
 	$(document).ready(function() {
-		$('.side-menu').removeClass('side-menu--active');
-		$('.side-menu[data-menu="departments"]').addClass('side-menu--active');
+        $('.side-menu').removeClass('side-menu--active');
+        $('.side-menu[data-menu="companies"]').addClass('side-menu--active');
+        $('#menucompanies ul').addClass('side-menu__sub-open');
+        $('#menucompanies ul').css('display', 'block');
         
 	});
 

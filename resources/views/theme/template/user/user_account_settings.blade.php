@@ -12,7 +12,7 @@
                   @endif
                 </div>
                 <div class="ml-4 mr-auto">
-                <div class="font-bold text-sm "> {{$user->profile()->first()->first_name}} {{$user->profile()->first()->last_name}}</div>
+                <div class="font-bold text-sm "> {{$user->profile->first_name}} {{$user->profile->last_name}}</div>
                     <div class="text-gray-600 font-normal text-xs"> 
                         @if ($user->isUser())
                             სტილისტი
@@ -38,7 +38,7 @@
                       <span class="font-normal text-xs">კლიენი</span>
                   </div>
                   <div class="w-1/3 p-3">
-                      <h6 class="font-bold font-caps text-base text-black"> {{$user->profile()->first()->salary}} <sup>₾</sup></h6>
+                      <h6 class="font-bold font-caps text-base text-black"> {{$user->profile->salary}} <sup>₾</sup></h6>
                       <span class="font-normal text-xs">ხელფასი</span>
                   </div>
               </div>
@@ -65,7 +65,46 @@
                 @endif
             </div>
         </div>
-        
+        @if (auth()->user()->hasAnyPermission(['admin']))
+        <div x-data="{modal: false}">
+            <button @click="modal = true" class="my-2 p-2 bg-indigo-500 text-center text-white w-full font-bold text-xs ">
+                შეტყობინების გაგზავნა
+            </button>
+                <x-modal x-show="modal" class="z-50">
+                    <form action="{{ route('smsSendPost') }}" method="POST" class="bg-white mx-auto" autocomplete="off">
+                        @csrf
+                        <div class="w-full px-3 mb-2">
+                        <label class=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="phone">
+                            <h6 class="font-caps">
+                                ნომერი
+                            </h6> 
+                        </label>
+                        <input name="phone" value="{{$user->profile->phone}}" readonly required class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" onkeyup="this.value = this.value.replace(/[^0-9\.]/g, '');" id="phone" type="text" minlength="9" maxlength="9" placeholder="555 11 22 33">
+                        <small class="font-normal">გაგზავნამდე გადაამოწმეთ ნომერი</small> 
+                        @error('phone')
+                            <p class="font-normal text-xs text-red-500">
+                                {{$message}}
+                            </p>
+                        @enderror
+                    </div>
+                        <div class="w-full px-3">
+                            <label class="font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="text">
+                            ტექსტი
+                            </label>
+                            <textarea name="text" id="text" cols="30" rows="5" class="appearance-none resize-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"></textarea>
+                            @error('text')
+                                <p class="font-normal text-xs text-red-500">
+                                    {{$message}}
+                                </p>
+                            @enderror
+                        </div>
+                        <div class="px-3 mt-2">
+                            <button type="submit" class="w-full bg-indigo-500 py-3 px-4 text-white font-bold font-caps text-xs">გაგზავნა</button>
+                        </div>
+                    </form>
+                </x-modal>
+            </div>
+        @endif
     </div>
 
     {{-- End of Profile --}}
@@ -80,13 +119,13 @@
                 <label class="block font-caps uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="-name">
                   სახელი
                 </label>
-            <input name="first_name" value="{{$user->profile()->first()->first_name}}" class="font-normal appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="name" type="text"  @if($user->id == Auth::user()->id) readonly="true" @endif >
+            <input required name="first_name" value="{{$user->profile->first_name}}" class="font-normal appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="name" type="text"  @if($user->id == Auth::user()->id) readonly="true" @endif >
               </div>
               <div class="w-full md:w-1/2 px-3">
                 <label class="block uppercase font-caps tracking-wide text-gray-700 text-xs font-bold mb-2" for="last-name">
                   გვარი
                 </label>
-                <input name="last_name" value="{{$user->profile()->first()->last_name}}" class="font-normal appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="last-name" type="text" placeholder="Doe"  @if($user->id == Auth::user()->id) readonly="true" @endif>
+                <input required name="last_name" value="{{$user->profile->last_name}}" class="font-normal appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="last-name" type="text" placeholder="Doe"  @if($user->id == Auth::user()->id) readonly="true" @endif>
               </div>
             </div>
             <div class="flex flex-wrap -mx-3 mb-5">
@@ -94,7 +133,7 @@
                 <label class="block font-caps uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
                   ხელფასი
                 </label>
-            <input name="user_salary" value="{{$user->profile()->first()->salary}}" class="font-normal appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name" type="text"  @if($user->id == Auth::user()->id) readonly="true" @endif >
+            <input name="user_salary" value="{{$user->profile->salary}}" class="font-normal appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="grid-first-name" type="text"  @if($user->id == Auth::user()->id) readonly="true" @endif >
             @error('user_salary')
             <span class="invalid-feedback" role="alert">
                 <strong style="color: tomato">{{ $message }}</strong>
@@ -106,7 +145,7 @@
                 <label class="block uppercase font-caps tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-last-name">
                   პროცენტი
                 </label>
-                <input name="user_percent" value="{{$user->profile()->first()->percent}}" class="font-normal appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder="Doe"  @if($user->id == Auth::user()->id) readonly="true" @endif>
+                <input name="user_percent" value="{{$user->profile->percent}}" class="font-normal appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-last-name" type="text" placeholder="Doe"  @if($user->id == Auth::user()->id) readonly="true" @endif>
                 @error('user_percent')
                 <span class="invalid-feedback" role="alert">
                     <strong style="color: tomato">{{ $message }}</strong>
@@ -120,7 +159,7 @@
                     <label class="block uppercase font-caps tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">
                       ნომერი
                     </label>
-                <input name="phone" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-password" type="text" min="9" max="9" value="{{$user->profile()->first()->phone}}"  @if($user->id == Auth::user()->id) readonly="true" @endif>
+                <input required onkeyup="this.value = this.value.replace(/[^0-9\.]/g, '');" name="phone" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-password" type="text" minlength="9" maxlength="9" value="{{$user->profile->phone}}"  @if($user->id == Auth::user()->id) readonly="true" @endif>
                 @error('phone')
                 <span class="invalid-feedback" role="alert">
                     <strong style="color: tomato">{{ $message }}</strong>
@@ -158,7 +197,7 @@
                     <label class="block font-caps uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-zip">
                       ელ-ფოსტა
                     </label>
-                  <input name="email" class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 text-xs" id="grid-zip" type="text" @if($user->id == Auth::user()->id) readonly="true" @endif value="{{$user->email}}">
+                  <input required name="email" class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500 text-xs" id="grid-zip" type="text" @if($user->id == Auth::user()->id) readonly="true" @endif value="{{$user->email}}">
                   @error('email')
                   <span class="invalid-feedback" role="alert">
                       <strong style="color: tomato">{{ $message }}</strong>
@@ -201,28 +240,23 @@
                     <input type="checkbox" name="blockstatus" class="mr-3" id="blockstatus" @if(sizeof($user->getAllPermissions()) == 0) checked @endif>
                     <label for="blockstatus">მომხმარებლის დაბლოკვა</label>
                   </div>
+                  
                   <div class="my-3 w-full md:w-1/2 flex items-center justify-content font-normal text-xs">
-                    <select data-placeholder="აირჩიეთ სერვისი" name="services[]" class="select2 w-full" multiple>
-                      @foreach ($services as $service)
-                        @if ($user->hasService($service->id))
-                          <option value="{{$service->id}}" selected>{{$service->{'title_'.app()->getLocale()} }}</option>
-                        @else 
-                          <option value="{{$service->id}}">{{$service->{'title_'.app()->getLocale()} }}</option>
-                        @endif
-                      @endforeach
-                  </select>
-                  </div>
-                </div>
-               
-                <div class="flex items-center justify-between font-normal text-xs">
-                  <div class="p-2 flex items-center ">
-                    <input class="mr-1" type="checkbox" @if($user->profile->show_user) checked @endif name="showtable"  id="showtable">
-                    <label for="showtable">ცხრილში გამოჩენა</label>
-                  </div>
-                  <div class="p-2 flex items-center">
                     <input class="mr-1" type="checkbox" name="soldproduct" id="soldproduct" @if($user->profile->percent_from_sales) checked @endif> 
                     <label for="soldproduct">პროცენტი გაყიდვიდან</label> 
                   </div>
+                </div>
+               
+                <div class="my-3 w-full  flex items-center justify-content font-normal text-xs">
+                  <select data-placeholder="აირჩიეთ სერვისი" name="services[]" class="select2 w-full" multiple>
+                    @foreach ($services as $service)
+                      @if ($user->hasService($service->id))
+                        <option value="{{$service->id}}" selected>{{$service->{'title_'.app()->getLocale()} }}</option>
+                      @else 
+                        <option value="{{$service->id}}">{{$service->{'title_'.app()->getLocale()} }}</option>
+                      @endif
+                    @endforeach
+                </select>
                 </div>
                 <div class="flex justify-between items-center">
                   
@@ -247,7 +281,10 @@
 @section('custom_scripts')
 <script>
       $(document).ready(function () {
-            
+            $('.side-menu').removeClass('side-menu--active');
+            $('.side-menu[data-menu="user"]').addClass('side-menu--active');
+            $('#menuuser ul').addClass('side-menu__sub-open');
+            $('#menuuser ul').css('display', 'block');
       });
       function addminutetag($id){
         if($('#'+$id).length == 2){

@@ -22,13 +22,13 @@ class UserExport implements FromCollection, WithHeadings
             unset($user->remember_token);
             unset($user->deleted_at);
             unset($user->status);
-            if($user->profile()->first()){
-                $user->name = $user->profile()->first()->first_name .' '. $user->profile()->first()->last_name;
-                $user['birthday'] = $user->profile()->first()->birthday;
-                $user['phone'] = $user->profile()->first()->phone;
-                $user['pid'] = $user->profile()->first()->pid;
-                $user['salary'] = $user->profile()->first()->salary;
-                $user['percent'] = $user->profile()->first()->percent;
+            if($user->profile){
+                $user->name = $user->profile->first_name .' '. $user->profile->last_name;
+                $user['birthday'] = $user->profile->birthday;
+                $user['phone'] = $user->profile->phone;
+                $user['pid'] = $user->profile->pid;
+                $user['salary'] = $user->profile->salary;
+                $user['percent'] = $user->profile->percent;
                 $user['earned'] = $user->getEarnedMoney();
             }
         }

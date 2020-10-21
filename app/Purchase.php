@@ -31,7 +31,7 @@ class Purchase extends Model implements Auditable
     public function getPersonName($id){
         $user = User::find($id);
         if($user){
-            $name = $user->profile()->first();
+            $name = $user->profile;
             return $name->first_name." ".$name->last_name;
         }else{
             return;

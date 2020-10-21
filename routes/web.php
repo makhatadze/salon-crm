@@ -12,7 +12,8 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
         
         Route::group(['middleware' => ['permission:admin']], function () {
             // Admin
-            
+            Route::get('/sendsms', 'SMSController@index')->name('sendSms');
+            Route::post('/sendsms', 'SMSController@store')->name('smsSendPost');
             Route::get('/roles', 'RoleController@index')->name('Role');
             Route::post('/role/add', 'RoleController@store')->name('AddRole');
             Route::get('/roles/{role}/edit', 'RoleController@edit');

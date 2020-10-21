@@ -320,10 +320,14 @@ function addPayMethod(id) {
     $('#pay_id').val(id)
 }
 
-$(document).ready(function () {
-    $('.select2').select2();
-    
-});
+    $(document).ready(function () {
+        $('.side-menu').removeClass('side-menu--active');
+        $('.side-menu[data-menu="user"]').addClass('side-menu--active');
+        $('#menuuser ul').addClass('side-menu__sub-open');
+        $('#menuuser ul').css('display', 'block');
+        $('.select2').select2();
+        
+    });
 
 $('.addnewservice').click(function(){
     let getid = $(this).attr('data-userid');

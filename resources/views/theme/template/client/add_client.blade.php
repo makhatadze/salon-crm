@@ -13,7 +13,7 @@
         <div class="intro-y box p-5">
             <div class="w-full p-2">
                 <label class="font-bold font-caps text-xs text-gray-700">სურათის ატვირთვა</label> <br>
-            <input required type="file"name="client_image" class="font-normal text-sm input w-full border category mt-2">
+            <input  type="file"name="client_image" class="font-normal text-sm input w-full border category mt-2">
             </div>
             <div class="flex">
                 <div class="w-1/3 p-2">
@@ -32,7 +32,7 @@
                <div class="flex">
                 <div class="w-full md:w-1/4 p-2">
                     <label class="font-bold font-caps text-xs text-gray-700">ნომერი <span class="text-red-500">*</span></label>
-                    <input required type="text" min="0" step="1" name="client_number" id="client_number" class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="კლიენტის ნომერი">
+                    <input required type="text" minlength="9" maxlength="9" step="1" onkeyup="this.value = this.value.replace(/[^0-9\.]/g, '');" name="client_number" id="client_number" class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="კლიენტის ნომერი">
                 </div>
                 <div class="w-full md:w-1/4 p-2">
                     <label class="font-bold font-caps text-xs text-gray-700">მისამართი</label>
@@ -103,8 +103,10 @@
 @section('custom_scripts')
 <script type="text/javascript">
 	$(document).ready(function() {
-		$('.side-menu').removeClass('side-menu--active');
-        $('.side-menu[data-menu="services"]').addClass('side-menu--active');
+            $('.side-menu').removeClass('side-menu--active');
+            $('.side-menu[data-menu="user"]').addClass('side-menu--active');
+            $('#menuuser ul').addClass('side-menu__sub-open');
+            $('#menuuser ul').css('display', 'block');
     });
    
 </script>

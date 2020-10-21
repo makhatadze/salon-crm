@@ -80,7 +80,7 @@
                                 <div class="col-span-1 px-2">
                                     <h6 class="w-full font-bold mb-2 font-caps text-xs">სერვისები</h6>
                                     @foreach ($client->clientservices as $item)
-                                        <div class="w-full border-l-2 @if($item->status == 1) border-green-500 @elseif($item->session_start_time < Carbon\Carbon::now('Asia/Tbilisi')) border-red-500 @elseif($item->session_start_time < Carbon\Carbon::now('Asia/Tbilisi')) border-orange-500 @endif mt-2 bg-gray-200 p-2 flex justify-between">
+                                        <div class="w-full border-l-2 @if($item->status == 1) border-green-500 @elseif($item->session_start_time <= Carbon\Carbon::now('Asia/Tbilisi')) border-red-500 @elseif($item->session_start_time >= Carbon\Carbon::now('Asia/Tbilisi')) border-orange-500 @endif mt-2 bg-gray-200 p-2 flex justify-between">
                                             <div>
                                                 <h6 class="font-bold text-xs">
                                                     {{$item->service->{"title_".app()->getLocale()} }}
@@ -108,6 +108,50 @@
                                 </div>
                             </div>
                         </x-modal>
+                        
+                        @if (auth()->user()->hasAnyPermission(['admin']))
+                        <div x-data="{modal: false}">
+                        <button @click="modal = true" class="ml-2 p-2 bg-gray-300 rounded-lg">
+                            <svg width="1.18em" height="1.18em" viewBox="0 0 16 16" class="bi bi-chat-left-dots" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M14 1H2a1 1 0 0 0-1 1v11.586l2-2A2 2 0 0 1 4.414 11H14a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                                <path d="M5 6a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                              </svg>
+                        </button>
+                            <x-modal x-show="modal">
+                                <form action="{{ route('smsSendPost') }}" method="POST" class="bg-white mx-auto" autocomplete="off">
+                                    @csrf
+                                    <div class="w-full px-3 mb-2">
+                                    <label class=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="phone">
+                                        <h6 class="font-caps">
+                                            ნომერი
+                                        </h6> 
+                                    </label>
+                                    <input name="phone" value="{{$client->number}}" readonly required class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" onkeyup="this.value = this.value.replace(/[^0-9\.]/g, '');" id="phone" type="text" minlength="9" maxlength="9" placeholder="555 11 22 33">
+                                    <small class="font-normal">გაგზავნამდე გადაამოწმეთ ნომერი</small> 
+                                    @error('phone')
+                                        <p class="font-normal text-xs text-red-500">
+                                            {{$message}}
+                                        </p>
+                                    @enderror
+                                </div>
+                                    <div class="w-full px-3">
+                                        <label class="font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="text">
+                                        ტექსტი
+                                        </label>
+                                        <textarea name="text" id="text" cols="30" rows="5" class="appearance-none resize-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"></textarea>
+                                        @error('text')
+                                            <p class="font-normal text-xs text-red-500">
+                                                {{$message}}
+                                            </p>
+                                        @enderror
+                                    </div>
+                                    <div class="px-3 mt-2">
+                                        <button type="submit" class="w-full bg-indigo-500 py-3 px-4 text-white font-bold font-caps text-xs">გაგზავნა</button>
+                                    </div>
+                                </form>
+                            </x-modal>
+                        </div>
+                        @endif
                         <a href="{{ route('ClientExport', $client->id) }}" class="ml-2 p-2 bg-gray-300 rounded-lg">
                             <svg width="1.18em" height="1.18em" viewBox="0 0 16 16" class="bi bi-file-arrow-down-fill" fill="#444" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" d="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM8 5a.5.5 0 0 1 .5.5v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 9.293V5.5A.5.5 0 0 1 8 5z"/>
@@ -143,8 +187,10 @@
 @section('custom_scripts')
 <script type="text/javascript">
 	$(document).ready(function() {
-		$('.side-menu').removeClass('side-menu--active');
-		$('.side-menu[data-menu="services"]').addClass('side-menu--active');
+            $('.side-menu').removeClass('side-menu--active');
+            $('.side-menu[data-menu="user"]').addClass('side-menu--active');
+            $('#menuuser ul').addClass('side-menu__sub-open');
+            $('#menuuser ul').css('display', 'block');
         
 	});
 

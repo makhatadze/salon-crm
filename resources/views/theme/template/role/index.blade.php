@@ -226,3 +226,13 @@
     </div>
 </div>
 @endsection
+@section('custom_scripts')
+<script type="text/javascript">
+	$(document).ready(function() {
+            $('.side-menu').removeClass('side-menu--active');
+            $('.side-menu[data-menu="user"]').addClass('side-menu--active');
+            $('#menuuser ul').addClass('side-menu__sub-open');
+            $('#menuuser ul').css('display', 'block');
+    });
+</script>
+@endsection

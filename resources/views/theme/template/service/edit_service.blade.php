@@ -222,8 +222,10 @@
                 } 
             });
         });
-		$('.side-menu').removeClass('side-menu--active');
+        $('.side-menu').removeClass('side-menu--active');
         $('.side-menu[data-menu="services"]').addClass('side-menu--active');
+        $('#menuservices ul').addClass('side-menu__sub-open');
+        $('#menuservices ul').css('display', 'block');
         $('.service-category-dropdown li').click(function($this){
             alert($(this).html());
         });
