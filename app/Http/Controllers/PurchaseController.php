@@ -111,7 +111,6 @@ class PurchaseController extends Controller
                 ];
             }
         }
-        dd($json);
         $purchase= new Purchase;
         $purchase->purchase_type = $request->input('purchase_type');
         if($request->input('purchase_type') == "overhead"){
@@ -167,10 +166,11 @@ class PurchaseController extends Controller
     {
         $storages = Storage::all();
         $brands = Brand::all();
+        $categories = Category::all();
         $purchase = Purchase::wherenull('deleted_at')->findOrFail($id);
         $offices = Office::whereNull('deleted_at')->get();
         $departments = Department::where('departmentable_id', $purchase->office_id)->whereNull('deleted_at')->get();
-        return view('theme.template.purchase.edit_purchase', compact('offices', 'purchase', 'departments', 'brands', 'storages'));
+        return view('theme.template.purchase.edit_purchase', compact('offices', 'purchase', 'departments', 'brands', 'categories', 'storages'));
 
     }
 

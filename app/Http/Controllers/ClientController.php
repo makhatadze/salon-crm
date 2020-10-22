@@ -21,8 +21,7 @@ use DateTimeImmutable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
-
-
+use Intervention\Image\ImageManagerStatic as Imagev;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Period\Period;
@@ -111,9 +110,13 @@ class ClientController extends Controller
         $client->save();
 
         if($request->hasFile('client_image')){
+            $img = Imagev::make($request->file('client_image'));
+            $img->resize(300, null, function ($constraint) {
+                $constraint->aspectRatio();
+            });
             $imagename = date('Ymhs').$request->file('client_image')->getClientOriginalName();
-            $destination = base_path() . '/storage/app/public/clientimg';
-            $request->file('client_image')->move($destination, $imagename);
+            Storage::disk('public')->put("clientimg/".$imagename, (string) $img->encode());
+            
             $client->image()->create([
                 'name' => $imagename
             ]);
@@ -182,10 +185,13 @@ class ClientController extends Controller
             $client->group_id = $request->input('group');
         }
         if($request->hasFile('client_image')){
+            $img = Imagev::make($request->file('client_image'));
+            $img->resize(300, null, function ($constraint) {
+                $constraint->aspectRatio();
+            });
             $imagename = date('Ymhs').$request->file('client_image')->getClientOriginalName();
-            $destination = base_path() . '/storage/app/public/clientimg';
-            $request->file('client_image')->move($destination, $imagename);
-           
+            Storage::disk('public')->put("clientimg/".$imagename, (string) $img->encode());
+
             if($client->image){
                 Storage::delete('public/clientimg/'.$client->image->name);
                 $firstimg = $client->image;

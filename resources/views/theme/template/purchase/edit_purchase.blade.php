@@ -362,7 +362,6 @@
         $('#addunit').click(function(){
             let randomid= Date.now();
             $('#units').append(`
-            
             <div class="relative w-full mt-3 box p-4" id="`+randomid+`">
             <button type="button" onclick="removeunit('`+randomid+`')" class="absolute right-0 top-0 dropdown-toggle button px-2 box  bg-red-300 focus:bg-red-900 text-red-900">
                 <span class="w-3 h-3 flex items-center justify-center "> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus w-4 h-2"><line x1="5" y1="12" x2="19" y2="12"></line></svg> </span>
@@ -418,22 +417,51 @@
                           </div>
                         </div>
                       </div>
-                      <div class="w-full md:w-1/4 px-3 mb-6 mt-3 md:mb-0">
-                        <label class="font-bold font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
-                          ბრენდი
+                      <div class="w-full md:w-1/4 mt-3 px-3">
+                    <label class="font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="brand`+randomid+`">
+                        ბრენდი
                         </label>
                         <div class="relative">
-                          <select required name="brand[]" class="block font-medium text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
-                            <option value="" selected >აირჩიეთ</option>
-                            @foreach($brands as $brand)
-                                <option value="{{$brand->id}}">{{$brand->name}}</option>
-                            @endforeach
-                          </select>
-                          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-                          </div>
+                        <select name="brand[]" required class="brands font-normal text-xs block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="brand`+randomid+`">
+                            <option value="">აირჩიეთ</option>
+                            
+                        </select>
+                        <div x-data="{modal:false}" class=" absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                            <button @click="modal = true" type="button" class="p-1 bg-indigo-500 rounded">
+                                <svg width="0.85em" height="0.85em" viewBox="0 0 16 16" class="bi bi-plus-circle-fill" fill="white" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
+                                </svg>
+                            </button>
+                            <x-modal x-show="modal">
+                                <div class="w-full mb-6 md:mb-0">
+                                <label class="font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="brandcat`+randomid+`">
+                                    კატეგორია
+                                </label>
+                                <div class="relative">
+                                    <select class="font-normal text-xs block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="brandcat`+randomid+`">
+                                    <option value="">აირჩიეთ</option>
+                                    @foreach ($categories as $cat)
+                                        <option value="{{$cat->id}}">{{$cat->{'title_'.app()->getLocale()} }}</option>
+                                    @endforeach
+                                    </select>
+                                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                                    </div>
+                                </div>
+                                </div>
+                                <div class="flex flex-wrap -mx-3 mt-3 mb-6">
+                                <div class="w-full px-3">
+                                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="brandname`+randomid+`">
+                                    ბრენდის სახელი
+                                    </label>
+                                    <input class="ont-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="brandname`+randomid+`" type="text" placeholder="დასახელება">
+                                </div>
+                                </div>
+                                <button @click="modal = false" type="button" onclick="addNewBrand(`+randomid+`)" class="font-bold text-xs text-white font-caps bg-indigo-500 w-full p-3 text-center"> დამატება</button>
+                            </x-modal>
                         </div>
-                      </div>
+                        </div>
+                    </div>
               <div class="w-full md:w-1/4 mt-3 px-3">
                 <label class="font-bold font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
                   რაოდენობა
@@ -445,16 +473,28 @@
                   საწყობი
                 </label>
                 <div class="relative">
-                  <select required name="storage[]" class="block font-medium text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
-                    @if($storages)
-                        @foreach($storages as $cat)
-                    <option value="{{$cat->id}}" selected >{{$cat->name }}</option>
-                        @endforeach
-                    @endif
+                  <select required name="storage[]" class="storages block font-medium text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
+                   <option value="">აირჩიეთ</option>
                   </select>
-                  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-                  </div>
+                  
+                  <div x-data="{modal:false}" class=" absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                            <button @click="modal = true" type="button" class="p-1 bg-indigo-500 rounded">
+                                <svg width="0.85em" height="0.85em" viewBox="0 0 16 16" class="bi bi-plus-circle-fill" fill="white" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"/>
+                                </svg>
+                            </button>
+                        <x-modal x-show="modal">
+                            <div class="flex flex-wrap -mx-3 mt-3 mb-6">
+                                <div class="w-full px-3">
+                                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="storagename`+randomid+`">
+                                    საწყობის სახელი
+                                    </label>
+                                    <input class="ont-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="storagename`+randomid+`" type="text" placeholder="დასახელება">
+                                </div>
+                            </div>
+                            <button @click="modal = false" type="button" onclick="addNewStorage(`+randomid+`)" class="font-bold text-xs text-white font-caps bg-indigo-500 w-full p-3 text-center"> დამატება</button>
+                        </x-modal>
+                    </div>
                 </div>
               </div>
              
@@ -476,6 +516,31 @@
                     ['table', ['table']],
                 ]
             });
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            url: "{{ route('getData') }}",
+            method: 'get',
+            success: function(result){
+                if(result.status == true){
+                    $('.brands').each(function(g, test) {
+                        $(test).html('');
+                        $(result.brands).each(function(i, obj) {
+                            $(test).append(new Option(obj['name'], obj['id']));
+                        });
+                    });
+                    $('.storages').each(function(g, test) {
+                        $(test).html('');
+                        $(result.storages).each(function(i, obj) {
+                            $(test).append(new Option(obj['name'], obj['id']));
+                        });
+                    });
+                }
+            }
+        });
         });
     });
     function removeproduct($id){
@@ -514,6 +579,51 @@
         $('#getter_person_id').val($id);
         $('#showgetterperson').addClass('hidden');
     }
-
+    function addNewBrand($id){
+        let category = parseInt($('#brandcat'+$id).val());
+        let brand = $('#brandname'+$id).val();
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            url: "{{ route('addNewBrand') }}",
+            method: 'post',
+            data: {
+                'category_id': category,
+                'brand_name': brand,
+            },
+            success: function(result){
+                if(result.status == true){
+                    $('.brands').each(function(i, obj) {
+                        $(obj).append(new Option(result.text, result.value));
+                    });
+                }
+            }
+        });
+    }
+    function addNewStorage($id){
+        let storagename = $('#storagename'+$id).val();
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            url: "{{ route('addNewStorage') }}",
+            method: 'post',
+            data: {
+                'storagename': storagename,
+            },
+            success: function(result){
+                if(result.status == true){
+                    $('.storages').each(function(i, obj) {
+                        $(obj).append(new Option(result.text, result.value));
+                    });
+                }
+            }
+        });
+    }
 </script>
 @endsection

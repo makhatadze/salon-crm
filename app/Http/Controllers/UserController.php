@@ -34,6 +34,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
+use Intervention\Image\ImageManagerStatic as Imagev;
+use Illuminate\Support\Facades\Storage;
 class UserController extends Controller
 {
     /**
@@ -112,9 +114,14 @@ class UserController extends Controller
                     }
                 }
                 if ($request->hasFile('files')) {
-                    $imagename = date('Ymhs') . $request->file('files')->getClientOriginalName();
-                    $destination = base_path() . '/storage/app/public/profile/' . $user->id;
-                    $request->file('files')->move($destination, $imagename);
+                  
+                    $img = Imagev::make($request->file('files'));
+                    $img->resize(300, null, function ($constraint) {
+                        $constraint->aspectRatio();
+                    });
+                    $imagename = date('Ymhs').$request->file('files')->getClientOriginalName();
+                    Storage::disk('public')->put("profile/".$user->id."/".$imagename, (string) $img->encode());
+
                     $user->image()->create([
                         'name' => $imagename
                     ]);
@@ -133,7 +140,7 @@ class UserController extends Controller
                     'pid' => $data['pid'],
                     'salary' => $data['salary'] ? $data['salary'] : 0,
                     'salary_type' => $data['salary_type'],
-                    'percent' => $data['percent'],
+                    'percent' => $data['percent'] ?? 0,
                 ]);
 
                 $user->profile()->save($profile);

@@ -14,7 +14,7 @@
                     <div class="sm:grid grid-cols-3 gap-2 mb-4">
                         <div class="relative mt-2 {{ $errors->has('first_name') ? ' has-error' : '' }}">
                             {{ Form::label('first_name', 'მომხმარებლის სახელი', ['class' => 'font-bold font-caps text-xs text-gray-800']) }}
-                            {{ Form::text('first_name', null, ['class' => 'appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500', 'no']) }}
+                            {{ Form::text('first_name', null, ['required' => 'required', 'class' => 'appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500', 'no']) }}
                             @if ($errors->has('first_name'))
                                 <span class="help-block">
                                             {{ $errors->first('first_name') }}
@@ -23,7 +23,8 @@
                         </div>
                         <div class="relative mt-2 {{ $errors->has('last_name') ? ' has-error' : '' }}">
                             {{ Form::label('last_name', 'მომხმარებლის გვარი', ['class' => 'font-bold font-caps text-xs text-gray-800']) }}
-                            {{ Form::text('last_name', null, ['class' => 'appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500']) }}
+                            {{ Form::text('last_name', null, ['required' => 'required', 'class' => 'appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500']) }}
+                            
                             @if ($errors->has('last_name'))
                                 <span class="help-block">
                                             {{ $errors->first('last_name') }}
@@ -32,7 +33,7 @@
                         </div>
                         <div class="relative mt-2 {{ $errors->has('pid') ? ' has-error' : '' }}">
                             {{ Form::label('pid', 'მომხმარებლის პირადი ნომერი', ['class' => 'font-bold font-caps text-xs text-gray-800']) }}
-                            {{ Form::text('pid', null, ['class' => 'appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500']) }}
+                            <input type="text" required class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" name="pid" minlength="0" maxlength="11" step="1" onkeyup="this.value = this.value.replace(/[^0-9\.]/g, '');" >
                             @if ($errors->has('pid'))
                                 <span class="help-block">
                                             {{ $errors->first('pid') }}
@@ -41,7 +42,7 @@
                         </div>
                         <div class="relative mt-2 {{ $errors->has('birthday') ? ' has-error' : '' }}">
                             {{ Form::label('birthday', 'დაბადების თარიღი', ['class' => 'font-bold font-caps text-xs text-gray-800']) }}
-                            {{ Form::date('birthday', null, ['class' => 'appearance-none text-xs block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500']) }}
+                            {{ Form::date('birthday', null, ['required' => 'required', 'class' => 'appearance-none text-xs block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500']) }}
                             @if ($errors->has('birthday'))
                                 <span class="help-block">
                                             {{ $errors->first('birthday') }}
@@ -50,7 +51,7 @@
                         </div>
                         <div class="relative mt-2 {{ $errors->has('phone') ? ' has-error' : '' }}">
                             {{ Form::label('phone', 'ტელეფონის ნომერი', ['class' => 'font-bold font-caps text-xs text-gray-800']) }}
-                            <input type="text" name="phone" onkeyup="this.value = this.value.replace(/[^0-9\.]/g, '');" min="9" max="9" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                            <input type="text" required name="phone" onkeyup="this.value = this.value.replace(/[^0-9\.]/g, '');" minlength="9" maxlength="9" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
                             @if ($errors->has('phone'))
                                 <span class="help-block">
                                             {{ $errors->first('phone') }}
@@ -59,7 +60,7 @@
                         </div>
                         <div class="relative mt-2 {{ $errors->has('email') ? ' has-error' : '' }}">
                             {{ Form::label('email', 'ელ-ფოსტა', ['class' => 'font-bold font-caps text-xs text-gray-800']) }}
-                            {{ Form::email('email', null, ['class' => 'appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500']) }}
+                            {{ Form::email('email', null, ['required' => 'required', 'class' => 'appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500']) }}
                             @if ($errors->has('email'))
                                 <span class="help-block">
                                             {{ $errors->first('email') }}
@@ -207,7 +208,7 @@
                         <div class="sm:grid grid-cols-2 gap-2">
                             <div class="relative mt-2 {{ $errors->has('password') ? ' has-error' : '' }}">
                                 {{ Form::label('password', 'პაროლი', ['class' => 'font-bold font-caps text-xs text-gray-800']) }}
-                                {{ Form::password('password', ['class' => 'appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500']) }}
+                                {{ Form::password('password', ['required' => 'required', 'class' => 'appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500']) }}
                                 @if ($errors->has('password'))
                                     <span class="help-block">
                                             {{ $errors->first('password') }}
@@ -216,7 +217,7 @@
                             </div>
                             <div class="relative mt-2 {{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
                                 {{ Form::label('password_confirmation', 'პაროლის გამეორება', ['class' => 'font-bold font-caps text-xs text-gray-800']) }}
-                                {{ Form::password('password_confirmation', ['class' => 'appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500', 'type' => 'password']) }}
+                                {{ Form::password('password_confirmation', ['required' => 'required', 'class' => 'appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500', 'type' => 'password']) }}
                                 @if ($errors->has('password_confirmation'))
                                     <span class="help-block">
                                             {{ $errors->first('password_confirmation') }}
