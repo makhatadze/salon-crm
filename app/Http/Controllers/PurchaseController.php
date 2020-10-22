@@ -59,11 +59,12 @@ class PurchaseController extends Controller
      */
     public function create()
     {
+        $categories = Category::all();
         $storages = Storage::all();
         $brands = Brand::all();
-        return view('theme.template.purchase.create_purchase', compact('storages', 'brands'));
+        $distributors = DistributionCompany::all();
+        return view('theme.template.purchase.create_purchase', compact('storages', 'distributors', 'brands', 'categories'));
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -287,5 +288,34 @@ class PurchaseController extends Controller
     //Purchase Export
     public function purchaseexport(){
         return Excel::download(new PurchaseExport, 'purchases.xlsx');
+    }
+    public function addnewbrand(Request $request)
+    {
+        $this->validate($request,[
+            'category_id' => 'required|integer',
+            'brand_name' => 'required|string',
+        ]);
+        $category = Category::findOrFail($request->category_id);
+        $brand = Brand::create([
+            'name' => $request->brand_name,
+            'category_id' => $category->id
+        ]);
+        return response()->json(array('status' => true, 'text' => $brand->name, 'value' => $brand->id));
+    }
+    public function addnewstorage(Request $request)
+    {
+        $this->validate($request,[
+            'storagename' => 'required|string',
+        ]);
+        $storage = Storage::create([
+            'name' => $request->storagename,
+        ]);
+        return response()->json(array('status' => true, 'text' => $storage->name, 'value' => $storage->id));
+    }
+    public function getdata()
+    {
+        $brands = Brand::select('id', 'name')->get()->toArray();
+        $storages = Storage::select('id', 'name')->get()->toArray();
+        return response()->json(array('status' => true, 'brands' => $brands, 'storages' => $storages));
     }
 }

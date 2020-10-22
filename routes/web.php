@@ -140,6 +140,9 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
             Route::post('/purchases/getdepartment', 'PurchaseController@getdepartments')->name('GetDepartmentsByOffice');
             Route::post('/purchases/getdistributors', 'PurchaseController@getdistributors')->name('GetDistributors');
             Route::post('/purchases/getprofiles', 'PurchaseController@getprofiles')->name('GetProfilesForPurchase');
+            Route::post('/purchases/addnewbrand', 'PurchaseController@addnewbrand')->name('addNewBrand');
+            Route::post('/purchases/addnewstorage', 'PurchaseController@addnewstorage')->name('addNewStorage');
+            Route::get('/purchases/getallbrands', 'PurchaseController@getdata')->name('getData');
         
         });
         Route::group(['middleware' => ['permission:delete_purchase|admin']], function () {

@@ -54,7 +54,7 @@ class User extends Authenticatable implements Auditable
         return $this->hasOne('App\Salary', 'user_id');
     }
     public function userHasJob(){
-        return $this->hasOne('App\userHasJob', 'user_id');
+        return $this->hasOne('App\UserHasJob', 'user_id');
     }
     public function hasService($id)
     {

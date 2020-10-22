@@ -440,7 +440,7 @@ class ClientController extends Controller
 
     public function services(Request $request)
     {
-        return view('theme.template.company.finance',);
+        return view('theme.template.company.finance');
     }
     public function showclients(){
         $date = '';

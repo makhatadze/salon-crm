@@ -50,7 +50,7 @@
                         </div>
                         <div class="relative mt-2 {{ $errors->has('phone') ? ' has-error' : '' }}">
                             {{ Form::label('phone', 'ტელეფონის ნომერი', ['class' => 'font-bold font-caps text-xs text-gray-800']) }}
-                            <input type="text" name="phone" onkeyup="this.value = this.value.replace(/[^0-9\.]/g, '');" minlength="9" maxlength="9" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                            <input type="text" name="phone" onkeyup="this.value = this.value.replace(/[^0-9\.]/g, '');" min="9" max="9" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
                             @if ($errors->has('phone'))
                                 <span class="help-block">
                                             {{ $errors->first('phone') }}

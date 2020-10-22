@@ -178,7 +178,7 @@
                                             <div class="relative text-left">
                                             <input required name="date[]" class="bg-gray-200" id="getdate{{$user->id}}" type="date" value="{{Carbon\Carbon::now()->isoFormat('Y-MM-DD')}}">
                                               <div class="font-medium flex items-center">
-                                                  <input required type="time" class="bg-gray-200"  min="09:00" max="19:00" name="time[]"  id="getthistime{{$user->id}}" onchange="gettime({{$user->id}})" value="{{Carbon\Carbon::now('Asia/Tbilisi')->isoFormat('HH:MM')}}"> 
+                                                  <input required type="time" class="bg-gray-200"  min="09:00" max="19:00" name="time[]"  id="getthistime{{$user->id}}" onchange="gettime({{$user->id}})" value="{{Carbon\Carbon::now('Asia/Tbilisi')->format('h:i')}}"> 
                                                   - 
                                                   <span id="settime{{$user->id}}"></span> </div>
                                               <div class="flex items-center font-normal text-xs justify-content-start">
