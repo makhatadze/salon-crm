@@ -56,7 +56,7 @@
                 <div class="w-full md:w-1/2 p-2">
                         <label for="price" class="block  leading-5 font-medium text-gray-700 font-bold font-caps text-xs">ფასი</label>
                         <div class="mt-2 relative rounded-md shadow-sm">
-                          <input autocomplete="off" value="{{$service->price/100}}"  name="price" min="0" step="0.01" class="block border-gray-300 font-medium text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="xxx.xx">
+                          <input autocomplete="off" type="number" value="{{$service->price/100}}"  name="price" min="0" step="0.01" class="block border-gray-300 font-medium text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="xxx.xx">
                           <div class="absolute inset-y-0 right-0 flex items-center">
                             <select name="currency" aria-label="Currency" class="form-select h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm sm:leading-5">
                               <option value="gel" @if($service->currency_type == "gel") selected @endif>GEL</option>

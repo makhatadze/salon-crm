@@ -13,6 +13,7 @@ use App\DistributionCompany;
 
 use App\Exports\PurchaseExport;
 use App\Storage;
+use App\SubCategory;
 use Maatwebsite\Excel\Facades\Excel;
 
 use Carbon\Carbon;
@@ -30,13 +31,18 @@ class PurchaseController extends Controller
         $queries = [
             'code',
             'distributor',
+            'date'
         ];
         
         $purchases = Purchase::whereNull('deleted_at');
         foreach($queries as $req){
            
             if(request($req)){
-                if($req == "code"){
+                if($req == "date"){
+                    list($first, $second) = explode(" - ", request($req));
+                    $purchases = $purchases->whereDate('updated_at', '>=', Carbon::parse($first))
+                                            ->whereDate('updated_at', '<=', Carbon::parse($second));
+                }elseif($req == "code"){
                     $purchases = $purchases->where('purchase_number', 'like', '%'.request($req).'%')
                     ->orWhere('overhead_number', 'like', '%'.request($req).'%');
                 }elseif($req == "distributor"){
@@ -48,7 +54,7 @@ class PurchaseController extends Controller
         
         $purchases = $purchases->paginate(25)->appends($queries);
 
-        $distributors = DistributionCompany::whereNull('deleted_at')->get();
+        $distributors = DistributionCompany::all();
         return view('theme.template.purchase.purchases', compact('purchases', 'distributors', 'queries'));
     }
 
@@ -102,7 +108,7 @@ class PurchaseController extends Controller
                     'ability_type' => $request->input('ability_type')[$key],
                     'title' => $request->input('title')[$key],
                     'unit' => $request->input('unit')[$key],
-                    'unit_price' => $request->input('unit_price')[$key]*100,
+                    'unit_price' => intval($request->input('unit_price')[$key]*100),
                     'currency_val' => $request->input('currency')[$key],
                     'quantity' => $request->input('quantity')[$key],
                     'storage_id' => $request->input('storage')[$key],
@@ -130,7 +136,7 @@ class PurchaseController extends Controller
             foreach ($json as $key => $product) {
                 Product::create([
                     'title_ge' => $product['title'],
-                    'price' => $product['unit_price'],
+                    'buy_price' => $product['unit_price'],
                     'currency_type' => $product['currency_val'],
                     'unit' => $product['unit'],
                     'stock' => $product['quantity'],
@@ -238,7 +244,7 @@ class PurchaseController extends Controller
             foreach ($json as $key => $product) {
                 Product::create([
                     'title_ge' => $product['title'],
-                    'price' => $product['unit_price'],
+                    'buy_price' => $product['unit_price'],
                     'currency_type' => $product['currency_val'],
                     'unit' => $product['unit'],
                     'stock' => $product['quantity'],

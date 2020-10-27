@@ -320,7 +320,8 @@ class ProductController extends Controller
                     'price' => $product->price  ,
                     'quantity' =>  $request->quantity,
                     'attributes' => array(
-                        'unit' => $product->unit
+                        'unit' => $product->unit,
+                        'currency' => $product->currency_type
                     ),
                 ];
                 Cart::session($user_id)->add($addtocart);
@@ -331,39 +332,42 @@ class ProductController extends Controller
     //Store
     public function addtosales(Request $request){
         
-        
         $this->validate($request, [
             'client_id' => 'required|integer',
             'address' => 'required|string',
-            'paymethod' => 'required|integer'
+            'paymethod' => 'required'
         ]);
         // Check Cart 
         $user_id = Auth()->user()->id;
         $total = Cart::session($user_id)->getTotal();
-        
         if($total == 0){
             return redirect()->back()->with('danger', 'კალათა ცარიელია');
         }
         // Check Pay Method
-        $paymethods = PayController::find($request->paymethod);
-        if(!$paymethods){
-            return redirect()->back()->with('danger', 'გადახდის მეთოდი არ მოიძებნა');
-        }
         $client = Client::findOrFail($request->client_id);
         $cart = Cart::session($user_id)->getContent();
         $sale = new Sale();
+            if ($request->paymethod != 'consignation') {
+                $paymethods = PayController::findOrFail($request->paymethod);
+                if(!$paymethods){
+                    return redirect()->back()->with('danger', 'გადახდის მეთოდი არ მოიძებნა');
+                }
+                $sale->pay_method_id = $paymethods->id;
+                $sale->pay_method = $paymethods->{"name_".app()->getLocale()};
+            }else{
+                $sale->paid = intval($request->paid*100);
+                $sale->pay_method = "consignation";
+            }
         $sale->client_id = $request->client_id;
         $sale->address = $request->address;
-        $sale->pay_method_id = $paymethods->id;
         $sale->total = $total;
-        $sale->pay_method = $paymethods->{"name_".app()->getLocale()};
         $sale->seller_id = Auth()->user()->id;
         $sale->save();
         SalaryToService::create([
             'user_id' => Auth::user()->id,
             'sale_id' => $sale->id,
             'service_price' => $total,
-            'percent' => Auth::user()->profile->percent ?? 0
+            'percent' => auth()->user()->profile->percent_from_sales ?? 0
         ]);
         foreach($cart as $order){
             $product = Product::findOrFail($order->id);

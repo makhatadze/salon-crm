@@ -367,10 +367,11 @@ class UserController extends Controller
     }
     public function showprofilesettings($id){
         $user = User::findOrFail($id);
+        
         $departments = Department::all();
         $services = Service::all();
         $roles = Role::all();
-        return view('theme.template.user.user_account_settings', compact('user','services', 'departments', 'roles'));
+        return view('theme.template.user.user_account_settings', compact('user','services', 'departments', 'roles', 'id'));
     }
     // I don't know too WTF is going here
     public function updateuserprofile(Request $request, $id){
@@ -381,18 +382,22 @@ class UserController extends Controller
             'user_salary' => 'required|integer|min:0',
             'phone' => 'required|string|min:9|max:9',
             'department_id' => '',
-            'rolename' => 'required|string',
+            'rolename' => '',
             'services' => '',
             'soldproduct' => '',
             'brake_between_meeting' => 'required|string|max:5',
             'interval_between_meeting' => '',
-            'blockstatus' => ''
+            'blockstatus' => '',
+            'email' => ''
         ]);
         $user = User::findOrFail($id);
-        if($request->blockstatus){
-            $user->syncRoles();
-        }else{
-            $user->syncRoles(['user', $request->input('rolename')]);
+
+        if (!$user->isAdmin()) {
+            if($request->blockstatus){
+                $user->syncRoles();
+            }else{
+                $user->syncRoles(['user', $request->input('rolename')]);
+            }
         }
         $profile = $user->profile;
         

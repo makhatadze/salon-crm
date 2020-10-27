@@ -63,7 +63,7 @@
       </div>
       @if ($products)
       @foreach ($products as $item)
-      <div class="flex items-center bg-white p-3 block shadow-sm w-full mt-3">
+      <div class="flex items-center @if($item->stock <= 1 && $item->type != 1) bg-red-500 @else bg-white @endif @if($item->type == 1) border-l-4 border-orange-300 @endif p-3 block shadow-sm w-full mt-3">
         <div class="w-2/12 flex">
           @foreach ($item->images as $key => $img)
             <img src="{{asset('../storage/productimage/'.$img->name)}}" class="w-8 h-8 object-cover rounded-full shadow -ml-1">
@@ -118,18 +118,16 @@
                 <path fill-rule="evenodd" d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
               </svg>
             </a>
-            @if ($item->type == 1)
               <button @click="modal = true" class="ml-3 cursor-pointer p-2 bg-gray-200 rounded">
                 <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-eye-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                   <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
                   <path fill-rule="evenodd" d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
                 </svg>
               </button>
-            @endif
           </div>
-          @if($item->type == 1)
           <x-modal x-show="modal">
   
+            @if($item->type == 1)
             @if ($item->unlimited_expluatation)
             <p class="text-center font-normal text-xs">
               ექსპლუატაციის პერიოდი უსასრულოა.
@@ -171,22 +169,38 @@
                   <label class="text-left block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
                     თვითღირებულება
                   </label>
-                  <input value="{{$item->price/100}} @if ($item->currency_type == 'gel')₾@elseif($item->currency_type == 'usd')$@elseif($item->currency_type == 'eur') €@endif"
+                  <input value="{{$item->buy_price/100}} @if ($item->currency_type == 'gel')₾@elseif($item->currency_type == 'usd')$@elseif($item->currency_type == 'eur') €@endif"
                   class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="text" readonly>
                 </div>
                 <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
                   <label class="text-left block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
                     ცვეთის ფასი
                   </label>
-                  <input value="{{number_format(($item->price/100)/$item->expluatation_days,2)}}"
+                  <input value="{{number_format(($item->buy_price/100)/$item->expluatation_days,7)}}"
                   class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="text" readonly>
                   
                </div>
               </div>
               @endif
-  
+              @elseif($item->type == 2)
+              <div class="flex">
+                <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                  <label class="text-left block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                    თვითღირებულება
+                  </label>
+                  <input value="{{$item->buy_price/100}} @if ($item->currency_type == 'gel')₾@elseif($item->currency_type == 'usd')$@elseif($item->currency_type == 'eur') €@endif"
+                  class="appearance-none block  font-normal text-xs w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="text" readonly>
+                </div>
+                <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                  <label class="text-left block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                    დეპარტამენტი
+                  </label>
+                  <input value="{{$item->getDepartmentName()}}"
+                  class="appearance-none font-normal text-xs block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="text" readonly>
+                </div>
+              </div>
+              @endif
           </x-modal>
-          @endif
         </div>
             
           </div>

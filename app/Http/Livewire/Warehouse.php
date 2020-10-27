@@ -31,8 +31,8 @@ class Warehouse extends Component
     
     //Initialize
     public function mount(){
-        $this->pricefrom = Product::min('price')/100;
-        $this->pricetill = Product::max('price')/100;
+        $this->pricefrom = Product::min('buy_price')/100;
+        $this->pricetill = Product::max('buy_price')/100;
         $this->amout = Product::max('stock');
     }
 
@@ -73,11 +73,11 @@ class Warehouse extends Component
             ['unit', 'LIKE', '%'.$this->unit.'%'], 
             ['stock', '<=', floatval($this->amout)], 
             ['storage_id', 'like', '%'.$this->storage.'%']])
-        ->whereBetween('price', [$this->pricefrom*100 != "" ? $this->pricefrom*100 : 1, $this->pricetill != "" ? $this->pricetill*100 : 1])
+        ->whereBetween('buy_price', [$this->pricefrom*100 != "" ? $this->pricefrom*100 : 1, $this->pricetill != "" ? $this->pricetill*100 : 1])
         ->paginate(15);
         $departments = Department::all();
         $storages = Storage::all();
-        $users = User::role('user')->get();
+        $users = User::Permission('admin', 'user')->get();
         return view('livewire.warehouse', compact('products', 'storages', 'departments', 'users'));
     }
 }

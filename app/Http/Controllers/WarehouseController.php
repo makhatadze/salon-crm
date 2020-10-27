@@ -37,7 +37,8 @@ class WarehouseController extends Controller
 
                     $product->title_ge = $prod->title_ge;
                     $product->description_ge = $prod->description_ge;
-                    $product->price = $prod->price;
+                    $product->buy_price = $prod->buy_price;
+                    $product->price = $request->sell_price*100;
                     $product->type = $prod->type; 
                     $product->stock = 1;
                     $product->unit = $prod->unit;
@@ -66,6 +67,7 @@ class WarehouseController extends Controller
         }elseif($prod->type == 2){
             $prod->department_id = $request->dept_id;
             $prod->warehouse = false;
+            $prod->price = $request->sell_price*100;
             $prod->user_id = $request->user_id;
             $prod->save();
         }        

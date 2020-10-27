@@ -79,15 +79,22 @@
                               ექსპლუატაცია
                             </label>
                             <div class="flex font-normal text-xs items-center py-3">
-                              <input type="checkbox" class="mr-3" name="unlimited_expluatation">
-                              ულიმიტო ექსპლუატაცია
+                              <input type="checkbox" id="unlimited_expluatation" class="mr-3" name="unlimited_expluatation">
+                              <label for="unlimited_expluatation">
+                                ულიმიტო ექსპლუატაცია
+                              </label>
                             </div> 
                           </div>
                           @endif
                       </div>
                     </div>
-                    <div class="w-full">
+                    <div class="flex">
+                      <div class="w-full md:w-1/4">
+                        <input type="number" step="0.01" min="0" required name="sell_price" placeholder="გასაყიდი ფასი" class="text-xs rounded font-normal py-3 px-4 text-center bg-gray-200">
+                      </div>
+                      <div class="w-full md:w-3/4">
                         <input type="submit" value="დამატება" class="appearance-none block w-full text-xs font-bold font-caps bg-indigo-500  text-white border border-gray-200 rounded py-3 px-4 leading-tight">
+                      </div>
                     </div>
                 </form>
              </div>
@@ -127,7 +134,7 @@
                               <a href="" class="font-medium whitespace-no-wrap font-bold text-black">{{$prod->{"title_".app()->getLocale()} }}</a> 
                               <div class="text-gray-600 text-xs whitespace-no-wrap font-normal"> </div>
                           </td>
-                          <td  @if($prod->stock == 0)  style="background-color: #ffaeae" @endif class="text-center font-normal">{{$prod->price/100}} 
+                          <td  @if($prod->stock == 0)  style="background-color: #ffaeae" @endif class="text-center font-normal">{{$prod->buy_price/100}} 
                             @if ($prod->currency_type == 'gel')
                             ₾
                             @elseif($prod->currency_type == 'usd')

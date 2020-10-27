@@ -40,7 +40,7 @@ class Purchase extends Model implements Auditable
     public function getPrice(){
         $total = 0;
         foreach ($this->products as $key => $value) {
-            $total += $value->stock * $value->price/100;
+            $total += $value->stock * $value->buy_price/100;
         }
        return $total;
     }

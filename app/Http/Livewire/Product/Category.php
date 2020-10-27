@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Product;
 
 use App\Brand;
 use App\Category as AppCategory;
+use App\SubCategory;
 use Livewire\Component;
 
 class Category extends Component
@@ -28,7 +29,15 @@ class Category extends Component
             $this->title_ru = '';
         }
     }
-    public function addBrand(AppCategory $category, $name)
+    public function addSubCat(AppCategory $category, $name)
+    {
+        $fields = [
+            'category_id' => $category->id,
+            'name' => $name,
+        ];
+        SubCategory::create($fields);
+    }
+    public function addBrand(SubCategory $category, $name)
     {
         $fields = [
             'name' => $name,

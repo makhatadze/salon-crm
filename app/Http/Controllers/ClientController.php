@@ -13,6 +13,7 @@ use App\PayController;
 use App\Product;
 use App\Salary;
 use App\SalaryToService;
+use App\Sale;
 use App\Service;
 use App\User;
 use App\UserJob;
@@ -35,14 +36,25 @@ class ClientController extends Controller
      */
     public function index()
     {
-        $clients = Client::whereNull('deleted_at');
+        $clients = new Client();
         $queries = [
-            'search'
+            'name',
+            'phone',
+            'consignation'
         ];
-        if (request($queries[0])) {
-            $clients = $clients->where('full_name_' . app()->getLocale(), 'LIKE', '%' . request($queries[0]) . '%')
-                ->orWhere('number', 'LIKE', '%' . request($queries[0]) . '%');
-            $queries[$queries[0]] = request($queries[0]);
+        foreach ($queries as $req) {
+            if(request($req)){
+                if($req == "name"){
+                    $clients = $clients->where('full_name_'.app()->getLocale(), 'like', '%'.request($req).'%');
+                }elseif($req == "phone"){
+                    $clients = $clients->where('number', 'like', '%'.request($req).'%');
+                }elseif(isset(request()->consignation)){
+                    $services = ClientService::select('clinetserviceable_id')->where([['pay_method', '=', 'consignation'], ['new_price', '>', 'paid']])->get();
+                    $sales = Sale::select('client_id')->where([['pay_method', '=', 'consignation'], ['total', '>', 'paid']])->get();
+                    $clients = $clients->whereIn('id', $sales)->whereIn('id', $services);
+                }
+            }
+            $queries[$req] = request($req);
         }
         $clients = $clients->paginate(50)->appends($queries);
         return view('theme.template.client.clients', compact('clients', 'queries'));

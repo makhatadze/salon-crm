@@ -23,6 +23,15 @@ class Client extends Model implements Auditable
     {
         return $this->hasMany('App\Sale', 'client_id');
     }
+    public function hasConsignation()
+    {
+        if ($this->sales()->whereColumn('total', '>', 'paid')->count() > 0) {
+            return true;
+        }elseif($this->clientservices()->whereColumn('new_price', '>', 'paid')->count() > 0){
+            return true;
+        }
+        return false;
+    }
     public function getPayedMoney(){
         $money = $this->clientservices()->where('status', true)->sum('new_price');
         $money += $this->sales()->sum('total');

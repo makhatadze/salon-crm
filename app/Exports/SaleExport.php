@@ -26,7 +26,7 @@ class SaleExport implements FromCollection, WithHeadings
             $item['product_name'] = $item->product->{"title_".app()->getLocale()};
             $item['product_price'] = $item->product->price/100;
             $item['currency'] = $item->product->currency_type;
-            $item['seller'] = $item->sale->getSellerName();
+            $item['seller'] = $item->sale->user->profile->first_name .' '. $sale->user->profile->last_name;
             $item['quant'] = $item->quantity;
             $item['currency'] = $item->product->unit;
             unset($item['id']);

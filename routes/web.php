@@ -65,6 +65,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
             // Delete, Add, Update and View
 
             Route::get('/services', 'ServiceController@index');
+            Route::get('/showservice/{clientservice}', 'ServiceController@showservice')->name('showService');
         
         });
         Route::group(['middleware' => ['permission:add_service|delete_service|admin']], function () {
@@ -94,6 +95,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
             Route::post('/products/getproductsajax', 'ProductController@getproductsajax')->name('GetProductsAjax');
             Route::view('/brands', 'theme.template.brand.index');
             Route::get('/sales', 'SaleController@index')->name('Sales');
+            Route::get('/sales/show/{sale}', 'SaleController@show')->name('showSale');
         
         });
 
@@ -101,7 +103,6 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
             Route::get('/units', 'ProductController@units');
             Route::post('/storeunits', 'ProductController@storeunits')->name('AddUnitReq');
             Route::post('/chooseforcart', 'ProductController@chooseforcart')->name('ChooseForCart');
-            Route::post('/addtosales', 'ProductController@addtosales')->name('addToSales');
             Route::post('/warehouse/adddepartment/{id}', 'WarehouseController@departmentToHouse')->name('DepartmentToProduct');
             Route::put('/addtocart/{id}', 'ProductController@addtocartupdate')->name('UpdateCart');
             Route::post('/addtocart', 'ProductController@addtocart')->name('AddToCart');
@@ -112,7 +113,9 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
             Route::get('/removefromcart/{product}', 'ProductController@removefromCart')->name('RemoveFromCart');
             Route::put('/products/update/{id}', 'ProductController@update')->name('UpdateProduct');
             Route::get('/products/removefield/{field}', 'ProductController@removefield')->name('RemoveFieldAjax');
+            Route::post('/addtosales', 'ProductController@addtosales')->name('addToSales');
             Route::get('/removesale/{id}', 'SaleController@destroy');
+            Route::put('/sales/update/{sale}', 'SaleController@updateSale')->name('updateSale');
              // Category Controller
             Route::resource('/category', 'CategoryController')->except('destroy', 'update');
             Route::delete('/category/destroy/{id}', 'CategoryController@destroy')->name('CategoryDelete');

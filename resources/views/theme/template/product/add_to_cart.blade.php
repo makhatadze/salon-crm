@@ -70,7 +70,7 @@
                     <h2 class="font-bolder font-caps text-lg text-gray-700 truncate mr-5">
                         კალათა
                     </h2>
-                    <span id="cartsum"> {{$cartsum/100}} <sup>₾</sup></span>
+                    <span id="cartsum"> {{number_format($cartsum/100, 2)}} <sup>₾</sup></span>
                 </div>
                 <div class="mt-5">
                     @if($cart)
@@ -121,7 +121,7 @@
                                 <div class="flex flex-wrap -mx-3 mb-6 flex">
                                     <div class="w-full  px-3 mb-6 md:mb-0">
                                         <div class="relative">
-                                          <select required name="client_id" class="block appearance-none font-medium text-xs w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
+                                          <select required name="client_id" class="font-normal text-xs block appearance-none font-medium text-xs w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
                                             <option value="">აირჩიეთ კლიენტი</option>
                                             @foreach ($clients as $client)
                                           <option value="{{$client->id}}">{{$client->{"full_name_".app()->getLocale()} }}</option>
@@ -132,20 +132,23 @@
                                           </div>
                                         </div>
                                       </div>
-                                        <div class="w-full px-3 mb-6 md:mb-0 mt-2">
-                                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="address">
-                                              მისამართი 
-                                            </label>
-                                            <input required class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="address" name="address" type="text" placeholder="კლიენტის მისამართი">
-                                          </div>
+                                      <div class="w-full px-3 mb-6 md:mb-0 mt-2">
+                                          <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="address">
+                                            მისამართი 
+                                          </label>
+                                          <input required class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="address" name="address" type="text" placeholder="კლიენტის მისამართი">
+                                        </div>
                                           <div class="w-full px-3 mb-6 md:mb-0 mt-2">
                                             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="paymethod">
                                               გადახდის მეთოდი
                                             </label>
                                             <div class="relative">
-                                                <select required class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="paymethod" name="paymethod">
-                                                  @foreach ($paymethods as $pay)
-                                                <option value="{{$pay->id}}" >{{$pay->{"name_".app()->getLocale()} }}</option>
+                                                <select required class="font-normal text-xs block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="paymethod" name="paymethod">
+                                                    <option value="">აირჩიეთ</option>
+                                                    <option value="consignation">კონსიგნაცია</option>
+                                                    @foreach ($paymethods as $pay)
+                                                    <option value="{{$pay->id}}" >{{$pay->{"name_".app()->getLocale()} }}</option>
+                                                    
                                                   @endforeach
                                                 </select>
                                                 <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -153,6 +156,12 @@
                                                 </div>
                                               </div>    
                                         </div>
+                                        <div id="consignation"  class="hidden w-full px-3 mb-6 md:mb-0 mt-2">
+                                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="paied">
+                                             გადახდილი თანხა 
+                                            </label>
+                                            <input class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="paied" name="paid" type="number" min="0" max="{{$cartsum/100}}" step="0.01" placeholder="გადახდილი">
+                                          </div>
                                       <div class="flex mt-3 w-full text-center px-2">
                                         <div class="w-full md:w-1/2 px-1">
                                             <input class="appearance-none block w-full bg-indigo-500 text-white font-bolder text-xs font-caps border rounded py-3 px-4 mb-3 leading-tight " value="დადასტურება" type="submit" >
@@ -177,7 +186,7 @@
                                                 </div>
                                                 <div >
                                                     <h6 class="text-theme-9">{{ number_format(($item->price * $item->quantity)/100, 2)}} <sup>₾</sup></h6>
-                                                    <span class="font-bold text-xs">{{ $item->price/100 }}  <sup>₾</sup></span>
+                                                    <span class="font-bold text-xs">{{ $item->price/100 }}  <sup> @if ($item->attributes['currency'] == "gel") ₾ @elseif($item->attributes['currency'] == "usd") $ @elseif($item->attributes['currency'] == 'eur') € @endif</sup></span>
                                                 </div>
                                             </a></div>
                                             
@@ -230,6 +239,13 @@
                         }
                     }
                 });
+            });
+            $('#paymethod').change(function(){
+                if ($(this).val() == "consignation") {
+                    $('#consignation').css('display', 'block');
+                }else{
+                    $('#consignation').css('display', 'none');
+                }
             });
             $('.removecart').click(function(){
                 let id = $(this).attr('id');

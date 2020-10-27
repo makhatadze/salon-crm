@@ -123,9 +123,7 @@ class User extends Authenticatable implements Auditable
     {
         $money = 0;
         $services = $this->SalaryToServices()
-        ->whereYear('created_at', Carbon::today()
-        ->isoFormat('Y'))->whereMonth('created_at', Carbon::today()
-        ->isoFormat('MM'))
+        ->whereDate('created_at', Carbon::today())
         ->get();
         foreach($services as $service){
             $money += ($service->service_price * $service->percent/100)/100;

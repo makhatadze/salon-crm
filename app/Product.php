@@ -24,6 +24,7 @@ class Product extends Model implements Auditable
         'unit',
         'storage_id',
         'currency',
+        'buy_price',
         'department_id',
         'brand_id',
         'currency_type' 

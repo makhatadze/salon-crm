@@ -318,7 +318,7 @@
                     <div>
                         <label for="price" class="block  leading-5 font-medium text-gray-700 font-bold font-caps text-xs">ფასი</label>
                         <div class="mt-1 relative rounded-md shadow-sm">
-                          <input autocomplete="off" name="unit_price[]" min="0" step="0.01" class="block font-medium text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="xxx.xx">
+                          <input name="unit_price[]" type="number" min="0" step="0.01" class="block font-medium text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="xxx.xx">
                           <div class="absolute inset-y-0 right-0 flex items-center">
                             <select name="currency[]" aria-label="Currency" class="form-select h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm sm:leading-5">
                                 <option value="gel" >GEL</option>
@@ -368,7 +368,11 @@
                                     <select class="font-normal text-xs block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="brandcat`+randomid+`">
                                     <option value="">აირჩიეთ</option>
                                     @foreach ($categories as $cat)
-                                        <option value="{{$cat->id}}">{{$cat->{'title_'.app()->getLocale()} }}</option>
+                                        <optgroup label="{{$cat->{'title_'.app()->getLocale()} }}">
+                                          @foreach($cat->subcategories as $subcat)
+                                            <option value="{{$subcat->id}}">{{$subcat->name }}</option>
+                                          @endforeach
+                                        </optgroup>
                                     @endforeach
                                     </select>
                                     <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">

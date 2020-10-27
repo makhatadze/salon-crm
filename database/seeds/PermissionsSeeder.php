@@ -81,6 +81,23 @@ class PermissionsSeeder extends Seeder
             'name' => 'საიტის ადმინისტრატორი',
             'email' => 'administrator@example.com',
         ]);
+        $user->profile()->create([
+           'first_name' => 'გიორგი',
+           'last_name' => 'მარგველაშვილი',
+           'birthday' => '1970-00-01',
+           'phone' => '551785074',
+           'pid' => '54997846325',
+           'position' => 0,
+           'salary' => 1000,
+           'salary_type' => '1',
+           'percent' => 0,
+           'salary_status' => 1,
+           'show_user' => 1,
+           'brake_between_meeting' => 60
+         ]);
+         $user->UserHasJob()->create([
+             'user_id' => $user->id,
+         ]);
         $user->assignRole($role1);
 
     }

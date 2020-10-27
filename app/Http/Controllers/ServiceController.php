@@ -296,4 +296,9 @@ class ServiceController extends Controller
     {
         return Excel::download(new ServiceExport($id), 'Service.xlsx');
     }
+    public function showservice(ClientService $clientservice)
+    {
+        
+        return view('theme.template.service.show', compact('clientservice'));
+    }
 }

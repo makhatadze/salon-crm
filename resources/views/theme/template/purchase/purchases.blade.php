@@ -52,7 +52,7 @@
             <td class="text-center whitespace-no-wrap font-normal">
                 <h6>{{$purchase->getPrice()}} ₾</h6>
                 @if ($purchase->dgg)
-                <small>დღგ: {{$purchase->getPrice()*1.8/100}}</small>
+                <small>დღგ: {{number_format($purchase->getPrice()*1.8/100, 2)}}</small>
                 @endif
             </td>
             <td class="text-center whitespace-no-wrap font-normal">
@@ -123,7 +123,7 @@
                     </div>
                   </div>
               </div>
-              
+              <input data-daterange="true" name="date" class="datepicker input w-full border block mx-auto"> 
               <div class="flex">
                 <button class="w-3/4 mt-2 block appearance-none font-bold font-caps bg-indigo-500 text-xs text-white bg-gray-200 border border-gray-200  py-3 px-4 rounded leading-tight">
                     ძებნა

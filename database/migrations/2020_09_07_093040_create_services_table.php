@@ -18,7 +18,7 @@ class CreateServicesTable extends Migration
             $table->string('title_ge')->nullable();
             $table->string('title_ru')->nullable();
             $table->string('title_en')->nullable();
-            $table->text('body_ge');
+            $table->text('body_ge')->nullable();
             $table->text('body_ru')->nullable();
             $table->text('body_en')->nullable();
             $table->float('duration_count');

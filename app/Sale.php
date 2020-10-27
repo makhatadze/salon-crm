@@ -20,28 +20,40 @@ use SoftDeletes, \OwenIt\Auditing\Auditable;
         'service_price',
         'percent',
         'sale_id',
-        'address'
+        'address',
+        'paid',
+        'total',
+        'pay_method',
+        'pay_method_id'
     ];
     protected $table = 'sales';
     public function client(){
         return $this->belongsTo('App\Client');
     }
-    public function getSellerName(){
-        $user = User::find($this->seller_id);
-        if($user->profile){
-        return $user->profile->first_name .' '.$user->profile->last_name;
-        }else{
-            return $user->name;
-        }
+    public function user()
+    {
+        return $this->belongsTo('App\User', 'seller_id', 'id');
     }
     public function orders(){
         return $this->hasMany('App\Order', 'sale_id');
+    }
+    public function totalOriginalPrice()
+    {
+        $money = 0;
+        foreach ($this->orders as $item) {
+            $money += $item->product->buy_price * $item->quantity;
+        }
+        return $money;
     }
     public function getTotalPrice(){
         $money = 0;
         foreach($this->orders as $order){
             $money += $order->quantity * $order->price;
         }
-        return $money/100;
+        return number_format($money/100, 2);
     }
+    protected $casts = [
+        'total' => 'integer',
+        'paid' => 'integer',
+    ];
 }

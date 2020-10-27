@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="grid grid-cols-12 gap-6 mt-5">
-<div class="intro-y col-span-12 lg:col-span-6">
+<div class=" col-span-12 lg:col-span-6">
 <form action="{{route('UpdatePurchase', $purchase->id)}}" method="post">
        @csrf
        @method('PUT')
@@ -67,9 +67,6 @@
 
     @foreach ($purchase->products as $key => $product)
   <div class="relative w-full mt-3 box p-4" id="remove{{$product->id}}">
-        <button type="button" onclick="removeproduct('{{$product->id}}')" class="font-bold font-caps text-xs absolute right-0 top-0 dropdown-toggle button px-2 box  bg-red-300 focus:bg-red-900 text-red-900">
-           წაშლა
-        </button>
         <div class="flex flex-wrap -mx-3 mb-6">
             <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
                 <label class="font-bold font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
@@ -147,7 +144,6 @@
               საწყობი
             </label>
             <div class="relative">
-                
               <select required disabled class="block font-medium text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
                 
                 <option selected >{{$product->storage->name }}</option>
@@ -391,7 +387,7 @@
                     <div>
                         <label for="price" class="block  leading-5 font-medium text-gray-700 font-bold font-caps text-xs">ფასი</label>
                         <div class="mt-1 relative rounded-md shadow-sm">
-                          <input autocomplete="off" name="unit_price[]" min="0" step="0.01" class="block font-medium text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="xxx.xx">
+                          <input autocomplete="off" name="unit_price[]" type="number" min="0" step="0.01" class="block font-medium text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="xxx.xx">
                           <div class="absolute inset-y-0 right-0 flex items-center">
                             <select name="currency[]" aria-label="Currency" class="form-select h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm sm:leading-5">
                                 <option value="gel" >GEL</option>
@@ -441,7 +437,11 @@
                                     <select class="font-normal text-xs block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="brandcat`+randomid+`">
                                     <option value="">აირჩიეთ</option>
                                     @foreach ($categories as $cat)
-                                        <option value="{{$cat->id}}">{{$cat->{'title_'.app()->getLocale()} }}</option>
+                                        <optgroup label="{{$cat->{'title_'.app()->getLocale()} }}">
+                                          @foreach($cat->subcategories as $subcat)
+                                            <option value="{{$subcat->id}}">{{$subcat->name }}</option>
+                                          @endforeach
+                                        </optgroup>
                                     @endforeach
                                     </select>
                                     <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -543,24 +543,6 @@
         });
         });
     });
-    function removeproduct($id){
-      $.ajaxSetup({
-        headers: {
-          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-      });
-      $.ajax({
-        url: "/product/removeproduct/"+$id,
-        method: 'get',
-        success: function(result){
-          if(result.status == true){
-            removeunit('remove'+$id);
-          }
-        }
-      });                                                                                    
-                  
-            
-    }
      function removeunit($id){
         $('#'+$id).remove();
     }

@@ -5,9 +5,11 @@ namespace App\Http\Livewire\Product;
 use App\Brand;
 use App\Product;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class Index extends Component
 {
+    use WithPagination;
     public $name;
     public $pricefrom;
     public $pricetill;

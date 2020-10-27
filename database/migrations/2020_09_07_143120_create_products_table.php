@@ -21,7 +21,7 @@ class CreateProductsTable extends Migration
             $table->text('description_ge');
             $table->text('description_ru')->nullable();
             $table->text('description_en')->nullable();
-            $table->integer('price');
+            $table->integer('price')->nullable();
             $table->string('type');
             $table->float('stock');
             $table->string('unit');

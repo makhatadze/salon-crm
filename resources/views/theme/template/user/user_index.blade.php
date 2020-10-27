@@ -28,7 +28,6 @@
 
     <div class="grid grid-cols-12 gap-6 mt-5 user-list">
         @foreach($users as $user)
-            @if ($user->hasAnyPermission(['user']))
             <div class="intro-y col-span-12 md:col-span-4">
                 <div class="box">
                     <div class="flex flex-col lg:flex-row items-center p-5">
@@ -41,7 +40,7 @@
                             
                         </div>
                         <div class="lg:ml-2 lg:mr-auto text-center lg:text-left mt-3 lg:mt-0">
-                            <a @if ($user->profile) href="{{route('ShowUserProfile', $user->id)}}" @endif class="font-bolder text-xs text-gray-700 uppercase font-caps">{{$user->name}} @if($user->profile) {{$user->profile->last_name}} @endif</a><br>
+                            <a href="{{route('ShowUserProfile', $user->id)}}"class="font-bolder text-xs text-gray-700 uppercase font-caps">{{$user->profile->first_name .' '. $user->profile->last_name}}</a><br>
                             @if($user->profile)
                             @if($user->profile->salary > 0) <span class="text-xs font-normal">ხელფასი:  {{$user->profile->salary}} <sup>₾</sup></span> <br> @endif
                             <span class="text-xs font-normal">გამოიმუშავა: {{$user->getEarnedMoney() ? round($user->getEarnedMoney(), 2) : 0 }} <sup>₾</sup></span> <br>
@@ -120,7 +119,7 @@
 
                                             <div class="w-full md:w-1/2 px-3">
                                                 <label class="block uppercase tracking-wide text-left font-caps text-xs text-gray-700 text-xs font-bold mb-2">
-                                                გამოიმუშავა <small class="font-normal text-x">[ამ თვეში]</small>
+                                                გამოიმუშავა <small class="font-normal text-x">[დღეს]</small>
                                                 </label>
                                                 <input value="{{$user->getEarnedThisMoneth()}}" name="earn" class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="number" min="0" step="0.01">
                                             </div>
@@ -163,7 +162,6 @@
                     </div>
                 </div>
             </div>
-            @endif
         @endforeach
     </div>
     <div class="intro-y col-span-12 mt-4 flex flex-wrap sm:flex-row sm:flex-no-wrap items-center">

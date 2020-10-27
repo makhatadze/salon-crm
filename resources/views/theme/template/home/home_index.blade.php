@@ -211,7 +211,7 @@
                             @forelse ($user->clientServices()
                         ->whereDate('session_start_time', Carbon\Carbon::parse($date))
                         ->orderBy('session_start_time', 'asc')->get() as $item)
-                                            <a href="javascript:;" data-toggle="modal" data-target="#modal{{$item->id}}"
+                                            <div 
                                                 style="
                                                 height: <?php
                                                 $actual_start_at = Carbon\Carbon::parse($item->session_start_time);
@@ -228,10 +228,10 @@
                                                 width: calc(100% - 45px);
                                                 margin-left: 45px
                                                  "
-                                                class="p-1 items-center justify-center z-30 bg-gray-300 shadow rounded-sm absolute zoom-in flex border-l-4 
+                                                class="p-1 cursor-default z-30 bg-gray-300 shadow rounded-sm absolute zoom-in flex border-l-4 
                                                 @if($item->status == 1) border-green-400 @elseif($item->session_start_time > Carbon\Carbon::now('Asia/Tbilisi')) border-orange-400 @elseif($item->session_start_time < Carbon\Carbon::now('Asia/Tbilisi')) border-red-400 @endif ">
-                                               <div class="mx-auto">
-                                                <div class="flex items-center justify-center hover:shadow-none">
+                                               <div class="flex w-full  items-center justify-between px-4">
+                                                <a href="javascript:;" data-toggle="modal" data-target="#modal{{$item->id}}" class="flex items-center justify-center hover:shadow-none">
                                                     @if ($item->clinetserviceable->image)
                                                     <img src="{{asset('../storage/clientimg/'.$item->clinetserviceable->image->name)}}" class="h-10 w-10 object-cover rounded-md">
                                                     @else
@@ -245,10 +245,53 @@
                                                             {{$item->clinetserviceable->number }}
                                                         </span>
                                                     </div>
-                                                </div>
+                                                </a>
+                                                <a href="javascript:;" data-toggle="modal" data-target="#sms{{$item->id}}">
+                                                    <svg width="1em" @click="modal=true" height="1em" viewBox="0 0 16 16" class="bi bi-chat-left-dots" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                        <path fill-rule="evenodd" d="M14 1H2a1 1 0 0 0-1 1v11.586l2-2A2 2 0 0 1 4.414 11H14a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                                                        <path d="M5 6a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                                                      </svg>
+                                                    
+                                                    </a>
+                                                  
                                                </div>
-                                            </a>
-                                        
+                                            </div>
+                                      
+                                            <div class="modal" id="sms{{$item->id}}">
+                                                <div class="modal__content modal__content--lg p-10"> 
+                                                    <form action="{{ route('smsSendPost') }}" method="POST" class="bg-white mx-auto" autocomplete="off">
+                                                        @csrf
+                                                        <div class="w-full px-3 mb-2">
+                                                        <label class=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="phone">
+                                                            <h6 class="font-caps">
+                                                                ნომერი
+                                                            </h6> 
+                                                        </label>
+                                                        <input name="phone" value="{{$item->clinetserviceable->number}}" readonly required class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" onkeyup="this.value = this.value.replace(/[^0-9\.]/g, '');" id="phone" type="text" minlength="9" maxlength="9" placeholder="555 11 22 33">
+                                                        <small class="font-normal">გაგზავნამდე გადაამოწმეთ ნომერი</small> 
+                                                        @error('phone')
+                                                            <p class="font-normal text-xs text-red-500">
+                                                                {{$message}}
+                                                            </p>
+                                                        @enderror
+                                                    </div>
+                                                        <div class="w-full px-3">
+                                                            <label class="font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="text">
+                                                            ტექსტი
+                                                            </label>
+                                                            <textarea name="text" id="text" cols="30" rows="5" class="appearance-none resize-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"></textarea>
+                                                            @error('text')
+                                                                <p class="font-normal text-xs text-red-500">
+                                                                    {{$message}}
+                                                                </p>
+                                                            @enderror
+                                                        </div>
+                                                        <div class="px-3 mt-2">
+                                                            <button type="submit" class="w-full bg-indigo-500 py-3 px-4 text-white font-bold font-caps text-xs">გაგზავნა</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
                                 <div class="modal" id="modal{{$item->id}}">
                                     <div class="modal__content p-10 text-center">
                                         <div class="flex justify-between my-3">
