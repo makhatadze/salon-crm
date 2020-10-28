@@ -40,6 +40,12 @@
                         <div class="font-normal text-xs side-menu__title"> კლიენტები </div>
                     </a>
                 </li>
+                <li>
+                    <a href="/clients" class="side-menu custom-nav-item">
+                        <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
+                        <div class="font-normal text-xs side-menu__title"> ჯგუფები </div>
+                    </a>
+                </li>
                 @if (auth()->user()->can('admin'))
                 <li>
                     <a href="/roles" class="side-menu custom-nav-item">
@@ -186,12 +192,6 @@
                     <a href="/products" class="side-menu custom-nav-item">
                         <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
                         <div class="side-menu__title font-normal text-xs"> პროდუქცია </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="/brands" class="side-menu custom-nav-item">
-                        <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
-                        <div class="side-menu__title font-normal text-xs"> ბრენდები </div>
                     </a>
                 </li>
                 <li>

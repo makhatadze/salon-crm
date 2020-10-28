@@ -301,7 +301,7 @@ class PurchaseController extends Controller
             'category_id' => 'required|integer',
             'brand_name' => 'required|string',
         ]);
-        $category = Category::findOrFail($request->category_id);
+        $category = SubCategory::findOrFail($request->category_id);
         $brand = Brand::create([
             'name' => $request->brand_name,
             'category_id' => $category->id

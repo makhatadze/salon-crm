@@ -22,7 +22,6 @@ class Profile extends Model implements Auditable
         'birthday',
         'phone',
         'pid',
-        'position',
         'salary',
         'salary_type',
         'percent',

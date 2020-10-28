@@ -71,7 +71,20 @@
                     <div class="sm:grid grid-cols-3 gap-2 mb-4">
                         <div class="relative mt-2 {{ $errors->has('position') ? ' has-error' : '' }}">
                             {{ Form::label('position', 'თანამდებობა', ['class' => 'font-bold font-caps text-xs text-gray-800']) }}
-                            {{ Form::select('position', ['2' => 'თანამშრომელი'], null, ['class' => 'font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500']) }}
+                            
+                        <div class="relative">
+                            <select name="position" id="position" class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                                @foreach ($roles as $role)
+                                @if ($role->name != "admin")
+                                    <option value="{{$role->name}}">{{$role->name == "user" ? "თანამშრომელი" : $role->name}}</option>
+                                @endif
+                            @endforeach
+                            </select>
+                        </select>
+                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                          </div>
+                        </div>
                             @if ($errors->has('position'))
                                 <span class="help-block">
                                             {{ $errors->first('position') }}
@@ -80,7 +93,12 @@
                         </div>
                         <div class="relative mt-2 {{ $errors->has('salary_type') ? ' has-error' : '' }}">
                             {{ Form::label('salary_type', 'ხელფასი', ['class' => 'font-bold font-caps text-xs text-gray-800']) }}
+                            <div class="relative">
                             {{ Form::select('salary_type', ['1' => 'ორივე', '2' => 'პროცენტი', '3' => 'ფიქსირებული'], null, ['class' => 'font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500']) }}
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                            </div>
+                            </div>
                             @if ($errors->has('salary_type'))
                                 <span class="help-block">
                                             {{ $errors->first('position') }}
@@ -142,10 +160,10 @@
                         
                         <div class="relative mt-2 ">
                             <div class="flex items-center justify-content">
-                                <input type="checkbox" name="soldproduct" id="soldproduct" class="mr-2">
                                 <label for="soldproduct" class="cursor-pointer">
                                     პროცენტი გაყიდვებიდან
                                 </label>
+                                <input name="soldproduct" id="soldproduct" placeholder="00" value="0" type="number" max="100" min="0" class="ml-3 font-normal text-xs appearance-none block w-16 bg-gray-200 text-gray-700 border border-gray-200 rounded py-2 px-1 text-center leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
                                </div>
                         </div>
                     </div>

@@ -14,9 +14,8 @@
                 <div class="ml-4 mr-auto">
                 <div class="font-bold text-sm "> {{$user->profile->first_name}} {{$user->profile->last_name}}</div>
                     <div class="text-gray-600 font-normal text-xs"> 
-                        @if ($user->isUser())
-                            სტილისტი
-                        @endif
+                       
+                      {{ $user->getRoleNames()->first() == "user" ? 'თანამშრომელი' : $user->getRoleNames()->first() }}
                     </div>
                 </div>
             </div>

@@ -40,11 +40,14 @@ class SaleController extends Controller
                 }elseif($req == "price_till" && request($req) != ''){
                     $sales = $sales->where('total' ,'<=', request($req)*100);
                 }elseif(isset(request()['consignation'])){
-                    $sales = $sales->where('pay_method' ,'LIKE', 'consignation');
+                    $sales = $sales->where('pay_method' ,'LIKE', 'consignation')
+                                    ->whereColumn('total', '>', 'paid');
                 }elseif($req == "date"){
+                    dd(request('date'));
+                    dd('daa');
                     list($first, $second) = explode(" - ", request($req));
                     $sales = $sales->whereDate('updated_at', '>=', Carbon::parse($first))
-                                            ->whereDate('updated_at', '<=', Carbon::parse($second));
+                                    ->whereDate('updated_at', '<=', Carbon::parse($second));
                 }
                 $queries[$req] = request($req);
             }

@@ -85,6 +85,7 @@ class UserController extends Controller
                     'pid' => 'required',
                     'position' => 'required|string',
                     'phone' => 'required|string|min:9|max:9',
+                    'soldproduct' => 'required|integer',
                     'salary' => '',
                     'percent' => '',
                     'password' => 'required|min:8',
@@ -102,7 +103,7 @@ class UserController extends Controller
 
                 $user->save();
 
-                $user->roles()->attach($data['position']);
+                $user->syncRoles(['user', $request->input('position')]);
 
                 if(isset($request->services) && sizeof($request->services) > 0){
                     
@@ -131,9 +132,8 @@ class UserController extends Controller
                     'first_name' => $data['first_name'],
                     'last_name' => $data['last_name'],
                     'birthday' => $data['birthday'],
-                    'position' => $data['position'],
                     'show_user' => isset($data['showuser']) ? 1 : 0,
-                    'percent_from_sales' => isset($data['soldproduct']) ? 1 : 0,
+                    'percent_from_sales' => $data['soldproduct'] ?? 0,
                     'interval_between_meeting' => isset($data['interval_between_meeting']) ? $data['interval_between_meeting'] : null,
                     'brake_between_meeting' => $data['brake_between_meeting'],
                     'phone' => $data['phone'],
@@ -177,11 +177,12 @@ class UserController extends Controller
             ];
 
             $companies = Company::whereNull('deleted_at')->get();
-
+            $roles = Role::all();
             $services = Service::all();
             return view('theme.template.user.user_add', [
                 'companies' => $companies,
-                'services' => $services
+                'services' => $services,
+                'roles' => $roles,
             ]);
         } else {
             abort('404');
@@ -339,7 +340,15 @@ class UserController extends Controller
         //
     }
     public function showprofile($id){
-        $user = User::findOrFail($id);
+        $user = User::select(
+            "id",
+            "name",
+            "email",
+            "active",
+            "created_at",
+            "updated_at",
+            "status",
+        )->findOrFail($id);
         $userclients = ClientService::where('user_id', $user->id);
         $queries = [
             'date',
@@ -366,7 +375,15 @@ class UserController extends Controller
         return view('theme.template.user.user_profile', compact('user', 'userclients', 'queries'));
     }
     public function showprofilesettings($id){
-        $user = User::findOrFail($id);
+        $user = User::select(
+            "id",
+            "name",
+            "email",
+            "active",
+            "created_at",
+            "updated_at",
+            "status",
+        )->findOrFail($id);
         
         $departments = Department::all();
         $services = Service::all();
@@ -384,7 +401,7 @@ class UserController extends Controller
             'department_id' => '',
             'rolename' => '',
             'services' => '',
-            'soldproduct' => '',
+            'soldproduct' => 'required|integer',
             'brake_between_meeting' => 'required|string|max:5',
             'interval_between_meeting' => '',
             'blockstatus' => '',
@@ -408,7 +425,6 @@ class UserController extends Controller
         }
         
         $profile->show_user = isset($request->showtable) ? 1 : 0;
-        $profile->percent_from_sales = isset($request->soldproduct) ? 1 : 0;
         
         if(isset($request->services) && sizeof($request->services) > 0){
             
@@ -428,6 +444,7 @@ class UserController extends Controller
         $profile->first_name = $request->input('first_name');
         $profile->last_name = $request->input('last_name');
         $profile->salary = $request->input('user_salary');
+        $profile->percent_from_sales = $request->soldproduct ?? 0;
         $profile->interval_between_meeting = $request->input('interval_between_meeting');
         $profile->brake_between_meeting = $request->input('brake_between_meeting');
         

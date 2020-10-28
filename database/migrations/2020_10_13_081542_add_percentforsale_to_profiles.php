@@ -14,7 +14,7 @@ class AddPercentforsaleToProfiles extends Migration
     public function up()
     {
         Schema::table('profiles', function (Blueprint $table) {
-            $table->boolean('percent_from_sales')->default(false);
+            $table->integer('percent_from_sales')->default(0);
         });
     }
 

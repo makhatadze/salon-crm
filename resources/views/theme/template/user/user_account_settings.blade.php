@@ -7,7 +7,7 @@
             <div class="relative flex items-center p-5">
                 <div class="w-12 h-12 image-fit">
                   @if ($user->image()->first())
-                  <img alt="Midone Tailwind HTML Admin Template" class="rounded-full" src="{{asset('../storage/profile/'.$id.'/'.$user->image()->first()->name)}}">
+                  <img alt="Midone Tailwind HTML Admin Template" class="rounded-full" src="{{asset('../storage/profile/'.$user->id.'/'.$user->image()->first()->name)}}">
                   @else
                   <img alt="" class="rounded-full" src="/no-avatar.png">
                   @endif
@@ -15,16 +15,15 @@
                 <div class="ml-4 mr-auto">
                 <div class="font-bold text-sm "> {{$user->profile->first_name}} {{$user->profile->last_name}}</div>
                     <div class="text-gray-600 font-normal text-xs"> 
-                        @if ($user->isUser())
-                            სტილისტი
-                        @endif
+                        
+                       {{ $user->getRoleNames()->first() == "user" ? 'თანამშრომელი' : $user->getRoleNames()->first() }}
                     </div>
                 </div>
             </div>
             <div class="p-5 border-t border-gray-200">
-            <a class="flex items-center font-medium" @if(auth()->user()->isAdmin()) href="/user/showprofile/{{$id}}" @else href="/" @endif> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity w-4 h-4 mr-2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg> სამუშაო ცხრილი </a>
+            <a class="flex items-center font-medium" @if(auth()->user()->isAdmin()) href="/user/showprofile/{{$user->id}}" @else href="/" @endif> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity w-4 h-4 mr-2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg> სამუშაო ცხრილი </a>
                 <a class="flex items-center text-theme-1 mt-5 font-medium" href="/profile/accountsettings"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-box w-4 h-4 mr-2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg> ანგარიშის დეტალები </a>
-                @if($id == Auth()->user()->id)
+                @if($user->id == Auth()->user()->id)
                 <a class="flex items-center   mt-5 font-medium" href="/profile/changepassword"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-lock w-4 h-4 mr-2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg> პაროლის შეცვლა </a>
               @endif
               </div>
@@ -52,7 +51,7 @@
                       </svg>აქტიური
                     </div>
                     @if (auth()->user()->isAdmin())
-                    <a href="/profile/turn/{{$id}}/0" class="button button--sm border text-gray-700 ml-auto font-bold font-caps text-xs">გათიშვა</a>
+                    <a href="/profile/turn/{{$user->id}}/0" class="button button--sm border text-gray-700 ml-auto font-bold font-caps text-xs">გათიშვა</a>
                     @endif
                 @else
                 <div class="flex items-center justify-center h-full font-normal text-xs">
@@ -61,7 +60,7 @@
                       </svg>არა აქტიური
                     </div>
                     @if (auth()->user()->isAdmin())
-               <a href="/profile/turn/{{$id}}/1" class="button button--sm border text-gray-700 ml-auto font-bold font-caps text-xs">ჩართვა</a>
+               <a href="/profile/turn/{{$user->id}}/1" class="button button--sm border text-gray-700 ml-auto font-bold font-caps text-xs">ჩართვა</a>
                @endif     
                 @endif
             </div>
@@ -111,7 +110,7 @@
     {{-- End of Profile --}}
     <div class="col-span-12 lg:col-span-8 xxl:col-span-9">
         <div class="intro-y p-4  lg:mt-1">
-        <form class="w-5/12 box p-3 max-w-lg"  @if(auth()->user()->isAdmin()) action="{{route('UpdateUserProfile', $id)}}" @endif method="post">
+        <form class="w-5/12 box p-3 max-w-lg"  @if(auth()->user()->isAdmin()) action="{{route('UpdateUserProfile', $user->id)}}" @endif method="post">
             @csrf
             <div class="flex flex-wrap -mx-3 mb-5">
               <div class="w-full md:w-1/2 px-3 mb-4 md:mb-0">
@@ -168,7 +167,7 @@
               </div>
                 </div>
                 <div class="flex flex-wrap -mx-3 mb-2">
-                  <div class="w-full @if($id == auth()->user()->id) md:w-1/2 @else md:w-1/3 @endif px-3 mb-4 md:mb-0">
+                  <div class="w-full @if($user->id == auth()->user()->id) md:w-1/2 @else md:w-1/3 @endif px-3 mb-4 md:mb-0">
                     <label class="block uppercase font-caps tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-city">
                       დეპარტამენტი
                     </label>
@@ -192,7 +191,7 @@
                     </div>
                   </div>
                   </div>
-                  <div class="w-full @if($id == auth()->user()->id) md:w-1/2 @else md:w-1/3 @endif px-3 mb-4 md:mb-0">
+                  <div class="w-full @if($user->id == auth()->user()->id) md:w-1/2 @else md:w-1/3 @endif px-3 mb-4 md:mb-0">
                     <label class="block font-caps uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-zip">
                       ელ-ფოსტა
                     </label>
@@ -204,7 +203,7 @@
                       </span>
                   @enderror
                 </div>
-                   @if ($id != Auth::user()->id)
+                   @if ($user->id != Auth::user()->id)
                        <div class="w-full md:w-1/3 px-3 mb-4 md:mb-0">
                         <label class="block uppercase font-caps tracking-wide text-gray-700 text-xs font-bold mb-2" for="rolename">
                           როლი
@@ -212,13 +211,13 @@
                        <div class="relative">
                          <select class="font-normal text-xs block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="rolename" name="rolename">
                            
-                          @if ($id != Auth::user()->id)
+                          @if ($user->id != Auth::user()->id)
                            @foreach ($roles as $role)
                            @if ($role->name != 'admin')
                            @if ($user->hasRole($role->name))
-                           <option value="{{$role->name}}" selected>{{$role->name}}</option>
+                           <option value="{{$role->name}}" selected>{{$role->name == "user" ? 'თანამშრომელი' : $role->name  }}</option>
                            @else
-                           <option value="{{$role->name}}">{{$role->name}}</option>
+                           <option value="{{$role->name}}">{{$role->name == "user" ? 'თანამშრომელი' : $role->name }}</option>
                            @endif
                            @endif
                            @endforeach
@@ -242,8 +241,9 @@
                   </div>
                   
                   <div class="my-3 w-full md:w-1/2 flex items-center justify-content font-normal text-xs">
-                    <input class="mr-1" type="checkbox" name="soldproduct" id="soldproduct" @if($user->profile->percent_from_sales) checked @endif> 
                     <label for="soldproduct">პროცენტი გაყიდვიდან</label> 
+                    <input name="soldproduct" id="soldproduct" placeholder="00" value="{{$user->profile->percent_from_sales}}" type="number" max="100" min="0" class="ml-3 font-normal text-xs appearance-none block w-16 bg-gray-200 text-gray-700 border border-gray-200 rounded py-2 px-1 text-center leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                               
                   </div>
                 </div>
                
@@ -286,9 +286,9 @@
             $('#menuuser ul').addClass('side-menu__sub-open');
             $('#menuuser ul').css('display', 'block');
       });
-      function addminutetag($id){
-        if($('#'+$id).length == 2){
-          $('#'+$id).val($('#'+$id).val()+":");
+      function addminutetag($user->id){
+        if($('#'+$user->id).length == 2){
+          $('#'+$user->id).val($('#'+$user->id).val()+":");
         }
       }
 </script>

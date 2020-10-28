@@ -3,7 +3,9 @@
 namespace App\Http\Livewire\Product;
 
 use App\Brand;
+use App\Category;
 use App\Product;
+use App\SubCategory;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -16,8 +18,23 @@ class Index extends Component
     public $stocktill;
     public $brand;
     public $unit;
+    public $brandarray = array();
+
     public function mount()
     {
+        if(request('getbrand')){
+            $this->brandarray[] = intval(request('getbrand'));
+        }else if(request('getsubcat')){
+            foreach (SubCategory::findOrFail(intval(request('getsubcat')))->brands()->select('id')->get() as $item) {
+                $this->brandarray[] = $item->id;
+            }
+        }else if(request('getcat')){
+            foreach (Category::findOrFail(intval(request('getcat')))->subcategories as $subcat) {
+                foreach ($subcat->brands()->select('id')->get() as $item) {
+                    $this->brandarray[] = $item->id;
+                }
+            }
+        }
         $this->name = '';
         $this->pricefrom = Product::min('price')/100;
         $this->pricetill = Product::max('price')/100;
@@ -29,7 +46,7 @@ class Index extends Component
                     ->where('title_'.app()->getLocale(), 'LIKE', '%'.$this->name.'%')
                     ->where('price', '>=', $this->pricefrom ? $this->pricefrom*100 : 0)
                     ->where('price', '<=', $this->pricetill ? $this->pricetill*100 : 0)
-                    ->where('brand_id', 'like', '%'.$this->brand.'%')
+                    ->whereIn('brand_id', $this->brandarray)
                     ->where('stock', '<=', $this->stocktill ?? 0)
                     ->where('unit', 'LIKE', '%'.$this->unit.'%')
                     ->paginate(30);

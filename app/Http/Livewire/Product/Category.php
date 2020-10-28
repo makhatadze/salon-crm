@@ -37,11 +37,11 @@ class Category extends Component
         ];
         SubCategory::create($fields);
     }
-    public function addBrand(SubCategory $category, $name)
+    public function addBrand(SubCategory $subcategory, $name)
     {
         $fields = [
             'name' => $name,
-            'category_id' => $category->id
+            'category_id' => $subcategory->id
         ];
         Brand::create($fields);
     }

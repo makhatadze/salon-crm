@@ -22,7 +22,6 @@ class CreateProfileTable extends Migration
             $table->string('birthday');
             $table->string('phone');
             $table->string('pid');
-            $table->string('position');
             $table->string('salary');
             $table->string('salary_type');
             $table->string('percent');
