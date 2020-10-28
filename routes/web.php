@@ -36,6 +36,11 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
             Route::get('/profile/changepassword', 'UserController@changepassword');
             Route::post('/clients/addservice', 'ClientController@addservice')->name('AddClientService');
             Route::post('/profile/storenewpassword', 'UserController@storenewpassword')->name('ChangePassword');
+            Route::get('/groups', 'GroupController@index')->name('groups');
+            Route::post('/groups/add', 'GroupController@store')->name('addGroup'); 
+            Route::put('/groups/update/{memberGroup}', 'GroupController@update')->name('updateGroup'); 
+            Route::get('/groups/edit/{memberGroup}', 'GroupController@edit')->name('editGroup'); 
+            Route::get('/groups/remove/{memberGroup}', 'GroupController@destroy')->name('removeGroup'); 
 
         });
         

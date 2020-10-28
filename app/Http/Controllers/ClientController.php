@@ -40,7 +40,8 @@ class ClientController extends Controller
         $queries = [
             'name',
             'phone',
-            'consignation'
+            'consignation',
+            'group'
         ];
         foreach ($queries as $req) {
             if(request($req)){
@@ -49,15 +50,24 @@ class ClientController extends Controller
                 }elseif($req == "phone"){
                     $clients = $clients->where('number', 'like', '%'.request($req).'%');
                 }elseif(isset(request()->consignation)){
-                    $services = ClientService::select('clinetserviceable_id')->where([['pay_method', '=', 'consignation'], ['new_price', '>', 'paid']])->get();
-                    $sales = Sale::select('client_id')->where([['pay_method', '=', 'consignation'], ['total', '>', 'paid']])->get();
-                    $clients = $clients->whereIn('id', $sales)->whereIn('id', $services);
+                    $services = ClientService::select('clinetserviceable_id')
+                    ->where('pay_method', '=', 'consignation')
+                    ->whereColumn('new_price', '>', 'paid')
+                    ->get();
+                    $sales = Sale::select('client_id')
+                    ->where('pay_method', '=', 'consignation')
+                    ->whereColumn('total', '>', 'paid')
+                    ->get();
+                    $clients = $clients->whereIn('id', $sales)->orWhereIn('id', $services);
+                }elseif($req == "group"){
+                    $clients = $clients->where('group_id', request($req));
                 }
             }
             $queries[$req] = request($req);
         }
+        $groups = MemberGroup::select('id', 'name')->get();
         $clients = $clients->paginate(50)->appends($queries);
-        return view('theme.template.client.clients', compact('clients', 'queries'));
+        return view('theme.template.client.clients', compact('clients', 'queries', 'groups'));
     }
 
     /**

@@ -41,7 +41,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/clients" class="side-menu custom-nav-item">
+                    <a href="/groups" class="side-menu custom-nav-item">
                         <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
                         <div class="font-normal text-xs side-menu__title"> ჯგუფები </div>
                     </a>

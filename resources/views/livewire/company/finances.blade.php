@@ -5,26 +5,59 @@
                 <div class="col-span-1  flex items-center justify-center">
                     თარიღი
                 </div>
-                <div class="col-span-1 flex items-center justify-center">
-                    საერთო
+                <div class="col-span-1 text-center">
+                    <h6>
+                      საერთო
+                    </h6> 
+                    @if ($totalearn > 0)
+                      <span class="text-green-700 font-bold">
+                        + {{number_format($totalearn/100,2)}}
+                      </span>
+                    @else
+                      <span class="text-red-500 font-bold">
+                        - {{number_format($totalearn/100,2)}}
+                      </span>
+                    @endif
                 </div>
                 <div class="col-span-1 flex items-center justify-center">
                     დანახარჯი
                 </div>
-                <div class="col-span-1 flex items-center justify-center">
-                    ხელფასზე
+                <div class="col-span-1 text-center">
+                    <h6>
+                      ხელფასზე
+                    </h6> 
+                    @if ($totalsalary > 0)
+                      <span class="text-green-700 font-bold">
+                        + {{number_format($totalsalary/100,2)}}
+                      </span>
+                    @else
+                      <span class="text-red-500 font-bold">
+                        - {{number_format($totalsalary/100,2)}}
+                      </span>
+                    @endif
                 </div>
                 <div class="col-span-1 flex items-center justify-center">
                     გადახდილი
                 </div>
-                <div class="col-span-2 flex items-center justify-center">
+                <div class="col-span-3 flex items-center justify-center">
                     ბანკი
                 </div>
-                <div class="col-span-1 flex items-center justify-center">
-                    სუფთა
+                <div class="col-span-1 text-center">
+                    <h6>
+                      სუფთა
+                    </h6> 
+                    @if ($totalclearearn > 0)
+                      <span class="text-green-700 font-bold">
+                        + {{number_format($totalclearearn/100,2)}}
+                      </span>
+                    @else
+                      <span class="text-red-500 font-bold">
+                        - {{number_format($totalclearearn/100,2)}}
+                      </span>
+                    @endif
                 </div>
-                <div class="col-span-2 flex items-center justify-center">
-                    თანამშრომელი
+                <div class="col-span-1 flex items-center justify-center">
+                    
                 </div>
             </div>
             @if ($finances)
@@ -34,38 +67,59 @@
                     {{$item->created_at}}
                 </div>
                 <div class="col-span-1 flex items-center justify-center">
-                    {{$item->service_price/100}}
+                  @if ($item->sale)
+                  {{number_format($item->sale->paid/100,2)}}
+                  @elseif($item->service)
+                  {{number_format($item->service->paid/100,2)}}
+                  @endif
+
                 </div>
                 {{-- გასასწორებელია სერვისზე პროდუქტის დამატების შემდეგ ~ ხარჯი --}}
                 <div class="col-span-1 flex items-center justify-center">
                     0
                 </div>
                 <div class="col-span-1 flex items-center justify-center">
-                        <h6 class="text-xs font-bold text-gray-700">{{$item->service_price * ($item->percent/100)/100}}</h6>
-
+                  <span>{{$item->percent}}% =</span> <h6 class="ml-1 text-xs font-bold text-gray-700"> {{number_format($item->service_price * ($item->percent/100)/100,2)}}</h6>
+                        
                 </div>
                 <div class="col-span-1 flex items-center justify-center">
                     <h6>{{$item->sale ? ($item->sale->pay_method == "consignation" ? 'კონსიგნაცია' : $item->sale->pay_method) : ($item->service->pay_method == "consignation" ? 'კონსიგნაცია' : $item->service->pay_method)}}</h6>
                 </div>
-                <div class="col-span-2  flex items-center justify-center">
+                <div class="col-span-3  flex items-center justify-center">
                     ბანკი
                 </div>
                 {{-- გასასწორებელია სერვისზე პროდუქტის დამატების შემდეგ ~ სუფთა მოგება --}}
-                <div class="col-span-1  flex items-center justify-center">
-                    @if($item->sale)
-                        @if (($item->service_price - $item->sale->totalOriginalPrice())/100 > 0)
-                            <span class="text-green-700 font-bold">
-                                + {{($item->service_price - $item->sale->totalOriginalPrice() - ($item->service_price * ($item->percent/100)))/100}}
-                            </span>
-                        @else 
-                            <span class="text-red-700 font-bold">
-                                - {{($item->service_price - $item->sale->totalOriginalPrice() - ($item->service_price * ($item->percent/100)))/100}}
-                            </span>
+                <div class="col-span-1 flex items-center justify-center">
+                    <div class="text-left">
+                      @if($item->sale)
+                      <span class="text-green-700 font-bold">
+                          + {{number_format(($item->sale->totalOriginalPrice() - ($item->service_price * $item->percent/100))/100,2)}}
+                        </span> <br>
+                        @if ($item->sale->total > $item->sale->paid)
+                          <span class="font-bold text-red-500" style="font-size:0.7rem"> - {{number_format(($item->sale->total - $item->sale->paid)/100,2)}}</span>
                         @endif
+                    @elseif($item->service)
+                    <span class="text-green-700 font-bold">
+                        
+                        + {{number_format(($item->service->new_price - ($item->service_price * $item->percent/100))/100,2)}}
+                      </span> <br>
+                      
+                      @if ($item->service->new_price > $item->service->paid) 
+                        <span class="font-bold text-red-500" style="font-size:0.7rem"> - {{number_format(($item->service->new_price - $item->service->paid)/100,2)}}</span>
+                      @endif
                     @endif
+                    </div>
                 </div>
-                <div class="col-span-2 flex items-center justify-center">
-                    {{$item->user->profile->first_name .' '. $item->user->profile->last_name}}
+                <div class="col-span-1 flex items-center justify-center text-blue-700 font-medium">
+                    @if ($item->sale)
+                    <a href="{{ route('showSale', $item->sale->id)}}">
+                      დეტალურად
+                    </a>
+                    @elseif($item->service)
+                    <a href="{{ route('showService', $item->service->id)}}">
+                      დეტალურად
+                    </a>
+                    @endif
                 </div>
             </div>
             @endforeach

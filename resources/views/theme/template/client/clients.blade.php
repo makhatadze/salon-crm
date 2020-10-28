@@ -156,7 +156,7 @@
     <div class="col-span-3 grid grid-cols-1">
         <form action="" class="col-span-1">
             <div class="bg-white p-2 mt-5">
-                <div class="grid grid-cols-2">
+                <div class="grid grid-cols-1 md:grid-cols-2 ">
                     <div class="p-2 col-span-1">
                         <label for="name" class="font-normal text-xs">
                             კლიენტი
@@ -170,22 +170,40 @@
                         <input type="text" id="phone" @if(isset($queries['phone'])) value="{{$queries['phone']}}" @endif name="phone" class="font-normal text-xs bg-gray-200 p-2 mt-2 text-gray-700 w-full focus:outline-none" placeholder="სახელი">
                     </div>
                 </div>
-                <div class="grid grid-cols-2 ">
+                <div class="grid grid-cols-1 md:grid-cols-2 ">
                     <div class="p-2 col-span-1 flex items-center mt-2">
                         <input type="checkbox" name="consignation" id="consignation" @if(isset($queries['consignation'])) checked @endif>
                         <label for="consignation" class="font-normal ml-3 text-xs">
                             კონსიგნაცია
                         </label>
                     </div>
-                    <div class="p-2 col-span-1 flex">
-                        <input type="submit" class="font-normal text-xs bg-indigo-500 p-2 mt-2 text-white w-2/3 focus:outline-none" value="ძებნა">
-                        <a href="{{url()->current()}}"class="font-normal flex items-center justify-center text-xs bg-red-500 p-2 mt-2 text-white w-1/3 focus:outline-none">
-                            <svg width="1em" height="1em" viewBox="0 0 16 16" stroke="white" class="bi bi-arrow-clockwise" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
-                                <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
-                              </svg>
-                        </a>
+                    <div class="p-2 col-span-1 flex items-center mt-2">
+                            <div class="relative w-full">
+                              <select name="group" class="font-normal text-xs block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
+                                <option value="">აირჩიეთ ჯგუფი</option>
+                                @foreach ($groups as $group)
+                                    @if(isset($queries['group']) && $queries['group'] == $group->id)
+                                    <option value="{{$group->id}}" selected>{{$group->name}}</option>
+                                    @else
+                                    <option value="{{$group->id}}">{{$group->name}}</option>
+                                    @endif
+                                @endforeach
+                              </select>
+                              <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                              </div>
+                            </div>
                     </div>
+                </div>
+                
+                <div class=" flex">
+                    <input type="submit" class="font-normal text-xs bg-indigo-500 p-2 mt-2 text-white w-2/3 focus:outline-none" value="ძებნა">
+                    <a href="{{url()->current()}}"class="font-normal flex items-center justify-center text-xs bg-red-500 p-2 mt-2 text-white w-1/3 focus:outline-none">
+                        <svg width="1em" height="1em" viewBox="0 0 16 16" stroke="white" class="bi bi-arrow-clockwise" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+                            <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+                          </svg>
+                    </a>
                 </div>
             </div>
         </form>
