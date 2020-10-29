@@ -72,12 +72,18 @@
                 </li>
                 
                 @if (auth()->user()->hasAnyPermission(['see_products', 'add_product', 'delete_product','admin']))
-                    <li>
-                        <a href="{{route('Warehouse')}}" class="side-menu custom-nav-item">
-                            <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
-                            <div class="side-menu__title font-normal text-xs"> საწყობი </div>
-                        </a>
-                    </li>
+                <li>
+                    <a href="{{route('Warehouse')}}" class="side-menu custom-nav-item">
+                        <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
+                        <div class="side-menu__title font-normal text-xs"> საწყობი </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{route('WarehouseHistory')}}" class="side-menu custom-nav-item">
+                        <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
+                        <div class="side-menu__title font-normal text-xs"> საწყობის ისტორია </div>
+                    </a>
+                </li>
                     <li>
                         <a href="/companies/distcompany" class="side-menu custom-nav-item" data-menu="companies">
                             <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>

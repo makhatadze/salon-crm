@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 use App\Product;
+use App\StorageHistory;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+
 class WarehouseController extends Controller
 {
     public function departmentToHouse(Request $request, $id){
@@ -73,6 +76,14 @@ class WarehouseController extends Controller
                 $thisprod->save();
             }
         }        
+        StorageHistory::create([
+            'storage_id' => $prod->storage_id,
+            'stock' => $request->typeamout,
+            'user_id' => Auth::user()->id,
+            'department_id' => $request->dept_id,
+            'product_id' => $prod->id,
+            'price' => $request->sell_price*100
+        ]);
         return redirect()->back();
     }
 }

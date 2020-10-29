@@ -138,6 +138,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
         
         Route::group(['middleware' => ['permission:see_purchases|add_purchase|delete_purchase|admin']], function () {
             Route::get('/purchases', 'PurchaseController@index');
+            Route::view('/warehousehistory', 'theme.template.warehouse.history')->name('WarehouseHistory');
         });
         Route::group(['middleware' => ['permission:add_purchase|delete_purchase|admin']], function () {
             Route::get('/purchases/edit/{id}', 'PurchaseController@edit');
