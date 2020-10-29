@@ -219,7 +219,7 @@
                         </div>
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="product_category">
-                              კატეგორია
+                              საწყობი
                             </label>
                             <div class="relative">
                               <select wire:model="storage" class="block font-normal text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="product_category" name="product_category">
@@ -290,11 +290,6 @@
                 </div>
               </form>
             </div>
-            @foreach ($storages as $storage)
-            <div class="font-bolder text-xs text-gray-800 font-caps mt-2 box p-3 w-full">
-              {{$storage->name}}
-            </div>
-            @endforeach
         </div>
     </div>
 </div>

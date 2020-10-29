@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Product;
 
 use App\Brand;
 use App\Category;
+use App\Department;
 use App\Product;
 use App\SubCategory;
 use Livewire\Component;
@@ -17,7 +18,7 @@ class Index extends Component
     public $pricetill;
     public $stocktill;
     public $brand;
-    public $unit;
+    public $department;
     public $brandarray = array();
 
     public function mount()
@@ -46,16 +47,18 @@ class Index extends Component
                     ->where('title_'.app()->getLocale(), 'LIKE', '%'.$this->name.'%')
                     ->where('price', '>=', $this->pricefrom ? $this->pricefrom*100 : 0)
                     ->where('price', '<=', $this->pricetill ? $this->pricetill*100 : 0)
-                    ->where('stock', '<=', $this->stocktill ?? 0)
-                    ->where('unit', 'LIKE', '%'.$this->unit.'%');
-                    
+                    ->where('stock', '<=', $this->stocktill ?? 0);
+                    if ($this->department) {
+                        $products = $products->where('department_id', $this->department);
+                    }
                     if ($this->brandarray) {
                         # code...
                     $products = $products->whereIn('brand_id', $this->brandarray);
                     }
                     
                     $products = $products->paginate(30);
-        $brands = Brand::all();
-        return view('livewire.product.index', compact('brands', 'products'));
+                    $brands = Brand::all();
+                    $departments = Department::all();
+        return view('livewire.product.index', compact('brands', 'products', 'departments'));
     }
 }

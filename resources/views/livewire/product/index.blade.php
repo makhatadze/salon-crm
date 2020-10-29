@@ -31,12 +31,12 @@
             </select>
           </div>
           <div class="w-1/2 bg-white ml-2 p-2">
-            <span class="font-bolder font-caps text-xs">ერთეული</span>
-            <select wire:model="unit" class="w-full focus:outline-none font-normal text-xs">
+            <span class="font-bolder font-caps text-xs">დეპარტამენტი</span>
+            <select wire:model="department" class="w-full focus:outline-none font-normal text-xs">
               <option value="">აირჩიეთ</option>
-              <option value="unit">ერთეული</option>
-              <option value="metre">მეტრი</option>
-              <option value="gram">გრამი</option>
+              @foreach ($departments as $dept)
+                  <option value="{{$dept->id}}">{{$dept->{'name_'.app()->getLocale()} }}</option>
+              @endforeach
             </select>
           </div>
       </div>
