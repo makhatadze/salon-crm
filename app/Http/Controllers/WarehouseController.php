@@ -9,7 +9,8 @@ class WarehouseController extends Controller
     public function departmentToHouse(Request $request, $id){
         $this->validate($request,[
             'dept_id' => 'required|integer',
-            'user_id' => 'required|integer'
+            'user_id' => 'required|integer',
+            'typeamout' => 'required',
             
         ]);
         $prod = Product::findOrFail(intval($id));
@@ -18,7 +19,6 @@ class WarehouseController extends Controller
                 'expluatation_date' => '',
                 'expluatation_days' => '',
                 'unlimited_expluatation' => '',
-                'typeamout' => 'required',
             ]);
             $date = Carbon::parse($request->expluatation_date);
             if($prod->stock < $request->typeamout){
@@ -26,32 +26,21 @@ class WarehouseController extends Controller
             }
             if($prod->type == 1){
                 for ($i = 0; $i < intval($request->typeamout); $i++) { 
-                    $product = new Product;
+                    $newprod = $prod->replicate();
 
                     if(isset($request->unlimited_expluatation)){
-                        $product->unlimited_expluatation = true;
+                        $newprod->unlimited_expluatation = true;
                     }else{
-                        $product->expluatation_date = $request->input('expluatation_date');
-                        $product->expluatation_days = $request->input('expluatation_days');
+                        $newprod->expluatation_date = $request->input('expluatation_date');
+                        $newprod->expluatation_days = intval($request->expluatation_days);
                     }
-
-                    $product->title_ge = $prod->title_ge;
-                    $product->description_ge = $prod->description_ge;
-                    $product->buy_price = $prod->buy_price;
-                    $product->price = $request->sell_price*100;
-                    $product->type = $prod->type; 
-                    $product->stock = 1;
-                    $product->unit = $prod->unit;
-                    $product->purchase_id = $prod->purchase_id;
-                    $product->department_id = $request->dept_id;
-                    $product->brand_id = $prod->brand_id;
-                    $product->category_id = $prod->category_id;
-                    $product->currency_type = $prod->currency_type;
-                    $product->user_id = $request->user_id;
-                    $product->warehouse = false;
-                    $product->expluatation_date = $date;
-                    $product->expluatation_days = intval($request->expluatation_days);
-                    $product->save();
+                    $newprod->warehouse = false;
+                    $newprod->stock = 1;
+                    $newprod->price = $request->sell_price*100;
+                    $newprod->expluatation_date = $date;
+                    $newprod->department_id = $request->dept_id;
+                    $newprod->user_id = $request->user_id;
+                    $newprod->save();
                 }
                 $thisprod = $prod;
                 if($thisprod->stock == $request->typeamout){
@@ -65,11 +54,24 @@ class WarehouseController extends Controller
             }
 
         }elseif($prod->type == 2){
-            $prod->department_id = $request->dept_id;
-            $prod->warehouse = false;
-            $prod->price = $request->sell_price*100;
-            $prod->user_id = $request->user_id;
-            $prod->save();
+            
+            $newprod = $prod->replicate();
+            $newprod->department_id = $request->dept_id;
+            $newprod->warehouse = false;
+            $newprod->price = $request->sell_price*100;
+            $newprod->user_id = $request->user_id;
+            $newprod->stock = $request->typeamout;
+            $newprod->save();
+
+            $thisprod = $prod;
+            if($thisprod->stock == $request->typeamout){
+                $thisprod->stock = $thisprod->stock - $request->typeamout;
+                $thisprod->save();
+                $thisprod->delete();
+            }else{
+                $thisprod->stock = $thisprod->stock - $request->typeamout;
+                $thisprod->save();
+            }
         }        
         return redirect()->back();
     }

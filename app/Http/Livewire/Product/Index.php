@@ -46,10 +46,15 @@ class Index extends Component
                     ->where('title_'.app()->getLocale(), 'LIKE', '%'.$this->name.'%')
                     ->where('price', '>=', $this->pricefrom ? $this->pricefrom*100 : 0)
                     ->where('price', '<=', $this->pricetill ? $this->pricetill*100 : 0)
-                    ->whereIn('brand_id', $this->brandarray)
                     ->where('stock', '<=', $this->stocktill ?? 0)
-                    ->where('unit', 'LIKE', '%'.$this->unit.'%')
-                    ->paginate(30);
+                    ->where('unit', 'LIKE', '%'.$this->unit.'%');
+                    
+                    if ($this->brandarray) {
+                        # code...
+                    $products = $products->whereIn('brand_id', $this->brandarray);
+                    }
+                    
+                    $products = $products->paginate(30);
         $brands = Brand::all();
         return view('livewire.product.index', compact('brands', 'products'));
     }

@@ -45,17 +45,15 @@
                       </div>
                       @endif
                       <div class="mt-3 flex w-full">
-                        @if($isUnit)
                         <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
                             <label class="block text-left font-caps uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
                               რაოდენობა
                             </label>
-                            <input class="appearance-none block w-full text-xs font-normal bg-gray-200 text-gray-700 border border-gray-200 rounded py-4 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" value="1" wire:model="typeamout" name="typeamout"  required type="number" min="1" step="1">
+                            <input required class="appearance-none block w-full text-xs font-normal bg-gray-200 text-gray-700 border border-gray-200 rounded py-4 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" value="1" wire:model="typeamout" name="typeamout"  required type="number" min="1" step="1">
                             <p class="text-xs text-left font-normal text-red-500">
                             {{$error}}
                             </p>
                           </div>
-                          @endif
                           <div class="w-full @if($isUnit) md:w-1/3 @endif px-3 mb-6 md:mb-0">
                             <label class="block font-caps text-left uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
                               აირჩიეთ პასუხისმგებელი პირი

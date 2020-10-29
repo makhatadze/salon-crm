@@ -110,6 +110,10 @@ class User extends Authenticatable implements Auditable
     {
         return $this->morphOne('App\Image', 'imageable');
     }
+    // Clients
+    public function clientservices(){
+        return  $this->hasMany('App\ClientService', 'user_id');
+    }
     // Money
     public function getEarnedMoney(){
         
@@ -122,8 +126,17 @@ class User extends Authenticatable implements Auditable
     public function getEarnedThisMoneth()
     {
         $money = 0;
+        $sales = $this->sales()->select('id')
+        ->whereColumn('total', 'paid')
+        ->whereDate('updated_at', Carbon::today())
+        ->get()->toArray();
+        $clientservices = $this->clientservices()->select('id')
+        ->whereColumn('new_price', 'paid')
+        ->whereDate('updated_at', Carbon::today())
+        ->get()->toArray();
         $services = $this->SalaryToServices()
-        ->whereDate('created_at', Carbon::today())
+        ->whereIn('sale_id', $sales)
+        ->orWhereIn('service_id', $clientservices)
         ->get();
         foreach($services as $service){
             $money += ($service->service_price * $service->percent/100)/100;
@@ -136,10 +149,6 @@ class User extends Authenticatable implements Auditable
             return $list;
         }
         return;
-    }
-    // Clients
-    public function clientservices(){
-        return  $this->hasMany('App\ClientService', 'user_id');
     }
     public function ClientCount(){
         $clients = $this->clientservices()

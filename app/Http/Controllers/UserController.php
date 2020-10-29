@@ -341,14 +341,13 @@ class UserController extends Controller
     }
     public function showprofile($id){
         $user = User::select(
-            "id",
-            "name",
-            "email",
-            "active",
-            "created_at",
-            "updated_at",
-            "status",
-        )->findOrFail($id);
+            'id',
+            'name',
+            'email',
+            'active',
+            'created_at',
+            'updated_at',
+            'status')->findOrFail($id);
         $userclients = ClientService::where('user_id', $user->id);
         $queries = [
             'date',
@@ -376,14 +375,13 @@ class UserController extends Controller
     }
     public function showprofilesettings($id){
         $user = User::select(
-            "id",
-            "name",
-            "email",
-            "active",
-            "created_at",
-            "updated_at",
-            "status",
-        )->findOrFail($id);
+            'id',
+            'name',
+            'email',
+            'active',
+            'created_at',
+            'updated_at',
+            'status')->findOrFail($id);
         
         $departments = Department::all();
         $services = Service::all();
