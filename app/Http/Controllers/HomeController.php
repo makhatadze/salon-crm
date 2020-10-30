@@ -79,9 +79,7 @@ class HomeController extends Controller
                 $selecteduser = request('users');
             }
 
-            $totalclients = Client::count();
-            $totalproductcost = Product::sum('price')/100;
-            $totalServiceCost = Service::sum('price')/100;
+           
             $allclientservices = ClientService::count();
             $paymethods = PayController::all();
             $alluser = User::permission('user')->get();;
@@ -98,10 +96,7 @@ class HomeController extends Controller
             ->get();
             }
             $clients = Client::all();
-            $income = ClientService::where('status', true)
-            ->join('services', 'client_services.service_id', '=', 'services.id')
-            ->sum('price')/100;
-            return view('theme.template.home.home_index', compact('alluser', 'services', 'selecteduser', 'users', 'clients', 'paymethods', 'totalclients', 'income', 'totalServiceCost', 'totalproductcost', 'date'));
+            return view('theme.template.home.home_index', compact('alluser', 'services', 'selecteduser', 'users', 'clients', 'paymethods',  'date'));
         } else {
             abort('404');
         }
