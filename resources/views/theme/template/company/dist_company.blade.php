@@ -16,7 +16,7 @@
         <div class=" grid grid-cols-12">
             @foreach ($distcompanies as $company)
             <div class="col-span-4 p-2">
-                <div class="bg-gray-200 p-4 rounded-md">
+                <div class="bg-gray-200 border-t-4 @if($company->dept()) border-red-400 @endif p-4 rounded-md">
                     <div  class="mb-2 flex justify-between items-center">
                             <a href="/companies/dist/edit/{{$company->id}}">
                                 <img src="{{asset('../img/delivery-truck.svg')}}" class="w-8 h-8 object-contain">
@@ -81,23 +81,7 @@
                             </a>
                         </div>
                     <hr>
-                    @foreach ($company->purchases as $purchase)
-                    <a href="/purchases/edit/{{$purchase->id}}" class="my-2 zoom-in flex items-center justify-between">
-                        <div>
-                            @if ($purchase->purchase_type == "overhead")
-                            <h6 class="font-bolder text-black">#{{$purchase->overhead_number}}</h6>
-                            <small class="font-normal">ზედნადების ნომერი</small>
-                            @elseif($purchase->purchase_type == "purchase")
-                            <h6 class="font-bolder text-black">#{{$purchase->purchase_number}}</h6>
-                            <small class="font-normal">ნასყიდობის ნომერი</small>
-                            @endif
-                        </div>
-                        <div>
-                            <h6>{{$purchase->distributor->{'name_'.app()->getLocale()} }}</h6>
-                        <small>{{$purchase->updated_at}}</small>
-                        </div>
-                    </a>
-                    @endforeach
+                    <livewire:distributor.purchase :distributor="$company->id">
                 </div>
             </div>
             @endforeach

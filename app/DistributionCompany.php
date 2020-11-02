@@ -14,4 +14,15 @@ class DistributionCompany extends Model
     public function purchases(){
         return $this->hasMany('App\Purchase', 'distributor_id');
     }
+    public function dept()
+    {
+        $dept = false;
+        foreach ($this->purchases as  $item) {
+            if ($item->getPrice() != $item->paid) {
+                $dept = true;
+                break;
+            }
+        }
+        return $dept;
+    }
 }

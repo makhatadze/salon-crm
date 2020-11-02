@@ -158,13 +158,6 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{route('MoneyController')}}" class="side-menu custom-nav-item" data-menu="departments">
-                        <div class="side-menu__icon"><i data-feather="circle" style="width: 15px; height: 15px;"></i>
-                        </div>
-                        <div class="side-menu__title font-normal text-xs"> თანხის ბრუნვა</div>
-                    </a>
-                </li>
-                <li>
                     <a href="{{route('StatisticController')}}" class="side-menu custom-nav-item" data-menu="departments">
                         <div class="side-menu__icon"><i data-feather="circle" style="width: 15px; height: 15px;"></i>
                         </div>
@@ -198,13 +191,6 @@
                     <a href="/products" class="side-menu custom-nav-item">
                         <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
                         <div class="side-menu__title font-normal text-xs"> პროდუქცია </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="/category" class="side-menu custom-nav-item">
-                        <div class="side-menu__icon"><i data-feather="circle" style="width: 15px; height: 15px;"></i>
-                        </div>
-                        <div class="side-menu__title font-normal text-xs"> კატეგორიები</div>
                     </a>
                 </li>
                 <li>

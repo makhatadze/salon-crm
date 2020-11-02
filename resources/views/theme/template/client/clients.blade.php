@@ -47,35 +47,11 @@
                         <x-modal x-show="modal">
                             <div class="grid grid-cols-2">
                                 <div class="col-span-1 px-2">
-                                    <h6 class="w-full font-bold mb-2 font-caps text-xs">სერვისები</h6>
-                                    @foreach ($client->clientservices as $item)
-                                        <a href="{{route('showService', $item->id)}}" class="w-full border-l-2 @if($item->status == 1) @if($item->pay_method == 'consignation' && $item->new_price > $item->paid) border-yellow-500 @else border-green-500 @endif @elseif($item->session_start_time <= Carbon\Carbon::now('Asia/Tbilisi')) border-red-500 @elseif($item->session_start_time >= Carbon\Carbon::now('Asia/Tbilisi')) border-orange-500 @endif mt-2 bg-gray-200 p-2 flex justify-between">
-                                            <div>
-                                                <h6 class="font-bold text-xs">
-                                                    {{$item->service->{"title_".app()->getLocale()} }}
-                                                </h6>
-                                                <small class="font-normal">{{$item->session_endtime}}</small> <br>
-                                                @if($item->pay_method == 'consignation' && $item->new_price > $item->paid) <small class="font-normal">დავალიანება</small> @endif
-                                            </div>
-                                            <span class="font-normal text-xs">
-                                                {{$item->new_price/100}} @if ($item->service->currency_type == "gel") ₾ @elseif ($item->service->currency_type == "eur") € @elseif ($item->service->currency_type == "usd") $ @endif
-                                            </span>
-                                        </a>
-                                    @endforeach
+                                    <livewire:client.service :client="$client">
+                                   
                                 </div>
                                 <div class="col-span-1 px-2">
-                                    <h6 class="w-full font-bold mb-2 font-caps text-xs">გაყიდვები</h6>
-                                    @foreach ($client->sales as $item)
-                                    <a href="{{route('showSale', $item->id)}}" class="w-full @if($item->pay_method == "consignation" && $item->total > $item->paid) border-l-2 border-red-500 @endif mt-2 bg-gray-200 p-2 flex items-center justify-between">
-                                        <div>
-                                            <small class="font-normal">{{$item->created_at}}</small> <br>
-                                            @if($item->pay_method == "consignation" && $item->total > $item->paid) <small class="font-normal">დავალიანება</small> @endif
-                                        </div>
-                                        <span class="font-normal text-xs">
-                                            {{$item->total/100}} <sup>₾</sup>
-                                        </span>
-                                    </a>
-                                @endforeach
+                                    <livewire:client.sale :client="$client">
                                 </div>
                             </div>
                         </x-modal>

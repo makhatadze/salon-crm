@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddForeignKeyToProductsTableOnPurchase extends Migration
+class AddPaidToPurchases extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,8 @@ class AddForeignKeyToProductsTableOnPurchase extends Migration
      */
     public function up()
     {
-        Schema::table('products', function (Blueprint $table) {
-            $table->foreignId('purchase_id')->constrained('purchases')->onDelete('cascade');
-            $table->string('currency_type')->nullable();
+        Schema::table('purchases', function (Blueprint $table) {
+            $table->bigInteger('paid')->nullable();
         });
     }
 
@@ -26,7 +25,7 @@ class AddForeignKeyToProductsTableOnPurchase extends Migration
      */
     public function down()
     {
-        Schema::table('products', function (Blueprint $table) {
+        Schema::table('purchases', function (Blueprint $table) {
             //
         });
     }

@@ -11,11 +11,11 @@
                     </h6> 
                     @if ($totalearn > 0)
                       <span class="text-green-700 font-bold">
-                        + {{number_format($totalearn/100,2)}}
+                        {{number_format($totalearn/100,2)}}
                       </span>
                     @else
                       <span class="text-red-500 font-bold">
-                        - {{number_format($totalearn/100,2)}}
+                        {{number_format($totalearn/100,2)}}
                       </span>
                     @endif
                 </div>
@@ -32,7 +32,7 @@
                       </span>
                     @else
                       <span class="text-red-500 font-bold">
-                        - {{number_format($totalsalary/100,2)}}
+                        {{number_format($totalsalary/100,2)}}
                       </span>
                     @endif
                 </div>
@@ -48,11 +48,11 @@
                     </h6> 
                     @if ($totalclearearn > 0)
                       <span class="text-green-700 font-bold">
-                        + {{number_format($totalclearearn/100,2)}}
+                        + {{number_format(($totalclearearn - $totalsalary)/100,2)}}
                       </span>
                     @else
                       <span class="text-red-500 font-bold">
-                        - {{number_format($totalclearearn/100,2)}}
+                        {{number_format(($totalclearearn - $totalsalary)/100,2)}}
                       </span>
                     @endif
                 </div>
@@ -93,7 +93,7 @@
                     <div class="text-left">
                       @if($item->sale)
                       <span class="text-green-700 font-bold">
-                          + {{number_format(($item->sale->totalOriginalPrice() - ($item->service_price * $item->percent/100))/100,2)}}
+                          + {{number_format( ($item->sale->totalOriginalPrice() - ($item->sale->total - $item->sale->paid) - ($item->service_price * ($item->percent/100)))/100,2)}}
                         </span> <br>
                         @if ($item->sale->total > $item->sale->paid)
                           <span class="font-bold text-red-500" style="font-size:0.7rem"> - {{number_format(($item->sale->total - $item->sale->paid)/100,2)}}</span>
@@ -101,7 +101,7 @@
                     @elseif($item->service)
                     <span class="text-green-700 font-bold">
                         
-                        + {{number_format(($item->service->new_price - ($item->service_price * $item->percent/100))/100,2)}}
+                        + {{number_format(($item->service->paid - ($item->service_price * $item->percent/100) - ($item->service_price * ($item->percent/100)))/100,2)}}
                       </span> <br>
                       
                       @if ($item->service->new_price > $item->service->paid) 

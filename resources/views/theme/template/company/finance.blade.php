@@ -1,6 +1,8 @@
 @extends('theme.layout.layout')
 
 @section('content')
+
+   @livewire('money.index')
    @livewire('company.finances')
 @endsection
 

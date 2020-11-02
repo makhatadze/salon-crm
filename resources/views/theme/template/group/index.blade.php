@@ -19,8 +19,27 @@
     <div class="col-span-3 grid grid-cols-1 px-4">
         @if ($groups)
                 @foreach ($groups as $group)
-                    <div class="py-3 flex items-center justify-between col-span-1 px-4 bg-white" style="height: max-content">
-                        <h6>{{$group->name}}</h6>
+                    <div class="py-3 flex items-center justify-between col-span-1 px-4 bg-white" style="height: max-content" x-data="{modal: false}">
+                        <h6 class="cursor-pointer" @click="modal = true">{{$group->name}}</h6>
+                        <x-modal x-show="modal">
+                            @forelse ($group->clients as $client)
+                                <a href="{{route('EditClient', $client->id)}}" class="w-full mt-2 bg-gray-200 p-2 flex items-center justify-between">
+                                    <div>
+                                        <h6 class="font-bold text-xs">{{$client->{"full_name_".app()->getLocale()} }}</h6>
+                                        <small class="font-normal">{{$client->number }}</small>
+                                    </div>
+                                    <div>
+                                        <small  class="font-normal">სერვისი: 2</small><br>
+                                        <small  class="font-normal">გაყიდვა: 21</small>
+                                    </div>
+                                </a>
+                                
+                            @empty
+                            <p class="font-normal text-xs">
+                                ამ ჯგუფზე კლიენტები არ მოძებნა
+                            </p>
+                            @endforelse
+                        </x-modal>
                         <div class="flex items-center">
                             <a href="">
                                 <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-file-arrow-down-fill" fill="#444" xmlns="http://www.w3.org/2000/svg">

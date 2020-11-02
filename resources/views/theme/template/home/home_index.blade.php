@@ -41,17 +41,17 @@
                                         @csrf
                                         <div class="flex flex-wrap -mx-3 mb-2">
                                             <div class="w-full md:w-1/2 px-3 mb-2 md:mb-0">
-                                          <input class="appearance-none block font-normal text-xs w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="full_name_ge" type="text" placeholder="კლიენტის სახელი" name="full_name_ge">
+                                          <input onkeyup="thisclientname({{$user->id}})" class=" appearance-none block font-normal text-xs w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="full_name_ge{{$user->id}}" type="text" placeholder="კლიენტის სახელი" name="full_name_ge">
                                         </div>
                                         <div class="w-full md:w-1/2 px-3">
-                                          <input minlength="9" onkeyup="this.value = this.value.replace(/[^0-9\.]/g, '');" maxlength="9" class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="client_number" type="text" placeholder="კლიენტის ნომერი" name="client_number">
+                                        <input minlength="9" onkeyup="this.value = this.value.replace(/[^0-9\.]/g, '');" maxlength="9" class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="client_number{{$user->id}}" type="text" placeholder="კლიენტის ნომერი" name="client_number">
                                         </div>
                                       </div>
                                       <p class="font-normal text-xs mb-2">დაარეგისტრირეთ ან აირჩიეთ კლიენტი</p>
                                       <div class="flex flex-wrap -mx-3 mb-6">
                                         <div class="w-full  px-3 mb-6 md:mb-0">
                                         <div class="relative">
-                                        <select name="client" class="block appearance-none font-normal text-xs w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                                        <select required name="client" id="selectclient{{$user->id}}" class="block appearance-none font-normal text-xs w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
                                             <option value="">აირჩიეთ კლიენტი</option>
                                             @if ($clients)
                                             @foreach ($clients as $client)
@@ -606,6 +606,15 @@
                 }
             } 
         });
+    }
+    function thisclientname($id){
+        if($('#full_name_ge'+$id).val().length > 0){
+            $('#selectclient'+$id).prop('required',false);
+            $('#client_number'+$id).prop('required',true);
+        }else{
+            $('#client_number'+$id).prop('required',false);
+            $('#selectclient'+$id).prop('required',true);
+        }
     }
     </script>
 @endsection

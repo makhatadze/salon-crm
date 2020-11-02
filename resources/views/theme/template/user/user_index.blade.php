@@ -77,84 +77,8 @@
                             </div>
                             <div class="modal" id="salary_modal_{{$user->id}}">
                                 <div class="modal__content modal__content--lg p-10 text-center"> 
-                                    <form action="{{ route('giveSalary', $user->id) }}" method="POST">
-                                        @csrf
-                                        <div class="flex flex-wrap -mx-3 mb-6">
-                                            <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-                                              <label class="text-left font-caps text-xs block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
-                                                ხელფასის ტიპი
-                                              </label>
-                                              <div class="relative">
-                                                <select required onchange="salarytype(this.value)" name="salary_type" class="block appearance-none w-full bg-gray-200 font-normal text-xs border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
-                                                  <option value="salary">სტანდარტული ხელფასი</option>
-                                                  <option value="avansi">ავანსი</option>
-                                                  <option value="other">სხვა თანხა</option>
-                                                </select>
-                                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                                                  <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-                                                </div>
-                                              </div>
-                                            </div>
-                                            <div class="w-full md:w-1/3 px-3">
-                                                <label class="block uppercase tracking-wide text-left font-caps text-xs text-gray-700 text-xs font-bold mb-2">
-                                                  რაოდენობა
-                                                </label>
-                                                <input required value="{{$user->profile->salary}}" name="salary" class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="number" min="0" step="1">
-                                            </div>
-                                            <div class="w-full md:w-1/3 px-3">
-                                                <label class="block uppercase tracking-wide text-left font-caps text-xs text-gray-700 text-xs font-bold mb-2">
-                                                ბონუსი
-                                                </label>
-                                                <input required value="0" name="bonus" class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="number" min="0" step="0.01">
-                                            </div>
-                                          </div>
-                                          <div class="flex">
-                                              
-                                            <div class="w-full md:w-1/2" id="salaryreason">
-                                                <label class="block uppercase tracking-wide text-left font-caps text-xs text-gray-700 text-xs font-bold mb-2">
-                                                მიზეზი
-                                                </label>
-                                                <input name="reason" class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" >
-                                            </div>
-
-                                            <div class="w-full md:w-1/2 px-3">
-                                                <label class="block uppercase tracking-wide text-left font-caps text-xs text-gray-700 text-xs font-bold mb-2">
-                                                გამოიმუშავა <small class="font-normal text-x">[დღეს]</small>
-                                                </label>
-                                                <input value="{{$user->getEarnedThisMoneth()}}" name="earn" class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="number" min="0" step="0.01">
-                                            </div>
-                                          </div>
-                                          <div class="w-full flex justify-end">
-                                            <button class="text-center  mt-3 py-2 px-4 bg-indigo-500 text-white font-bold text-xs font-caps">
-                                                ატვირთვა
-                                            </button>
-                                          </div>
-                                    </form>    
-                                    @foreach ($user->salaries()->orderBy('id', 'desc')->get() as $salary)
-                                    <hr class="my-2">
-                                    <div class="w-full block">
-                                        <div class="flex justify-between">
-                                            <div class="text-left">
-                                                <small class="font-normal text-gray-600 text-xs">ხელფასი: <span class="text-gray-800">{{$salary->salary/100}} <sup>₾</sup></span></small> <br>
-                                                <small class="font-normal text-xs text-gray-600">ბონუსი: <span class="text-gray-800">{{$salary->bonus/100}} <sup>₾</sup></span></small> <br>
-                                                <small class="font-normal text-xs text-gray-600">გამომუშავებული: <span class="text-gray-800">{{$salary->made_salary/100}} <sup>₾</sup></span></small>
-                                            </div>
-                                            <div class="text-right">
-                                                <h6 class="font-normal text-xs text-gray-800">
-                                                    @if ($salary->type == 'salary')
-                                                        სტანდარტული ხელფასი
-                                                        @elseif ($salary->type == 'avansi')
-                                                        ავანსი
-                                                        @elseif ($salary->type == 'other')
-                                                        სხვა თანხა
-                                                    @endif
-                                                </h6>
-                                                <h6 class="font-normal text-xs text-gray-800">{{$salary->created_at}}</h6>
-                                            </div>
-                                        </div>
-                                        <p>{{$salary->reason}}</p>
-                                    </div>
-                                    @endforeach
+                                      
+                                    <livewire:user.salary :user="$user"/>
                                 </div>
                             </div>
                             @endif
@@ -176,8 +100,25 @@
             $('#menuuser ul').addClass('side-menu__sub-open');
             $('#menuuser ul').css('display', 'block');
         });
-
-
+        function salarytype($val, $id){
+            if ($val == "salary") {
+                $('#raodenoba'+$id).removeClass('md:w-1/2');
+                $('#raodenoba'+$id).addClass('md:w-1/4');
+                $('#raodenoba'+$id).css('display', 'block');
+                $('#bonus'+$id).css('display', 'block');
+                $('#earn'+$id).css('display', 'none');
+            }else if ($val == "avansi") {
+                $('#raodenoba'+$id).removeClass('md:w-1/4');
+                $('#raodenoba'+$id).addClass('md:w-1/2');
+                $('#raodenoba'+$id).css('display', 'block');
+                $('#bonus'+$id).css('display', 'none');
+                $('#earn'+$id).css('display', 'none');
+            }else if ($val == "earn") {
+                $('#raodenoba'+$id).css('display', 'none');
+                $('#bonus'+$id).css('display', 'none');
+                $('#earn'+$id).css('display', 'block');
+            }
+        }
         $('input[name ="search"]').change(function (e) {
                 paintUsers();
         });

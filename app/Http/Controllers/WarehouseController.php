@@ -13,7 +13,7 @@ class WarehouseController extends Controller
         $this->validate($request,[
             'dept_id' => 'required|integer',
             'user_id' => 'required|integer',
-            'typeamout' => 'required',
+            'typeamout' => 'required|min:1',
             
         ]);
         $prod = Product::findOrFail(intval($id));

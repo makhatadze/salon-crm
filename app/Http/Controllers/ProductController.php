@@ -353,6 +353,7 @@ class ProductController extends Controller
                     return redirect()->back()->with('danger', 'გადახდის მეთოდი არ მოიძებნა');
                 }
                 $sale->pay_method_id = $paymethods->id;
+                $sale->paid = $total;
                 $sale->pay_method = $paymethods->{"name_".app()->getLocale()};
             }else{
                 $sale->paid = intval($request->paid*100);

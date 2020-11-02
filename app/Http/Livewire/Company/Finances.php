@@ -27,13 +27,9 @@ class Finances extends Component
     {
         $this->datefrom = Carbon::parse(SalaryToService::min('created_at'))->isoFormat('Y-MM-DD');
         $this->datetill = Carbon::parse(SalaryToService::max('created_at'))->isoFormat('Y-MM-DD');
-        //მთლიანი შემოსავალი
-        $this->totalearn = Sale::sum('paid');
-        $this->totalearn += ClientService::sum('paid');
-
-    
 
     }
+
     public function render()
     {
 
@@ -45,44 +41,48 @@ class Finances extends Component
 
         if($this->project == "prod"){
             $this->totalclearearn = 0;
+            $this->totalearn = 0;
             $this->totalsalary = 0;
             foreach (SalaryToService::whereNull('service_id')->get() as $item) {
                 $this->totalsalary += $item->service_price * $item->percent/100;   
             }
-            foreach (Sale::all() as $sale) {
-                $this->totalclearearn += $sale->totalOriginalPrice();
-            }
             
-            $this->totalclearearn = $this->totalclearearn - $this->totalsalary;
-
             $finances = $finances->whereNull('service_id');
+            foreach (Sale::all() as $item) {
+                $this->totalclearearn += $item->totalOriginalPrice() - ($item->total - $item->paid);
+            }
+            $this->totalearn =  Sale::sum('paid');
+
         }elseif($this->project == "serv"){
-            
             $this->totalclearearn = 0;
+            $this->totalearn = 0;
             $this->totalsalary = 0;
             foreach (SalaryToService::whereNull('sale_id')->get() as $item) {
                 $this->totalsalary += $item->service_price * $item->percent/100;   
             }
-            foreach (ClientService::all() as $serv) {
-                    $this->totalclearearn += $serv->new_price;
-            }
             
-            $this->totalclearearn = $this->totalclearearn - $this->totalsalary;
             $finances = $finances->whereNull('sale_id');
+            
+            foreach (ClientService::where('status', 1)->get() as $item) {
+                $this->totalclearearn += $item->new_price - ($item->new_price - $item->paid);
+            }
+            $this->totalearn =  ClientService::where('status', 1)->sum('paid');
+
         }else{
             $this->totalclearearn = 0;
+            $this->totalearn = 0;
             $this->totalsalary = 0;
             foreach (SalaryToService::all() as $item) {
                 $this->totalsalary += $item->service_price * $item->percent/100;   
             }
             //სუფთა მოგება
-            foreach (Sale::all() as $sale) {
-                $this->totalclearearn += $sale->totalOriginalPrice();
+            foreach (Sale::all() as $item) {
+                $this->totalclearearn += $item->totalOriginalPrice() - ($item->total - $item->paid);
             }
-            foreach (ClientService::all() as $serv) {
-                    $this->totalclearearn += $serv->new_price;
+            foreach (ClientService::where('status', 1)->get() as $item) {
+                $this->totalclearearn += $item->new_price - ($item->new_price - $item->paid);
             }
-            $this->totalclearearn = $this->totalclearearn - $this->totalsalary;
+            $this->totalearn =  Sale::sum('paid') + ClientService::where('status', 1)->sum('paid');
         }
         $finances = $finances->paginate(30);
         $users = Profile::all();

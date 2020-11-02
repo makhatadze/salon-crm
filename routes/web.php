@@ -122,9 +122,9 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
             Route::get('/removesale/{id}', 'SaleController@destroy');
             Route::put('/sales/update/{sale}', 'SaleController@updateSale')->name('updateSale');
              // Category Controller
-            Route::resource('/category', 'CategoryController')->except('destroy', 'update');
-            Route::delete('/category/destroy/{id}', 'CategoryController@destroy')->name('CategoryDelete');
-            Route::put('/category/update/{id}', 'CategoryController@update')->name('CategoryUpdate');
+            // Route::resource('/category', 'CategoryController')->except('destroy', 'update');
+            // Route::delete('/category/destroy/{id}', 'CategoryController@destroy')->name('CategoryDelete');
+            // Route::put('/category/update/{id}', 'CategoryController@update')->name('CategoryUpdate');
         
         });
 
@@ -145,6 +145,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
             Route::get('/purchases/create', 'PurchaseController@create');
             Route::view('/paymethods', 'theme.template.pay.index');
             Route::post('/purchases/store', 'PurchaseController@store')->name('StorePurchase');
+            Route::post('/purchases/pay/{purchase}', 'PurchaseController@paypurchase')->name('PayPurchase');
             Route::put('/purchases/update/{purchase}', 'PurchaseController@update')->name('UpdatePurchase');
             Route::post('/purchases/getdepartment', 'PurchaseController@getdepartments')->name('GetDepartmentsByOffice');
             Route::post('/purchases/getdistributors', 'PurchaseController@getdistributors')->name('GetDistributors');

@@ -6,7 +6,7 @@
 <form action="{{route('UpdatePurchase', $purchase->id)}}" method="post">
        @csrf
        @method('PUT')
-       <div class="grid grid-cols-4 w-full">
+       <div class="grid grid-cols-1 md:grid-cols-4 w-full">
         <div class="col-span-1 p-2">
             <label class="font-bold font-caps text-xs text-gray-700">შეყვიდის ტიპი</label>
             <div class="mt-2">
@@ -25,23 +25,35 @@
             <label class="font-bold font-caps text-xs text-gray-700">შესყიდვის ნომერი</label>
         <input  type="text"  autocomplete="off" value="{{$purchase->purchase_number}}" class="input w-full border mt-2" name="purchases_number">
         </div>
-        <div class="col-span-1 p-2 relative">
-            <label class="font-bold font-caps text-xs text-gray-700">მომწოდებელი (ს.კ)</label>
-            <input type="hidden" required id="distributor_id" name="distributor_id" value="{{$purchase->distributor->id}}">
-            <input required type="text" class="input w-full border mt-2" value="{{$purchase->distributor->{"name_".app()->getLocale()} }}"  autocomplete="off" id="distributor_search">
-            <ul class="hidden shadow-sm absolute w-11/12 p-2 bg-white z-50" id="showdistributors">
-
-            </ul>
-            @error('distributor_id')
-                <span class="invalid-feedback" role="alert">
-                    <strong style="color: tomato">{{ $message }}</strong>
-                </span>
-            @enderror
-            <small class="font-normal">აუცილებელია ბაზიდან არჩევა</small>
+        
+        <div class="col-span-1 p-2" >
+          <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="distributor_id">
+            მომწოდებელი
+          </label>
+          <div class="relative">
+            <select class="block select2 font-normal text-xs appearance-none w-full border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none bg-white focus:border-gray-500" required id="distributor_id" name="distributor_id">
+              <option value="">აირჩიეთ</option>
+              @foreach ($distributors as $dist)
+                  @if ($purchase->distributor->id == $dist->id)
+                    <option value="{{$dist->id}}" selected>{{$dist->{"name_".app()->getLocale()} }}</option>
+                  @else 
+                    <option value="{{$dist->id}}">{{$dist->{"name_".app()->getLocale()} }}</option>
+                  @endif
+              @endforeach
+            </select>
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+              <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+            </div>
+          </div>
+          @error('distributor_id')
+              <span class="invalid-feedback" role="alert">
+                  <strong style="color: tomato">{{ $message }}</strong>
+              </span>
+          @enderror
         </div>
         <div class="col-span-1 p-2">
             <label class="font-bold font-caps text-xs text-gray-700">შეძენის თარიღი</label>
-        <input value="{{Carbon\Carbon::parse($purchase->purchase_date)->isoFormat('Y-MM-DD')}}" required class="mt-2  input w-56 border block mx-auto" type="date" name="purchase_date">
+        <input value="{{Carbon\Carbon::parse($purchase->purchase_date)->isoFormat('Y-MM-DD')}}" required class="mt-2 input  border block mx-auto" type="date" name="purchase_date">
             
             @error('purchase_date')
                 <span class="invalid-feedback" role="alert">
@@ -52,10 +64,25 @@
        </div>
     
   
-   <div class="flex items-center text-gray-700 p-2 mt-3">
-    <input  type="checkbox" class="input border border-black mr-2" id="dgg" @if($purchase->dgg) checked @endif name="dgg">
-    <label class="cursor-pointer select-none font-normal text-xs" for="dgg">დამატებული ღირებულების გადასახადი (დღგ)</label>
-    </div>
+
+       <div class="flex items-center justify-between">
+        <div class="flex items-center text-gray-700 p-2 mt-3">
+          <input  type="checkbox" class="input border border-black mr-2" id="dgg" @if($purchase->dgg) checked @endif name="dgg">
+          <label class="cursor-pointer select-none font-normal text-xs" for="dgg">დამატებული ღირებულების გადასახადი (დღგ)</label>
+          </div>
+
+          @if ($purchase->getPrice() != $purchase->paid)
+          <div class="flex flex-wrap -mx-3">
+            <div class="w-full px-3">
+              <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="paid">
+                გადახდილი @if ($purchase->getPrice() != $purchase->paid) <small class="font-normal">(დავალიანება: {{number_format(($purchase->getPrice() - $purchase->paid)/100, 2)}})</small> @endif
+              </label>
+              <input class="font-normal text-xs appearance-none block w-full bg-white text-gray-700 border border-gray-200 rounded py-2 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="paid" type="number" name="paid" value="{{round($purchase->paid/100, 2)}}" min="0" max="{{round($purchase->getPrice()/100, 2)}}" step="0.01" placeholder="გადახდილი თანხა">
+            </div>
+          </div>
+          @endif
+       </div>
+
 <hr>
     <!-- Field. -->
     <div class="py-3 justify-between flex items-center">

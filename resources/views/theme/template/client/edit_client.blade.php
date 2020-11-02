@@ -6,11 +6,11 @@
         ახალი სერვისის რეგისტრაცია
     </h2>
 </div>
-<div class="grid grid-cols-12 gap-6 mt-5">
-    <div class="intro-y col-span-12 lg:col-span-8">
+<div class="grid grid-cols-12 mt-5">
+    <div class="col-span-12 md:col-span-8">
     <form  action="{{route('UpdateClient', $client->id)}}"  method="POST" enctype="multipart/form-data">
         @csrf
-        <div class="intro-y box p-5">
+        <div class="bg-white p-5">
             <div class="w-full p-2">
                 <label class="font-bold font-caps text-xs text-gray-700">სურათის ატვირთვა</label> <br>
             <input  type="file"name="client_image" class="font-normal text-sm input w-full border category mt-2">
@@ -96,6 +96,11 @@
               <br>
                 <input type="submit" class=" button text-white bg-theme-1 shadow-md ml-2 font-bold font-caps text-xs" value="ატვირთვა">
             </form>
+        </div>
+    </div>
+        <div class="col-span-12 md:col-span-4 p-4 bg-white">
+            <livewire:client.service :client="$client">
+            <livewire:client.sale :client="$client">
         </div>
     </div>
 </div>

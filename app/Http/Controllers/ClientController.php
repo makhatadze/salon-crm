@@ -257,7 +257,7 @@ class ClientController extends Controller
     {
         $this->validate($request, [
             'salary_type' => 'required|string',
-            'salary' => 'required|integer|min:0',
+            'amout' => '',
             'bonus' => '',
             'reason' => '',
             'earn' => ''
@@ -265,10 +265,10 @@ class ClientController extends Controller
         if ($user->profile) {
             Salary::create([
                 'type' => $request->salary_type,
-                'salary' => $request->salary * 100,
-                'bonus' => $request->bonus * 100,
+                'salary' => $request->amout ? $request->amout * 100 : 0,
+                'bonus' => $request->bonus ? $request->bonus * 100 : 0,
+                'made_salary' => $request->earn ? $request->earn * 100 : 0,
                 'user_id' => $user->id,
-                'made_salary' => $request->earn * 100,
                 'description' => $request->reason
             ]);
             return redirect()->back()->with('success', 'ხელფასის გაცემა წარმატებით დაფიქსირდა.');
@@ -360,6 +360,7 @@ class ClientController extends Controller
         }else{
             $clientservice->pay_method_id = $paymethod->id;
             $clientservice->session_endtime = Carbon::now('Asia/Tbilisi');
+            $clientservice->paid = $clientservice->new_price;
             $clientservice->pay_method = $paymethod->{"name_".app()->getLocale()};
         }
         $clientservice->save();

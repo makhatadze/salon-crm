@@ -31,7 +31,8 @@ class PurchaseController extends Controller
         $queries = [
             'code',
             'distributor',
-            'date'
+            'date',
+            'dept'
         ];
         
         $purchases = Purchase::whereNull('deleted_at');
@@ -39,14 +40,22 @@ class PurchaseController extends Controller
            
             if(request($req)){
                 if($req == "date"){
-                    list($first, $second) = explode(" - ", request($req));
-                    $purchases = $purchases->whereDate('updated_at', '>=', Carbon::parse($first))
-                                            ->whereDate('updated_at', '<=', Carbon::parse($second));
+                    $date = explode(" - ", request($req));
+                    $purchases = $purchases->whereDate('updated_at', '>=', Carbon::parse($date[0]))
+                                            ->whereDate('updated_at', '<=', Carbon::parse($date[1]));
                 }elseif($req == "code"){
                     $purchases = $purchases->where('purchase_number', 'like', '%'.request($req).'%')
                     ->orWhere('overhead_number', 'like', '%'.request($req).'%');
                 }elseif($req == "distributor"){
                     $purchases = $purchases->where('distributor_id', 'like', '%'.intval(request($req)).'%');
+                }elseif($req == "dept"){
+                    $deptids = array();
+                    foreach (Purchase::select('id', 'paid')->get() as $item) {
+                        if ($item->getPrice() != $item->paid) {
+                            $deptids[] = $item->id;
+                        }
+                    }
+                    $purchases = $purchases->whereIn('id', $deptids);
                 }
                 $queries[$req] = request($req);
             }
@@ -172,11 +181,12 @@ class PurchaseController extends Controller
     {
         $storages = Storage::all();
         $brands = Brand::all();
+        $distributors = DistributionCompany::all();
         $categories = Category::all();
         $purchase = Purchase::wherenull('deleted_at')->findOrFail($id);
         $offices = Office::whereNull('deleted_at')->get();
         $departments = Department::where('departmentable_id', $purchase->office_id)->whereNull('deleted_at')->get();
-        return view('theme.template.purchase.edit_purchase', compact('offices', 'purchase', 'departments', 'brands', 'categories', 'storages'));
+        return view('theme.template.purchase.edit_purchase', compact('offices', 'purchase', 'departments', 'brands', 'categories', 'distributors', 'storages'));
 
     }
 
@@ -205,6 +215,7 @@ class PurchaseController extends Controller
             'quantity' => '',
             'storage' => '',
             'body' => '',
+            'paid' => ''
         ],[
             'responsible_person_id.required' => 'აირჩიეთ პასუხისმგებელი პირი',
             'getter_person_id.required' => 'აირჩიეთ მიმღები პირი',
@@ -232,6 +243,7 @@ class PurchaseController extends Controller
         }else{
             $purchase->purchase_number = $request->input('purchases_number');
         }
+        $purchase->paid = intval($request->paid * 100);
         $purchase->purchase_date = Carbon::parse($request->input('purchase_date'));
         $purchase->distributor_id = $request->input('distributor_id');
        if($request->input('dgg')){
@@ -323,5 +335,17 @@ class PurchaseController extends Controller
         $brands = Brand::select('id', 'name')->get()->toArray();
         $storages = Storage::select('id', 'name')->get()->toArray();
         return response()->json(array('status' => true, 'brands' => $brands, 'storages' => $storages));
+    }
+    public function paypurchase(Request $request, Purchase $purchase)
+    {
+        $this->validate($request, [
+            'paid' => 'required|numeric|min:0'
+        ]);
+        
+        if ($purchase->getPrice() != $purchase->paid) {
+            $purchase->paid = intval($request->paid*100);
+            $purchase->save();
+        }
+        return redirect()->back();
     }
 }

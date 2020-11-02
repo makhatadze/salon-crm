@@ -41,14 +41,14 @@ use SoftDeletes, \OwenIt\Auditing\Auditable;
     {
         $money = 0;
         foreach ($this->orders as $item) {
-            $money += ($item->price - $item->product->buy_price) * $item->quantity;
+            $money += ($item->product->price - $item->product->buy_price) * $item->quantity;
         }
         return $money;
     }
     public function getTotalPrice(){
         $money = 0;
         foreach($this->orders as $order){
-            $money +=  $order->product->buy_price * $order->quantity;
+            $money +=  ($order->product->price - $order->product->buy_price) * $order->quantity;
         }
         return number_format($money/100, 2);
     }
