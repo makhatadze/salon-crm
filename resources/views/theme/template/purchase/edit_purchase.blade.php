@@ -72,14 +72,7 @@
           </div>
 
           @if ($purchase->getPrice() != $purchase->paid)
-          <div class="flex flex-wrap -mx-3">
-            <div class="w-full px-3">
-              <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="paid">
-                გადახდილი @if ($purchase->getPrice() != $purchase->paid) <small class="font-normal">(დავალიანება: {{number_format(($purchase->getPrice() - $purchase->paid)/100, 2)}})</small> @endif
-              </label>
-              <input class="font-normal text-xs appearance-none block w-full bg-white text-gray-700 border border-gray-200 rounded py-2 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="paid" type="number" name="paid" value="{{round($purchase->paid/100, 2)}}" min="0" max="{{round($purchase->getPrice()/100, 2)}}" step="0.01" placeholder="გადახდილი თანხა">
-            </div>
-          </div>
+          <livewire:purchase.pay :purchase="$purchase"/>
           @endif
        </div>
 

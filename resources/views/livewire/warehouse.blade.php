@@ -49,7 +49,7 @@
                             <label class="block text-left font-caps uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
                               რაოდენობა
                             </label>
-                            <input required class="appearance-none block w-full text-xs font-normal bg-gray-200 text-gray-700 border border-gray-200 rounded py-4 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" value="1" wire:model="typeamout" name="typeamout"  required type="number" min="1" step="1">
+                            <input required class="appearance-none block w-full text-xs font-normal bg-gray-200 text-gray-700 border border-gray-200 rounded py-4 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" value="1"  wire:model="typeamout" name="typeamout"  required type="number" min="1" step="1">
                             <p class="text-xs text-left font-normal text-red-500">
                             {{$error}}
                             </p>
@@ -253,7 +253,7 @@
                               <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
                                 რაოდენობა
                               </label>
-                              <input type="number" placeholder="xxxxxxxx" step="0.01" min="1" id="amout" wire:model="amout" name="amout" class="appearance-none block w-full font-normal text-xs bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white">
+                              <input type="number"  placeholder="xxxxxxxx" step="0.01" min="1" id="amout" wire:model="amout" name="amout" class="appearance-none block w-full font-normal text-xs bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white">
                             </div>
                             <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                                 <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-state">

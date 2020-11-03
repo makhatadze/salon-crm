@@ -47,13 +47,13 @@ class Index extends Component
                     ->where('title_'.app()->getLocale(), 'LIKE', '%'.$this->name.'%')
                     ->where('price', '>=', $this->pricefrom ? $this->pricefrom*100 : 0)
                     ->where('price', '<=', $this->pricetill ? $this->pricetill*100 : 0)
-                    ->where('stock', '<=', $this->stocktill ?? 0);
+                    ->where('stock', '<=', $this->stocktill ?? 0)
+                    ->where('brand_id', 'LIKE', '%'.$this->brand.'%');
                     if ($this->department) {
                         $products = $products->where('department_id', $this->department);
                     }
                     if ($this->brandarray) {
-                        # code...
-                    $products = $products->whereIn('brand_id', $this->brandarray);
+                        $products = $products->whereIn('brand_id', $this->brandarray);
                     }
                     
                     $products = $products->paginate(30);

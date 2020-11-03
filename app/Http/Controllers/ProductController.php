@@ -251,7 +251,7 @@ class ProductController extends Controller
     public function addtocartget(){
         $user_id = Auth()->user()->id;
         $cart = Cart::session($user_id)->getContent();
-        $products = Product::where([['warehouse', 0], ['type', '!=', 1]])->get();
+        $products = Product::where([['warehouse', 0], ['type', '!=', 1], ['writedown', 1]])->get();
         $cartsum = 0;
         foreach ($cart as $item) {
             $cartsum += $item->price * $item->quantity;

@@ -52,7 +52,7 @@ class Warehouse extends Component
         $product =  Product::findOrFail($this->updateId);
         $this->error = "";
         if($this->typeamout > $product->stock){
-            $this->error = "არჩეული რაოდენობა მეტია პროდუქტის!";
+            $this->error = "არჩეული რაოდენობა მეტია პროდუქტის რაოდენობაზე!";
         }
     }
     public function update(Product $product)

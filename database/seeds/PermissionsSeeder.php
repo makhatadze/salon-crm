@@ -87,7 +87,6 @@ class PermissionsSeeder extends Seeder
            'birthday' => '1970-00-01',
            'phone' => '551785074',
            'pid' => '54997846325',
-           'position' => 0,
            'salary' => 1000,
            'salary_type' => '1',
            'percent' => 0,

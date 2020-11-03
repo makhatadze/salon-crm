@@ -85,15 +85,15 @@ class HomeController extends Controller
             $alluser = User::permission('user')->get();;
             $services = Service::all();
             if ( request('users')) {
-                
-            $users = User::permission('user')->where('id', intval(request('users')))
-            ->where('active', true)
-            ->get();
+            return redirect()->route('userTimeTable', intval(request('users')));
             }else{
-                
-            $users = User::permission('user')
-            ->where('active', true)
-            ->get();
+            $getusers = array();
+            foreach (User::permission('user')->where('active', true)->get() as $useri) {
+                if($useri->weekdays && in_array(Carbon::now()->isoFormat('dd'), json_decode($useri->weekdays, true))){
+                    $getusers[] = $useri->id;
+                }
+            }
+            $users = User::whereIn('id', $getusers)->get();
             }
             $clients = Client::all();
             return view('theme.template.home.home_index', compact('alluser', 'services', 'selecteduser', 'users', 'clients', 'paymethods',  'date'));

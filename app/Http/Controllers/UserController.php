@@ -378,6 +378,7 @@ class UserController extends Controller
             'id',
             'name',
             'email',
+            'weekdays',
             'active',
             'created_at',
             'updated_at',
@@ -406,6 +407,23 @@ class UserController extends Controller
             'email' => ''
         ]);
         $user = User::findOrFail($id);
+
+        $weekdays = [
+            'Mo',
+            'Tu',
+            'We',
+            'Th',
+            'Fr',
+            'Sa',
+            'Su'
+        ];
+        foreach ($weekdays as $key => $item) {
+            if(!isset($request->$item)){
+                unset($weekdays[$key]);
+            }
+        }
+        $weekdays = json_encode($weekdays);
+        $user->weekdays = $weekdays;
 
         if (!$user->isAdmin()) {
             if($request->blockstatus){

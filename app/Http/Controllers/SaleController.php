@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Client;
+use App\Product;
 use App\Profile;
 use Illuminate\Http\Request;
 use App\Sale;
@@ -75,4 +76,5 @@ class SaleController extends Controller
         $sale->delete();
         return response()->json(array('status'=>true));
     }
+
 }

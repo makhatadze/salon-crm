@@ -44,5 +44,9 @@ class Purchase extends Model implements Auditable
         }
        return $total;
     }
+    public function paidpurchases()
+    {
+        return $this->hasMany('App\PayPurchase', 'purchase_id');
+    }
 
 }

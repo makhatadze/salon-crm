@@ -16,7 +16,11 @@ class WarehouseController extends Controller
             'typeamout' => 'required|min:1',
             
         ]);
+        
         $prod = Product::findOrFail(intval($id));
+        if($prod->stock < $request->typeamout){
+            return redirect()->back();
+        }
         if($prod->type == 1){
             $this->validate($request,[
                 'expluatation_date' => '',
@@ -24,9 +28,7 @@ class WarehouseController extends Controller
                 'unlimited_expluatation' => '',
             ]);
             $date = Carbon::parse($request->expluatation_date);
-            if($prod->stock < $request->typeamout){
-                return redirect()->back();
-            }
+            
             if($prod->type == 1){
                 for ($i = 0; $i < intval($request->typeamout); $i++) { 
                     $newprod = $prod->replicate();

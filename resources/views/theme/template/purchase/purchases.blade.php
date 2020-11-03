@@ -70,32 +70,7 @@
                             <path fill-rule="evenodd" d="M12.9 3c-.18-.14-.497-.307-.974-.466C10.967 2.214 9.58 2 8 2s-2.968.215-3.926.534c-.477.16-.795.327-.975.466.18.14.498.307.975.466C5.032 3.786 6.42 4 8 4s2.967-.215 3.926-.534c.477-.16.795-.327.975-.466zM8 5c3.314 0 6-.895 6-2s-2.686-2-6-2-6 .895-6 2 2.686 2 6 2z"/>
                           </svg>
                       </a> --}}
-                    <div x-data="{modal: false}">
-                      <button @click="modal = true" class="p-2 @if(!$purchase->paid) bg-red-400 @elseif($purchase->paid == $purchase->getPrice()) bg-green-400 @else bg-orange-400 @endif rounded-lg ml-2">
-                        <svg width="1.18em" height="1.18em" viewBox="0 0 16 16" class="bi bi-credit-card-2-front-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                          <path fill-rule="evenodd" d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2.5 1a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h2a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-2zm0 3a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zm0 2a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1zm3 0a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1zm3 0a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1zm3 0a.5.5 0 0 0 0 1h1a.5.5 0 0 0 0-1h-1z"/>
-                        </svg>
-                      </button>
-                      <x-modal x-show="modal">
-                        
-                        @if($purchase->paid != $purchase->getPrice())
-                        <form action="{{route('PayPurchase', $purchase->id)}}" method="POST">
-                          @csrf
-                          @endif
-                          <div class="flex flex-wrap -mx-3 mb-2">
-                            <div class="w-full px-3">
-                              <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="paid">
-                                გადახდილი
-                              </label>
-                              <input class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="paid" type="number" name="paid" value="{{round($purchase->paid/100, 2)}}" min="0" max="{{round($purchase->getPrice()/100, 2)}}" step="0.01" placeholder="გადახდილი თანხა">
-                            </div>
-                          </div>
-                          @if($purchase->paid != $purchase->getPrice())
-                          <input class="appearance-none font-bold text-xs font-caps block w-full bg-indigo-500 text-white border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="submit" value="განახლება" >
-                          @endif
-                        </form>
-                      </x-modal>  
-                    </div>
+                    <livewire:purchase.pay :purchase="$purchase"/>
                 </div>
             </td>
            </tr>
