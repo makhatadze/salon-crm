@@ -22,7 +22,13 @@
                                 <img src="{{asset('../img/delivery-truck.svg')}}" class="w-8 h-8 object-contain">
                                 <small>+995{{$company->phone}}</small>
                             </a>
-                            @if (auth()->user()->hasAnyPermission(['admin']))
+                            <div class="flex items-center">
+                                <a href="{{route('DistributorExport', $company->id)}}" class="p-2 bg-white block focus:outline-none rounded mr-2">
+                                    <svg width="1.18em" height="1.18em" viewBox="0 0 16 16" class="bi bi-file-arrow-down-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd" d="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM8 5a.5.5 0 0 1 .5.5v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 9.293V5.5A.5.5 0 0 1 8 5z"/>
+                                    </svg>
+                                </a>
+                                @if (auth()->user()->hasAnyPermission(['admin']))
                             <div x-data="{modal: false}">
                                 <button @click="modal = true" class="p-2 bg-white focus:outline-none rounded">
                                     <svg width="1.18em" height="1.18em" viewBox="0 0 16 16" class="bi bi-chat-left-dots" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -75,6 +81,7 @@
                                 </x-modal>
                             </div>
                             @endif
+                            </div>
                             <a href="/companies/dist/edit/{{$company->id}}">
                                 <h6 class="font-normal text-xs">{{$company->{'name_'.app()->getLocale()} }}</h6>
                                 <strong class="font-bold text-xs"> #{{$company->code}} </strong>

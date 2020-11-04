@@ -15,7 +15,6 @@ class PurchaseExport implements FromCollection, WithHeadings
         $purchases = Purchase::whereNull('deleted_at')->get();
         foreach($purchases as $purchase){
             unset($purchase->array);
-            unset($purchase->updated_at);
             unset($purchase->deleted_at);
             if($purchase->purchase_type == "overhead"){
                 $purchase->purchase_type = 'ზედნადები';
@@ -24,11 +23,15 @@ class PurchaseExport implements FromCollection, WithHeadings
                 $purchase->purchase_type = 'შესყიდვის აქტით';
                 unset($purchase->overhead_number);
             }
+            $purchase['dept'] = number_format($purchase->getPrice()/100, 2);
             $purchase['distributor_name'] = $purchase->distributor->{"name_".app()->getLocale()};
             unset($purchase->responsible_person_id);
             unset($purchase->getter_person_id);
             unset($purchase->office_id);
+            unset($purchase->created_at);
+            unset($purchase->pay_name);
             unset($purchase->department_id);
+            unset($purchase->payment_id);
             unset($purchase->distributor_id);
         }
         return $purchases;
@@ -41,7 +44,9 @@ class PurchaseExport implements FromCollection, WithHeadings
             'შესყიდვის ნომერი',
             'შესყიდვის თარიღი',
             'დღღ',
-            'შექმნის თარიღი',
+            'ბოლო განახლება',
+            'გადახდილი',
+            'დავალიანება',
             'დისტრიბუტორი',
         ];
     }

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\GroupExport;
 use App\MemberGroup;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class GroupController extends Controller
 {
@@ -17,7 +19,10 @@ class GroupController extends Controller
         $groups = MemberGroup::paginate(30);
         return view('theme.template.group.index', compact('groups'));
     }
-
+    public function export(MemberGroup $memberGroup)
+    {
+        return Excel::download(new GroupExport($memberGroup->id), $memberGroup->name.'.xlsx');
+    }
 
     /**
      * Store a newly created resource in storage.

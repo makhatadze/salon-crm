@@ -78,7 +78,7 @@
                   </div>
             </div>
             <div class="col-span-1">
-                <input type="date" class="w-auto font-normal text-xs bg-gray-200 focus:outline-none">
+                <input type="date" wire:model="date" class="w-auto font-normal text-xs bg-gray-200 focus:outline-none">
             </div>
         </div>
         @if($salaries)

@@ -2,7 +2,9 @@
 
 namespace App\Exports;
 
+use App\ClientService;
 use App\Department;
+use App\UserHasJob;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
@@ -18,8 +20,8 @@ class DepartmentServices implements FromCollection, WithHeadings
     */
     public function collection()
     {
-        $department = Department::findOrFail($this->id);
-        $services = $department->services;
+        $users = UserHasJob::select('user_id')->where('department_id', $this->id)->get()->toArray();
+        $services = ClientService::whereIn('user_id', $users)->get();
         foreach ($services as  $item) {
             $item['service_name'] = $item->service->{"title_".app()->getLocale()};
             $item['service_price'] = $item->service->price/100;
@@ -44,8 +46,7 @@ class DepartmentServices implements FromCollection, WithHeadings
             unset($item->updated_at);
             unset($item->deleted_at);
         }
-
-           return $services;
+        return $services;
     }
     public function headings(): array
     {

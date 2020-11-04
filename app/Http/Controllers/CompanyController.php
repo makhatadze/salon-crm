@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Company;
 use App\Office;
 use App\DistributionCompany;
+use App\Exports\DistributorExport;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CompanyController extends Controller
 {
@@ -207,5 +209,10 @@ class CompanyController extends Controller
         $discompany->deleted_at = Carbon::now('Asia/Tbilisi');
         $discompany->save();
         return redirect('/companies/distcompany');
+    }
+    public function distributorexport(DistributionCompany $distcompany)
+    {
+        
+        return Excel::download(new DistributorExport($distcompany->id), $distcompany->{'name_'.app()->getLocale()}.'.xlsx');
     }
 }

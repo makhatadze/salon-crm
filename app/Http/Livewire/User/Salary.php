@@ -14,6 +14,7 @@ class Salary extends Component
 
     public $salaryperiod;
     public $userearn;
+    public $date;
     public $salarytype;
     public function mount($user)
     {
@@ -69,6 +70,9 @@ class Salary extends Component
                     $salaries = $salaries->where('type', 'like', $this->salarytype);
                 }
             }
+        }
+        if ($this->date) {
+            $salaries = $salaries->whereDate('updated_at', Carbon::parse($this->date));
         }
         $salaries = $salaries->orderBy('id', 'desc')->paginate(5);
         return view('livewire.user.salary' , compact('salaries'));

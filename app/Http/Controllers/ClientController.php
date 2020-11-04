@@ -268,6 +268,7 @@ class ClientController extends Controller
                 'salary' => $request->amout ? $request->amout * 100 : 0,
                 'bonus' => $request->bonus ? $request->bonus * 100 : 0,
                 'made_salary' => $request->earn ? $request->earn * 100 : 0,
+                'avansi_complate' => 0,
                 'user_id' => $user->id,
                 'description' => $request->reason
             ]);
@@ -573,7 +574,7 @@ class ClientController extends Controller
 
     public function financeExport()
     {
-        return Excel::download(new FinanceExport(), 'finance.xlsx');
+        return Excel::download(new FinanceExport(), 'sale5.xlsx');
     }
 
     public function clientserviceexport(Client $client)

@@ -35,7 +35,7 @@
                         <a target="_blank" href="/purchases" class="border border-gray-400 py-2 px-4 font-medium font-caps text-xs text-center block w-full" style="color:#0075ff">გადასვლა</a>
                     </div>
                     <div class="col-span-1 px-3">
-                        <a target="_blank" href="" class="border border-gray-400 py-2 px-4 font-medium font-caps text-xs text-center w-full block text-white" style="background: #0075ff">ექსპორტი</a>
+                        <a target="_blank" href="{{route('PurchaseExport')}}" class="border border-gray-400 py-2 px-4 font-medium font-caps text-xs text-center w-full block text-white" style="background: #0075ff">ექსპორტი</a>
                     </div>
                 </div>
             </div>
@@ -75,7 +75,7 @@
                         <a target="_blank" href="/products" class="border border-gray-400 py-2 px-4 font-medium font-caps text-xs text-center block w-full" style="color:#0075ff">გადასვლა</a>
                     </div>
                     <div class="col-span-1 px-3">
-                        <a target="_blank" href="" class="border border-gray-400 py-2 px-4 font-medium font-caps text-xs text-center w-full block text-white" style="background: #0075ff">ექსპორტი</a>
+                        <a target="_blank" href="{{route('ProductExport')}}" class="border border-gray-400 py-2 px-4 font-medium font-caps text-xs text-center w-full block text-white" style="background: #0075ff">ექსპორტი</a>
                     </div>
                 </div>
             </div>
@@ -115,7 +115,7 @@
                         <a target="_blank" href="/clients" class="border border-gray-400 py-2 px-4 font-medium font-caps text-xs text-center block w-full" style="color:#0075ff">გადასვლა</a>
                     </div>
                     <div class="col-span-1 px-3">
-                        <a target="_blank" href="" class="border border-gray-400 py-2 px-4 font-medium font-caps text-xs text-center w-full block text-white" style="background: #0075ff">ექსპორტი</a>
+                        <a target="_blank" href="{{route('ServiceExport')}}" class="border border-gray-400 py-2 px-4 font-medium font-caps text-xs text-center w-full block text-white" style="background: #0075ff">ექსპორტი</a>
                     </div>
                 </div>
             </div>
@@ -155,7 +155,7 @@
                         <a target="_blank" href="/clients" class="border border-gray-400 py-2 px-4 font-medium font-caps text-xs text-center block w-full" style="color:#0075ff">გადასვლა</a>
                     </div>
                     <div class="col-span-1 px-3">
-                        <a target="_blank" href="" class="border border-gray-400 py-2 px-4 font-medium font-caps text-xs text-center w-full block text-white" style="background: #0075ff">ექსპორტი</a>
+                        <a target="_blank" href="{{route('ClientExport')}}" class="border border-gray-400 py-2 px-4 font-medium font-caps text-xs text-center w-full block text-white" style="background: #0075ff">ექსპორტი</a>
                     </div>
                 </div>
             </div>

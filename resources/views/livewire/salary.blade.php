@@ -13,22 +13,28 @@
             </div>
             @if ($salaries)
                 @foreach ($salaries as $item)
-                <div class="bg-white p-3 w-full block mt-2 grid grid-cols-12">
+                <div class="bg-white p-3 w-full block mt-2 grid grid-cols-12 ">
                     <div class="col-span-3">
                         <small class="font-normal text-xs">თანამშრომლი</small>
                         <h6 class="font-bolder text-xs text-gray-700">{{$item->first_name .' '. $item->last_name}}</h6>
                     </div>
                     <div class="col-span-2">
-                        <small class="font-normal text-xs">ხელფასი</small>
-                        <h6 class="font-bolder text-xs text-gray-700">{{number_format($item->salary/100 ,2)}} <sup>₾</sup> </h6>
+                        @if ($item->type == "avansi" || $item->type == "salary")
+                        <small class="font-normal text-xs">@if($item->type == "avansi")ავანსი @elseif($item->type == "salary") სტანდარტული ხელფასი @endif</small>
+                        <h6 class="font-bolder text-xs text-gray-700">{{number_format($item->salary/100 ,2)}} <sup>₾</sup> </h6>   
+                        @endif
                     </div>
                     <div class="col-span-2">
-                        <small class="font-normal text-xs">გამომუშავებული</small>
-                        <h6 class="font-bolder text-xs text-gray-700"> {{number_format($item->made_salary/100, 2)}} <sup>₾</sup> </h6>
+                        @if ($item->type == "earn")
+                                <small class="font-normal text-xs">გამომუშავებული</small>
+                                <h6 class="font-bolder text-xs text-gray-700"> {{number_format($item->made_salary/100, 2)}} <sup>₾</sup> </h6>
+                        @endif
                     </div>
                     <div class="col-span-2">
-                        <small class="font-normal text-xs">ბონუსი</small>
-                        <h6 class="font-bolder text-xs text-gray-700">{{number_format($item->bonus/100 ,2)}} <sup>₾</sup> </h6>
+                        @if($item->type == "salary")
+                            <small class="font-normal text-xs">ბონუსი</small>
+                            <h6 class="font-bolder text-xs text-gray-700">{{number_format($item->bonus/100 ,2)}} <sup>₾</sup> </h6>
+                        @endif
                     </div>
                     <div class="col-span-2">
                         <small class="font-normal text-xs">ტიპი</small>
@@ -37,8 +43,8 @@
                             სტანდარტული ხელფასი
                             @elseif ($item->type == 'avansi')
                             ავანსი
-                            @elseif ($item->type == 'other')
-                            სხვა თანხა
+                            @elseif ($item->type == 'earn')
+                            გამომუშავებული
                             @endif
                         </h6>
                     </div>

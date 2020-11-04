@@ -2,24 +2,20 @@
 
 namespace App\Exports;
 
-use App\Client;
+use App\ClientService;
+use App\Service;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
-class ClientServices implements FromCollection, WithHeadings
+class ServicesExport implements FromCollection, WithHeadings
 {
-    public $id;
-    
-    function __construct($id) {
-        $this->id = $id;
-}
-    /**
+       /**
     * @return \Illuminate\Support\Collection
     */
     public function collection()
     {
-        $services = Client::findOrFail($this->id)->clientservices;
-        foreach ($services as  $serv) {
+        $services = ClientService::all();
+        foreach($services as $serv){
             $serv['worker'] = $serv->user->profile->first_name .' '.$serv->user->profile->last_name;
             unset($serv->user_id);
             $serv['servicename'] = $serv->service->{'title_'.app()->getLocale()};

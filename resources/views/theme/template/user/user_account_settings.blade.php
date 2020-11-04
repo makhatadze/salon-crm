@@ -272,31 +272,31 @@
                 
                 <div class="flex justify-between font-normal text-xs items-center">
                   <div class="p-1 flex items-center">
-                      <input type="checkbox" id="Mo" @if(in_array('Mo', json_decode($user->weekdays, true))) checked @endif name="Mo">
+                      <input type="checkbox" id="Mo" @if($user->weekdays && in_array('Mo', json_decode($user->weekdays, true))) checked @endif name="Mo">
                       <label for="Mo" class="ml-2">ორშ</label>
                   </div>
                   <div class="p-1 flex items-center">
-                      <input type="checkbox" id="Tu" @if(in_array('Tu', json_decode($user->weekdays, true))) checked @endif name="Tu">
+                      <input type="checkbox" id="Tu" @if($user->weekdays && in_array('Tu', json_decode($user->weekdays, true))) checked @endif name="Tu">
                       <label for="Tu" class="ml-2">სამ</label>
                   </div>
                   <div class="p-1 flex items-center">
-                      <input type="checkbox" id="We" @if(in_array('We', json_decode($user->weekdays, true))) checked @endif name="We">
+                      <input type="checkbox" id="We" @if($user->weekdays && in_array('We', json_decode($user->weekdays, true))) checked @endif name="We">
                       <label for="We" class="ml-2">ოთხ</label>
                   </div>
                   <div class="p-1 flex items-center">
-                      <input type="checkbox" id="Th" @if(in_array('Th', json_decode($user->weekdays, true))) checked @endif name="Th">
+                      <input type="checkbox" id="Th" @if($user->weekdays && in_array('Th', json_decode($user->weekdays, true))) checked @endif name="Th">
                       <label for="Th" class="ml-2">ხუთ</label>
                   </div>
                   <div class="p-1 flex items-center">
-                      <input type="checkbox" id="Fr" @if(in_array('Fr', json_decode($user->weekdays, true))) checked @endif name="Fr">
+                      <input type="checkbox" id="Fr" @if($user->weekdays && in_array('Fr', json_decode($user->weekdays, true))) checked @endif name="Fr">
                       <label for="Fr" class="ml-2">პარ</label>
                   </div>
                   <div class="p-1 flex items-center">
-                      <input type="checkbox" id="Sa" @if(in_array('Sa', json_decode($user->weekdays, true))) checked @endif name="Sa">
+                      <input type="checkbox" id="Sa" @if($user->weekdays && in_array('Sa', json_decode($user->weekdays, true))) checked @endif name="Sa">
                       <label for="Sa" class="ml-2">შაბ</label>
                   </div>
                   <div class="p-1 flex items-center">
-                      <input type="checkbox" id="Su" @if(in_array('Su', json_decode($user->weekdays, true))) checked @endif name="Su">
+                      <input type="checkbox" id="Su" @if($user->weekdays && in_array('Su', json_decode($user->weekdays, true))) checked @endif name="Su">
                       <label for="Su" class="ml-2">კვრ</label>
                   </div>
                 </div>

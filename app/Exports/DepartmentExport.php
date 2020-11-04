@@ -25,6 +25,9 @@ class DepartmentExport implements FromCollection, WithHeadings
         foreach ($users as  $user) {
             $user['first_name'] = $user->user->profile->first_name;
             $user['last_name'] = $user->user->profile->last_name;
+            $user['phone'] = $user->user->profile->phone;
+            $user['mail'] = $user->user->email;
+            $user['weekdays'] = implode(', ', json_decode($user->user->weekdays, true));
             $user['register_date'] = Carbon::parse($user->created_at)->isoFormat('DD/MM/Y');
             unset($user->user_id);
             unset($user->company_id);
@@ -41,6 +44,9 @@ class DepartmentExport implements FromCollection, WithHeadings
         return [
             'სახელი',
             'გვარი',
+            'მობილური',
+            'ელ-ფოსტა',
+            'სამუშაო დღეები',
             'რეგისტრაციის თარიღი',
         ];
     }

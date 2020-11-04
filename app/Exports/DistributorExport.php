@@ -2,18 +2,29 @@
 
 namespace App\Exports;
 
+use App\DistributionCompany;
 use App\Product;
-use App\Inventory;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
-class ProductExport implements FromCollection, WithHeadings
+
+class DistributorExport implements FromCollection, WithHeadings
 {
-    /**
+    protected $id;
+
+    function __construct($id) {
+            $this->id = $id;
+    }
+      /**
     * @return \Illuminate\Support\Collection
     */
     public function collection()
     {
-        $products = Product::where([['warehouse', 0], ['writedown', 0]])->get(); 
+        $purchases = DistributionCompany::findOrFail($this->id)->purchases()->select('id')->get();
+        $productids = [];
+        foreach ($purchases as $item) {
+            $productids += $item->products()->select('id')->where([['warehouse', 0], ['writedown', 0]])->get()->toArray();
+        }
+        $products = Product::whereIn('id', $productids)->get();
         foreach($products as $prod){
             
             unset($prod['category_id']);

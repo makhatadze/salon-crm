@@ -32,7 +32,12 @@
                <div class="flex">
                 <div class="w-full md:w-1/4 p-2">
                     <label class="font-bold font-caps text-xs text-gray-700">ნომერი <span class="text-red-500">*</span></label>
-                <input required type="text" minlength="9" maxlength="9" onkeyup="this.value = this.value.replace(/[^0-9\.]/g, '');" step="1" value="{{$client->number}}" name="client_number" id="client_number" class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="კლიენტის ნომერი">
+                <input required type="text" minlength="9" pattern=".{9,9}" maxlength="9" onkeyup="this.value = this.value.replace(/[^0-9\.]/g, '');" step="1" value="{{$client->number}}" name="client_number" id="client_number" class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="კლიენტის ნომერი">
+                @error('client_number')
+                <p class="text-xs text-red-500">
+                    {{$message}}
+                </p>
+                @enderror
                 </div>
                 <div class="w-full md:w-1/4 p-2">
                     <label class="font-bold font-caps text-xs text-gray-700">მისამართი</label>

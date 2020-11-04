@@ -50,8 +50,8 @@ class WarehouseController extends Controller
                 $thisprod = $prod;
                 if($thisprod->stock == $request->typeamout){
                     $thisprod->stock = $thisprod->stock - $request->typeamout;
+                    $$thisprod->writedown = 0;
                     $thisprod->save();
-                    $thisprod->delete();
                 }else{
                     $thisprod->stock = $thisprod->stock - $request->typeamout;
                     $thisprod->save();
@@ -71,8 +71,8 @@ class WarehouseController extends Controller
             $thisprod = $prod;
             if($thisprod->stock == $request->typeamout){
                 $thisprod->stock = $thisprod->stock - $request->typeamout;
+                $$thisprod->writedown = 0;
                 $thisprod->save();
-                $thisprod->delete();
             }else{
                 $thisprod->stock = $thisprod->stock - $request->typeamout;
                 $thisprod->save();

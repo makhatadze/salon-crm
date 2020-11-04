@@ -27,7 +27,7 @@ class ClientService extends Model implements Auditable
     }
     public function getAuthorName()
     {
-        $user = User::find($this->author);
+        $user = User::find(intval($this->author));
         if($user->profile){
             return $user->profile->first_name .' '.$user->profile->last_name;
         }

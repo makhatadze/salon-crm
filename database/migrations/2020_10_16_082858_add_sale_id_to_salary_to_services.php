@@ -14,7 +14,7 @@ class AddSaleIdToSalaryToServices extends Migration
     public function up()
     {
         Schema::table('salary_to_services', function (Blueprint $table) {
-            $table->foreignId('sale_id')->constrained('sales')->onDelete('cascade');
+            $table->foreignId('sale_id')->nullable()->constrained('sales')->onDelete('cascade');
         });
     }
 

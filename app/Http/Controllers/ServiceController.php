@@ -15,6 +15,7 @@ use App\Service;
 use App\ClientService;
 use App\Category;
 use App\Exports\ServiceExport;
+use App\Exports\ServicesExport;
 use App\Product;
 use App\Image;
 use App\Inventory;
@@ -259,6 +260,7 @@ class ServiceController extends Controller
         $service->save();
         return redirect('/services');
     }
+    
 
 
     //Get Unit Name for Inventory Product
@@ -295,6 +297,10 @@ class ServiceController extends Controller
     public function exportservice($id)
     {
         return Excel::download(new ServiceExport($id), 'Service.xlsx');
+    }
+    public function exportservices()
+    {
+        return Excel::download(new ServicesExport, 'Services.xlsx');
     }
     public function showservice(ClientService $clientservice)
     {

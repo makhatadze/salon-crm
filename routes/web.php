@@ -189,17 +189,20 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
             Route::any('/clients/finances', 'ClientController@services')->name('Finances');
             Route::get('/salaries', 'StatisticController@index')->name('StatisticController');
             Route::get('/clients/export', 'ClientController@export')->name('ClientExcel');
-            Route::get('/clients/financeExport', 'ClientController@financeExport')->name('FinanceExport');
+            Route::get('/clients/financeExport', 'ClientController@financeExport')->name('ClientExport');
             Route::get('/company/money', 'MoneyController@index')->name('MoneyController');
             Route::get('/user/export/{user}', 'UserController@oneuserexport');
+            Route::get('/group/export/{memberGroup}', 'GroupController@export')->name('GroupExport'); 
+            Route::get('/distcompany/export/{distcompany}', 'CompanyController@distributorexport')->name('DistributorExport'); 
             Route::get('/user/userexport', 'UserController@userexport')->name('UserExport');
             Route::get('/services/export/{id}', 'ServiceController@exportservice');
+            Route::get('/services/export', 'ServiceController@exportservices')->name('ServiceExport');
             Route::get('/products/productexport', 'ProductController@productexport')->name('ProductExport');
             Route::get('/sale/export/{sale}', 'ProductController@saleexport');
             Route::get('/purchases/purchaseexport', 'PurchaseController@purchaseexport')->name('PurchaseExport');
             Route::get('/companies/departments/exportuser/{department}', 'DepartmentController@exportdepartment');
             Route::get('/companies/departments/exportservices/{department}', 'DepartmentController@exportservices');
-            Route::any('/clients/export/{client}', 'ClientController@clientserviceexport')->name('ClientExport');
+            Route::any('/clients/export/{client}', 'ClientController@clientserviceexport')->name('OneClientExport');
         
         });
 

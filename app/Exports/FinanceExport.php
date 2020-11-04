@@ -2,7 +2,9 @@
 
 namespace App\Exports;
 
+use App\Client;
 use App\ClientService;
+use App\Sale;
 use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -14,37 +16,18 @@ class FinanceExport implements FromCollection, WithHeadings
      */
     public function collection()
     {
-        $clientServices = ClientService::whereNull('deleted_at')->get();
-        foreach ($clientServices as $clService) {
-            $status = $clService['status'];
-            $payMethod = $clService['pay_method'];
-            $startTime = $clService['session_start_time'];
-            unset($clService['session_start_time']);
-            unset($clService['status']);
-            unset($clService['pay_method']);
-            unset($clService['created_at']);
-            unset($clService['updated_at']);
-
-            $clService['full_name'] = $clService->clinetserviceable->{"full_name_" . app()->getLocale()};
-            $clService['service_name'] = $clService->service->{"title_".app()->getLocale()};
-            $clService['price'] = $clService->service->price/100;
-            $clService['pay_method'] = __('pay.' . $payMethod);
-            $clService['session_start_time'] = $startTime;
-            if ($status) {
-                $clService['status'] = 'მიღებულია';
-            } else if (Carbon::now() > $startTime) {
-                $clService['status'] = 'არ მოსულა';
-            } else if (Carbon::now() < $startTime) {
-                $clService['status'] = 'ველოდებით';
-            }
-            unset($clService['deleted_at']);
-            unset($clService['id']);
-            unset($clService['user_id']);
-            unset($clService['service_id']);
-            unset($clService['clinetserviceable_type']);
-            unset($clService['clinetserviceable_id']);
+        $sales = Sale::all();
+        foreach ($sales as $sale) {
+            $sale['clientname'] = $sale->client->{"full_name_".app()->getLocale()};
+            $sale['seller'] = $sale->user->profile->first_name .' '. $sale->user->profile->last_name;
+            unset($sale->client_id);
+            unset($sale->deleted_at);
+            unset($sale->pay_method_id);
+            unset($sale->seller_id);
+            $sale->total = number_format($sale->total/100, 2);
+            $sale->paid = number_format($sale->paid/100, 2);
         }
-        return $clientServices;
+        return $sales;
 
 
     }
@@ -52,12 +35,15 @@ class FinanceExport implements FromCollection, WithHeadings
     public function headings(): array
     {
         return [
-            'კლიენტის სახელი',
-            'სერვისი',
-            'თანხა',
+            '#',
+            'მისამართი',
+            'შექმნის დრო',
+            'განახლების დრო',
             'გადახდის მეთოდი',
-            'გადახდის დრო',
-            'სტატუსი',
+            'ფასი',
+            'გადახდილი',
+            'კლიენტი',
+            'მოლარე',
         ];
     }
 }

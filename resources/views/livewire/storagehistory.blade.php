@@ -16,7 +16,7 @@
                 </div>
                 <div class="col-span-4 md:col-span-1 p-2 pl-1">
                     <div class="bg-white py-3 px-4 w-56">
-                        <label for="pricefrom" class="font-bold text-xs font-caps">თარიღი <small class="text-gray-600">[დან]</small></label>
+                        <label for="pricefrom" class="font-bold text-xs font-caps">თარიღი <small class="text-gray-600">[მდე]</small></label>
                         <input type="date" class="mt-2 focus:outline-none"  wire:model="datetill"  id="datetill">
                     </div>
                 </div>
@@ -37,7 +37,7 @@
             @foreach ($histories as $history)
             <div class="mt-2 grid grid-cols-2 sm:grid-cols-4 md:grid-cols-8 bg-white py-3 px-4">
                 <div class="col-span-2">
-                    <h6 class="font-bold text-xs">{{$history->product->{'title_'.app()->getLocale()} }}</h6>
+                    <h6 class="font-bold text-xs">{{$history->product ? $history->product->{'title_'.app()->getLocale()} : ""}}</h6>
                     <span class="text-xs font-normal">{{$history->stock}} 
                         @if ($history->product->unit == "unit")
                         ერთეული
