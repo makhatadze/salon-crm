@@ -7,11 +7,11 @@
             <form action="{{route('addGroup')}}" method="POST">
                 @csrf
                 <div class="w-full px-3">
-                    <input name="groupname" class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" placeholder="ჯგუფის სახელი">
-                    <p class="text-gray-600 text-xs font-normal"> <strong class="text-gray-800">გაფრთხილება:</strong> სახელის განმეორებით არჩევა არ შეიძლება.</p>
+                    <input name="groupname" class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" placeholder="@lang('group.groupname')">
+                    <p class="text-gray-600 text-xs font-normal"> @lang('group.attention')</p>
                 </div>
                 <div class="w-full px-3">
-                    <input class="appearance-none block w-full bg-indigo-500 text-white border border-gray-200 rounded py-2 font-bold text-xs mt-2 px-4 mb-3 cursor-pointer" value="დამატება" type="submit">
+                    <input class="appearance-none block w-full bg-indigo-500 text-white border border-gray-200 rounded py-2 font-bold text-xs mt-2 px-4 mb-3 cursor-pointer" value="@lang('group.add')" type="submit">
                 </div>
             </form>
         </div>
@@ -29,14 +29,14 @@
                                         <small class="font-normal">{{$client->number }}</small>
                                     </div>
                                     <div>
-                                        <small  class="font-normal">სერვისი: 2</small><br>
-                                        <small  class="font-normal">გაყიდვა: 21</small>
+                                        <small  class="font-normal">@lang('group.services'): {{$client->clientservices()->where('status', 1)->count()}}</small><br>
+                                        <small  class="font-normal">@lang('group.sales'): {{$client->sales()->count()}}</small>
                                     </div>
                                 </a>
                                 
                             @empty
                             <p class="font-normal text-xs">
-                                ამ ჯგუფზე კლიენტები არ მოძებნა
+                                @lang('group.no_clients')
                             </p>
                             @endforelse
                         </x-modal>

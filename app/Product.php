@@ -14,6 +14,7 @@ class Product extends Model implements Auditable
         'title_ge',
         'title_ru',
         'title_en',
+        'boughtamout',
         'description_ge',
         'description_ru',
         'description_en',

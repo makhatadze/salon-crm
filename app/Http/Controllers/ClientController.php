@@ -34,6 +34,7 @@ class ClientController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
     public function index()
     {
         $clients = new Client();
@@ -347,7 +348,7 @@ class ClientController extends Controller
             if ($userProfile) {
                 SalaryToService::create([
                     'user_id' => $user->id,
-                    'service_id' => $id,
+                    'service_id' => $clientservice->id,
                     'service_price' => $clientservice->new_price,
                     'percent' => $userProfile->percent
                 ]);

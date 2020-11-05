@@ -149,6 +149,7 @@ class PurchaseController extends Controller
                     'currency_type' => $product['currency_val'],
                     'unit' => $product['unit'],
                     'stock' => $product['quantity'],
+                    'boughtamout' => $product['quantity'],
                     'storage_id' => $product['storage_id'],
                     'description_ge' => $product['body'],
                     'type' => $product['ability_type'],
@@ -215,7 +216,6 @@ class PurchaseController extends Controller
             'quantity' => '',
             'storage' => '',
             'body' => '',
-            'paid' => ''
         ],[
             'responsible_person_id.required' => 'აირჩიეთ პასუხისმგებელი პირი',
             'getter_person_id.required' => 'აირჩიეთ მიმღები პირი',
@@ -243,7 +243,6 @@ class PurchaseController extends Controller
         }else{
             $purchase->purchase_number = $request->input('purchases_number');
         }
-        $purchase->paid = intval($request->paid * 100);
         $purchase->purchase_date = Carbon::parse($request->input('purchase_date'));
         $purchase->distributor_id = $request->input('distributor_id');
        if($request->input('dgg')){
@@ -260,6 +259,7 @@ class PurchaseController extends Controller
                     'currency_type' => $product['currency_val'],
                     'unit' => $product['unit'],
                     'stock' => $product['quantity'],
+                    'boughtamout' => $product['quantity'],
                     'storage_id' => $product['storage_id'],
                     'description_ge' => $product['body'],
                     'type' => $product['ability_type'],
@@ -336,16 +336,5 @@ class PurchaseController extends Controller
         $storages = Storage::select('id', 'name')->get()->toArray();
         return response()->json(array('status' => true, 'brands' => $brands, 'storages' => $storages));
     }
-    public function paypurchase(Request $request, Purchase $purchase)
-    {
-        $this->validate($request, [
-            'paid' => 'required|numeric|min:0'
-        ]);
-        
-        if ($purchase->getPrice() != $purchase->paid) {
-            $purchase->paid = intval($request->paid*100);
-            $purchase->save();
-        }
-        return redirect()->back();
-    }
+
 }

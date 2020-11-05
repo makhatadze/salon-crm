@@ -296,7 +296,7 @@ class ProductController extends Controller
     }
     public function addtocart(Request $request)
     {
-        $user_id = Auth()->user()->id;
+        $user_id = Auth::user()->id;
         $method = $request->method();
 
         if ($request->isMethod('post')){
@@ -316,7 +316,7 @@ class ProductController extends Controller
             }
                 $addtocart = [
                     'id' => $product->id,
-                    'name' => $product->{'title_' . app()->getLocale()},
+                    'name' => $product->title_ge,
                     'price' => $product->price  ,
                     'quantity' =>  $request->quantity,
                     'attributes' => array(
@@ -331,7 +331,6 @@ class ProductController extends Controller
     }
     //Store
     public function addtosales(Request $request){
-        
         $this->validate($request, [
             'client_id' => 'required|integer',
             'address' => 'required|string',

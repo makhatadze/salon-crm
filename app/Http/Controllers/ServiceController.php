@@ -34,29 +34,8 @@ class ServiceController extends Controller
      */
     public function index()
     {
-        $queries = [
-            'title',
-            'unit',
-            'pricefrom',
-            'pricetill'
-        ];
-        $services = Service::orderBy('id', 'DESC');
-        foreach ($queries as $req) {
-            if(request($req)){
-                if($req == 'title'){
-                    $services = $services->where('title_'.app()->getLocale(), 'like', '%'.request($req).'%');
-                }elseif($req == "unit"){
-                    $services = $services->where('unit_'.app()->getLocale(), 'like', '%'.request($req).'%');
-                }elseif($req == "pricefrom"){
-                    $services = $services->where('price', '>=', request($req)*100);
-                }elseif($req == "pricetill"){
-                    $services = $services->where('price', '<=', request($req)*100);
-                }
-                $queries[$req] = request($req);
-            }
-        }
-        $services = $services->paginate(30)->appends($queries);
-        return view('theme.template.service.services', compact('services', 'queries'));
+      
+        return view('theme.template.service.services');
     }
 
     /**
@@ -88,16 +67,13 @@ class ServiceController extends Controller
             'editor-ru' => '',
             'duration_hours' => 'required|integer|min:0',
             'duration_minutes' => 'required|integer|min:0|max:60',
-            'category' => '',
+            'categories' => '',
             'price' => 'required|between:0,9999.99|numeric',
             'unit-ge' => '',
             'unit-en' => '',
             'unit-ru' => '',
             'file' => 'image',
             'currency' => 'required|string',
-            'inventory' => '',
-            'quantity' => '',
-            'new_category' => ''
         ]);
         $duration = ($request->input('duration_hours')*60)+$request->input('duration_minutes');
         $service = new Service;
@@ -167,35 +143,22 @@ class ServiceController extends Controller
             'editor-ru' => '',
             'duration_hours' => 'required|integer|min:0',
             'duration_minutes' => 'required|integer|min:0|max:60',
-            'category' => '',
+            'categories' => '',
             'price' => 'required|between:0,9999.99|numeric',
-            'currency' => 'required|string',
             'unit-ge' => '',
             'unit-en' => '',
             'unit-ru' => '',
             'file' => 'image',
-            'inventory' => '',
-            'quantity' => '',
-            'new_category' => ''
+            'currency' => 'required|string',
         ]);
-        
         $duration = ($request->input('duration_hours')*60)+$request->input('duration_minutes');
-        if($request->input('new_category') != ""){
-         $category = new Category;
-         $category->title_ge = $request->input('new_category');
-         $category->model_name = "App\Service";
-         $category->save();
-         $service->category_id = $category->id;
-        }else{
-         $service->category_id = $request->input('category');
-        }
         $service->title_ge = $request->input('title_ge');
         $service->title_en = $request->input('title_en');
         $service->title_ru = $request->input('title_ru');
         $service->body_ge = $request->input('editor-ge');
         $service->body_en = $request->input('editor-en');
-        $service->currency_type = $request->input('currency');
         $service->body_ru = $request->input('editor-ru');
+        $service->currency_type = $request->input('currency');
         $service->duration_count = $duration;
         $service->unit_ge = $request->input('unit-ge');
         $service->unit_ru = $request->input('unit-ru');
@@ -205,31 +168,21 @@ class ServiceController extends Controller
 
         $service->save();
         $array = array();
-        if($request->input('inventory') && $request->input('quantity')){
-            foreach($request->input('inventory') as $key => $item){
+        if($request->input('categories')){
+            foreach($request->input('categories') as $key => $item){
                 $array[] =[
-                    'product_id' => $request->input('inventory')[$key],
-                    'quantity' => $request->input('quantity')[$key],
+                    'category_id' => $request->input('categories')[$key],
                 ];
             }
             $service->inventories()->createMany($array);
         }
-
         if($request->hasFile('file')){
             $imagename = date('Ymhs').$request->file('file')->getClientOriginalName();
             $destination = base_path() . '/storage/app/public/serviceimg';
             $request->file('file')->move($destination, $imagename);
-            
-            if($service->image){
-                Storage::delete('public/serviceimg/'.$service->image->name);
-                $firstimg = $service->image;
-                $firstimg->name = $imagename;
-                $firstimg->save();
-            }else{
-                $service->image()->create([
-                    'name' => $imagename
-                ]);
-            }
+            $service->image()->create([
+                'name' => $imagename
+            ]);
         }
         return redirect('/services');
     }

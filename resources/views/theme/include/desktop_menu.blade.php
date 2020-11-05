@@ -8,14 +8,14 @@
         <li >
             <a href="/" class="side-menu side-menu--active" data-menu="home">
                 <div class="side-menu__icon"> <i data-feather="home"></i> </div>
-                <div class="font-medium text-xs font-caps side-menu__title font-medium text-xs font-caps"> მთავარი გვერდი </div>
+                <div class="font-medium text-xs font-caps side-menu__title font-medium text-xs font-caps"> @lang('menu.home_page')</div>
             </a>
         </li>
        @if (auth()->user()->can('user'))
        <li>
         <a href="/showclients" class="side-menu side-menu--active" data-menu="home">
             <div class="side-menu__icon"> <i data-feather="home"></i> </div>
-            <div class="font-medium text-xs font-caps side-menu__title font-medium text-xs font-caps"> ცხრილი </div>
+            <div class="font-medium text-xs font-caps side-menu__title font-medium text-xs font-caps"> @lang('menu.table') </div>
         </a>
     </li>
        @endif
@@ -23,34 +23,34 @@
         <li id="menuuser">
             <a href="javascript:;" class="side-menu" data-menu="user">
                 <div class="side-menu__icon"> <i data-feather="users"></i> </div>
-                <div class="font-medium text-xs font-caps side-menu__title font-medium text-xs font-caps"> მომხმარებლები <i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
+                <div class="font-medium text-xs font-caps side-menu__title font-medium text-xs font-caps"> @lang('menu.users') <i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
             </a>
             <ul class="">
                 @if (auth()->user()->can('admin'))
                <li>
                     <a href="{{ route('ActionUser') }}" class="side-menu custom-nav-item">
                         <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
-                        <div class="font-normal text-xs side-menu__title"> თანამშრომლები </div>
+                        <div class="font-normal text-xs side-menu__title"> @lang('menu.employees')  </div>
                     </a>
                 </li>
             @endif
                 <li>
                     <a href="/clients" class="side-menu custom-nav-item">
                         <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
-                        <div class="font-normal text-xs side-menu__title"> კლიენტები </div>
+                        <div class="font-normal text-xs side-menu__title"> @lang('menu.clients')  </div>
                     </a>
                 </li>
                 <li>
                     <a href="/groups" class="side-menu custom-nav-item">
                         <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
-                        <div class="font-normal text-xs side-menu__title"> ჯგუფები </div>
+                        <div class="font-normal text-xs side-menu__title"> @lang('menu.groups') </div>
                     </a>
                 </li>
                 @if (auth()->user()->can('admin'))
                 <li>
                     <a href="/roles" class="side-menu custom-nav-item">
                         <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
-                        <div class="font-normal text-xs side-menu__title "> როლები </div>
+                        <div class="font-normal text-xs side-menu__title "> @lang('menu.roles') </div>
                     </a>
                 </li>
                 @endif
@@ -61,13 +61,13 @@
         <li id="menupurchases">
             <a href="javascript:;" class="side-menu" data-menu="purchases">
                 <div class="side-menu__icon"> <i data-feather="archive"></i> </div>
-                <div class="side-menu__title font-medium text-xs font-caps"> შესყიდვა <i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
+                <div class="side-menu__title font-medium text-xs font-caps"> @lang('menu.purchase') <i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
             </a>
             <ul class="">
                 <li>
                     <a href="/purchases" class="side-menu custom-nav-item" data-menu="companies">
                         <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
-                        <div class="side-menu__title font-normal text-xs">ჩამონათვალი </div>
+                        <div class="side-menu__title font-normal text-xs">@lang('menu.purchases') </div>
                     </a>
                 </li>
                 
@@ -75,19 +75,19 @@
                 <li>
                     <a href="{{route('Warehouse')}}" class="side-menu custom-nav-item">
                         <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
-                        <div class="side-menu__title font-normal text-xs"> საწყობი </div>
+                        <div class="side-menu__title font-normal text-xs"> @lang('menu.storage') </div>
                     </a>
                 </li>
                 <li>
                     <a href="{{route('WarehouseHistory')}}" class="side-menu custom-nav-item">
                         <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
-                        <div class="side-menu__title font-normal text-xs"> საწყობის ისტორია </div>
+                        <div class="side-menu__title font-normal text-xs"> @lang('menu.storage_history') </div>
                     </a>
                 </li>
                     <li>
                         <a href="/companies/distcompany" class="side-menu custom-nav-item" data-menu="companies">
                             <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
-                            <div class="side-menu__title font-normal text-xs"> მომწოდებლები </div>
+                            <div class="side-menu__title font-normal text-xs"> @lang('menu.distributors') </div>
                         </a>
                     </li>
                 @endif
@@ -99,13 +99,13 @@
         <li id="menuservices">
             <a href="javascript:;" class="side-menu" data-menu="services">
                 <div class="side-menu__icon"> <i data-feather="box"></i> </div>
-                <div class="side-menu__title font-medium text-xs font-caps"> სერვისები <i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
+                <div class="side-menu__title font-medium text-xs font-caps"> @lang('menu.service') <i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
             </a>
             <ul class="">
                 <li>
                     <a href="/services" class="side-menu custom-nav-item" data-menu="companies">
                         <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
-                        <div class="side-menu__title font-normal text-xs">ჩამონათვალი </div>
+                        <div class="side-menu__title font-normal text-xs">@lang('menu.services') </div>
                     </a>
                 </li>
             </ul>
@@ -115,30 +115,17 @@
         <li id="menucompanies">
             <a href="javascript:;" class="side-menu" data-menu="companies">
                 <div class="side-menu__icon"> <i data-feather="box"></i> </div>
-                <div class="side-menu__title font-medium text-xs font-caps"> კომპანია <i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
+                <div class="side-menu__title font-medium text-xs font-caps"> @lang('menu.company') <i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
             </a>
             <ul class="">
                 <li>
                     <a href="/companies" class="side-menu custom-nav-item" data-menu="companies">
                         <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
-                        <div class="side-menu__title font-normal text-xs"> კომპანიები </div>
+                        <div class="side-menu__title font-normal text-xs"> @lang('menu.information') </div>
                     </a>
                 </li>
                 
-                <li>
-                    <a href="/companies/offices" class="side-menu custom-nav-item" data-menu="offices">
-                        <div class="side-menu__icon"><i data-feather="circle" style="width: 15px; height: 15px;"></i>
-                        </div>
-                        <div class="side-menu__title font-normal text-xs"> ოფისები</div>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{route('Departments')}}" class="side-menu custom-nav-item" data-menu="departments">
-                        <div class="side-menu__icon"><i data-feather="circle" style="width: 15px; height: 15px;"></i>
-                        </div>
-                        <div class="side-menu__title font-normal text-xs"> დეპარტამენტები</div>
-                    </a>
-                </li>
+               
             </ul>
         </li>
         @endif
@@ -147,21 +134,21 @@
         <li id="menubugalteria">
             <a href="javascript:;" class="side-menu" data-menu="bugalteria">
                 <div class="side-menu__icon"> <i data-feather="credit-card"></i> </div>
-                <div class="side-menu__title font-medium text-xs font-caps"> ბუღალტერია <i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
+                <div class="side-menu__title font-medium text-xs font-caps"> @lang('menu.accounting') <i data-feather="chevron-down" class="side-menu__sub-icon"></i> </div>
             </a>
             <ul class="">
                 <li>
                     <a href="{{route('Finances')}}" class="side-menu custom-nav-item" data-menu="departments">
                         <div class="side-menu__icon"><i data-feather="circle" style="width: 15px; height: 15px;"></i>
                         </div>
-                        <div class="side-menu__title font-normal text-xs"> ფინანსები</div>
+                        <div class="side-menu__title font-normal text-xs"> @lang('menu.finances')</div>
                     </a>
                 </li>
                 <li>
                     <a href="{{route('StatisticController')}}" class="side-menu custom-nav-item" data-menu="departments">
                         <div class="side-menu__icon"><i data-feather="circle" style="width: 15px; height: 15px;"></i>
                         </div>
-                        <div class="side-menu__title font-normal text-xs"> ხელფასები </div>
+                        <div class="side-menu__title font-normal text-xs"> @lang('menu.salaries') </div>
                     </a>
                 </li>
             </ul>
@@ -171,33 +158,33 @@
         <li id="menushop">
             <a href="javascript:;" class="side-menu" data-menu="shop">
                 <div class="side-menu__icon"><i data-feather="shopping-cart"></i></div>
-                <div class="side-menu__title font-medium text-xs font-caps"> ვაჭრობა <i data-feather="chevron-down"
+                <div class="side-menu__title font-medium text-xs font-caps"> @lang('menu.trade') <i data-feather="chevron-down"
                                                                  class="side-menu__sub-icon"></i></div>
             </a>
             <ul class="">
                 <li>
                 <a href="{{ route('AddToCart') }}" class="side-menu custom-nav-item">
                         <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
-                        <div class="side-menu__title font-normal text-xs"> ახალი გაყიდვა </div>
+                        <div class="side-menu__title font-normal text-xs"> @lang('menu.new_sale') </div>
                     </a>
                 </li>
                 <li>
                     <a href="{{ route('Sales') }}" class="side-menu custom-nav-item">
                         <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
-                        <div class="side-menu__title font-normal text-xs"> გაყიდვები </div>
+                        <div class="side-menu__title font-normal text-xs"> @lang('menu.sales') </div>
                     </a>
                 </li>
                 <li>
                     <a href="/products" class="side-menu custom-nav-item">
                         <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
-                        <div class="side-menu__title font-normal text-xs"> პროდუქცია </div>
+                        <div class="side-menu__title font-normal text-xs"> @lang('menu.product') </div>
                     </a>
                 </li>
                 <li>
                     <a href="/paymethods" class="side-menu custom-nav-item">
                         <div class="side-menu__icon"><i data-feather="circle" style="width: 15px; height: 15px;"></i>
                         </div>
-                        <div class="side-menu__title font-normal text-xs"> გადახდის მეთოდები</div>
+                        <div class="side-menu__title font-normal text-xs"> @lang('menu.pay_method')</div>
                     </a>
                 </li>
             </ul>
@@ -207,14 +194,14 @@
         <li id="menusms">
             <a href="javascript:;" class="side-menu" data-menu="sms">
                 <div class="side-menu__icon"><i data-feather="message-circle"></i></div>
-                <div class="side-menu__title font-medium text-xs font-caps"> მარკეტინგი <i data-feather="chevron-down"
+                <div class="side-menu__title font-medium text-xs font-caps"> @lang('menu.marketing') <i data-feather="chevron-down"
                                                                  class="side-menu__sub-icon"></i></div>
             </a>
             <ul class="">
                 <li>
                 <a href="{{ route('sendSms') }}" class="side-menu custom-nav-item">
                         <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
-                        <div class="side-menu__title font-normal text-xs"> SMS გაგზავნა </div>
+                        <div class="side-menu__title font-normal text-xs"> @lang('menu.sms_send') </div>
                     </a>
                 </li>
                

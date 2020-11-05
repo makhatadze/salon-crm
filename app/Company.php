@@ -8,7 +8,7 @@ use OwenIt\Auditing\Contracts\Auditable;
 class Company extends Model implements Auditable
 {
     use SoftDeletes, \OwenIt\Auditing\Auditable;
-    protected $fillable = ['title-ge', 'title-ru', 'title-en', 'description_ge', 'description_ru', 'description_en'];
+    protected $fillable = ['title_ge', 'title_ru', 'title_en', 'description_ge', 'description_ru', 'description_en'];
     protected $table = 'companies';
     public function offices(){
         return $this->morphMany('App\Office', 'officeable');

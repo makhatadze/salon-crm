@@ -88,6 +88,7 @@ class HomeController extends Controller
             return redirect()->route('userTimeTable', intval(request('users')));
             }else{
             $getusers = array();
+            Carbon::setLocale('en');
             foreach (User::permission('user')->where('active', true)->get() as $useri) {
                 if($useri->weekdays && in_array(Carbon::now()->isoFormat('dd'), json_decode($useri->weekdays, true))){
                     $getusers[] = $useri->id;

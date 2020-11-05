@@ -2,58 +2,32 @@
 
 @section('content')
 <div class="grid grid-cols-12 gap-6 mt-5 flex content-center ">
-<div class="intro-y col-span-6 box p-4">
+<div class="intro-y col-span-12 md:col-span-6 box p-4">
     <form action="{{route('EditCompany', $company->id)}}" method="post">
     @method('PUT')
         @csrf
-
-    
-        <label class="font-helvetica"><b>კომპანიის ინფორმაცია </b></label>
-        <div class="flex">
-            <div class="w-1/3 p-2">
-                <label class="font-helvetica">სახელი ქართულად <span class="text-red-700">*</span></label>
-                <input required type="text"  value="{{$company->title_ge}}"  class="input w-full border mt-2" name="title-ge">
+        <div class="flex flex-wrap -mx-3 mb-2 p-3">
+            <div class="w-full lg:w-1/2 px-3 mb-6 md:mb-0 ">
+                <label class="font-bold font-caps text-xs">@lang('company.name') @lang('language.main') <span class="text-red-700">*</span></label>
+                <input required type="text"  value="{{$company->title_ge}}"  class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" name="title-ge">
             </div>
-            <div class="w-1/3 p-2">
-                <label class="font-helvetica">სახელი ინგლისურად</label>
-                <input type="text" class="input w-full border mt-2"  value="{{$company->title_en}}"  name="title-en">
-            </div>
-            <div class="w-1/3 p-2">
-                <label class="font-helvetica">სახელი რუსულად</label>
-                <input type="text" class="input w-full border mt-2" name="title-ru" value="{{$company->title_ru}}" >
+            <div class="w-full lg:w-1/2 px-3 mb-6 md:mb-0">
+                <label class="font-bold font-caps text-xs">@lang('company.code')</label>
+                <input type="text" class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" name="code">
             </div>
         </div>
-        <div class="mt-3">
-            <label class="font-helvetica">საიდენთიფიკაციო კოდი</label>
-            <input type="text" class="input w-full border mt-2" name="code">
-        </div>
-        <div class="mt-3">
-            <label class="font-helvetica">აღწერა ქართულად <span class="text-red-700">*</span></label>
+       
+        <div class="mt-3 p-3">
+            <label class="font-bold font-caps text-xs">@lang('company.desc') <span class="text-red-700">*</span></label>
             <div class="mt-2">
-                <textarea required data-feature="basic" class="summernote" name="editor-ge">
+                <textarea required data-feature="basic" class="summernote font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" name="editor-ge">
                     {{$company->description_ge}} 
                 </textarea>
             </div>
         </div>
-        <div class="mt-3">
-            <label class="font-helvetica">აღწერა რუსულად</label>
-            <div class="mt-2">
-                <textarea data-feature="basic" class="summernote" name="editor-ru">
-                     {{$company->description_ru}} 
-                </textarea>
-            </div>
-        </div>
-        <div class="mt-3">
-            <label class="font-helvetica">აღწერა ინგლისურად</label>
-            <div class="mt-2">
-                <textarea data-feature="basic" class="summernote" name="editor-en">
-                     {{$company->description_en}} 
-                </textarea>
-            </div>
-        </div>
     
-        <div class="relative mt-3">
-            <button type="submit" name="user_add_submit" class="button w-25 bg-theme-1 text-white font-helvetica">განახლება</button>
+        <div class="relative mt-2 px-3">
+            <button type="submit" name="user_add_submit" class="button w-25 bg-theme-1 text-white font-bold font-caps text-xs">@lang('company.update')</button>
         </div>
     </form>
 </div></div>

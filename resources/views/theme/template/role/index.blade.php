@@ -13,7 +13,7 @@
                        name="rolename"
                        required
                 @if(isset($role)) value="{{$role->name}}" @endif
-                       placeholder="როლის სახელი">
+                       placeholder="@lang('role.rolename')">
                   </div>
                   @error('rolename')
                     <p class="text-xs font-normal ">{{ $message }}</p>
@@ -22,20 +22,20 @@
                 <div class="p-2">
                     <div class="flex items-center font-bold text-gray-700 text-xs mt-1"> 
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-box w-4 h-4 mr-2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg> 
-                        მომხმარებლები 
+                        @lang('role.employee') 
                     </div>
                     <div class="mt-3 flex justify-between items-center font-normal text-xs">
                      <div class="flex  items-center">
                          <input type="checkbox" name="see_users" id="see_users" class="mr-3">
-                        <label for="see_users"> ნახვა</label>
+                        <label for="see_users"> @lang('role.see')</label>
                      </div>
                      <div class="flex  items-center">
                          <input type="checkbox" name="add_user" id="add_user" class="mr-3">
-                         <label for="add_user">დამატება & რედაქტირება</label>
+                         <label for="add_user">@lang('role.ed')</label>
                      </div>
                      <div class="flex items-center">
                          <input type="checkbox" name="delete_user" id="delete_user" class="mr-3">
-                         <label for="delete_user">წაშლა</label>
+                         <label for="delete_user">@lang('role.del')</label>
                      </div>
                     </div>
                 </div>
@@ -44,20 +44,20 @@
                 <div class="p-2">
                     <span class="flex items-center font-bold text-gray-700 text-xs mt-1"> 
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-box w-4 h-4 mr-2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg> 
-                        სერვისი 
+                        @lang('role.service') 
                     </span>
                     <div class="mt-3 flex justify-between items-center font-normal text-xs">
                      <div class="flex  items-center">
                          <input type="checkbox" name="see_service" id="see_service" class="mr-3">
-                         <label for="see_service">ნახვა</label>
+                         <label for="see_service">@lang('role.see')</label>
                      </div>
                      <div class="flex  items-center">
                          <input type="checkbox" name="add_service" id="add_service" class="mr-3">
-                         <label for="add_service">დამატება & რედაქტირება</label>
+                         <label for="add_service">@lang('role.ed')</label>
                      </div>
                      <div class="flex items-center">
                          <input type="checkbox" name="delete_service" id="delete_service" class="mr-3">
-                         <label for="delete_service">წაშლა</label>
+                         <label for="delete_service">@lang('role.del')</label>
                      </div>
                     </div>
                 </div>
@@ -66,20 +66,20 @@
                 <div class="p-2">
                     <div class="flex items-center font-bold text-gray-700 text-xs mt-1"> 
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-box w-4 h-4 mr-2"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
-                        პროდუქტი 
+                        @lang('role.product') 
                     </div>
                     <div class="mt-3 flex justify-between items-center font-normal text-xs">
                      <div class="flex  items-center">
                          <input type="checkbox" @if (isset($role) && $role->checkPermission('see_product')) checked @endif name="see_products" id="see_products" class="mr-3">
-                         <label for="see_product">ნახვა</label>
+                         <label for="see_product">@lang('role.see')</label>
                      </div>
                      <div class="flex  items-center">
                          <input type="checkbox" @if (isset($role) && $role->checkPermission('add_product')) checked @endif name="add_product" id="add_product" class="mr-3">
-                         <label for="add_product">დამატება & რედაქტირება</label>
+                         <label for="add_product">@lang('role.ed')</label>
                      </div>
                      <div class="flex items-center">
                          <input type="checkbox" name="delete_product" @if (isset($role) && $role->checkPermission('delete_product')) checked @endif id="delete_product" class="mr-3">
-                         <label for="delete_product">წაშლა</label>
+                         <label for="delete_product">@lang('role.del')</label>
                      </div>
                     </div>
                 </div>
@@ -88,20 +88,20 @@
                 <div class="p-2">
                     <span class="flex items-center font-bold text-gray-700 text-xs mt-1"> 
                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-box w-4 h-4 mr-2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
-                        შესყიდვები 
+                          @lang('role.purchase') 
                     </span>
                     <div class="mt-3 flex justify-between items-center font-normal text-xs">
                      <div class="flex  items-center">
                          <input type="checkbox" name="see_purchases" @if (isset($role) && $role->checkPermission('see_purchases')) checked @endif  id="see_purchases" class="mr-3">
-                         <label for="see_purchases">ნახვა</label>
+                         <label for="see_purchases">@lang('role.see')</label>
                      </div>
                      <div class="flex  items-center">
                          <input type="checkbox" name="add_purchase" @if (isset($role) && $role->checkPermission('add_purchase')) checked @endif  id="add_purchase" class="mr-3">
-                         <label for="add_purchase">დამატება & რედაქტირება</label>
+                         <label for="add_purchase">@lang('role.ed')</label>
                      </div>
                      <div class="flex items-center">
                          <input type="checkbox" name="delete_purchase" @if (isset($role) && $role->checkPermission('delete_purchase')) checked @endif  id="delete_purchase" class="mr-3">
-                         <label for="delete_purchase">წაშლა</label>
+                         <label for="delete_purchase">@lang('role.del')</label>
                      </div>
                     </div>
                 </div>
@@ -110,20 +110,20 @@
                 <div class="p-2">
                     <span class="flex items-center font-bold text-gray-700 text-xs mt-1"> 
                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-box w-4 h-4 mr-2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><polyline points="17 11 19 13 23 9"></polyline></svg>
-                        კლიენტები 
+                          @lang('role.client') 
                     </span>
                     <div class="mt-3 flex justify-between items-center font-normal text-xs">
                      <div class="flex  items-center">
                          <input type="checkbox" name="see_clients" @if (isset($role) && $role->checkPermission('see_clients')) checked @endif  id="see_clients" class="mr-3">
-                         <label for="see_clients">ნახვა</label>
+                         <label for="see_clients">@lang('role.see')</label>
                      </div>
                      <div class="flex  items-center">
                          <input type="checkbox" name="add_client" @if (isset($role) && $role->checkPermission('add_client')) checked @endif  id="add_client" class="mr-3">
-                         <label for="add_client">დამატება & რედაქტირება</label>
+                         <label for="add_client">@lang('role.ed')</label>
                      </div>
                      <div class="flex items-center">
                          <input type="checkbox" name="delete_client" @if (isset($role) && $role->checkPermission('delete_client')) checked @endif  id="delete_client" class="mr-3">
-                         <label for="delete_client">წაშლა</label>
+                         <label for="delete_client">@lang('role.del')</label>
                      </div>
                     </div>
                 </div>
@@ -132,20 +132,20 @@
                 <div class="p-2">
                     <span class="flex items-center font-bold text-gray-700 text-xs mt-1"> 
                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-box w-4 h-4 mr-2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-                          კომპანია
+                          @lang('role.company')
                     </span>
                     <div class="mt-3 flex justify-between items-center font-normal text-xs">
                      <div class="flex  items-center">
                          <input type="checkbox" name="see_company" @if (isset($role) && $role->checkPermission('see_company')) checked @endif id="see_company" class="mr-3">
-                         <label for="see_company">ნახვა</label>
+                         <label for="see_company">@lang('role.see')</label>
                      </div>
                      <div class="flex  items-center">
                          <input type="checkbox" name="add_company" @if (isset($role) && $role->checkPermission('add_company')) checked @endif id="add_company" class="mr-3">
-                         <label for="add_company">დამატება & რედაქტირება</label>
+                         <label for="add_company">@lang('role.ed')</label>
                      </div>
                      <div class="flex items-center">
                          <input type="checkbox" name="delete_company" @if (isset($role) && $role->checkPermission('delete_company')) checked @endif id="delete_company" class="mr-3">
-                         <label for="delete_company">წაშლა</label>
+                         <label for="delete_company">@lang('role.del')</label>
                      </div>
                     </div>
                 </div>
@@ -154,37 +154,37 @@
                 <div class="p-2">
                     <span class="flex items-center font-bold text-gray-700 text-xs mt-1"> 
                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-box w-4 h-4 mr-2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-                          შეტყობინება
+                          @lang('role.message')
                     </span>
                     <div class="mt-3 flex justify-between items-center font-normal text-xs">
                      <div class="flex  items-center">
                          <input type="checkbox" name="see_sms" id="see_sms" @if (isset($role) && $role->checkPermission('see_sms')) checked @endif  class="mr-3">
-                         <label for="see_sms">ნახვა</label>
+                         <label for="see_sms">@lang('role.see')</label>
                      </div>
                      <div class="flex  items-center">
                          <input type="checkbox" name="send_sms" id="send_sms" @if (isset($role) && $role->checkPermission('send_sms')) checked @endif  class="mr-3">
-                         <label for="send_sms">დამატება & რედაქტირება</label>
+                         <label for="send_sms">@lang('role.ed')</label>
                      </div>
                      <div class="flex items-center">
                          <input type="checkbox" name="delete_sms" id="delete_sms" @if (isset($role) && $role->checkPermission('delete_sms')) checked @endif  class="mr-3">
-                         <label for="delete_sms">წაშლა</label>
+                         <label for="delete_sms">@lang('role.del')</label>
                      </div>
                     </div>
                 </div>
                 <div class="p-2">
                     <span class="flex items-center font-bold text-gray-700 text-xs mt-1"> 
                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-box w-4 h-4 mr-2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
-                          ფინანსები
+                          @lang('role.finance')
                     </span>
                     <div class="mt-3 flex justify-between items-center font-normal text-xs">
                      <div class="flex  items-center">
                          <input type="checkbox" name="export_finances" @if (isset($role) && $role->checkPermission('export_finances')) checked @endif  id="export_finances" class="mr-3">
-                         <label for="export_finances">ექსპორტი</label>
+                         <label for="export_finances">@lang('role.export')</label>
                      </div>
                     </div>
                 </div>
                 <button type="submit" class="mt-3 w-full p-3 bg-indigo-500 text-white text-center font-bolder text-xs font-caps">
-                    @if(isset($role)) განახლება @else დამატება @endif
+                    @if(isset($role)) @lang('role.update') @else @lang('role.add') @endif
                 </button>
             </form>
         </div>

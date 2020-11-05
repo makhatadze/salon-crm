@@ -39,8 +39,8 @@ class Purchase extends Model implements Auditable
     }
     public function getPrice(){
         $total = 0;
-        foreach ($this->products as $item) {
-            $total += $item->stock * $item->buy_price;
+        foreach ($this->products()->where('fromwarehouse', 0)->get() as $item) {
+            $total += $item->boughtamout * $item->buy_price;
         }
        return $total;
     }

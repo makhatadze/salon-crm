@@ -3,11 +3,11 @@
 @section('content')
 <div class="intro-y flex flex-col sm:flex-row items-center mt-8">
     <h2 class="text-lg font-medium mr-auto font-helvetica">
-        ახალი სადისტრიბუციო კომპანია
+        @lang('distributor.title')
     </h2>
     <div class="w-full sm:w-auto flex mt-4 sm:mt-0">
-           <a href="/companies/dist/create" type="button" class="button button--lg block text-white bg-theme-1 font-helvetica mx-auto mt-8"> 
-               დამატება
+           <a href="/companies/dist/create" type="button" class="button button--lg block text-white bg-theme-1 font-normal mx-auto mt-8"> 
+            @lang('distributor.add')
            </a>
     </div>
 </div>
@@ -43,7 +43,7 @@
                                         <div class="w-full px-3 mb-2">
                                             <label class=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
                                                 <h6 class="font-caps">
-                                                    საკონტაქტო პირი
+                                                    @lang('distributor.person')
                                                 </h6> 
                                             </label>
                                             <input  value="{{$company->contact_to}}" readonly class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text">
@@ -51,11 +51,11 @@
                                             <div class="w-full px-3 mb-2">
                                             <label class=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="phone">
                                                 <h6 class="font-caps">
-                                                    ნომერი
+                                                    @lang('distributor.number')
                                                 </h6> 
                                             </label>
-                                            <input name="phone" value="{{$company->phone}}" readonly required class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" onkeyup="this.value = this.value.replace(/[^0-9\.]/g, '');" id="phone" type="text" minlength="9" maxlength="9" placeholder="555 11 22 33">
-                                            <small class="font-normal">გაგზავნამდე გადაამოწმეთ ნომერი</small> 
+                                            <input name="phone" value="{{$company->phone}}" readonly required class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" onkeyup="this.value = this.value.replace(/[^0-9\.]/g, '');" id="phone" type="text" minlength="9" maxlength="9" placeholder="XXX XX XX XX">
+                                            <small class="font-normal">@lang('distributor.checknumber')</small> 
                                             @error('phone')
                                                 <p class="font-normal text-xs text-red-500">
                                                     {{$message}}
@@ -65,7 +65,7 @@
                                       </div>
                                         <div class="w-full px-3">
                                             <label class="font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="text">
-                                            ტექსტი
+                                                @lang('distributor.text')
                                             </label>
                                             <textarea name="text" id="text" cols="30" rows="5" class="appearance-none resize-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"></textarea>
                                             @error('text')
@@ -75,7 +75,7 @@
                                             @enderror
                                         </div>
                                         <div class="px-3 mt-2">
-                                            <button type="submit" class="w-full bg-indigo-500 py-3 px-4 text-white font-bold font-caps text-xs">გაგზავნა</button>
+                                            <button type="submit" class="w-full bg-indigo-500 py-3 px-4 text-white font-bold font-caps text-xs">@lang('distributor.send')</button>
                                         </div>
                                     </form>
                                 </x-modal>
@@ -83,7 +83,7 @@
                             @endif
                             </div>
                             <a href="/companies/dist/edit/{{$company->id}}">
-                                <h6 class="font-normal text-xs">{{$company->{'name_'.app()->getLocale()} }}</h6>
+                                <h6 class="font-normal text-xs">{{$company->name_ge }}</h6>
                                 <strong class="font-bold text-xs"> #{{$company->code}} </strong>
                             </a>
                         </div>

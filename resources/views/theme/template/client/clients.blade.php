@@ -24,16 +24,16 @@
                 </div>
             </div>
             <div class="col-span-1">
-                <small class="font-normal">რეგისტრაცია:</small> 
+                <small class="font-normal">@lang('clients.register'):</small> 
                 <h6 class="font-bold text-xs">{{$client->created_at}}</h6>
             </div>
             <div class="col-span-1">
-                <small class="font-normal">დახარჯული:</small> 
+                <small class="font-normal">@lang('clients.paid'):</small> 
                 <h6 class="font-bold text-xs">{{number_format(($client->clientservices()->where('status', 1)->sum('new_price')/100 + $client->sales()->sum('total')/100),2)}} <sup>₾</sup></h6>
             </div>
             <div class="col-span-1">
-                <small class="font-normal">სერვისები: {{$client->clientservices()->count()}}</small> <br>
-                <small class="font-normal">გაყიდვები: {{$client->sales()->count()}}</small> 
+                <small class="font-normal">@lang('clients.services'): {{$client->clientservices()->count()}}</small> <br>
+                <small class="font-normal">@lang('clients.sales'): {{$client->sales()->count()}}</small> 
             </div>
             <div class="col-span-1 flex items-center justify-center">
                 <div>
@@ -70,11 +70,11 @@
                                     <div class="w-full px-3 mb-2">
                                     <label class=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="phone">
                                         <h6 class="font-caps">
-                                            ნომერი
+                                            @lang('clients.phone')
                                         </h6> 
                                     </label>
                                     <input name="phone" value="{{$client->number}}" readonly required class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" onkeyup="this.value = this.value.replace(/[^0-9\.]/g, '');" id="phone" type="text" minlength="9" maxlength="9" placeholder="555 11 22 33">
-                                    <small class="font-normal">გაგზავნამდე გადაამოწმეთ ნომერი</small> 
+                                    <small class="font-normal">@lang('clients.check_number')</small> 
                                     @error('phone')
                                         <p class="font-normal text-xs text-red-500">
                                             {{$message}}
@@ -83,7 +83,7 @@
                                 </div>
                                     <div class="w-full px-3">
                                         <label class="font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="text">
-                                        ტექსტი
+                                            @lang('clients.text')
                                         </label>
                                         <textarea name="text" id="text" cols="30" rows="5" class="appearance-none resize-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"></textarea>
                                         @error('text')
@@ -93,7 +93,7 @@
                                         @enderror
                                     </div>
                                     <div class="px-3 mt-2">
-                                        <button type="submit" class="w-full bg-indigo-500 py-3 px-4 text-white font-bold font-caps text-xs">გაგზავნა</button>
+                                        <button type="submit" class="w-full bg-indigo-500 py-3 px-4 text-white font-bold font-caps text-xs">@lang('clients.send')</button>
                                     </div>
                                 </form>
                             </x-modal>
@@ -135,28 +135,28 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 ">
                     <div class="p-2 col-span-1">
                         <label for="name" class="font-normal text-xs">
-                            კლიენტი
+                            @lang('clients.client')
                         </label>
-                        <input type="text" id="name" name="name" @if(isset($queries['name'])) value="{{$queries['name']}}" @endif  class="font-normal text-xs bg-gray-200 p-2 mt-2 text-gray-700 w-full focus:outline-none" placeholder="სახელი">
+                        <input type="text" id="name" name="name" @if(isset($queries['name'])) value="{{$queries['name']}}" @endif  class="font-normal text-xs bg-gray-200 p-2 mt-2 text-gray-700 w-full focus:outline-none" placeholder="@lang('clients.name')">
                     </div>
                     <div class="p-2 col-span-1">
                         <label for="phone" class="font-normal text-xs">
-                            ნომერი
+                            @lang('clients.phone')
                         </label>
-                        <input type="text" id="phone" @if(isset($queries['phone'])) value="{{$queries['phone']}}" @endif name="phone" class="font-normal text-xs bg-gray-200 p-2 mt-2 text-gray-700 w-full focus:outline-none" placeholder="სახელი">
+                        <input type="text" id="phone" @if(isset($queries['phone'])) value="{{$queries['phone']}}" @endif name="phone" class="font-normal text-xs bg-gray-200 p-2 mt-2 text-gray-700 w-full focus:outline-none" placeholder="xxxxxx">
                     </div>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 ">
                     <div class="p-2 col-span-1 flex items-center mt-2">
                         <input type="checkbox" name="consignation" id="consignation" @if(isset($queries['consignation'])) checked @endif>
                         <label for="consignation" class="font-normal ml-3 text-xs">
-                            კონსიგნაცია
+                            @lang('clients.consignation')
                         </label>
                     </div>
                     <div class="p-2 col-span-1 flex items-center mt-2">
                             <div class="relative w-full">
                               <select name="group" class="font-normal text-xs block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-2 px-4 pr-8 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
-                                <option value="">აირჩიეთ ჯგუფი</option>
+                                <option value="">@lang('clients.choose_group')</option>
                                 @foreach ($groups as $group)
                                     @if(isset($queries['group']) && $queries['group'] == $group->id)
                                     <option value="{{$group->id}}" selected>{{$group->name}}</option>
@@ -173,7 +173,7 @@
                 </div>
                 
                 <div class=" flex">
-                    <input type="submit" class="font-normal text-xs bg-indigo-500 p-2 mt-2 text-white w-2/3 focus:outline-none" value="ძებნა">
+                    <input type="submit" class="font-normal text-xs bg-indigo-500 p-2 mt-2 text-white w-2/3 focus:outline-none" value="@lang('clients.search')">
                     <a href="{{url()->current()}}"class="font-normal flex items-center justify-center text-xs bg-red-500 p-2 mt-2 text-white w-1/3 focus:outline-none">
                         <svg width="1em" height="1em" viewBox="0 0 16 16" stroke="white" class="bi bi-arrow-clockwise" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
@@ -183,7 +183,7 @@
                 </div>
             </div>
         </form>
-        <a href="{{route('CreateClient')}}" class="bg-indigo-500 py-3 text-center mt-2 col-span-1 text-white font-medium text-xs">ახალი კლიენტი</a>
+        <a href="{{route('CreateClient')}}" class="bg-indigo-500 py-3 text-center mt-2 col-span-1 text-white font-medium text-xs">@lang('clients.add_new_client')</a>
     </div>
 </div>
 

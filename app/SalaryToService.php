@@ -26,6 +26,7 @@ class SalaryToService extends Model implements Auditable
         'user_id', 'service_id', 'sale_id', 'service_price', 'percent',
     ];
     protected $table = 'salary_to_services';
+    
     public function getClientName(){
         $name = ClientService::find($this->service_id)->first();
         if($name){
@@ -39,7 +40,7 @@ class SalaryToService extends Model implements Auditable
     }
     public function service()
     {
-        return $this->belongsTo('App\ClientService');
+        return $this->belongsTo('App\ClientService', 'service_id');
     }
     public function sale()
     {

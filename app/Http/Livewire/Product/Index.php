@@ -44,7 +44,7 @@ class Index extends Component
     public function render()
     {
         $products = Product::where('warehouse', 0)
-                    ->where('title_'.app()->getLocale(), 'LIKE', '%'.$this->name.'%')
+                    ->where('title_ge', 'LIKE', '%'.$this->name.'%')
                     ->where('price', '>=', $this->pricefrom ? $this->pricefrom*100 : 0)
                     ->where('price', '<=', $this->pricetill ? $this->pricetill*100 : 0)
                     ->where('stock', '<=', $this->stocktill ?? 0)

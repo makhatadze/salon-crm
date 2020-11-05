@@ -105,32 +105,6 @@ class CompanyController extends Controller
         $company->save();
         return redirect('/companies');
     }
-    //Office Controllers
-    public function createoffice($id){
-        $company = Company::wherenull('deleted_at')->findOrFail($id);
-        return view('theme.template.company.add_office', compact('company'));
-    }
-    public function storeoffice(Request $request, $id){
-        $this->validate($request, [
-            'office-name-ge' => 'required|string',
-            'office-name-en' => '',
-            'office-name-ru' => '',
-            'address-ge' => 'required|string',
-            'address-ge' => '',
-            'address-ge' => '',
-        ]);
-        $id = (int)$id;
-        $company = Company::wherenull('deleted_at')->findOrFail($id);
-        $company->offices()->create([
-            'name_ge' => $request->input('office-name-ge'),
-            'address_ge' => $request->input('address-ge'),
-            'name_en' => $request->input('office-name-en'),
-            'address_en' => $request->input('address-en'),
-            'name_ru' => $request->input('office-name-ru'),
-            'address_ru' => $request->input('address-ru'),
-        ]);
-        return redirect('/companies');
-    }
     //Show Registered Offices
     public function getoffices(){
         $companies = Company::wherenull('deleted_at')->get();

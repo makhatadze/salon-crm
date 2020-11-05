@@ -8,6 +8,7 @@
  * @author Vito Makhatadze <vitomaxatadze@gmail.com>
  */
 
+use App\Company;
 use App\Profile;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
@@ -76,6 +77,10 @@ class PermissionsSeeder extends Seeder
         $userrole = Role::create(['name' => 'user']);
         $userrole->givePermissionTo('user');
 
+        Company::create([
+            'title_ge' => 'კომპანია',
+            'description_ge' => 'ეს არის კომპანიის დეტალური აღწერა'
+        ]);
 
         $user = Factory(App\User::class)->create([
             'name' => 'საიტის ადმინისტრატორი',

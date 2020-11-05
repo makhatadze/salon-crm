@@ -62,66 +62,68 @@
             </div>
             @if ($finances)
             @foreach ($finances  as $item)
+            @if ($item->sale || $item->service)
             <div class="col-span-10 grid grid-cols-10 mt-2 font-normal text-xs p-3 bg-white">
-                <div class="col-span-1 flex items-center justify-center">
-                    {{$item->created_at}}
-                </div>
-                <div class="col-span-1 flex items-center justify-center">
-                  @if ($item->sale)
-                  {{number_format($item->sale->paid/100,2)}}
-                  @elseif($item->service)
-                  {{number_format($item->service->paid/100,2)}}
-                  @endif
+              <div class="col-span-1 flex items-center justify-center">
+                  {{$item->created_at}}
+              </div>
+              <div class="col-span-1 flex items-center justify-center">
+                @if ($item->sale)
+                {{number_format($item->sale->paid/100,2)}}
+                @elseif($item->service)
+                {{number_format($item->service->paid/100,2)}}
+                @endif
 
-                </div>
-                {{-- გასასწორებელია სერვისზე პროდუქტის დამატების შემდეგ ~ ხარჯი --}}
-                <div class="col-span-1 flex items-center justify-center">
-                    0
-                </div>
-                <div class="col-span-1 flex items-center justify-center">
-                  <span>{{$item->percent}}% =</span> <h6 class="ml-1 text-xs font-bold text-gray-700"> {{number_format($item->service_price * ($item->percent/100)/100,2)}}</h6>
-                        
-                </div>
-                <div class="col-span-1 flex items-center justify-center">
-                    <h6>{{$item->sale ? ($item->sale->pay_method == "consignation" ? 'კონსიგნაცია' : $item->sale->pay_method) : ($item->service->pay_method == "consignation" ? 'კონსიგნაცია' : $item->service->pay_method)}}</h6>
-                </div>
-                <div class="col-span-3  flex items-center justify-center">
-                    ბანკი
-                </div>
-                {{-- გასასწორებელია სერვისზე პროდუქტის დამატების შემდეგ ~ სუფთა მოგება --}}
-                <div class="col-span-1 flex items-center justify-center">
-                    <div class="text-left">
-                      @if($item->sale)
-                      <span class="text-green-700 font-bold">
-                          + {{number_format( ($item->sale->totalOriginalPrice() - ($item->sale->total - $item->sale->paid) - ($item->service_price * ($item->percent/100)))/100,2)}}
-                        </span> <br>
-                        @if ($item->sale->total > $item->sale->paid)
-                          <span class="font-bold text-red-500" style="font-size:0.7rem"> - {{number_format(($item->sale->total - $item->sale->paid)/100,2)}}</span>
-                        @endif
-                    @elseif($item->service)
-                    <span class="text-green-700 font-bold">
-                        
-                        + {{number_format(($item->service->paid - ($item->service_price * $item->percent/100) - ($item->service_price * ($item->percent/100)))/100,2)}}
-                      </span> <br>
+              </div>
+              {{-- გასასწორებელია სერვისზე პროდუქტის დამატების შემდეგ ~ ხარჯი --}}
+              <div class="col-span-1 flex items-center justify-center">
+                  0
+              </div>
+              <div class="col-span-1 flex items-center justify-center">
+                <span>{{$item->percent}}% =</span> <h6 class="ml-1 text-xs font-bold text-gray-700"> {{number_format($item->service_price * ($item->percent/100)/100,2)}}</h6>
                       
-                      @if ($item->service->new_price > $item->service->paid) 
-                        <span class="font-bold text-red-500" style="font-size:0.7rem"> - {{number_format(($item->service->new_price - $item->service->paid)/100,2)}}</span>
+              </div>
+              <div class="col-span-1 flex items-center justify-center">
+                  <h6>{{$item->sale ? ($item->sale->pay_method == "consignation" ? 'კონსიგნაცია' : $item->sale->pay_method) : ($item->service->pay_method == "consignation" ? 'კონსიგნაცია' : $item->service->pay_method)}}</h6>
+              </div>
+              <div class="col-span-3  flex items-center justify-center">
+                  ბანკი
+              </div>
+              {{-- გასასწორებელია სერვისზე პროდუქტის დამატების შემდეგ ~ სუფთა მოგება --}}
+              <div class="col-span-1 flex items-center justify-center">
+                  <div class="text-left">
+                    @if($item->sale)
+                    <span class="text-green-700 font-bold">
+                        + {{number_format( ($item->sale->totalOriginalPrice() - ($item->sale->total - $item->sale->paid) - ($item->service_price * ($item->percent/100)))/100,2)}}
+                      </span> <br>
+                      @if ($item->sale->total > $item->sale->paid)
+                        <span class="font-bold text-red-500" style="font-size:0.7rem"> - {{number_format(($item->sale->total - $item->sale->paid)/100,2)}}</span>
                       @endif
+                  @elseif($item->service)
+                  <span class="text-green-700 font-bold">
+                      
+                      + {{number_format(($item->service->paid - ($item->service_price * $item->percent/100) - ($item->service_price * ($item->percent/100)))/100,2)}}
+                    </span> <br>
+                    
+                    @if ($item->service->new_price > $item->service->paid) 
+                      <span class="font-bold text-red-500" style="font-size:0.7rem"> - {{number_format(($item->service->new_price - $item->service->paid)/100,2)}}</span>
                     @endif
-                    </div>
-                </div>
-                <div class="col-span-1 flex items-center justify-center text-blue-700 font-medium">
-                    @if ($item->sale)
-                    <a href="{{ route('showSale', $item->sale->id)}}">
-                      დეტალურად
-                    </a>
-                    @elseif($item->service)
-                    <a href="{{ route('showService', $item->service->id)}}">
-                      დეტალურად
-                    </a>
-                    @endif
-                </div>
-            </div>
+                  @endif
+                  </div>
+              </div>
+              <div class="col-span-1 flex items-center justify-center text-blue-700 font-medium">
+                  @if ($item->sale)
+                  <a href="{{ route('showSale', $item->sale->id)}}">
+                    დეტალურად
+                  </a>
+                  @elseif($item->service)
+                  <a href="{{ route('showService', $item->service->id)}}">
+                    დეტალურად
+                  </a>
+                  @endif
+              </div>
+          </div>
+            @endif
             @endforeach
             <div class="w-full block col-span-12 mt-3">
                 {{$finances->links()}}

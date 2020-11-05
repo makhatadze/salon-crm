@@ -7,31 +7,31 @@
        @csrf
        <div class="grid grid-cols-4 w-full">
         <div class="col-span-1 p-2">
-            <label class="font-bold font-caps text-xs text-gray-700">შეყვიდის ტიპი</label>
+            <label class="font-bold font-caps text-xs text-gray-700">@lang('addpurchase.purchasetype')</label>
             <div class="mt-2">
                 <select required id="purchasetype" data-placeholder="აირჩიეთ შეტყიდვის ტიპი" name="purchase_type" class="font-helvetica select2 w-full" >
-                    <option value="overhead" selected>ზედნადები</option>
-                    <option value="purchase">შესყიდვის აქტით</option>
+                    <option value="overhead" selected>@lang('addpurchase.zednadebiname')</option>
+                    <option value="purchase">@lang('addpurchase.nasyidobaname')</option>
                 </select>
             </div>
         </div>
         <div class="col-span-1 p-2" id="overhead_number">
-            <label class="font-bold font-caps text-xs text-gray-700">ზედნადების ნომერი</label>
+            <label class="font-bold font-caps text-xs text-gray-700">@lang('addpurchase.zednadebi')</label>
             <input  type="text"   autocomplete="off" class="input w-full border mt-2" name="overhead_number">
         </div>
         <div class="col-span-1 p-2" id="purchase_number" style="display: none">
-            <label class="font-bold font-caps text-xs text-gray-700">შესყიდვის ნომერი</label>
+            <label class="font-bold font-caps text-xs text-gray-700">@lang('addpurchase.nasyidoba')</label>
             <input  type="text"  autocomplete="off" class="input w-full border mt-2" name="purchases_number">
         </div>
         <div class="col-span-1 p-2" >
             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="distributor_id">
-              მომწოდებელი
+                @lang('addpurchase.dist')
             </label>
             <div class="relative">
               <select class="block font-normal text-xs appearance-none w-full border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none bg-white focus:border-gray-500" required id="distributor_id" name="distributor_id">
-                <option value="">აირჩიეთ</option>
+                <option value="">@lang('addpurchase.choose')</option>
                 @foreach ($distributors as $dist)
-                    <option value="{{$dist->id}}">{{$dist->{"name_".app()->getLocale()} }}</option>
+                    <option value="{{$dist->id}}">{{$dist->name_ge }}</option>
                 @endforeach
               </select>
               <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -46,7 +46,7 @@
           </div>
 
         <div class="col-span-1 p-2">
-            <label class="font-bold font-caps text-xs text-gray-700">შეძენის თარიღი</label>
+            <label class="font-bold font-caps text-xs text-gray-700">@lang('addpurchase.date')</label>
             <input required class="mt-2 datepicker input border block mx-auto" name="purchase_date">
             
             @error('purchase_date')
@@ -59,12 +59,12 @@
     
    <div class="flex items-center text-gray-700 p-2 mt-3">
     <input  type="checkbox" class="input border border-black mr-2" id="dgg" name="dgg">
-    <label class="cursor-pointer select-none font-normal text-xs" for="dgg">დამატებული ღირებულების გადასახადი (დღგ)</label>
+    <label class="cursor-pointer select-none font-normal text-xs" for="dgg">@lang('addpurchase.dgg')</label>
     </div>
 <hr>
     <!-- Field -->
     <div class="py-3 justify-between flex items-center">
-        <span class="text-sm font-medium">დაამატეთ ერთეული</span>
+        <span class="text-sm font-medium">@lang('addpurchase.addunit')</span>
         <button type="button" id="addunit" class="dropdown-toggle button px-2 box text-gray-700 hover:bg-blue-900 hover:text-white">
             <span class="w-5 h-5 flex items-center justify-center"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus w-4 h-4"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg> </span>
         </button>
@@ -82,7 +82,7 @@
     </div>
 
     
-    <input type="submit" class=" mt-2 button text-white bg-theme-1 shadow-md mr-1 font-caps font-bold text-xs" value="ატვირთვა">
+    <input type="submit" class=" mt-2 button text-white bg-theme-1 shadow-md mr-1 font-caps font-bold text-xs" value="@lang('addpurchase.upload')">
 
 
    </form>
@@ -244,8 +244,8 @@
                         let html = '';
                         result.data.forEach(function(data){
                             html += `
-                            <li class="mt-2 hover:bg-indigo-500 hover:text-white p-1 cursor-pointer" onclick="selectdist(`+data['id']+`, '`+data['name_{{app()->getLocale()}}']+`')">
-                            `+data['name_{{app()->getLocale()}}']+`
+                            <li class="mt-2 hover:bg-indigo-500 hover:text-white p-1 cursor-pointer" onclick="selectdist(`+data['id']+`, '`+data['name_ge']+`')">
+                            `+data['name_ge']+`
                             </li>
                             `;
                         });
@@ -277,7 +277,7 @@
                     if(result.status == true){
                         let html = '';
                         result.data.forEach(function(data){
-                            html += `<option value="`+data['id']+`">`+data['name_{{app()->getLocale()}}']+`</option>`;
+                            html += `<option value="`+data['id']+`">`+data['name_ge']+`</option>`;
                         });
                         $('#showdepartments').html('');
                         $('#showdepartments').html(html);
@@ -296,12 +296,12 @@
             <div class="flex flex-wrap -mx-3 mb-6">
                 <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
                     <label class="font-bold font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
-                      საშუალების ტიპი
+                        @lang('addpurchase.type')
                     </label>
                     <div class="relative">
                       <select required name="ability_type[]" class="font-medium text-xs block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
-                        <option value="1">ძირითადი საშუალება</option>
-                        <option value="2">ხარჯმასალა</option>
+                        <option value="1">@lang('addpurchase.ziritadi')</option>
+                        <option value="2">@lang('addpurchase.xarjmasala')</option>
                       </select>
                       <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                         <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
@@ -310,20 +310,18 @@
                   </div>
                   <div class="w-full md:w-1/3 px-3">
                     <label class="font-bold font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
-                      დასახელება
+                        @lang('addpurchase.dasaxeleba')
                     </label>
-                    <input required autocomplete="off" name="title[]" class="font-medium text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="text" placeholder="დასახელება">
+                    <input required autocomplete="off" name="title[]" class="font-medium text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="text" placeholder="@lang('addpurchase.dasaxeleba')">
                   </div>
                   <div class="w-full md:w-1/3 px-3">
                     <div>
-                        <label for="price" class="block  leading-5 font-medium text-gray-700 font-bold font-caps text-xs">ფასი</label>
+                        <label for="price" class="block  leading-5 font-medium text-gray-700 font-bold font-caps text-xs">@lang('addpurchase.price')</label>
                         <div class="mt-1 relative rounded-md shadow-sm">
                           <input name="unit_price[]" type="number" min="0" step="0.01" class="block font-medium text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="xxx.xx">
                           <div class="absolute inset-y-0 right-0 flex items-center">
                             <select name="currency[]" aria-label="Currency" class="form-select h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm sm:leading-5">
-                                <option value="gel" >GEL</option>
-                              <option value="usd" >USD</option>
-                              <option value="eur" >EUR</option>
+                                <option value="gel" >@lang('money.slug')</option>
                             </select>
                           </div>
                         </div>
@@ -331,13 +329,13 @@
                       </div>
                       <div class="w-full md:w-1/4 px-3 mb-6 mt-3 md:mb-0">
                         <label class="font-bold font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
-                          ზომის ერთეული
+                            @lang('addpurchase.units')
                         </label>
                         <div class="relative">
                           <select required name="unit[]" class="block font-medium text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
-                            <option value="unit" selected >ცალი</option>
-                            <option value="gram">გრამი</option>
-                            <option value="metre">სანტიმეტრი</option>
+                            <option value="unit" selected >@lang('addpurchase.unit')</option>
+                            <option value="gram">@lang('addpurchase.gram')</option>
+                            <option value="metre">@lang('addpurchase.metre')</option>
                           </select>
                           <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                             <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
@@ -346,11 +344,11 @@
                       </div>
                       <div class="w-full md:w-1/4 mt-3 px-3">
                     <label class="font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="brand`+randomid+`">
-                        ბრენდი
+                        @lang('addpurchase.brand')
                         </label>
                         <div class="relative">
                         <select name="brand[]" required class="brands font-normal text-xs block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="brand`+randomid+`">
-                            <option value="">აირჩიეთ</option>
+                            <option value="">@lang('addpurchase.choose')</option>
                             
                         </select>
                         <div x-data="{modal:false}" class=" absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -362,13 +360,13 @@
                             <x-modal x-show="modal">
                                 <div class="w-full mb-6 md:mb-0">
                                 <label class="font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="brandcat`+randomid+`">
-                                    კატეგორია
+                                    @lang('addpurchase.category')
                                 </label>
                                 <div class="relative">
                                     <select class="font-normal text-xs block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="brandcat`+randomid+`">
-                                    <option value="">აირჩიეთ</option>
+                                    <option value="">@lang('addpurchase.choose')</option>
                                     @foreach ($categories as $cat)
-                                        <optgroup label="{{$cat->{'title_'.app()->getLocale()} }}">
+                                        <optgroup label="{{$cat->title_ge }}">
                                           @foreach($cat->subcategories as $subcat)
                                             <option value="{{$subcat->id}}">{{$subcat->name }}</option>
                                           @endforeach
@@ -383,29 +381,29 @@
                                 <div class="flex flex-wrap -mx-3 mt-3 mb-6">
                                 <div class="w-full px-3">
                                     <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="brandname`+randomid+`">
-                                    ბრენდის სახელი
+                                        @lang('addpurchase.brandname')
                                     </label>
-                                    <input class="ont-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="brandname`+randomid+`" type="text" placeholder="დასახელება">
+                                    <input class="ont-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="brandname`+randomid+`" type="text" placeholder="@lang('addpurchase.dasaxeleba')">
                                 </div>
                                 </div>
-                                <button @click="modal = false" type="button" onclick="addNewBrand(`+randomid+`)" class="font-bold text-xs text-white font-caps bg-indigo-500 w-full p-3 text-center"> დამატება</button>
+                                <button @click="modal = false" type="button" onclick="addNewBrand(`+randomid+`)" class="font-bold text-xs text-white font-caps bg-indigo-500 w-full p-3 text-center"> @lang('addpurchase.add')</button>
                             </x-modal>
                         </div>
                         </div>
                     </div>
               <div class="w-full md:w-1/4 mt-3 px-3">
                 <label class="font-bold font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
-                  რაოდენობა
+                    @lang('addpurchase.amout')
                 </label>
                 <input required autocomplete="off" name="quantity[]" class="font-medium text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="number" min="0" step="1" placeholder="xxx">
               </div>
               <div class="w-full md:w-1/4 px-3 mb-6 mt-3 md:mb-0">
                 <label class="font-bold font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
-                  საწყობი
+                    @lang('addpurchase.storage')
                 </label>
                 <div class="relative">
                   <select required name="storage[]" class="storages block font-medium text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
-                   <option value="">აირჩიეთ</option>
+                   <option value="">@lang('addpurchase.choose')</option>
                   </select>
                   
                   <div x-data="{modal:false}" class=" absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -418,19 +416,19 @@
                             <div class="flex flex-wrap -mx-3 mt-3 mb-6">
                                 <div class="w-full px-3">
                                     <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="storagename`+randomid+`">
-                                    საწყობის სახელი
+                                        @lang('addpurchase.storagename')
                                     </label>
-                                    <input class="ont-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="storagename`+randomid+`" type="text" placeholder="დასახელება">
+                                    <input class="ont-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="storagename`+randomid+`" type="text" placeholder="@lang('addpurchase.dasaxeleba')">
                                 </div>
                             </div>
-                            <button @click="modal = false" type="button" onclick="addNewStorage(`+randomid+`)" class="font-bold text-xs text-white font-caps bg-indigo-500 w-full p-3 text-center"> დამატება</button>
+                            <button @click="modal = false" type="button" onclick="addNewStorage(`+randomid+`)" class="font-bold text-xs text-white font-caps bg-indigo-500 w-full p-3 text-center"> @lang('addpurchase.add')</button>
                         </x-modal>
                     </div>
                 </div>
               </div>
              
             <div class="w-full px-4 mt-2">
-                <label class="font-bold font-caps text-xs text-gray-700">აღწერა ქართულად <span class="text-red-500">*</span> </label>
+                <label class="font-bold font-caps text-xs text-gray-700">@lang('addpurchase.desc') @lang('language.main') <span class="text-red-500">*</span> </label>
                 <div class="mt-2 font-medium text-xs">
                     <textarea required data-feature="basic" class="summernote" name="body[]" style="display: none;"></textarea>
                 </div>

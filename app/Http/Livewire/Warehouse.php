@@ -52,7 +52,7 @@ class Warehouse extends Component
         $product =  Product::findOrFail($this->updateId);
         $this->error = "";
         if($this->typeamout > $product->stock){
-            $this->error = "არჩეული რაოდენობა მეტია პროდუქტის რაოდენობაზე!";
+            $this->error = __('warehouse.warning');
         }
     }
     public function update(Product $product)
@@ -69,16 +69,16 @@ class Warehouse extends Component
     {
         $products = Product::where([
             ['warehouse', true], 
-            ['title_'.app()->getLocale(), 'LIKE', '%'.$this->name.'%'], 
+            ['title_ge', 'LIKE', '%'.$this->name.'%'], 
             ['unit', 'LIKE', '%'.$this->unit.'%'], 
             ['stock', '<=', floatval($this->amout)], 
             ['storage_id', 'like', '%'.$this->storage.'%'],
-            ['writedown', 0]])
-        ->whereBetween('buy_price', [$this->pricefrom*100 != "" ? $this->pricefrom*100 : 1, $this->pricetill != "" ? $this->pricetill*100 : 1])
-        ->paginate(15);
-        $departments = Department::all();
-        $storages = Storage::all();
-        $users = User::Permission('admin', 'user')->get();
-        return view('livewire.warehouse', compact('products', 'storages', 'departments', 'users'));
+            ['writedown', true]])
+            ->whereBetween('buy_price', [$this->pricefrom*100 != "" ? $this->pricefrom*100 : 1, $this->pricetill != "" ? $this->pricetill*100 : 1])
+            ->paginate(15);
+            $departments = Department::all();
+            $storages = Storage::all();
+            $users = User::Permission('admin', 'user')->get();
+            return view('livewire.warehouse', compact('products', 'storages', 'departments', 'users'));
     }
 }

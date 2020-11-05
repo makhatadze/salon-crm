@@ -178,7 +178,7 @@
                   <label class="text-left block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
                     ცვეთის ფასი
                   </label>
-                  <input value="{{number_format(($item->buy_price/100)/$item->expluatation_days,7)}}"
+                  <input value="{{number_format(($item->buy_price/100)/($item->expluatation_days == 0 ? 1 : $item->expluatation_days),7)}}"
                   class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="text" readonly>
                   
                </div>

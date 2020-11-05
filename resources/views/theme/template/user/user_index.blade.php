@@ -1,12 +1,12 @@
 @extends('theme.layout.layout')
 @section('content')
     <h2 class="intro-y text-lg font-medium mt-10 font-helvetica">
-        თანამშრომლები
+        @lang('employee.employees')
     </h2>
 
     <div class="intro-y col-span-12 flex flex-wrap sm:flex-no-wrap items-center mt-2 user-header">
-        <a href="{{ route('ActionUserAdd') }}" class="button text-white bg-theme-1 shadow-md mr-2 font-helvetica">ახალი
-            მომხმარებლის რეგისტრაცია</a>
+        <a href="{{ route('ActionUserAdd') }}" class="button text-white bg-theme-1 shadow-md mr-2 font-bold">
+            @lang('employee.register')</a>
         <div class="hidden md:block mx-auto text-gray-600"></div>
         <div class="w-full sm:w-auto mt-3 mr-5 sm:mt-0 sm:ml-auto md:ml-0">
             <select class="w-20 input box mt-3 sm:mt-0" id="user-count">
@@ -20,7 +20,7 @@
 
             <div class="w-56 relative text-gray-700">
                 <input type="text" name="search" class="input w-56 box pr-10 placeholder-theme-13 font-helvetica"
-                       placeholder="ძებნა...">
+                       placeholder="@lang('employee.search')...">
                 <i class="w-4 h-4 absolute my-auto inset-y-0 mr-3 right-0" data-feather="search"></i>
             </div>
         </div>
@@ -42,14 +42,9 @@
                         <div class="lg:ml-2 lg:mr-auto text-center lg:text-left mt-3 lg:mt-0">
                             <a href="{{route('ShowUserProfile', $user->id)}}"class="font-bolder text-xs text-gray-700 uppercase font-caps">{{$user->profile->first_name .' '. $user->profile->last_name}}</a><br>
                             @if($user->profile)
-                            @if($user->profile->salary > 0) <span class="text-xs font-normal">ხელფასი:  {{$user->profile->salary}} <sup>₾</sup></span> <br> @endif
-                            <span class="text-xs font-normal">გამოიმუშავა: {{$user->getEarnedMoney() ? round($user->getEarnedMoney(), 2) : 0 }} <sup>₾</sup></span> <br>
-                            @if($user->salary)
-                                <span class="text-xs font-normal">
-                                    ბოლო ხელფასი: 
-                                    {{Carbon\Carbon::parse($user->created_at)->isoFormat('Y-MM-DD')}} 
-                                </span>
-                            @endif
+                            @if($user->profile->salary > 0) <span class="text-xs font-normal">@lang('employee.bank'):  {{$user->profile->salary}} <sup>₾</sup></span> <br> @endif
+                            <span class="text-xs font-normal">@lang('employee.earn'): {{$user->getEarnedMoney() ? round($user->getEarnedMoney(), 2) : 0 }} <sup>₾</sup></span> <br>
+
                             @endif
                         </div>
                         <div class="flex mt-4 lg:mt-0">

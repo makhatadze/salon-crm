@@ -9,7 +9,6 @@
         <!-- Table -->
         <div class="col-span-12 xxl:col-span-9 grid grid-cols-12 gap-6">
             
-            
             @foreach ($users as $user)
                 <div class="col-span-4 p-2">
                     <div class="box p-4">
@@ -25,7 +24,7 @@
                                 </a>
                             </div>
                                 @if ($user->isUser())
-                                    <span class="font-normal text-xs text-gray-700">სტილისტი</span>
+                                    <span class="font-normal text-xs text-gray-700">{{ $user->getRoleNames()->first() == "user" ? __('homepage.employee') : $user->getRoleNames()->first() }}</span>
                                 @endif
                         </div>
                     <div class="relative" id="div{{$user->id}}" onmouseover="$('#mouse{{$user->id}}').css('display', 'block');" onmouseout="$('#mouse{{$user->id}}').css('display', 'none');"  onmousemove="dragtime({{$user->id}}, event)">
@@ -41,21 +40,21 @@
                                         @csrf
                                         <div class="flex flex-wrap -mx-3 mb-2">
                                             <div class="w-full md:w-1/2 px-3 mb-2 md:mb-0">
-                                          <input onkeyup="thisclientname({{$user->id}})" class=" appearance-none block font-normal text-xs w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="full_name_ge{{$user->id}}" type="text" placeholder="კლიენტის სახელი" name="full_name_ge">
+                                          <input onkeyup="thisclientname({{$user->id}})" class=" appearance-none block font-normal text-xs w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="full_name_ge{{$user->id}}" type="text" placeholder="@lang('homepage.client_name')" name="full_name_ge">
                                         </div>
                                         <div class="w-full md:w-1/2 px-3">
-                                        <input minlength="9" pattern=".{9,9}" onkeyup="this.value = this.value.replace(/[^0-9\.]/g, '');" maxlength="9" class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="client_number{{$user->id}}" type="text" placeholder="კლიენტის ნომერი" name="client_number">
+                                        <input minlength="9" pattern=".{9,9}" onkeyup="this.value = this.value.replace(/[^0-9\.]/g, '');" maxlength="9" class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="client_number{{$user->id}}" type="text" placeholder="@lang('homepage.client_phone')" name="client_number">
                                         </div>
                                       </div>
-                                      <p class="font-normal text-xs mb-2">დაარეგისტრირეთ ან აირჩიეთ კლიენტი</p>
+                                      <p class="font-normal text-xs mb-2">@lang('homepage.register_or_choose_client')</p>
                                       <div class="flex flex-wrap -mx-3 mb-6">
                                         <div class="w-full  px-3 mb-6 md:mb-0">
                                         <div class="relative">
                                         <select required name="client" id="selectclient{{$user->id}}" class="block appearance-none font-normal text-xs w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                                            <option value="">აირჩიეთ კლიენტი</option>
+                                            <option value="">@lang('homepage.choose_client')</option>
                                             @if ($clients)
                                             @foreach ($clients as $client)
-                                                <option value="{{$client->id}}" >{{$client->{"full_name_".app()->getLocale()} }}</option>
+                                                <option value="{{$client->id}}" >{{$client->full_name_ge }}</option>
                                             @endforeach
                                             @endif
                                         </select>
@@ -70,7 +69,7 @@
                                         <div class="w-full px-3">
                                           <div class="flex justify-between items-center">
                                               <h6 class="font-bold">
-                                                  სერვისის დამატება
+                                                @lang('homepage.add_service')
                                               </h6>
                                             <button id="service{{$user->id}}" data-userid="{{$user->id}}" class="addnewservice bg-gray-200 font-bold p-2 rounded-md h-8 w-8 focus:outline-none flex items-center justify-center" type="button">+</button>
                                           </div>
@@ -81,9 +80,9 @@
                                             <div class="flex items-center justify-center relative">
                                             <input type="hidden" name="personal" id="personal{{$user->id}}" value="{{$user->id}}">
                                               <select required onchange="selectservice({{$user->id}})" name="service[]" id="getservice{{$user->id}}" class="bg-gray-200 block text-xs font-normal appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                                                <option value="">აირჩიეთ</option>
+                                                <option value="">@lang('homepage.choose')</option>
                                                 @foreach($user->services($user->id) as $serv)
-                                                <option value="{{$serv->id}}">{{ $serv->{'title_'.app()->getLocale()} }}</option>
+                                                <option value="{{$serv->id}}">{{ $serv->title_ge }}</option>
                                                 @endforeach
                                               </select>
                                               <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -108,7 +107,7 @@
                                           </div>
                                           <div class="w-full md:w-1/3 px-3 flex items-center justify-center">
                                             <div class="flex items-center">
-                                                <span class="font-normal text-xs">₾</span><input required name="price[]" id="price{{$user->id}}" type="number" min="0" step="0.01" class="bg-gray-200 w-16 text-sm ml-2 font-bolder" value="30">
+                                                <span class="font-normal text-xs">@lang('money.icon')</span><input required name="price[]" id="price{{$user->id}}" type="number" min="0" step="0.01" class="bg-gray-200 w-16 text-sm ml-2 font-bolder" value="30">
                                             </div>
                                           </div>
                                     </div>
@@ -118,7 +117,7 @@
                                       </div>
                                       <div class="mt-3 w-full ">
                                           <button class="w-full py-3  text-center bg-indigo-500 text-white font-bold">
-                                              დამატება
+                                            @lang('homepage.submit')
                                           </button>
                                       </div>
                                     </form>
@@ -157,7 +156,7 @@
                                                     @endif
                                                     <div class="ml-3">
                                                             <h6 class="font-bold text-xs">
-                                                                {{$item->clinetserviceable->{"full_name_".app()->getLocale()} }}
+                                                                {{$item->clinetserviceable->full_name_ge }}
                                                             </h6>
                                                         <span class="text-xs font-normal">
                                                             {{$item->clinetserviceable->number }}
@@ -182,11 +181,11 @@
                                                         <div class="w-full px-3 mb-2">
                                                         <label class=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="phone">
                                                             <h6 class="font-caps">
-                                                                ნომერი
+                                                                @lang('homepage.phone')
                                                             </h6> 
                                                         </label>
                                                         <input name="phone" value="{{$item->clinetserviceable->number}}" readonly required class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" onkeyup="this.value = this.value.replace(/[^0-9\.]/g, '');" id="phone" type="text" minlength="9" maxlength="9" placeholder="555 11 22 33">
-                                                        <small class="font-normal">გაგზავნამდე გადაამოწმეთ ნომერი</small> 
+                                                        <small class="font-normal">@lang('homepage.check_before_send')</small> 
                                                         @error('phone')
                                                             <p class="font-normal text-xs text-red-500">
                                                                 {{$message}}
@@ -195,7 +194,7 @@
                                                     </div>
                                                         <div class="w-full px-3">
                                                             <label class="font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="text">
-                                                            ტექსტი
+                                                                @lang('homepage.text')
                                                             </label>
                                                             <textarea name="text" id="text" cols="30" rows="5" class="appearance-none resize-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"></textarea>
                                                             @error('text')
@@ -205,7 +204,8 @@
                                                             @enderror
                                                         </div>
                                                         <div class="px-3 mt-2">
-                                                            <button type="submit" class="w-full bg-indigo-500 py-3 px-4 text-white font-bold font-caps text-xs">გაგზავნა</button>
+                                                            <button type="submit" class="w-full bg-indigo-500 py-3 px-4 text-white font-bold font-caps text-xs">
+                                                                @lang('homepage.send')</button>
                                                         </div>
                                                     </form>
                                                 </div>
@@ -214,23 +214,21 @@
                                     <div class="modal__content p-10 text-center">
                                         <div class="flex justify-between my-3">
                                             <div class="w-full md:w-1/3 text-left font-bold text-xs px-3 mb-6 md:mb-0">
-                                                <small class="font-normal text-xs">სახელი</small> <br>
+                                                <small class="font-normal text-xs">@lang('homepage.name')</small> <br>
                                                 <a href="/clients/edit/{{$item->clinetserviceable->id}}">
-                                                     {{$item->service->{"title_".app()->getLocale()} }}
+                                                     {{$item->service->title_ge }}
                                                 </a>
                                             </div>
                                             <div class="w-full md:w-1/3 text-left font-bold text-xs px-3 mb-6 md:mb-0">
-                                                <small class="font-normal text-xs">თანხა</small> <br>
+                                                <small class="font-normal text-xs">@lang('homepage.price')</small> <br>
                                                 <span class="font-bold text-xs">{{$item->new_price/100}}
-                                                    @if ($item->service->currency_type == "gel") ₾
-                                                    @elseif ($item->service->currency_type == "usd") $
-                                                    @elseif ($item->service->currency_type == "eur") €
+                                                    @if ($item->service->currency_type == "gel") @lang('money.icon')
                                                     
                                                     @endif
                                                 </span> 
                                             </div>
                                             <div class="w-full md:w-1/3 text-left font-bold text-xs px-3 mb-6 md:mb-0">
-                                                <small class="font-normal text-xs">ხანგრძლივობა</small> <br>
+                                                <small class="font-normal text-xs">@lang('homepage.duration')</small> <br>
                                                 {{Carbon\Carbon::parse($item->session_start_time)->isoFormat('h:m') .' - '. $item->getEndTime()}}
                                             </div>
                                         </div>
@@ -241,11 +239,11 @@
                                          <div class="w-full px-3 mb-6 md:mb-0">
                                              <div class="relative">
                                              <input type="hidden" name="pay_id" value="{{$item->id}}">
-                                               <select required onchange="setpaymethod({{$item->id}}, this.value)" name="pay_method" class="block font-normal text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
-                                                <option value="">გადახდის მეთოდი</option>
-                                                <option value="consignation">კონსიგნაცია</option>
+                                               <select required onchange="setpaymethod({{$item->id}}, this.value)" name="pay_method" class="block font-normal text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
+                                                <option value="">@lang('homepage.pay_method')</option>
+                                                <option value="consignation">@lang('homepage.consignation')</option>
                                                  @foreach ($paymethods as $method)
-                                               <option value="{{$method->id}}">{{$method->{"name_".app()->getLocale()} }}</option>
+                                               <option value="{{$method->id}}">{{$method->name_ge}}</option>
                                                  @endforeach
                                                </select>
                                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -254,25 +252,25 @@
                                              </div>
                                            </div>
                                             <div id="consignation{{$item->id}}" style="display: none" class="w-full px-3 mb-6 md:mb-0">
-                                           <input class="text-xs cursor-pointer font-bold font-caps appearance-none block w-full bg-gray-200 text-gray-800 border rounded py-3 px-4" type="number" min="0" step="0.01" name="paid" max="{{number_format($item->new_price/100, 2)}}" value="დადასტურება">
+                                           <input class="text-xs cursor-pointer font-bold font-caps appearance-none block w-full bg-gray-200 text-gray-800 border rounded py-3 px-4" type="number" min="0" step="0.01" name="paid" max="{{number_format($item->new_price/100, 2)}}" value="@lang('homepage.submit')">
                                            </div>
                                            <div class="w-full px-3 mb-6 md:mb-0">
-                                             <input class="text-xs cursor-pointer font-bold font-caps appearance-none block w-full bg-indigo-500 text-white border rounded py-3 px-4" type="submit" value="დადასტურება">
+                                             <input class="text-xs cursor-pointer font-bold font-caps appearance-none block w-full bg-indigo-500 text-white border rounded py-3 px-4" type="submit" value="@lang('homepage.submit')">
                                            </div>
                                      </div>
                                     </form>
                                     @else 
                                     <div class="flex">
                                         <div class="w-full md:w-1/3 text-left font-bold text-xs px-3 mb-6 md:mb-0">
-                                            <small class="font-normal text-xs">მეთოდი</small> <br>
-                                            {{ $item->pay_method == "consignation" ? 'კონსიგნაცია' : $item->pay_method }}
+                                            <small class="font-normal text-xs">@lang('homepage.pay_method')</small> <br>
+                                            {{ $item->pay_method == "consignation" ? __('homepage.consignation') : $item->pay_method }}
                                         </div>
                                         <div class="w-full md:w-1/3 text-left font-bold text-xs px-3 mb-6 md:mb-0">
-                                            <small class="font-normal text-xs">მოვიდა</small> <br>
+                                            <small class="font-normal text-xs">@lang('homepage.come')</small> <br>
                                             {{ Carbon\Carbon::parse($item->session_endtime)->isoFormat('Y-MM-DD') }}
                                         </div>
                                         <div class="w-full md:w-1/3 text-left font-bold text-xs px-3 mb-6 md:mb-0">
-                                            <small class="font-normal text-xs">ჩაწერა</small> <br>
+                                            <small class="font-normal text-xs">@lang('homepage.created')</small> <br>
                                             {{ Carbon\Carbon::parse($item->created_at)->isoFormat('Y-MM-DD') }}
                                         </div>
                                     </div>
@@ -283,7 +281,7 @@
                                                 <input class="text-xs cursor-pointer font-bold font-caps appearance-none block w-full bg-gray-200 text-gray-800 border rounded py-3 px-4" type="number" min="0" step="0.01" name="paid" max="{{number_format($item->new_price/100, 2)}}" value="{{number_format($item->paid/100, 2)}}">
                                             </div>
                                             <div class="w-full px-3 mb-6 md:mb-0">
-                                                <input class="text-xs cursor-pointer font-bold font-caps appearance-none block w-full bg-indigo-500 text-white border rounded py-3 px-4" type="submit" value="დადასტურება">
+                                                <input class="text-xs cursor-pointer font-bold font-caps appearance-none block w-full bg-indigo-500 text-white border rounded py-3 px-4" type="submit" value="@lang('homepage.submit')">
                                             </div>
                                         </form>
                                     @endif
@@ -366,16 +364,16 @@
         </div>
     <div class="col-span-12 xxl:col-span-3 -mb-10 pb-10">
         <div class="mt-4 px-4">
-            <h6 class="font-bold font-caps text-gray-700 text-xs">ფილტრი</h6>
+            <h6 class="font-bold font-caps text-gray-700 text-xs">@lang('homepage.filter')</h6>
             <div class="box mt-5 p-2">
                 <form action="">
                     <div class="w-full mb-6 md:mb-0">
                         <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-state">
-                          თანამშრომლები
+                            @lang('homepage.employee')
                         </label>
                         <div class="relative">
                           <select name="users" class="block font-normal text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
-                            <option value="">აირჩიეთ თანამშრომელი</option>
+                            <option value="">@lang('homepage.choose_employee')</option>
                             @foreach ($alluser as $user)
                                 @if ($selecteduser == $user->id)
                                 <option selected value="{{$user->id}}">{{$user->profile->first_name .' '. $user->profile->last_name}}</option>
@@ -391,14 +389,14 @@
                       </div>
                     <div class="mt-3">
                         <label class="block uppercase tracking-wide mb-2 text-gray-700 text-xs font-bold mb-2">
-                            თარიღი
+                            @lang('homepage.date')
                           </label>
                           <input @if(isset($date)) value="{{$date}}" @endif  name="date" class=" font-normal text-xs datepicker input w-full appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"> 
                           
                     </div>
                         <div class="flex">
                             <button class="w-3/4 mt-2 block appearance-none font-bold font-caps bg-indigo-500 text-xs text-white bg-gray-200 border border-gray-200  py-3 px-4 rounded leading-tight">
-                                ძებნა
+                                @lang('homepage.search')
                               </button>   
                               <a href="{{url()->current()}}" class="w-1/4 mt-2 block appearance-none flex items-center justify-center font-bold font-caps bg-red-500 text-xs text-white bg-gray-200 border border-gray-200  py-3 px-4  rounded leading-tight">
                                 <svg width="1.3em" height="1.3em" viewBox="0 0 16 16" class="bi bi-x-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -449,7 +447,7 @@
                                 <div class="flex items-center justify-center relative">
                                 <input type="hidden" name="personal" id="personal`+$id+`" value="`+getid+`">
                                     <select required name="service[]" id="getservice`+$id+`" class="block text-xs font-normal appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                                    <option>აირჩიეთ</option>
+                                    <option>@lang('homepage.choose')</option>
                                     `+data.html+`
                                     </select>
                                     <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -474,7 +472,7 @@
                                 </div>
                                 <div class="w-full md:w-1/3 px-3 flex items-center justify-center">
                                 <div class="flex items-center">
-                                    <span class="font-normal text-xs">₾</span><input required name="price[]" id="price'`+$id+`'" type="number" min="0" step="0.01" class="bg-gray-200 w-16 text-sm ml-2 font-bolder" value="30">
+                                    <span class="font-normal text-xs">@lang('money.icon')</span><input required name="price[]" id="price'`+$id+`'" type="number" min="0" step="0.01" class="bg-gray-200 w-16 text-sm ml-2 font-bolder" value="30">
                                 </div>
                                 </div>
                         </div>

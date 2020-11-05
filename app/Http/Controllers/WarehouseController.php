@@ -43,6 +43,7 @@ class WarehouseController extends Controller
                     $newprod->stock = 1;
                     $newprod->price = $request->sell_price*100;
                     $newprod->expluatation_date = $date;
+                    $newprod->fromwarehouse = true;
                     $newprod->department_id = $request->dept_id;
                     $newprod->user_id = $request->user_id;
                     $newprod->save();
@@ -50,7 +51,7 @@ class WarehouseController extends Controller
                 $thisprod = $prod;
                 if($thisprod->stock == $request->typeamout){
                     $thisprod->stock = $thisprod->stock - $request->typeamout;
-                    $$thisprod->writedown = 0;
+                    $thisprod->writedown = 0;
                     $thisprod->save();
                 }else{
                     $thisprod->stock = $thisprod->stock - $request->typeamout;
@@ -66,12 +67,13 @@ class WarehouseController extends Controller
             $newprod->price = $request->sell_price*100;
             $newprod->user_id = $request->user_id;
             $newprod->stock = $request->typeamout;
+            $newprod->fromwarehouse = true;
             $newprod->save();
 
             $thisprod = $prod;
             if($thisprod->stock == $request->typeamout){
                 $thisprod->stock = $thisprod->stock - $request->typeamout;
-                $$thisprod->writedown = 0;
+                $thisprod->writedown = 0;
                 $thisprod->save();
             }else{
                 $thisprod->stock = $thisprod->stock - $request->typeamout;

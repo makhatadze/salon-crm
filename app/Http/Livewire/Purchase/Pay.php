@@ -17,7 +17,6 @@ class Pay extends Component
 
     public function mount($purchase)
     {
-        $this->max = $this->purchase->getPrice() - $this->purchase->paidpurchases()->sum('paid'); 
         $this->purchase = $purchase;
     }
     protected $rules = [
@@ -26,9 +25,9 @@ class Pay extends Component
     ];
     public function payPurchase()
     {
-        if ($this->paid > $this->max/100) {
+        if ($this->paid > ($this->purchase->getPrice() - $this->purchase->paidpurchases()->sum('paid'))/100) {
             $error = \Illuminate\Validation\ValidationException::withMessages([
-                'paid' => ['The paid may not be greater than '.$this->max/100],
+                'paid' => ['The paid may not be greater than '.number_format(($this->purchase->getPrice() - $this->purchase->paid)/100,2)],
              ]);
              throw $error;
         }

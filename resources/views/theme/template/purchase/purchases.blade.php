@@ -2,13 +2,13 @@
 
 @section('content')
 <h2 class="intro-y text-lg font-medium mt-10 font-medium font-caps">
-    შესყიდვების ჩამონათვალი
+    @lang('purchase.title')
 </h2>
 <div class="grid grid-cols-12 gap-6 mt-5">
     <div class="intro-y col-span-12 flex flex-wrap sm:flex-no-wrap items-center mt-2">
-        <a href="/purchases/create" class="button text-white bg-theme-1 shadow-md mr-2 font-bold font-caps text-xs">დაამატეთ ახალი</a>
+        <a href="/purchases/create" class="button text-white bg-theme-1 shadow-md mr-2 font-bold font-caps text-xs">@lang('purchase.add_new')</a>
    
-        <div class="hidden md:block mx-auto text-gray-600 font-normal text-xs">ნაჩვენებია {{$purchases->count()}}</div>
+        <div class="hidden md:block mx-auto text-gray-600 font-normal text-xs">@lang('purchase.see') {{$purchases->count()}}</div>
         <div class="w-full sm:w-auto mt-3 sm:mt-0 sm:ml-auto md:ml-0">
             <div class="w-full relative text-gray-700">
                </div>
@@ -18,11 +18,11 @@
     <table class="table table-report -mt-2 col-span-12">
         <thead>
             <tr>
-                <th class="whitespace-no-wrap font-bold font-caps text-gray-700 text-xs">ნომერი</th>
-                <th class="whitespace-no-wrap font-bold font-caps text-gray-700 text-xs">ბოლო განახლება</th>
-                <th class="whitespace-no-wrap font-bold font-caps text-gray-700 text-xs">მომწოდებელი</th>
-                <th class="text-center whitespace-no-wrap font-bold font-caps text-gray-700 text-xs">ფასი</th>
-                <th class="text-center whitespace-no-wrap font-bold font-caps text-gray-700 text-xs">პრივილეგია</th>
+                <th class="whitespace-no-wrap font-bold font-caps text-gray-700 text-xs">@lang('purchase.number')</th>
+                <th class="whitespace-no-wrap font-bold font-caps text-gray-700 text-xs">@lang('purchase.update')</th>
+                <th class="whitespace-no-wrap font-bold font-caps text-gray-700 text-xs">@lang('purchase.dist')</th>
+                <th class="text-center whitespace-no-wrap font-bold font-caps text-gray-700 text-xs">@lang('purchase.price')</th>
+                <th class="text-center whitespace-no-wrap font-bold font-caps text-gray-700 text-xs">@lang('purchase.priv')</th>
             </tr>
         </thead>
         <tbody>
@@ -34,24 +34,24 @@
             <td>
               @if ($purchase->purchase_type == "overhead")
               <h6 class="font-bolder text-black">#{{$purchase->overhead_number}}</h6>
-              <small class="font-normal">ზედნადების ნომერი</small>
+              <small class="font-normal">@lang('purchase.zednadebi')</small>
               @elseif($purchase->purchase_type == "purchase")
               <h6 class="font-bolder text-black">#{{$purchase->purchase_number}}</h6>
-              <small class="font-normal">ნასყიდობის ნომერი</small>
+              <small class="font-normal">@lang('purchase.nasyidoba')</small>
               @endif
             </td>
             <td class="font-normal">
-                {{$purchase->updated_at}} <br>
+                {{$purchase->updated_at}}  <br>
                 @if ($purchase->dgg)
-                    <span class="bg-green-500 text-xs p-1 rounded font-normal font-caps text-white" >დღგ</span>
+                    <span class="bg-green-500 text-xs p-1 rounded font-normal font-caps text-white" >@lang('purchase.dgg')</span>
                 @endif
             </td>
             <td class="font-medium text-gray-800">
-              {{$purchase->distributor->{'name_'.app()->getLocale()} }} <br>
-              <small class="text-gray-600 font-normal">დავ: {{number_format(($purchase->getPrice() - $purchase->paid)/100, 2)}}</small>
+              {{$purchase->distributor->name_ge }} <br>
+              <small class="text-gray-600 font-normal">@lang('purchase.dept'): {{number_format(($purchase->getPrice() - $purchase->paid)/100, 2)}}</small>
             </td>
             <td class="text-center whitespace-no-wrap font-normal">
-                <h6>{{number_format($purchase->getPrice()/100, 2)}} ₾</h6>
+                <h6>{{number_format($purchase->getPrice()/100, 2)}} @lang('money.icon')</h6>
                 @if ($purchase->dgg)
                 <small>დღგ: {{number_format($purchase->getPrice()/100*1.8/100, 2)}}</small>
                 @endif
@@ -86,14 +86,14 @@
 </div>
 <div class="col-span-12 xxl:col-span-3 -mb-10 pb-10 px-4">
     <h6 class="mt-4 font-bold font-caps text-gray-700 text-xs">
-        ფილტრი
+      @lang('purchase.filter')
     </h6>
     <div class="box mt-4 p-2">
         <form action="" method="GET">
             <div class="flex flex-wrap -mx-3 mb-1">
                 <div class="w-full md:w-1/2 px-3 mb-4 md:mb-0">
                   <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="code">
-                    ნომერი
+                    @lang('purchase.number')
                   </label>
                   <input @if(isset($queries['code'])) value="{{$queries['code']}}" @endif class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" name="code" id="code" type="text">
                   
@@ -103,16 +103,16 @@
                 </div>
                 <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                     <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-state">
-                      მომწოდებელი
+                      @lang('purchase.dist')
                     </label>
                     <div class="relative">
                       <select name="distributor"  class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
-                        <option value="">ყველა</option>
+                        <option value="">@lang('purchase.all')</option>
                         @foreach ($distributors as $dist)
                         @if(isset($queries['distributor']) && $queries['distributor'] == $dist->id)
-                        <option value="{{$dist->id}}" selected>{{$dist->{"name_".app()->getLocale()} }}</option> 
+                        <option value="{{$dist->id}}" selected>{{$dist->name_ge }}</option> 
                         @else 
-                        <option value="{{$dist->id}}">{{$dist->{"name_".app()->getLocale()} }}</option> 
+                        <option value="{{$dist->id}}">{{$dist->name_ge }}</option> 
                         @endif
                         @endforeach
                       </select>
@@ -129,7 +129,7 @@
                 <div class="col-span-1">
                   <div class="flex items-center justify-center font-normal text-xs">
                     <input type="checkbox" @if (isset($queries['dept'])) checked @endif id="dept" name="dept">
-                    <label for="dept" class="ml-2">დავალიანება</label>
+                    <label for="dept" class="ml-2">@lang('purchase.dept')</label>
                   </div>
                 </div>
                 <div class="col-span-1 pl-3">
@@ -139,7 +139,7 @@
               </div>
               <div class="flex">
                 <button class="w-3/4 mt-2 block appearance-none font-bold font-caps bg-indigo-500 text-xs text-white bg-gray-200 border border-gray-200  py-3 px-4 rounded leading-tight">
-                    ძებნა
+                  @lang('purchase.search')
                   </button>   
                   <a href="{{url()->current()}}" class="w-1/4 mt-2 block appearance-none flex items-center justify-center font-bold font-caps bg-red-500 text-xs text-white bg-gray-200 border border-gray-200  py-3 px-4  rounded leading-tight">
                     <svg width="1.3em" height="1.3em" viewBox="0 0 16 16" class="bi bi-x-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
