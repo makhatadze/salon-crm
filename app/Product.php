@@ -28,7 +28,8 @@ class Product extends Model implements Auditable
         'buy_price',
         'department_id',
         'brand_id',
-        'currency_type' 
+        'currency_type',
+        'product_code' 
     ];
     protected $table = 'products';
     public function category(){

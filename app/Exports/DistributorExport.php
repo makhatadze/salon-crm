@@ -32,7 +32,7 @@ class DistributorExport implements FromCollection, WithHeadings
             unset($prod['description_ru']);
             unset($prod['description_en']);
             unset($prod['deleted_at']);
-            $prod->title_ge = $prod->{'title'.app()->getLocale()};
+            $prod->title_ge = $prod->title_ge;
             unset($prod['title_ru']);
             unset($prod['title_en']);
             if($prod->type == 2){
@@ -49,7 +49,7 @@ class DistributorExport implements FromCollection, WithHeadings
             }
             $prod['purchase'] = $prod->purchase->overhead_number ? $prod->purchase->overhead_number : $prod->purchase->purchase_number;
             unset($prod['purchase_id']);
-            $prod['department'] = $prod->department->{'name_'.app()->getLocale()};
+            $prod['department'] = $prod->department->name_ge;
             unset($prod['department_id']);
             unset($prod['warehouse']);
             $prod['brand'] = $prod->brand->name;

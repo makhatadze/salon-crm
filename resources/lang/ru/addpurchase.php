@@ -41,5 +41,6 @@ return [
     'nasyidobaname' => 'Покупка',
     'zednadebiname' => 'Накладные расходы',
     'desc' => 'Описание',
+    'strix' => 'Код продукта'
 
 ];

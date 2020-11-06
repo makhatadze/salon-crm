@@ -15,11 +15,11 @@
     @livewireStyles
 </head>
 
-<body class="app py-0">
+<body class="app py-0" style="background: radial-gradient(circle, rgb(0 59 124) 0%, rgb(145 109 168) 100%)">
 <div class="flex">
     @include('theme.include.mobile_menu')
     @include('theme.include.desktop_menu')
-    <div class="content overflow-auto">
+    <div class="content overflow-auto" style="background-color: #f1f5f8">
 
         {{-- Cart Modal End --}}
        <x-navbar/>

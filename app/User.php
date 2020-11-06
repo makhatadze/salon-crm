@@ -79,7 +79,7 @@ class User extends Authenticatable implements Auditable
     }
     public function services($id){
         $services = UserJob::select('services.id', 'services.title_ge', 'services.title_en', 'services.title_ru')
-                    ->where('user_id', $id)
+                    ->where([['user_id', $id], ['services.published', '1']])
                     ->join('services', 'services.id', '=', 'user_jobs.service_id')
                     ->get();
         return $services;

@@ -64,8 +64,7 @@ class Paymethods extends Component
     }
     public function render()
     {
-        $payments = PayController::where('name_'.app()->getLocale(), 'like', '%'.'%')
-        ->get();
+        $payments = PayController::all();
         return view('livewire.paymethods', compact('payments'));
     }
 }

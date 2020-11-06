@@ -41,5 +41,6 @@ return [
     'nasyidobaname' => 'Purchase',
     'zednadebiname' => 'Overhead',
     'desc' => 'Description',
+    'strix' => 'Product Code'
 
 ];

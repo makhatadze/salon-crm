@@ -16,7 +16,7 @@
                 <div>
                     <h6 class="font-bolder text-gray-800 uppercase text-xs">
                         <a href="{{route('EditClient', $client->id)}}">
-                            {{$client->{"full_name_".app()->getLocale()} }}
+                            {{$client->full_name_ge }}
                         </a>
                     </h6>
                     <span class="text-gray-600 text-xs">{{$client->number}}</span>

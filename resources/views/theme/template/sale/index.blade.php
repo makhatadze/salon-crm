@@ -10,20 +10,21 @@
                     <div class=" mt-1" >
                         <div class=" w-full  relative bg-white z-10 py-3 px-4 flex">
                             <a href="/clients/edit/{{$sale->client_id}}" class="w-3/12">
-                            <h4 class="font-bold text-xs">{{$sale->client->{"full_name_".app()->getLocale()} }}</h4>
+                                
+                            <h4 class="font-bold text-xs">{{$sale->client->full_name_ge }}</h4>
                             <div class="font-normal text-xs">
                                 <span>+995{{$sale->client->number}}</span> <br>
                                 {{-- <span>{{$sale->address}}</span> --}}
                             </div>
                             </a>
                             <div class="w-3/12">
-                            <h4 class="font-bolder text-xs"> {{number_format($sale->total/100, 2)}} <sup>₾</sup> @if($sale->pay_method == "consignation" && $sale->paid < $sale->total) <small>/ {{number_format($sale->paid/100, 2)}} <sup>₾</sup></small> @endif </h4>
-                                <span class="font-normal text-xs">რაოდენობა: {{$sale->orders->sum('quantity')}}</span> <br>
+                            <h4 class="font-bolder text-xs"> {{number_format($sale->total/100, 2)}} <sup>@lang('money.icon')</sup> @if($sale->pay_method == "consignation" && $sale->paid < $sale->total) <small>/ {{number_format($sale->paid/100, 2)}} <sup>@lang('money.icon')</sup></small> @endif </h4>
+                                <span class="font-normal text-xs">@lang('sale.amout'): {{$sale->orders->sum('quantity')}}</span> <br>
                                 {{-- <span class="font-normal text-xs">გადახდის მეთოდი: {{$sale->pay_method == 'consignation' ? 'კონსიგნაცია' : $sale->pay_method}} </span> --}}
                             </div>
                             <a href="/user/showprofile/{{$sale->seller_id}}" class="w-3/12">
                                 <h4 class="font-bolder text-xs"> {{$sale->user->profile->first_name .' '. $sale->user->profile->last_name}} </h4>
-                            <span class="font-normal text-xs">თარიღი: {{$sale->created_at}}</span>
+                            <span class="font-normal text-xs">@lang('sale.date'): {{$sale->created_at}}</span>
                             </a>
                             <div class="w-3/12 flex items-center justify-center">
                                 <a  href="{{route('showSale', $sale->id)}}" class=" p-2 rounded-md bg-gray-200"  >
@@ -55,37 +56,37 @@
             <form action="">
                 <div class="flex">
                     <div class="w-full md:w-1/2 p-2">
-                        <label for="client_name" class="font-bolder text-gray-700 text-xs">კლიენტი</label>
-                        <input type="text" @if (isset($queries['client_name'])) value="{{$queries['client_name']}}" @endif class="bg-gray-200 mt-2 text-gray-800 p-2 font-normal rounded-sm text-xs w-full" name="client_name" id="client_name" placeholder="სახელი, ნომერი">
+                        <label for="client_name" class="font-bolder text-gray-700 text-xs">@lang('sale.client')</label>
+                        <input type="text" @if (isset($queries['client_name'])) value="{{$queries['client_name']}}" @endif class="bg-gray-200 mt-2 text-gray-800 p-2 font-normal rounded-sm text-xs w-full" name="client_name" id="client_name" placeholder="@lang('sale.namenumber')">
                     </div>
                     <div class="w-full md:w-1/2 p-2">
-                        <label for="worker_name" class="font-bolder text-gray-700 text-xs">თანამშრომელი</label>
-                        <input type="text" @if (isset($queries['worker_name'])) value="{{$queries['worker_name']}}" @endif class="bg-gray-200 mt-2 text-gray-800 p-2 font-normal rounded-sm text-xs w-full" name="worker_name" id="worker_name" placeholder="სახელი, ნომერი">
+                        <label for="worker_name" class="font-bolder text-gray-700 text-xs">@lang('sale.employee')</label>
+                        <input type="text" @if (isset($queries['worker_name'])) value="{{$queries['worker_name']}}" @endif class="bg-gray-200 mt-2 text-gray-800 p-2 font-normal rounded-sm text-xs w-full" name="worker_name" id="worker_name" placeholder="@lang('sale.namenumber')">
                     </div>
                 </div>
                 <div class="flex">
                     <div class="w-full md:w-1/2 p-2">
-                        <label for="price_from" class="font-bolder text-gray-700 text-xs">ფასი <small>[დან]</small></label>
+                        <label for="price_from" class="font-bolder text-gray-700 text-xs">@lang('sale.price') <small>[@lang('sale.from')]</small></label>
                         <input type="number" min="0" step="0.01" @if (isset($queries['price_from'])) value="{{$queries['price_from']}}" @endif class="bg-gray-200 mt-2 text-gray-800 p-2 font-normal rounded-sm text-xs w-full" name="price_from" id="price_from" placeholder="00.00">
                     </div>
                     <div class="w-full md:w-1/2 p-2">
-                        <label for="price_till" class="font-bolder text-gray-700 text-xs">ფასი <small>[მდე]</small></label>
+                        <label for="price_till" class="font-bolder text-gray-700 text-xs">@lang('sale.price')<small>[@lang('sale.till')]</small></label>
                         <input type="number" min="0" step="0.01" @if (isset($queries['price_till'])) value="{{$queries['price_till']}}" @endif class="bg-gray-200 mt-2 text-gray-800 p-2 font-normal rounded-sm text-xs w-full" name="price_till" id="price_till" placeholder="00.00">
                     </div>
                 </div>
                 <div class="flex">
                     <div class="w-full md:w-1/2 p-2 flex items-center justify-center">
                         <input type="checkbox" name="consignation" id="consignation" class="mt-6" @if (isset($queries['consignation'])) checked @endif>
-                        <label for="consignation" class="font-normal ml-3 text-gray-700 text-xs mt-6">კონსიგნაცია</label>
+                        <label for="consignation" class="font-normal ml-3 text-gray-700 text-xs mt-6">@lang('sale.consignation')</label>
                     </div>
                     <div class="w-full md:w-1/2 p-2">
-                        <label for="price_till" class="font-bolder text-gray-700 text-xs">თარიღი</label>
+                        <label for="price_till" class="font-bolder text-gray-700 text-xs">@lang('sale.date')</label>
                         <input data-daterange="true" name="date" @if (isset($queries['date'])) value="{{$queries['date']}}" @endif class="datepicker input w-full text-xs border block mx-auto"> 
                     </div>
                 </div>
                 <div class="flex">
                     <button type="submit" class="w-2/3 mt-2 block appearance-none flex items-center justify-center font-bold font-caps bg-indigo-500 text-xs text-white bg-gray-200 border border-gray-200  py-3 px-4  rounded leading-tight">
-                        ძებნა
+                        @lang('sale.search')
                     </button>
                     
                   <a href="{{url()->current()}}" class="w-1/3 mt-2 block appearance-none flex items-center justify-center font-bold font-caps bg-red-500 text-xs text-white bg-gray-200 border border-gray-200  py-3 px-4  rounded leading-tight">

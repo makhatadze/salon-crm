@@ -18,13 +18,13 @@ class Calculate extends Component
     {
         $unit = "";
         if ($this->product->unit == "gram"){
-            $unit = "გრამი";
+            $unit = __('product.gram');
         }elseif ($this->product->unit == "metre"){
-            $unit = "მეტრი";
+            $unit = __('product.centimetr');
         }elseif ($this->product->unit == "unit"){
-                $unit = "ცალი";
+                $unit = __('product.unit');
         }
-        $message = "დარჩება ".($this->product->stock - ($this->amout ? intval($this->amout) : 1)).' '.$unit; 
+        $message = __('product.willleft').($this->product->stock - ($this->amout ? intval($this->amout) : 1)).' '.$unit; 
 
         return view('livewire.product.calculate', compact('message'));
     }

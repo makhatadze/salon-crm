@@ -102,9 +102,6 @@ class ProductController extends Controller
             'title_en' => '',
             'get_category' => '',
             'department' => 'required|integer',
-            'get_type' => 'required|string',
-            'unit' => 'required|string',
-            'stock' => 'required|between:0,99.99|min:0',
             'editor-ge' => 'required',
             'editor-ru' => '',
             'new_category' => '',
@@ -118,7 +115,8 @@ class ProductController extends Controller
             'brand' => '',
             'new_brand' => '',
             'field_name' => '',
-            'field_description' => ''
+            'field_description' => '',
+            'shtrix' => 'required'
         ]);
         $fields = array();
         
@@ -147,13 +145,13 @@ class ProductController extends Controller
         }else{
             $product->brand_id = $request->input('brand');
         }
+        $product->product_code = intval($request->input('shtrix'));
         $product->title_ge = $request->input('title_ge');
         $product->title_ru = $request->input('title_ru');
         $product->title_en = $request->input('title_en');
         $product->description_ge = $request->input('editor-ge');
         $product->description_ru = $request->input('editor-ru');
         $product->description_en = $request->input('editor-en');
-        $product->type = $request->input('get_type');
         $product->department_id = $request->input('department');
 
         if(isset($request->unlimited_expluatation)){
@@ -164,12 +162,6 @@ class ProductController extends Controller
             $product->unlimited_expluatation = false;
         }
 
-        if($product->type == 1  && $product->warehouse == 0){
-        }else{
-
-            $product->unit = $request->input('unit');
-            $product->stock = $request->input('stock');
-        }
         $product->price = intval($request->input('price') * 100);
         $product->currency_type = $request->input('currency');
         $product->save();

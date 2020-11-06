@@ -22,9 +22,9 @@ class ClientServices implements FromCollection, WithHeadings
         foreach ($services as  $serv) {
             $serv['worker'] = $serv->user->profile->first_name .' '.$serv->user->profile->last_name;
             unset($serv->user_id);
-            $serv['servicename'] = $serv->service->{'title_'.app()->getLocale()};
+            $serv['servicename'] = $serv->service->title_ge;
             unset($serv->service_id);
-            $serv['clientname'] = $serv->clinetserviceable->{'full_name_'.app()->getLocale()};
+            $serv['clientname'] = $serv->clinetserviceable->full_name_ge;
             unset($serv->clinetserviceable_type);
             unset($serv->clinetserviceable_id);
             unset($serv->updated_at);

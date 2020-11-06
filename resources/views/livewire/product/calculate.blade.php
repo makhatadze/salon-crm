@@ -9,15 +9,15 @@
             <div class="flex flex-wrap -mx-3 mb-2">
                 <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0  flex items-center justify-center">
                   <div>
-                    <small class="text-xs font-normal">დარჩენილი</small>
+                    <small class="text-xs font-normal">@lang('product.left')</small>
                     <h6 class="font-bold text-xs">
                       {{$product->stock}}
                       @if ($product->unit == "gram")
-                          გრამი
+                      @lang('product.gram')
                       @elseif ($product->unit == "metre")
-                          მეტრი
+                      @lang('product.centimeter')
                       @elseif ($product->unit == "unit")
-                          ცალი
+                      @lang('product.unit')
                       @endif
                     </h6>
                   </div>
@@ -33,11 +33,11 @@
                 </div>
                 <div class="w-full font-normal text-xs md:w-1/3 px-3 mb-6 md:mb-0  flex items-center justify-center">
                     @if ($product->unit == "gram")
-                    გრამი
+                    @lang('product.gram')
                     @elseif ($product->unit == "metre")
-                        მეტრი
+                    @lang('product.metre')
                     @elseif ($product->unit == "unit")
-                        ცალი
+                    @lang('product.unit')
                     @endif = <span class="font-bold ml-1 text-sm">
                                 {{($amout ? intval($amout) : 1) * $product->price/100}}
                             </span> <sup class="ml-1"> ₾</sup>

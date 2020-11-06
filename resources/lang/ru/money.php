@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'slug' => 'GEL',
+    'slug' => 'RUB',
     'icon' => '₽',
 
 ];

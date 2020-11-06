@@ -18,9 +18,9 @@ class ServicesExport implements FromCollection, WithHeadings
         foreach($services as $serv){
             $serv['worker'] = $serv->user->profile->first_name .' '.$serv->user->profile->last_name;
             unset($serv->user_id);
-            $serv['servicename'] = $serv->service->{'title_'.app()->getLocale()};
+            $serv['servicename'] = $serv->service->title_ge;
             unset($serv->service_id);
-            $serv['clientname'] = $serv->clinetserviceable->{'full_name_'.app()->getLocale()};
+            $serv['clientname'] = $serv->clinetserviceable->full_name_ge;
             unset($serv->clinetserviceable_type);
             unset($serv->clinetserviceable_id);
             unset($serv->updated_at);
@@ -38,17 +38,17 @@ class ServicesExport implements FromCollection, WithHeadings
     {
         return [
             '#',
-            'დაწყების დრო',
-            'სტატუსი',
-            'დაჯავშნის დრო',
-            'გადახდის მეთოდი',
-            'ფასი',
-            'ხანგრძლივობა (წთ)',
-            'დასრულების დრო',
-            'გადახდილი',
-            'პერსონალი',
-            'სერვისი',
-            'კლიენტი',
+            __('serviceexport.servicestart'),
+            __('serviceexport.status'),
+            __('serviceexport.register'),
+            __('serviceexport.pay'),
+            __('serviceexport.newprice'),
+            __('serviceexport.duration'),
+            __('serviceexport.endtime'),
+            __('serviceexport.paid'),
+            __('serviceexport.author'),
+            __('serviceexport.service'),
+            __('serviceexport.clientname'),
         ];
     }
 }

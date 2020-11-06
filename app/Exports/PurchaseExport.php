@@ -24,7 +24,7 @@ class PurchaseExport implements FromCollection, WithHeadings
                 unset($purchase->overhead_number);
             }
             $purchase['dept'] = number_format($purchase->getPrice()/100, 2);
-            $purchase['distributor_name'] = $purchase->distributor->{"name_".app()->getLocale()};
+            $purchase['distributor_name'] = $purchase->distributor->name_ge;
             unset($purchase->responsible_person_id);
             unset($purchase->getter_person_id);
             unset($purchase->office_id);
@@ -40,14 +40,14 @@ class PurchaseExport implements FromCollection, WithHeadings
     {
         return [
             '#',
-            'შესყიდვის ტიპი',
-            'შესყიდვის ნომერი',
-            'შესყიდვის თარიღი',
-            'დღღ',
-            'ბოლო განახლება',
-            'გადახდილი',
-            'დავალიანება',
-            'დისტრიბუტორი',
+            __('purchaseexport.type'),
+            __('purchaseexport.number'),
+            __('purchaseexport.date'),
+            __('purchaseexport.dgg'),
+            __('purchaseexport.updated'),
+            __('purchaseexport.paid'),
+            __('purchaseexport.dept'),
+            __('purchaseexport.distributor'),
         ];
     }
 }

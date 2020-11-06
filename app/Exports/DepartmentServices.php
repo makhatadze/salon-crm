@@ -23,7 +23,7 @@ class DepartmentServices implements FromCollection, WithHeadings
         $users = UserHasJob::select('user_id')->where('department_id', $this->id)->get()->toArray();
         $services = ClientService::whereIn('user_id', $users)->get();
         foreach ($services as  $item) {
-            $item['service_name'] = $item->service->{"title_".app()->getLocale()};
+            $item['service_name'] = $item->service->title_ge;
             $item['service_price'] = $item->service->price/100;
             $item['service_currency'] = $item->service->currency_type;
             $item['service_endtime'] = $item->getEndTime();
@@ -32,7 +32,7 @@ class DepartmentServices implements FromCollection, WithHeadings
             $item['author_name'] = $item->getAuthorName();
             $item['updated_price'] = $item->new_price / 100;
             $item['client_number'] = $item->clinetserviceable->number;
-            $item['client_name'] = $item->clinetserviceable->{'full_name_'.app()->getLocale()};
+            $item['client_name'] = $item->clinetserviceable->full_name_ge;
             unset($item->user_id);
             unset($item->service_id);
             unset($item->new_price);

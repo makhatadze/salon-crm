@@ -15,9 +15,9 @@ class ClientExport implements FromCollection, WithHeadings
         $array = array();
         $services =  ClientService::all();
         foreach($services as $service){
-            $service['service_name'] = $service->service->{"title_".app()->getLocale()};
+            $service['service_name'] = $service->service->title_ge;
             $service['worker_name'] = $service->user->profile->first_name .' '. $service->user->profile->last_name;
-            $service['client_name'] = $service->clinetserviceable->{'full_name_'.app()->getLocale()};
+            $service['client_name'] = $service->clinetserviceable->full_name_ge;
             $service['client_phone'] = $service->clinetserviceable->number;
             $service['client_address'] = $service->clinetserviceable->address;
             $service['serviceprice'] = $service->service->price/100;
@@ -33,17 +33,17 @@ class ClientExport implements FromCollection, WithHeadings
     {
         return [
             '#',
-            'სესიის თარიღი',
-            'სტატუსი',
-            'რეგისტრაციის თარიღი',
-            'განახლების თარიღი',
-            'გადახდის მეთორი',
-            'სერვისის სახელი',
-            'მიმღები',
-            'კლიენტის სახელი',
-            'მობილური',
-            'მისამართი',
-            'ფასი'
+            __('clientexport.sessiondate'),
+            __('clientexport.status'),
+            __('clientexport.createdate'),
+            __('clientexport.updatedate'),
+            __('clientexport.paymethod'),
+            __('clientexport.name'),
+            __('clientexport.personal'),
+            __('clientexport.clientname'),
+            __('clientexport.phone'),
+            __('clientexport.address'),
+            __('clientexport.price'),
         ];
     }
 }

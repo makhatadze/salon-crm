@@ -25,7 +25,7 @@ return [
     'choose_employee' => 'აირჩიეთ თანამშრომელი',
     'date' => 'თარიღი',
     'search' => 'ძებნა',
-    'choose' => 'აირჩიეთ სერვისი',
+    'choose' => 'აირჩიეთ',
     'client_name' => 'კლიენტის სახელი',
     'client_number' => 'კლიენტის ნომერი',
     'register_or_choose_client' => 'დაარეგისტრირეთ ან აირჩიეთ კლიენტი',

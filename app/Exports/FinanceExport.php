@@ -18,7 +18,7 @@ class FinanceExport implements FromCollection, WithHeadings
     {
         $sales = Sale::all();
         foreach ($sales as $sale) {
-            $sale['clientname'] = $sale->client->{"full_name_".app()->getLocale()};
+            $sale['clientname'] = $sale->client->full_name_ge;
             $sale['seller'] = $sale->user->profile->first_name .' '. $sale->user->profile->last_name;
             unset($sale->client_id);
             unset($sale->deleted_at);
@@ -36,14 +36,14 @@ class FinanceExport implements FromCollection, WithHeadings
     {
         return [
             '#',
-            'მისამართი',
-            'შექმნის დრო',
-            'განახლების დრო',
-            'გადახდის მეთოდი',
-            'ფასი',
-            'გადახდილი',
-            'კლიენტი',
-            'მოლარე',
+            __('clientexport.address'),
+            __('clientexport.createdate'),
+            __('clientexport.updatedate'),
+            __('clientexport.paymethod'),
+            __('clientexport.price'),
+            __('clientexport.paid'),
+            __('clientexport.clientname'),
+            __('clientexport.personal'),
         ];
     }
 }

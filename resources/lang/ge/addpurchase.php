@@ -42,5 +42,6 @@ return [
     'nasyidobaname' => 'ნასყიდობა',
     'zednadebiname' => 'ზედნადები',
     'desc' => 'აღწერა',
+    'strix' => 'შტრიხ კოდი'
 
 ];

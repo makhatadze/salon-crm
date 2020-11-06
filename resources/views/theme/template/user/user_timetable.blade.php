@@ -6,13 +6,13 @@
                 <img src="{{asset('../storage/clientimg/user.jpg')}}" class="w-10 h-10 rounded">
                 <div class="ml-3">
                     <h6 class="font-bolder text-gray-700">{{$user->profile->first_name.' '.$user->profile->last_name}}</h6>
-                    <span class="font-normal text-xs">სტილისტი</span>
+                    <span class="font-normal text-xs">{{ $user->getRoleNames()->first() == "user" ? __('homepage.employee') : $user->getRoleNames()->first() }}</span>
                 </div>
             </div>
             <div>
                 <form action="">
                     <h6 class="font-bold text-xs text-gray-700 "><input type="date" name="date" class="focus:outline-none" value="{{Carbon\Carbon::parse($date)->isoFormat('Y-MM-DD')}}"></h6>
-                    <button class="font-medium w-full font-caps bg-indigo-500 text-white p-1" type="submit" style="font-size: 0.7rem">დაწყების დღე</button>
+                    <button class="font-medium w-full font-caps bg-indigo-500 text-white p-1" type="submit" style="font-size: 0.7rem">@lang('homepage.choose')</button>
                 </form>
             </div>
         </div>
@@ -34,21 +34,21 @@
                     @csrf
                     <div class="flex flex-wrap -mx-3 mb-2">
                         <div class="w-full md:w-1/2 px-3 mb-2 md:mb-0">
-                        <input class="appearance-none block font-normal text-xs w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="full_name_ge{{$i}}" type="text" placeholder="კლიენტის სახელი" name="full_name_ge">
+                        <input class="appearance-none block font-normal text-xs w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="full_name_ge{{$i}}" type="text" placeholder="xxxxxxxxxxx" name="full_name_ge">
                     </div>
                     <div class="w-full md:w-1/2 px-3">
-                    <input class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="client_number{{$i}}" type="text" placeholder="კლიენტის ნომერი" name="client_number">
+                    <input class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="client_number{{$i}}" type="text" placeholder="xxxxxxxxxxxxxxxx" name="client_number">
                     </div>
                   </div>
-                  <p class="font-normal text-xs mb-2">დაარეგისტრირეთ ან აირჩიეთ კლიენტი</p>
+                  <p class="font-normal text-xs mb-2">@lang('homepage.register_or_choose_client')</p>
                   <div class="flex flex-wrap -mx-3 mb-6">
                     <div class="w-full  px-3 mb-6 md:mb-0">
                     <div class="relative">
                     <select name="client" class="block appearance-none font-normal text-xs w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                        <option value="">აირჩიეთ კლიენტი</option>
+                        <option value="">@lang('homepage.choose')</option>
                         @if ($clients)
                         @foreach ($clients as $client)
-                            <option value="{{$client->id}}" >{{$client->{"full_name_".app()->getLocale()} }}</option>
+                            <option value="{{$client->id}}" >{{$client->full_name_ge }}</option>
                         @endforeach
                         @endif
                     </select>
@@ -63,7 +63,7 @@
                     <div class="w-full px-3">
                       <div class="flex justify-between items-center">
                           <h6 class="font-bold">
-                              სერვისის დამატება
+                            @lang('homepage.add_service')
                           </h6>
                         <button id="service{{$user->id.''.$i}}" data-divid="{{$user->id.''.$i}}" data-userid="{{$user->id}}" data-settime="{{Carbon\Carbon::parse($date)->addDays($i)->isoFormat('Y-MM-DD')}}" class="addnewservice bg-gray-200 font-bold p-2 rounded-md h-8 w-8 focus:outline-none flex items-center justify-center" type="button">+</button>
                       </div>
@@ -74,9 +74,9 @@
                         <div class="flex items-center justify-center relative">
                         <input type="hidden" name="personal" id="personal{{$user->id.''.$i}}" value="{{$user->id}}">
                           <select required onchange="selectservice({{$user->id.''.$i}})" name="service[]" id="getservice{{$user->id.''.$i}}" class="bg-gray-200 block text-xs font-normal appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                            <option value="">აირჩიეთ</option>
+                            <option value="">@lang('homepage.choose')</option>
                             @foreach($user->services($user->id) as $serv)
-                            <option value="{{$serv->id}}">{{ $serv->{'title_'.app()->getLocale()} }}</option>
+                            <option value="{{$serv->id}}">{{ $serv->title_ge}}</option>
                             @endforeach
                           </select>
                           <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -101,7 +101,7 @@
                       </div>
                       <div class="w-full md:w-1/3 px-3 flex items-center justify-center">
                         <div class="flex items-center">
-                            <span class="font-normal text-xs">₾</span><input required name="price[]" id="price{{$user->id.''.$i}}" type="number" min="0" step="0.01" class="bg-gray-200 w-16 text-sm ml-2 font-bolder" value="30">
+                            <span class="font-normal text-xs">@lang('money.icon')</span><input required name="price[]" id="price{{$user->id.''.$i}}" type="number" min="0" step="0.01" class="bg-gray-200 w-16 text-sm ml-2 font-bolder" value="30">
                         </div>
                       </div>
                 </div>
@@ -111,7 +111,7 @@
                   </div>
                   <div class="mt-3 w-full ">
                       <button class="w-full py-3  text-center bg-indigo-500 text-white font-bold">
-                          დამატება
+                        @lang('homepage.submit')
                       </button>
                   </div>
                 </form>
@@ -150,13 +150,16 @@
                                 @endif
                                 <div class="ml-3">
                                         <h6 class="font-bold text-xs">
-                                            {{$item->clinetserviceable->{"full_name_".app()->getLocale()} }}
+                                            {{$item->clinetserviceable->full_name_ge }}
                                         </h6>
                                     <span class="text-xs font-normal">
                                         {{$item->clinetserviceable->number }}
                                     </span>
+                                    
                                 </div>
+                                
                             </div>
+                            
                            </div>
                         </a>
                     
@@ -164,23 +167,21 @@
                 <div class="modal__content p-10 text-center">
                     <div class="flex justify-between my-3">
                         <div class="w-full md:w-1/3 text-left font-bold text-xs px-3 mb-6 md:mb-0">
-                            <small class="font-normal text-xs">სახელი</small> <br>
+                            <small class="font-normal text-xs">@lang('homepage.name')</small> <br>
                             <a href="/clients/edit/{{$item->clinetserviceable->id}}">
-                                 {{$item->service->{"title_".app()->getLocale()} }}
+                                 {{$item->service->title_ge }}
                             </a>
                         </div>
                         <div class="w-full md:w-1/3 text-left font-bold text-xs px-3 mb-6 md:mb-0">
-                            <small class="font-normal text-xs">თანხა</small> <br>
+                            <small class="font-normal text-xs">@lang('homepage.price')</small> <br>
                             <span class="font-bold text-xs">{{$item->new_price/100}}
-                                @if ($item->service->currency_type == "gel") ₾
-                                @elseif ($item->service->currency_type == "usd") $
-                                @elseif ($item->service->currency_type == "eur") €
+                                @if ($item->service->currency_type == "gel") @lang('money.icon')
                                 
                                 @endif
                             </span> 
                         </div>
                         <div class="w-full md:w-1/3 text-left font-bold text-xs px-3 mb-6 md:mb-0">
-                            <small class="font-normal text-xs">ხანგრძლივობა</small> <br>
+                            <small class="font-normal text-xs">@lang('homepage.duration')</small> <br>
                             {{Carbon\Carbon::parse($item->session_start_time)->isoFormat('h:m') .' - '. $item->getEndTime()}}
                         </div>
                     </div>
@@ -191,11 +192,11 @@
                      <div class="w-full px-3 mb-6 md:mb-0">
                          <div class="relative">
                          <input type="hidden" name="pay_id" value="{{$item->id}}">
-                           <select required onchange="setpaymethod({{$item->id}}, this.value)" name="pay_method" class="block font-normal text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
-                            <option value="">გადახდის მეთოდი</option>
-                            <option value="consignation">კონსიგნაცია</option>
+                           <select required onchange="setpaymethod({{$item->id}}, this.value)" name="pay_method" class="block font-normal text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                            <option value="">@lang('homepage.pay_method')</option>
+                            <option value="consignation">@lang('homepage.consignation')</option>
                              @foreach ($paymethods as $method)
-                           <option value="{{$method->id}}">{{$method->{"name_".app()->getLocale()} }}</option>
+                           <option value="{{$method->id}}">{{$method->name_ge }}</option>
                              @endforeach
                            </select>
                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -204,25 +205,27 @@
                          </div>
                        </div>
                         <div id="consignation{{$item->id}}" style="display: none" class="w-full px-3 mb-6 md:mb-0">
-                       <input class="text-xs cursor-pointer font-bold font-caps appearance-none block w-full bg-gray-200 text-gray-800 border rounded py-3 px-4" type="number" min="0" step="0.01" name="paid" max="{{number_format($item->new_price/100, 2)}}" value="დადასტურება">
+                       <input class="text-xs cursor-pointer font-bold font-caps appearance-none block w-full bg-gray-200 text-gray-800 border rounded py-3 px-4" type="number" min="0" step="0.01" name="paid" max="{{number_format($item->new_price/100, 2)}}" value="@lang('homepage.submit')">
                        </div>
                        <div class="w-full px-3 mb-6 md:mb-0">
-                         <input class="text-xs cursor-pointer font-bold font-caps appearance-none block w-full bg-indigo-500 text-white border rounded py-3 px-4" type="submit" value="დადასტურება">
+                         <input class="text-xs cursor-pointer font-bold font-caps appearance-none block w-full bg-indigo-500 text-white border rounded py-3 px-4" type="submit" value="@lang('homepage.submit')">
                        </div>
+                       
                  </div>
+                 
                 </form>
                 @else 
                 <div class="flex">
                     <div class="w-full md:w-1/3 text-left font-bold text-xs px-3 mb-6 md:mb-0">
-                        <small class="font-normal text-xs">მეთოდი</small> <br>
-                        {{ $item->pay_method == "consignation" ? 'კონსიგნაცია' : $item->pay_method }}
+                        <small class="font-normal text-xs">@lang('homepage.pay_method')</small> <br>
+                        {{ $item->pay_method == "consignation" ? __('homepage.consignation') : $item->pay_method }}
                     </div>
                     <div class="w-full md:w-1/3 text-left font-bold text-xs px-3 mb-6 md:mb-0">
-                        <small class="font-normal text-xs">მოვიდა</small> <br>
+                        <small class="font-normal text-xs">@lang('homepage.come')</small> <br>
                         {{ Carbon\Carbon::parse($item->session_endtime)->isoFormat('Y-MM-DD') }}
                     </div>
                     <div class="w-full md:w-1/3 text-left font-bold text-xs px-3 mb-6 md:mb-0">
-                        <small class="font-normal text-xs">ჩაწერა</small> <br>
+                        <small class="font-normal text-xs">@lang('homepage.created')</small> <br>
                         {{ Carbon\Carbon::parse($item->created_at)->isoFormat('Y-MM-DD') }}
                     </div>
                 </div>
@@ -233,11 +236,64 @@
                             <input class="text-xs cursor-pointer font-bold font-caps appearance-none block w-full bg-gray-200 text-gray-800 border rounded py-3 px-4" type="number" min="0" step="0.01" name="paid" max="{{number_format($item->new_price/100, 2)}}" value="{{number_format($item->paid/100, 2)}}">
                         </div>
                         <div class="w-full px-3 mb-6 md:mb-0">
-                            <input class="text-xs cursor-pointer font-bold font-caps appearance-none block w-full bg-indigo-500 text-white border rounded py-3 px-4" type="submit" value="დადასტურება">
+                            <input class="text-xs cursor-pointer font-bold font-caps appearance-none block w-full bg-indigo-500 text-white border rounded py-3 px-4" type="submit" value="@lang('homepage.submit')">
                         </div>
                     </form>
                 @endif
+                
                 @endif
+                <div class="w-full flex my-3 items-center">
+                    <a href="javascript:;" data-toggle="modal" data-target="#sms{{$item->id}}">
+                        <svg width="1em" @click="modal=true" height="1em" viewBox="0 0 16 16" class="bi bi-chat-left-dots" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M14 1H2a1 1 0 0 0-1 1v11.586l2-2A2 2 0 0 1 4.414 11H14a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                            <path d="M5 6a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+                          </svg>
+                        </a>
+                        @if ($item->status == 0)
+                        <a href="{{route('removeclientservice', $item->id)}}" class="ml-2">
+                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash2-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M2.037 3.225l1.684 10.104A2 2 0 0 0 5.694 15h4.612a2 2 0 0 0 1.973-1.671l1.684-10.104C13.627 4.224 11.085 5 8 5c-3.086 0-5.627-.776-5.963-1.775z"/>
+                                <path fill-rule="evenodd" d="M12.9 3c-.18-.14-.497-.307-.974-.466C10.967 2.214 9.58 2 8 2s-2.968.215-3.926.534c-.477.16-.795.327-.975.466.18.14.498.307.975.466C5.032 3.786 6.42 4 8 4s2.967-.215 3.926-.534c.477-.16.795-.327.975-.466zM8 5c3.314 0 6-.895 6-2s-2.686-2-6-2-6 .895-6 2 2.686 2 6 2z"/>
+                              </svg>
+                        </a>
+                        @endif
+                        <div class="modal" id="sms{{$item->id}}">
+                            <div class="modal__content modal__content--lg p-10"> 
+                                <form action="{{ route('smsSendPost') }}" method="POST" class="bg-white mx-auto" autocomplete="off">
+                                    @csrf
+                                    <div class="w-full px-3 mb-2">
+                                    <label class=" block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="phone">
+                                        <h6 class="font-caps">
+                                            @lang('homepage.phone')
+                                        </h6> 
+                                    </label>
+                                    <input name="phone" value="{{$item->clinetserviceable->number}}" readonly required class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" onkeyup="this.value = this.value.replace(/[^0-9\.]/g, '');" id="phone" type="text" minlength="9" maxlength="9" placeholder="555 11 22 33">
+                                    <small class="font-normal">@lang('homepage.check_before_send')</small> 
+                                    @error('phone')
+                                        <p class="font-normal text-xs text-red-500">
+                                            {{$message}}
+                                        </p>
+                                    @enderror
+                                </div>
+                                    <div class="w-full px-3">
+                                        <label class="font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="text">
+                                            @lang('homepage.text')
+                                        </label>
+                                        <textarea name="text" id="text" cols="30" rows="5" class="appearance-none resize-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"></textarea>
+                                        @error('text')
+                                            <p class="font-normal text-xs text-red-500">
+                                                {{$message}}
+                                            </p>
+                                        @enderror
+                                    </div>
+                                    <div class="px-3 mt-2">
+                                        <button type="submit" class="w-full bg-indigo-500 py-3 px-4 text-white font-bold font-caps text-xs">
+                                            @lang('homepage.send')</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                 </div>
                 </div>
             </div>
         </a>
@@ -355,7 +411,7 @@ $('.addnewservice').click(function(){
                         <div class="flex items-center justify-center relative">
                         <input type="hidden" name="personal" id="personal`+$id+`" value="`+getid+`">
                             <select required name="service[]" id="getservice`+$id+`" onchange="selectservice(`+$id+`)" class="block text-xs font-normal appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                            <option>აირჩიეთ</option>
+                            <option>@lang('homepage.choose')</option>
                             `+data.html+`
                             </select>
                             <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
@@ -372,7 +428,7 @@ $('.addnewservice').click(function(){
                                 - 
                                 <span id="settime`+$id+`"></span> </div>
                             <div class="flex items-center font-normal text-xs justify-content-start">
-                            <h4 class="mr-3"><input required type="number" value="30" min="0" name="duration[]" class="bg-gray-200 w-10 focus:outline-none" readonly id="duration`+$id+`"> მინ</h4>
+                            <h4 class="mr-3"><input required type="number" value="30" min="0" name="duration[]" class="bg-gray-200 w-10 focus:outline-none" readonly id="duration`+$id+`"> min</h4>
                             <span onclick="minustime(`+$id+`)" class="bg-gray-300 h-5 w-5 flex items-center justify-center hover:bg-gray-400 cursor-pointer"> - </span>
                             <span onclick="addtime(`+$id+`)" class="bg-gray-300 h-5 w-5  flex items-center justify-center hover:bg-gray-400 cursor-pointer"> + </span>
                             </div>
@@ -380,7 +436,7 @@ $('.addnewservice').click(function(){
                         </div>
                         <div class="w-full md:w-1/3 px-3 flex items-center justify-center">
                         <div class="flex items-center">
-                            <span class="font-normal text-xs">₾</span><input required name="price[]" id="price'`+$id+`'" type="number" min="0" step="0.01" class="bg-gray-200 w-16 text-sm ml-2 font-bolder" value="30">
+                            <span class="font-normal text-xs">@lang('money.icon')</span><input required name="price[]" id="price'`+$id+`'" type="number" min="0" step="0.01" class="bg-gray-200 w-16 text-sm ml-2 font-bolder" value="30">
                         </div>
                         </div>
                 </div>

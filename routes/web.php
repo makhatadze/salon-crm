@@ -32,6 +32,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
             Route::get('/profile/accountsettings', 'UserController@accountsetting');
             Route::get('/clients/usertimetable/{user}', 'UserController@usertimetable')->name('userTimeTable');
             Route::post('/clients/turnon', 'ClientController@turnon')->name('turnonawqa');
+            Route::get('/clients/removeservice/{clientservice}', 'ClientController@removeclientservice')->name('removeclientservice');
             Route::post('/clients/checktime', 'ClientController@checktime')->name('checkTime');
             Route::get('/profile/changepassword', 'UserController@changepassword');
             Route::post('/clients/addservice', 'ClientController@addservice')->name('AddClientService');
@@ -195,7 +196,8 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
             Route::get('/group/export/{memberGroup}', 'GroupController@export')->name('GroupExport'); 
             Route::get('/distcompany/export/{distcompany}', 'CompanyController@distributorexport')->name('DistributorExport'); 
             Route::get('/user/userexport', 'UserController@userexport')->name('UserExport');
-            Route::get('/services/export/{id}', 'ServiceController@exportservice')->name('serviceExport');
+            Route::get('/services/export/{id}', 'ServiceController@exportservice')->name('oneserviceExport');
+            Route::get('/paymethod/export/{pay}', 'PayControllerController@exportmethod')->name('exportmethod');
             Route::get('/services/export', 'ServiceController@exportservices')->name('ServiceExport');
             Route::get('/products/productexport', 'ProductController@productexport')->name('ProductExport');
             Route::get('/sale/export/{sale}', 'ProductController@saleexport');

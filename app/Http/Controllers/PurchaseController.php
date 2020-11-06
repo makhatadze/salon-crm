@@ -123,6 +123,7 @@ class PurchaseController extends Controller
                     'storage_id' => $request->input('storage')[$key],
                     'brand_id' => $request->input('brand')[$key],
                     'body' => $request->input('body')[$key],
+                    'product_code' => $request->input('shtrix')[$key],
                 ];
             }
         }
@@ -154,7 +155,8 @@ class PurchaseController extends Controller
                     'description_ge' => $product['body'],
                     'type' => $product['ability_type'],
                     'brand_id' => $product['brand_id'],
-                    'purchase_id' => $purchase->id
+                    'purchase_id' => $purchase->id,
+                    'product_code' => intval($product['product_code']),
                 ]);
             }
         }
@@ -216,6 +218,7 @@ class PurchaseController extends Controller
             'quantity' => '',
             'storage' => '',
             'body' => '',
+            'shtrix' => ''
         ],[
             'responsible_person_id.required' => 'აირჩიეთ პასუხისმგებელი პირი',
             'getter_person_id.required' => 'აირჩიეთ მიმღები პირი',
@@ -234,6 +237,7 @@ class PurchaseController extends Controller
                     'storage_id' => $request->input('storage')[$key],
                     'brand_id' => $request->input('brand')[$key],
                     'body' => $request->input('body')[$key],
+                    'product_code' => $request->input('shtrix')[$key],
                 ];
             }
         }
@@ -264,7 +268,8 @@ class PurchaseController extends Controller
                     'description_ge' => $product['body'],
                     'type' => $product['ability_type'],
                     'brand_id' => $product['brand_id'],
-                    'purchase_id' => $purchase->id
+                    'purchase_id' => $purchase->id,
+                    'product_code' => intval($product['product_code']),
                 ]);
                 
             }

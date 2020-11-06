@@ -13,12 +13,12 @@ use Livewire\WithPagination;
 class Index extends Component
 {
     use WithPagination;
-    public $name;
-    public $pricefrom;
-    public $pricetill;
-    public $stocktill;
-    public $brand;
-    public $department;
+    public $name = null;
+    public $pricefrom = null;
+    public $pricetill = null;
+    public $stocktill = null;
+    public $brand = null;
+    public $department = null;
     public $brandarray = array();
 
     public function mount()

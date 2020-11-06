@@ -13,71 +13,27 @@
                         <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
                             <label
                                 class="block font-bold font-caps uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                                სათაური ქართულად
+                                @lang('product.title')
                             </label>
                             <input value="{{ $product->title_ge }}" name="title_ge"
                                 class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                                 type="text">
                         </div>
+                        
                         <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
                             <label
                                 class="block font-bold font-caps uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                                სათაური რუსულად
+                                @lang('addpurchase.strix')
                             </label>
-                            <input value="{{ $product->title_ru }}" name="title_ru"
+                            <input required minlength="0" value="{{ $product->product_code }}" onkeyup="this.value = this.value.replace(/[^0-9\.]/g, '');" name="shtrix"
                                 class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                                 type="text">
                         </div>
-                        <div class="w-full md:w-1/3 px-3">
-                            <label
-                                class="block font-bold font-caps uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                                სათაური ინგლისურად
-                            </label>
-                            <input value="{{ $product->title_en }}" name="title_en"
-                                class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                type="text">
-                        </div>
-                    </div>
-                    <div class="flex flex-wrap mt-3 mb-6">
+                       
                         <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
                             <label
                                 class="block font-bold font-caps uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                                ერთეული
-                            </label>
-                            <div class="relative">
-                                <select name="unit" readonly 
-                                    class="block font-medium text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                                    <option value="unit" @if ($product->unit == 'unit')
-                                        selected @endif>ცალი</option>
-                                        @if($product->type != 1)
-                                         <option value="gram" @if ($product->unit == 'gram')
-                                        selected @endif>გრამი</option>
-                                         <option value="metre" @if ($product->unit == 'metre')
-                                        selected @endif>სანტიმეტრი</option>
-                                        @endif
-                                </select>
-                                <div
-                                    class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 20 20">
-                                        <path
-                                            d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                                        </svg>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="w-full md:w-1/3 px-3">
-                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                                რაოდენობა
-                            </label>
-                            <input @if($product->type == 1 && $product->warehouse == 0) readonly @endif
-                                class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                type="number" required min="0" value="{{ $product->stock }}" step="0.1" name="stock">
-                        </div>
-                        <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
-                            <label
-                                class="block font-bold font-caps uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                                დეპარტამენტი
+                                @lang('product.department')
                             </label>
                             <div class="relative">
                                 <select required name="department"
@@ -85,11 +41,11 @@
                                     @foreach ($departments as $item)
                                         @if ($product->department_id == $item->id)
                                             <option value="{{ $item->id }}" selected>
-                                                {{ $item->{"name_".app()->getLocale()} }}
+                                                {{ $item->name_ge }}
                                             </option>
                                         @else
                                             <option value="{{ $item->id }}">
-                                                {{ $item->{"name_".app()->getLocale()} }}
+                                                {{ $item->name_ge }}
                                             </option>
                                         @endif
                                     @endforeach
@@ -115,12 +71,12 @@
                         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                             <label
                             class="block font-bold font-caps uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                            ბრენდი
+                            @lang('product.brand')
                         </label>
                         <div class="relative">
                             <select name="brand"
                                 class="block font-medium text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                               <option value="">აირჩიეთ ბრენდი</option>
+                               <option value="">@lang('product.choose')</option>
                                 @foreach ($brands as $item)
                                     @if ($product->brand_id == $item->id)
                                         <option value="{{ $item->id }}" selected>
@@ -143,10 +99,10 @@
                             </div>
                         </div>
                         </div>
-                        <div class="w-full md:w-1/4 px-3">
+                        <div class="w-full md:w-1/2 px-3">
                             <div>
                                 <label for="price"
-                                    class="block  leading-5 font-medium text-gray-700 font-bold font-caps text-xs">ფასი</label>
+                                    class="block  leading-5 font-medium text-gray-700 font-bold font-caps text-xs">@lang('product.price')</label>
                                 <div class="mt-1 relative rounded-md shadow-sm">
                                     <input autocomplete="off" type="number" value="{{ $product->price / 100 }}" name="price" min="0"
                                         step="0.01"
@@ -156,38 +112,9 @@
                                         <select name="currency" aria-label="Currency"
                                             class="form-select h-full py-0 pl-2 pr-7 border-transparent bg-transparent text-gray-500 sm:text-sm sm:leading-5">
                                             <option value="gel" selected @if ($product->currency_type == 'gel') selected 
-                                                    end="@endif"> GEL</option>
-                                            <option value="usd" @if ($product->currency_type == 'usd') selected 
-                                                    end="@endif"> USD</option>
-                                            <option value="eur" @if ($product->currency_type == 'eur') selected 
-                                                    end="@endif"> EUR</option>
+                                                    end="@endif"> @lang('money.slug')</option>
                                         </select>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="w-full md:w-1/4 px-3 mb-6 md:mb-0">
-                            <label
-                                class="block font-bold font-caps uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-                                for="grid-state">
-                                ტიპი
-                            </label>
-                            <div class="relative">
-                                <select name="get_type"
-                                    class="block font-medium text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                                    id="grid-state">
-                                    <option value="1" @if ($product->type == '1') selected
-                                        @endif>ძირითადი საშუალება</option>
-                                    <option value="2" @if ($product->type == '2') selected
-                                        @endif>ხარჯმასალა</option>
-                                </select>
-                                <div
-                                    class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 20 20">
-                                        <path
-                                            d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-                                        </svg>
                                 </div>
                             </div>
                         </div>
@@ -199,7 +126,7 @@
                         <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
                             <label
                                 class="block font-bold font-caps uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                                ექსპლუიატაციის დაწყება
+                                @lang('product.expstart')
                             </label>
                             <input 
                             class="appearance-none block w-full text-xs font-normal bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -208,7 +135,7 @@
                         <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
                             <label
                                 class="block font-bold font-caps uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                                 ხანგრძლოვობა <small>(დღე)</small>
+                                @lang('product.cveta')
                             </label>
                             <input 
                             class="appearance-none block w-full text-sm font-normal bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
@@ -217,24 +144,24 @@
                         <div>
                             <label
                                 class="block font-bold font-caps uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
-                                ექსპლუატაცია</label>
+                                @lang('product.expluatation')</label>
                             <div class="py-3 flex font-normal items-center">
                                 
-                            <input type="checkbox" name="unlimited_expluatation" @if($product->unlimited_expluatation) checked @endif class="mr-3"> უსასრულო ექსპლუატაცია
+                            <input type="checkbox" name="unlimited_expluatation" @if($product->unlimited_expluatation) checked @endif class="mr-3"> @lang('product.expunlimited')
                             </div>
                         </div>
                     </div>
                     <p class="w-full py-2 font-normal text-xs m-0 px-4">
-                        <strong class="text-red-500">შენიშვნა:</strong> უსასრულო ექსპლუიატაციის პრედიოდის მონიშვნის შემთხვევაში პროდუქტის ექსპლუატაციის დაწყების თარიღი
-                         და ხანგრძლივობა წაიშლება.
+                        
+                         @lang('product.exptext')
                     </p>
                     @endif
 
 
 
                     @if ($product->warehouse == 1 && $product->type != 1 || $product->warehouse == 0)
-                    <div class="mt-3">
-                        <label class="font-helvetica">სურათები</label>
+                    <div class="mt-3 px-3">
+                        <label class="font-bold font-caps text-xs">@lang('product.images')</label>
                         <div class="border-2 border-dashed rounded-md mt-3 pt-4">
                             <div class="flex flex-wrap px-4">
                                 @if ($product
@@ -278,22 +205,22 @@
                                     <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
                                     <circle cx="8.5" cy="8.5" r="1.5"></circle>
                                     <polyline points="21 15 16 10 5 21"></polyline>
-                                </svg> <span class="text-theme-1 mr-1">Upload a file</span> or drag and drop
+                                </svg> <span class="text-theme-1 mr-1 font-normal text-xs">@lang('product.imageupload')
                                 <input type="file" class="w-full h-full top-0 left-0 absolute opacity-0" accept="image/*"
                                     id="imgInp" name="images[]" multiple>
                             </div>
                         </div>
                     </div>
                     @endif
-                    <div class="my-4 items-center justify-between flex col-span-12">
-                        <h6 class="font-bolder">დამატებითი ველები</h6>
+                    <div class="my-4 px-3 items-center justify-between flex col-span-12">
+                        <h6 class="font-bolder">@lang('product.addfields')</h6>
                         <button type="button" id="addfields" class="bg-gray-200 p-2">
                             <svg width="1.18em" height="1.18em" stroke="black" viewBox="0 0 16 16" class="bi bi-plus" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
                               </svg>
                         </button>
                     </div>
-                    <div class="mt-3 w-full" id="fields">
+                    <div class="mt-3 px-3 w-full" id="fields">
 
                         @foreach ($product->fields as $field)
                             <div class="flex" id="{{$field->id}}">
@@ -312,29 +239,19 @@
                         @endforeach
 
                     </div>
-                    <div class="mt-3">
-                        <label class="font-helvetica">აღწერა ქართულად <span class="text-red-500">*</span> </label>
+                    <div class="mt-3 px-3">
+                        <label class="font-bold font-caps text-xs">@lang('product.desc') <span class="text-red-500">*</span> </label>
                         <div class="mt-2">
-                            <textarea required data-feature="basic" class="summernote" name="editor-ge"
+                            <textarea required data-feature="basic" class="summernote font-normal text-xs" name="editor-ge"
                                 style="display: none;">
                             {{ $product->description_ge }}
                             </textarea>
                         </div>
-                        <label class="font-helvetica">აღწერა რუსულად</label>
-                        <div class="mt-2">
-                            <textarea data-feature="basic" class="summernote" name="editor-ru" style="display: none;">
-                            {{ $product->description_ru }}
-                            </textarea>
-                        </div>
-                        <label class="font-helvetica">აღწერა ინგლისურად</label>
-                        <div class="mt-2">
-                            <textarea data-feature="basic" class="summernote" name="editor-en" style="display: none;">
-                            {{ $product->description_en }}
-                            </textarea>
-                        </div>
                     </div>
 
-                    <input type="submit" class=" mt-2 button text-white bg-theme-1 shadow-md mr-1" value="ატვირთვა">
+                    <div class="px-3">
+                        <input type="submit" class=" mt-2 button text-white bg-theme-1 font-bold font-caps text-xs shadow-md mr-1" value="@lang('product.upload')">
+                    </div>
                 </div>
 
             </form>
@@ -376,10 +293,10 @@
                 $('#fields').append(`
                 <div class="flex" id="`+$id+`">
                     <div class="p-2 pl-0 w-3/12">
-                        <input required class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" name="field_name[]" type="text" placeholder="სახელი">
+                        <input required class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" name="field_name[]" type="text" placeholder="@lang('product.title')">
                     </div>
                     <div class="p-2 w-8/12">
-                        <input required class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" name="field_description[]" type="text" placeholder="აღწერა">
+                        <input required class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" name="field_description[]" type="text" placeholder="@lang('product.desc')">
                     </div>
                     <div class="pr-2 w-1/12 py-2 flex items-center justify-center">
                         <span onclick="removefield(`+$id+`)" class="flex items-center justify-center font-bolder text-xs cursor-pointer text-white bg-red-500 p-3 h-5 w-5 rounded-md">

@@ -593,5 +593,12 @@ class ClientController extends Controller
         }
         return redirect()->back();
     }
+    public function removeclientservice(ClientService $clientservice)
+    {
+        if ($clientservice->status == 0) {
+            $clientservice->delete();
+        }
+        return redirect()->back();
+    }
 
 }

@@ -21,7 +21,7 @@ class GroupExport implements FromCollection, WithHeadings
         
         $clients = MemberGroup::findOrFail($this->id)->clients;
         foreach ($clients as $client) {
-            $client->full_name_ge = $client->{'full_name_'.app()->getLocale()};
+            $client->full_name_ge = $client->full_name_ge;
             unset($client->full_name_ru);
             unset($client->full_name_en);
             unset($client->updated_at);
@@ -35,14 +35,14 @@ class GroupExport implements FromCollection, WithHeadings
     {
         return [
             '#',
-            'სახელი',
-            'მისამართი',
-            'ნომერი',
-            'რეგისტრაციის თარიღი',
-            'ელ-ფოსტა',
-            'სქესი',
-            'დაბადების თარიღი',
-            'პირადი ნომერი',
+            __('groupexport.name'),
+            __('groupexport.address'),
+            __('groupexport.phone'),
+            __('groupexport.created'),
+            __('groupexport.mail'),
+            __('groupexport.sex'),
+            __('groupexport.birthday'),
+            __('groupexport.pid'),
         ];
     }
 }

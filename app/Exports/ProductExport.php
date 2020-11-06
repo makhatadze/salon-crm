@@ -13,15 +13,14 @@ class ProductExport implements FromCollection, WithHeadings
     */
     public function collection()
     {
-        $products = Product::where([['warehouse', 0], ['writedown', 0]])->get(); 
+        $products = Product::where('warehouse', 0)->get(); 
         foreach($products as $prod){
-            
             unset($prod['category_id']);
             unset($prod['description_ge']);
             unset($prod['description_ru']);
             unset($prod['description_en']);
             unset($prod['deleted_at']);
-            $prod->title_ge = $prod->{'title'.app()->getLocale()};
+            $prod->title_ge = $prod->title_ge;
             unset($prod['title_ru']);
             unset($prod['title_en']);
             if($prod->type == 2){
@@ -38,13 +37,15 @@ class ProductExport implements FromCollection, WithHeadings
             }
             $prod['purchase'] = $prod->purchase->overhead_number ? $prod->purchase->overhead_number : $prod->purchase->purchase_number;
             unset($prod['purchase_id']);
-            $prod['department'] = $prod->department->{'name_'.app()->getLocale()};
+            $prod['department'] = $prod->department->name_ge;
             unset($prod['department_id']);
             unset($prod['warehouse']);
             $prod['brand'] = $prod->brand->name;
             $prod['storage'] = $prod->storage->name;
             unset($prod['brand_id']);
             unset($prod['storage_id']);
+            unset($prod['fromwarehouse']);
+            unset($prod['boughtamout']);
             unset($prod['writedown']);
             $prod['author'] = $prod->getResponsiblePerson();
             unset($prod['user_id']);
@@ -55,24 +56,24 @@ class ProductExport implements FromCollection, WithHeadings
     {
         return [
             '#',
-            'სახელი',
-            'ფასი',
-            'ტიპი',
-            'რაოდენობა',
-            'ერთეული',
-            'სტატუსი',
-            'დამატების თარიღი',
-            'განახლების თარიღი',
-            'ვატულა',
-            'ექსპლუატაციის დაწყების თარიღი',
-            'ექსპლუატაციის ხანგრძლივობა(დღე)',
-            'შეუზღუდავი ექსპლუატაცია',
-            'შესყიდვის ფასი',
-            'შესყიდვის ნომერი',
-            'დეპარტამენტი',
-            'ბრენდი',
-            'საწყობი',
-            'ვინ დაამატა',
+            __('productexport.name'),
+            __('productexport.price'),
+            __('productexport.type'),
+            __('productexport.quantity'),
+            __('productexport.unit'),
+            __('productexport.status'),
+            __('productexport.createdate'),
+            __('productexport.updatedate'),
+            __('productexport.currency'),
+            __('productexport.expstart'),
+            __('productexport.expduration'),
+            __('productexport.expunlimited'),
+            __('productexport.buyprice'),
+            __('productexport.buynumber'),
+            __('productexport.department'),
+            __('productexport.brand'),
+            __('productexport.storage'),
+            __('productexport.author'),
         ];
     }
 }

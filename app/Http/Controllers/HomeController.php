@@ -83,7 +83,7 @@ class HomeController extends Controller
             $allclientservices = ClientService::count();
             $paymethods = PayController::all();
             $alluser = User::permission('user')->get();;
-            $services = Service::all();
+            $services = Service::where('published', 1)->get();
             if ( request('users')) {
             return redirect()->route('userTimeTable', intval(request('users')));
             }else{

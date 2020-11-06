@@ -294,7 +294,7 @@
                 <span class="w-3 h-3 flex items-center justify-center "> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus w-4 h-2"><line x1="5" y1="12" x2="19" y2="12"></line></svg> </span>
             </button>
             <div class="flex flex-wrap -mx-3 mb-6">
-                <div class="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+                <div class="w-full md:w-1/4 px-3 mb-6 md:mb-0">
                     <label class="font-bold font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
                         @lang('addpurchase.type')
                     </label>
@@ -308,13 +308,20 @@
                       </div>
                     </div>
                   </div>
-                  <div class="w-full md:w-1/3 px-3">
+                  <div class="w-full md:w-1/4 px-3">
                     <label class="font-bold font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
                         @lang('addpurchase.dasaxeleba')
                     </label>
                     <input required autocomplete="off" name="title[]" class="font-medium text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="text" placeholder="@lang('addpurchase.dasaxeleba')">
                   </div>
-                  <div class="w-full md:w-1/3 px-3">
+                  
+                  <div class="w-full md:w-1/4 px-3">
+                    <label class="font-bold font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
+                        @lang('addpurchase.strix')
+                    </label>
+                    <input required autocomplete="off" onkeyup="this.value = this.value.replace(/[^0-9\.]/g, '');" name="shtrix[]" class="font-medium text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="text" placeholder="xxxxxxxxxxxxx">
+                  </div>
+                  <div class="w-full md:w-1/4 px-3">
                     <div>
                         <label for="price" class="block  leading-5 font-medium text-gray-700 font-bold font-caps text-xs">@lang('addpurchase.price')</label>
                         <div class="mt-1 relative rounded-md shadow-sm">

@@ -28,11 +28,10 @@ class SalaryToService extends Model implements Auditable
     protected $table = 'salary_to_services';
     
     public function getClientName(){
-        $name = ClientService::find($this->service_id)->first();
-        if($name){
-            return $name->clinetserviceable->{"full_name_".app()->getLocale()};
-        }
-        return;
+       if ($this->sale) {
+           return $this->sale->client->full_name_ge;
+       }
+       return $this->service->clinetserviceable->full_name_ge;
     }
     public function user()
     {

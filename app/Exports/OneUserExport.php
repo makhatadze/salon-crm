@@ -20,7 +20,7 @@ class OneUserExport implements FromCollection, WithHeadings
     {
         $services = ClientService::where('user_id', $this->id)->get();
         foreach ($services as  $item) {
-            $item['service_name'] = $item->service->{"title_".app()->getLocale()};
+            $item['service_name'] = $item->service->title_ge;
             $item['service_price'] = $item->service->price/100;
             $item['service_currency'] = $item->service->currency_type;
             $item['service_endtime'] = $item->getEndTime();
@@ -29,7 +29,7 @@ class OneUserExport implements FromCollection, WithHeadings
             $item['author_name'] = $item->getAuthorName();
             $item['updated_price'] = $item->new_price / 100;
             $item['client_number'] = $item->clinetserviceable->number;
-            $item['client_name'] = $item->clinetserviceable->{'full_name_'.app()->getLocale()};
+            $item['client_name'] = $item->clinetserviceable->full_name_ge;
             unset($item->user_id);
             unset($item->service_id);
             unset($item->new_price);
@@ -37,6 +37,7 @@ class OneUserExport implements FromCollection, WithHeadings
             unset($item->department_id);
             unset($item->pay_method_id);
             unset($item->author);
+            unset($item->currency_type);
             unset($item->clinetserviceable_type);
             unset($item->session_endtime);
             unset($item->clinetserviceable_id);
@@ -49,21 +50,20 @@ class OneUserExport implements FromCollection, WithHeadings
     {
         return [
             '#',
-            'სერვისის დაწყების დრო',
-            'სტატუსი',
-            'რეგისტრაციის დრო',
-            'გადახდის მეთოდი',
-            'ხანგრძლივობა (წთ)',
-            'სერვისი',
-            'სერვისის ორიგინალი ფასი',
-            'სერვისის ფასის ვალუტა',
-            'დასრულების დრო',
-            'თანამშრომელი',
-            'დეპარტამენტი',
-            'ავტორი',
-            'განახლებული ფასი',
-            'კლიენტის ნომერი',
-            'კლიენტის სახელი',
+            __('serviceexport.servicestart'),
+            __('serviceexport.status'),
+            __('serviceexport.register'),
+            __('serviceexport.pay'),
+            __('serviceexport.duration'),
+            __('serviceexport.service'),
+            __('serviceexport.serviceoriginalprice'),
+            __('serviceexport.endtime'),
+            __('serviceexport.employee'),
+            __('serviceexport.department'),
+            __('serviceexport.author'),
+            __('serviceexport.newprice'),
+            __('serviceexport.clientnumber'),
+            __('serviceexport.clientname'),
         ];
     }
 }
