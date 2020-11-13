@@ -447,19 +447,26 @@ class UserController extends Controller
         }
         
         if ($request->hasFile('userimage')) {
-            if ($user->image) {
-                Storage::delete('public/'.$user->id.'/'.$user->image->name);
-            }
+ 
             $img = Imagev::make($request->file('userimage'));
             $img->resize(300, null, function ($constraint) {
                 $constraint->aspectRatio();
             });
             $imagename = date('Ymhs').$request->file('userimage')->getClientOriginalName();
+            if ($user->image) {
+                Storage::delete('public/'.$user->id.'/'.$user->image->name);
+                $image = $user->image;
+                $image->name = $imagename;
+                $image->save();
+            }else{
+                $user->image()->create([
+                    'name' => $imagename
+                ]);
+            }
+
             Storage::disk('public')->put("profile/".$user->id."/".$imagename, (string) $img->encode());
 
-            $user->image()->create([
-                'name' => $imagename
-            ]);
+
         }
 
 
