@@ -24,6 +24,7 @@ use Carbon\Carbon;
 
 use App\Exports\UserExport;
 use App\PayController;
+use App\Product;
 use App\Role;
 use App\Service;
 use App\UserJob;
@@ -92,12 +93,14 @@ class UserController extends Controller
                     'password_confirmation' => 'required_with:password|same:password|min:8',
                     'files' => 'image|mimes:jpeg,bmp,png,gif,svg',
                     'interval_between_meeting' => '',
-                    'brake_between_meeting' => 'required|string'
+                    'brake_between_meeting' => 'required|string',
+                    'showuser' => '',
                 ]);
                 $user = new User([
                     'name' => $data['first_name'],
                     'email' => $data['email'],
                     'password' => Hash::make($data['password']),
+                    'active' => isset($data['showuser']) ? 1 : 0,
                 ]);
                 
 
@@ -132,7 +135,7 @@ class UserController extends Controller
                     'first_name' => $data['first_name'],
                     'last_name' => $data['last_name'],
                     'birthday' => $data['birthday'],
-                    'show_user' => isset($data['showuser']) ? 1 : 0,
+                    'show_user' =>  1,
                     'percent_from_sales' => $data['soldproduct'] ?? 0,
                     'interval_between_meeting' => isset($data['interval_between_meeting']) ? $data['interval_between_meeting'] : null,
                     'brake_between_meeting' => $data['brake_between_meeting'],
@@ -227,7 +230,7 @@ class UserController extends Controller
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
         if(Hash::check($request->input('old_password'), Auth::user()->password)){
-            $user = auth::user();
+            $user = Auth::user();
             $user->password = Hash::make($request->input('password'));
             $user->save();
         }
@@ -281,8 +284,10 @@ class UserController extends Controller
             $date = Carbon::today();
         } 
         $clients = Client::all();
+        
+        $products = Product::select('id', 'title_ge')->where([['fromwarehouse', 1], ['writedown', 1]])->get();
         $paymethods = PayController::all();
-        return view('theme.template.user.user_timetable', compact('user', 'clients', 'date', 'paymethods'));
+        return view('theme.template.user.user_timetable', compact('user', 'clients', 'date', 'paymethods', 'products'));
     }
     /**
      * Store a newly created resource in storage.
@@ -404,7 +409,8 @@ class UserController extends Controller
             'brake_between_meeting' => 'required|string|max:5',
             'interval_between_meeting' => '',
             'blockstatus' => '',
-            'email' => ''
+            'email' => '',
+            'userimage' => ''
         ]);
         $user = User::findOrFail($id);
 
@@ -440,6 +446,23 @@ class UserController extends Controller
             $hasjob->delete();
         }
         
+        if ($request->hasFile('userimage')) {
+            if ($user->image) {
+                Storage::delete('public/'.$user->id.'/'.$user->image->name);
+            }
+            $img = Imagev::make($request->file('userimage'));
+            $img->resize(300, null, function ($constraint) {
+                $constraint->aspectRatio();
+            });
+            $imagename = date('Ymhs').$request->file('userimage')->getClientOriginalName();
+            Storage::disk('public')->put("profile/".$user->id."/".$imagename, (string) $img->encode());
+
+            $user->image()->create([
+                'name' => $imagename
+            ]);
+        }
+
+
         $profile->show_user = isset($request->showtable) ? 1 : 0;
         
         if(isset($request->services) && sizeof($request->services) > 0){

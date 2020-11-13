@@ -20,7 +20,8 @@ class ProductExport implements FromCollection, WithHeadings
             unset($prod['description_ru']);
             unset($prod['description_en']);
             unset($prod['deleted_at']);
-            $prod->title_ge = $prod->title_ge;
+            $prod->price = number_format($prod->price/100,2);
+            $prod->buy_price = number_format($prod->buy_price/100,2);
             unset($prod['title_ru']);
             unset($prod['title_en']);
             if($prod->type == 2){
@@ -46,6 +47,7 @@ class ProductExport implements FromCollection, WithHeadings
             unset($prod['storage_id']);
             unset($prod['fromwarehouse']);
             unset($prod['boughtamout']);
+            unset($prod['currency_type']);
             unset($prod['writedown']);
             $prod['author'] = $prod->getResponsiblePerson();
             unset($prod['user_id']);
@@ -64,11 +66,11 @@ class ProductExport implements FromCollection, WithHeadings
             __('productexport.status'),
             __('productexport.createdate'),
             __('productexport.updatedate'),
-            __('productexport.currency'),
             __('productexport.expstart'),
             __('productexport.expduration'),
             __('productexport.expunlimited'),
             __('productexport.buyprice'),
+            __('productexport.productcode'),
             __('productexport.buynumber'),
             __('productexport.department'),
             __('productexport.brand'),

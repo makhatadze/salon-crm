@@ -40,4 +40,37 @@ class ClientService extends Model implements Auditable
     {
         return $this->belongsTo('App\User');
     }
+    public function SalaryToService()
+    {
+        return $this->hasMany('App\SalaryToService', 'service_id');
+    }
+    public function products()
+    {
+        return $this->hasMany('App\ProductToService', 'client_id');
+    }
+    public function spendonproducts()
+    {
+        $money = 0;
+        foreach ($this->products as $key => $value) {
+            $money += $value->productquntity * $value->newproductprice;
+        }
+        return $money;
+    }
+    public function productsbuyprice()
+    {
+        $money = 0;
+        foreach ($this->products as $key => $value) {
+            $money += $value->product->buy_price*$value->productquntity;
+        }
+        return $money;
+    }
+    // produqtebis mogeba an wageba
+    public function getspendonproducts()
+    {
+        $money = 0;
+        foreach ($this->products as $key => $value) {
+            $money += ($value->newproductprice - $value->product->buy_price)*$value->productquntity;
+        }
+        return $money;
+    }
 }

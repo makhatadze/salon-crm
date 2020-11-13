@@ -27,4 +27,6 @@ return [
     'clientnumber' => 'კლიენტის ნომერი',
     'clientname' => 'კლიენტის სახელი',
     'paid' => 'გადახდილი თანხა',
+    'spendonproducts' => 'პროდუქციის ფასი',
+    'getspendonproducts' => 'მოგება',
 ];

@@ -6,6 +6,7 @@ use App\Brand;
 use App\Category;
 use App\Department;
 use App\Product;
+use App\Storage;
 use App\SubCategory;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -18,6 +19,7 @@ class Index extends Component
     public $pricetill = null;
     public $stocktill = null;
     public $brand = null;
+    public $storage = null;
     public $department = null;
     public $brandarray = array();
 
@@ -48,7 +50,8 @@ class Index extends Component
                     ->where('price', '>=', $this->pricefrom ? $this->pricefrom*100 : 0)
                     ->where('price', '<=', $this->pricetill ? $this->pricetill*100 : 0)
                     ->where('stock', '<=', $this->stocktill ?? 0)
-                    ->where('brand_id', 'LIKE', '%'.$this->brand.'%');
+                    ->where('brand_id', 'LIKE', '%'.$this->brand.'%')
+                    ->where('storage_id', 'LIKE', '%'.$this->storage.'%');
                     if ($this->department) {
                         $products = $products->where('department_id', $this->department);
                     }
@@ -58,7 +61,8 @@ class Index extends Component
                     
                     $products = $products->paginate(30);
                     $brands = Brand::all();
+                    $storages = Storage::all();
                     $departments = Department::all();
-        return view('livewire.product.index', compact('brands', 'products', 'departments'));
+        return view('livewire.product.index', compact('brands', 'products', 'departments', 'storages'));
     }
 }

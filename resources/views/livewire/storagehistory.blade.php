@@ -57,7 +57,16 @@
                 </div>
                 <div class="col-span-2">
                     <h6 class="font-bold text-xs">{{$history->storage->name}}</h6>
-                    <span class="text-xs font-normal">@lang('warehosuehistory.gatana'): {{Carbon\Carbon::parse($history->created_at)->isoFormat('Y-MM-DD')}}</span>
+                    <span class="text-xs font-normal">
+                        @if ($history->description == "fromstorage")
+                            @lang('product.fromstoragetext')
+                        @elseif ($history->description == "backtostorage")
+                            @lang('product.backtostoragetext')
+                        @elseif ($history->description == "takefromstorage")
+                            @lang('product.takefromstoragetext')
+                        @endif
+                        : {{Carbon\Carbon::parse($history->created_at)->isoFormat('Y-MM-DD')}}
+                    </span>
                 </div>
                 <div class="col-span-2">
                     <h6 class="font-bold text-xs">{{$history->user->profile->first_name .' '. $history->user->profile->last_name}}</h6>

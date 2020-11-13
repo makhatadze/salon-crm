@@ -114,6 +114,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
             Route::post('/addtocart', 'ProductController@addtocart')->name('AddToCart');
             Route::get('/addtocart', 'ProductController@addtocartget')->name('AddToCart');
             Route::get('/products/turn/{product}/{status}', 'ProductController@turn');
+            Route::post('/poroducts/getinfo', 'ProductController@getinfo')->name('getProductInfo');
             Route::post('/products/removeimg', 'ProductController@removeimg')->name('RemoveImage');
             Route::get('/products/edit/{product}', 'ProductController@edit')->name('ProductEdit');
             Route::get('/removefromcart/{product}', 'ProductController@removefromCart')->name('RemoveFromCart');

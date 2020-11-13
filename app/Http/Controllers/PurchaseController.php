@@ -285,8 +285,10 @@ class PurchaseController extends Controller
      */
     public function destroy(Purchase $purchase)
     {
-        $purchase->delete();
-        return redirect('/purchases');
+        if ($purchase->products()->count() == 0) {
+            $purchase->delete();
+        }
+        return redirect()->back();
     }
     //Get Departments by office
     public function getdepartments(Request $request){

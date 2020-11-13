@@ -49,5 +49,6 @@ return [
     'fr' => 'Fr',
     'sa' => 'Sa',
     'su' => 'Su',
+    'uploadimage' => 'Upload Image'
 
 ];

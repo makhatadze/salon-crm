@@ -44,6 +44,12 @@ return [
     'created' => 'Запись',
     'consignation' => 'Партия',
     'submit' => 'Подтверждение',
+    'addproduct' => 'Добавить товар',
+    'unit' => 'Ед. изм',
+    'product' => 'Товар',
+    'gram' => 'Грамм',
+    'centimeter' => 'Сантиметр',
+    'amout' => 'Количество',
 
 
 ];

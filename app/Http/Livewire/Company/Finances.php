@@ -64,7 +64,7 @@ class Finances extends Component
             $finances = $finances->whereNull('sale_id');
             
             foreach (ClientService::where('status', 1)->get() as $item) {
-                $this->totalclearearn += $item->new_price - ($item->new_price - $item->paid);
+                $this->totalclearearn += $item->new_price - $item->paid;
             }
             $this->totalearn =  ClientService::where('status', 1)->sum('paid');
 
@@ -80,7 +80,7 @@ class Finances extends Component
                 $this->totalclearearn += $item->totalOriginalPrice() - ($item->total - $item->paid);
             }
             foreach (ClientService::where('status', 1)->get() as $item) {
-                $this->totalclearearn += $item->new_price - ($item->new_price - $item->paid);
+                $this->totalclearearn += $item->paid - $item->productsbuyprice();
             }
             $this->totalearn =  Sale::sum('paid') + ClientService::where('status', 1)->sum('paid');
         }

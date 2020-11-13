@@ -28,7 +28,7 @@
                 @lang('addpurchase.dist')
             </label>
             <div class="relative">
-              <select class="block font-normal text-xs appearance-none w-full border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none bg-white focus:border-gray-500" required id="distributor_id" name="distributor_id">
+              <select class="select2 block font-normal text-xs appearance-none w-full border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none bg-white focus:border-gray-500" required id="distributor_id" name="distributor_id">
                 <option value="">@lang('addpurchase.choose')</option>
                 @foreach ($distributors as $dist)
                     <option value="{{$dist->id}}">{{$dist->name_ge }}</option>

@@ -30,5 +30,6 @@ return [
     'brand' => 'Марка',
     'storage' => 'Место хранения',
     'author' => 'Автор',
+    'productcode' => 'Код продукта'
 
 ];

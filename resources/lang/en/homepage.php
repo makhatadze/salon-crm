@@ -44,6 +44,13 @@ return [
     'created' => 'Created',
     'consignation' => 'Consignation',
     'submit' => 'Submit',
+    'addproduct' => 'Add Product',
+    'unit' => 'Unit',
+    'product' => 'Product',
+    'gram' => 'Gram',
+    'unit' => 'Unit',
+    'centimeter' => 'Centimeter',
+    'amout' => 'Quantity',
 
 
 ];

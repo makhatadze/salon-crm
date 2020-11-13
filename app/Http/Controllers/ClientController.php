@@ -47,7 +47,7 @@ class ClientController extends Controller
         foreach ($queries as $req) {
             if(request($req)){
                 if($req == "name"){
-                    $clients = $clients->where('full_name_'.app()->getLocale(), 'like', '%'.request($req).'%');
+                    $clients = $clients->where('full_name_ge', 'like', '%'.request($req).'%');
                 }elseif($req == "phone"){
                     $clients = $clients->where('number', 'like', '%'.request($req).'%');
                 }elseif(isset(request()->consignation)){
@@ -310,51 +310,44 @@ class ClientController extends Controller
                 return redirect('/')->with('error', ' გადახდის მეთოდი არ მოიძებნა');
             }    
         }
-        
+        // Check Client Service
         $id = $request->pay_id;
         $clientservice = ClientService::where('status', false)->findOrFail($id);
-        $user = $clientservice->user;
 
-        $message = '';
-        $service = Service::find($clientservice->service_id);
-        $success = false;
-        if ($service) {
-            $success = true;
-            $inventories = $service->inventories()->get();
-
-                $message = '';
-                foreach ($inventories as $prods) {
-                    $prod = Product::find($prods->product_id);
-                    if ($prod) {
-                        if ($prod->stock == 0 || $prod->stock < $prods->quantity) {
-                            return redirect('/')->with('error', $prod->id . ' | ' . $prod->{"title_" . app()->getLocale()} . ' მარაგი ცარიელია ან არასაკმარისი');
-                        } elseif ($prod->published == false) {
-                            return redirect('/')->with('error', $prod->id . ' | ' . $prod->{"title_" . app()->getLocale()} . ' სტატუსი გათიშულია');
-                        } else if ($prod->stock - $prods->quantity == 0 || $prod->stock - $prods->quantity <= $prods->quantity) {
-                            $message .= $prod->id . ' | ' . $prod->{"title_" . app()->getLocale()} . ' მარაგი შესავსევბია <br>';
-                        } else {
-                            $message .= 'სტატუსი წარმატებით განახლდა';
-                        }
-                        $prod->stock = $prod->stock - $prods->quantity;
-                        $prod->save();
-                    }
-                }
-            
-        } else {
-            return back()->with('error', 'დაფიქსირდა შეცდომა');
-        }
-        if ($user) {
-            $userProfile = $user->profile;
-            if ($userProfile) {
-                SalaryToService::create([
-                    'user_id' => $user->id,
-                    'service_id' => $clientservice->id,
-                    'service_price' => $clientservice->new_price,
-                    'percent' => $userProfile->percent
-                ]);
+        // Service Products
+        $json = array();
+        if ($request->input('productnames') && $request->input('productquntity') && $request->input('newproductprice')) {
+            foreach ($request->input('productnames') as $key => $value) {
+                $json[$key]['product_id'] = $request->input('productnames')[$key];
+                $json[$key]['productquntity'] = $request->input('productquntity')[$key];
+                $json[$key]['newproductprice'] = $request->input('newproductprice')[$key]*100;
             }
         }
-        $clientservice->status = true;
+        // Worker
+        $user = $clientservice->user; 
+        // Check And Validate Product
+        foreach($json as $prod){
+            $product = Product::Find(intval($prod['product_id']));
+            if ($product) {
+                if ($product->stock < $prod['productquntity']) {
+                    return redirect()->back()->with('warning', 'Product is Not Enough');
+                }
+            }else{
+                return redirect()->back()->with('warning', 'There is No product like this');
+            }
+        }
+        // Service Products
+            $clientservice->products()->createMany($json);
+        // New Price
+            $clientservice->new_price = $clientservice->new_price + intval($request->newserviceprice*100);
+            $clientservice->save();
+        // Minusproduct
+            foreach($json as $prod){
+                $product = Product::Find(intval($prod['product_id']));
+                $product->stock = $product->stock - $prod['productquntity'];
+                $product->save();
+            }
+        // Save Client Service as Paid
         if ($request->pay_method == "consignation") {
             $clientservice->session_endtime = Carbon::now('Asia/Tbilisi');
             $clientservice->pay_method = "consignation";
@@ -363,14 +356,18 @@ class ClientController extends Controller
             $clientservice->pay_method_id = $paymethod->id;
             $clientservice->session_endtime = Carbon::now('Asia/Tbilisi');
             $clientservice->paid = $clientservice->new_price;
-            $clientservice->pay_method = $paymethod->{"name_".app()->getLocale()};
+            $clientservice->pay_method = $paymethod->name_ge;
         }
+        $clientservice->salaryToService()->create([
+            'user_id' => $user->id,
+            'service_id' => $clientservice->id,
+            'service_price' => $clientservice->new_price,
+            'percent' => $clientservice->user->profile->percent
+        ]);
+        $clientservice->status = true;
+       
         $clientservice->save();
-        if ($success) {
-            return redirect()->back()->with('success', $message);
-        } else {
-            return redirect()->back()->with('warning', $message);
-        }
+        return redirect()->back();
     }
     public function getUserServices(Request $request)
     {
@@ -380,7 +377,7 @@ class ClientController extends Controller
         $user = User::findOrFail($request->userid);
         $html = '';
         foreach ($user->services($request->userid) as $item) {
-            $html .= '<option value="'.$item->id.'">'.$item->{'title_'.app()->getLocale()} .'</option>';
+            $html .= '<option value="'.$item->id.'">'.$item->title_ge .'</option>';
         }
         return response()->json(array('status' => true, 'html' => $html));
     }
@@ -443,11 +440,11 @@ class ClientController extends Controller
         foreach ($services as $client) {
             $client['endtime'] = $client->getEndTime();
             $client['workername'] = $client->user->profile->first_name .' '. $client->userlast_name;
-            $client['servicename'] = $client->service->{"title_".app()->getLocale()};
+            $client['servicename'] = $client->service->title_ge;
             $client['serviceprice'] = $client->getServicePrice();
             $client['clientid'] = $client->clinetserviceable->id;
             $client['clientnumber'] = $client->clinetserviceable->number;
-            $client['clientname'] = $client->clinetserviceable->{"full_name_" . app()->getLocale()};
+            $client['clientname'] = $client->clinetserviceable->full_name_ge;
         }
         return response()->json(array('status' => true, 'data' => $services));
     }
@@ -513,18 +510,11 @@ class ClientController extends Controller
         $this->validate($request, [
             'id' => 'required|integer'
         ]);
-        $service = Service::findorFail($request->id);
+        $service = Service::findOrFail(intval($request->id));
         $duration = $service->duration_count;
         $price = $service->price/100;
-        $users = UserJob::where('service_id', $request->id)->select('users.id', 'profiles.first_name', 'profiles.last_name')
-                ->join('users', 'user_jobs.user_id', '=', 'users.id')
-                ->join('profiles', 'profiles.profileable_id', '=', 'user_jobs.user_id')
-                ->get();
-        $html = '';
-        foreach($users as $user){
-            $html .= '<option value="'.$user->id.'">'.$user->first_name.' '.$user->last_name.'</option>';
-        }
-        return response()->json(array('status' => true, 'html' => $html, 'duration' => $duration, 'price' => $price));
+
+        return response()->json(array('status' => true, 'duration' => $duration, 'price' => $price));
     }
     public function addservice(Request $request)
     {
@@ -580,7 +570,7 @@ class ClientController extends Controller
 
     public function clientserviceexport(Client $client)
     {
-        return Excel::download(new ClientServices($client->id), $client->{"full_name_" . app()->getLocale()} . '.xlsx');
+        return Excel::download(new ClientServices($client->id), $client->full_name_ge.'.xlsx');
     }
     public function addconsignation(Request $request, ClientService $ClientService)
     {

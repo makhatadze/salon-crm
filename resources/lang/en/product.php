@@ -50,6 +50,14 @@ return [
     'desc' => 'Description',
     'upload' => 'Upload',
     'exptext' => '<strong class="text-red-500">Attention:</strong> In case of marking the period of infinite service, the start date of the product
-    And the duration will be deleted.'
+    And the duration will be deleted.',
+    'transfertext' => 'Left In Storage',
+    'takefromstorage' => 'Take From storage',
+    'backtostorage' => 'Back To Storage',
+    'takefromstoragetext' => 'Take From storage',
+    'backtostoragetext' => 'Back To Storage',
+    'fromstoragetext' => 'Send From Storage',
+    'productcode' => 'Product Code',
+    'storage' => 'Storage',
 
 ];

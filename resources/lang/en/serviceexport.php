@@ -27,4 +27,6 @@ return [
     'clientnumber' => 'Client Number',
     'clientname' => 'Client Name',
     'paid' => 'Paid',
+    'spendonproducts' => 'Products Price',
+    'getspendonproducts' => 'Income',
 ];

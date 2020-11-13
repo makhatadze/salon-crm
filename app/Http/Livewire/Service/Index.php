@@ -14,6 +14,13 @@ class Index extends Component
         $serv->published = !$serv->published ;
         $serv->save();
     }
+    public function removeservice(Service $serv)
+    {
+       
+        if ($serv->clientsOnService()->count() == 0){
+            $serv->delete();
+        }
+    }
     public function render()
     {
         $services = Service::where('title_ge', 'LIKE', '%'.$this->search.'%')->get();

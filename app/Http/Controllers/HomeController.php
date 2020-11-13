@@ -97,7 +97,8 @@ class HomeController extends Controller
             $users = User::whereIn('id', $getusers)->get();
             }
             $clients = Client::all();
-            return view('theme.template.home.home_index', compact('alluser', 'services', 'selecteduser', 'users', 'clients', 'paymethods',  'date'));
+            $products = Product::select('id', 'title_ge')->where([['fromwarehouse', 1], ['writedown', 1]])->get();
+            return view('theme.template.home.home_index', compact('alluser', 'services', 'selecteduser', 'users', 'products', 'clients', 'paymethods',  'date'));
         } else {
             abort('404');
         }

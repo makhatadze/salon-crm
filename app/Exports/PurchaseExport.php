@@ -25,6 +25,7 @@ class PurchaseExport implements FromCollection, WithHeadings
             }
             $purchase['dept'] = number_format($purchase->getPrice()/100, 2);
             $purchase['distributor_name'] = $purchase->distributor->name_ge;
+            $purchase->paid = number_format($purchase->paid/100,2);
             unset($purchase->responsible_person_id);
             unset($purchase->getter_person_id);
             unset($purchase->office_id);

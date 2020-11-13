@@ -13,8 +13,9 @@
    </div>
    @foreach ($purchases as $purchase)
    <a href="/purchases/edit/{{$purchase->id}}" class="my-2 @if($purchase->getPrice() != $purchase->paid) border-l-2 border-red-400 pl-2 @endif zoom-in flex items-center justify-between">
-       <div>
+       <div> 
            @if ($purchase->purchase_type == "overhead")
+          
            <h6 class="font-bolder text-xs text-black">#{{$purchase->overhead_number}}</h6>
            <small class="font-normal">@lang('distributor.overheadnumber')</small>
            @elseif($purchase->purchase_type == "purchase")

@@ -46,7 +46,7 @@
                     <h6>
                       @lang('finance.clear')
                     </h6> 
-                    @if ($totalclearearn > 0)
+                    @if (($totalclearearn - $totalsalary) > 0)
                       <span class="text-green-700 font-bold">
                         + {{number_format(($totalclearearn - $totalsalary)/100,2)}}
                       </span>
@@ -77,7 +77,24 @@
               </div>
               {{-- გასასწორებელია სერვისზე პროდუქტის დამატების შემდეგ ~ ხარჯი --}}
               <div class="col-span-1 flex items-center justify-center">
-                  0
+                  
+                @if($item->service)
+                @if ($item->service->spendonproducts() > 0)
+                <div>
+                  <h6>{{number_format($item->service->spendonproducts()/100, 2)}}</h6>
+                  @if ($item->service->getspendonproducts()/100 > 0)
+                    <span class="text-green-700 font-bold">
+                    {{number_format($item->service->getspendonproducts()/100, 2)}}
+                    </span>
+                  @else 
+                    <span class="text-red-500 font-bold">
+                      {{number_format($item->service->getspendonproducts()/100, 2)}}
+                    </span>
+                  @endif
+                </div>
+                @endif
+                
+                @endif
               </div>
               <div class="col-span-1 flex items-center justify-center">
                 <span>{{$item->percent}}% =</span> <h6 class="ml-1 text-xs font-bold text-gray-700"> {{number_format($item->service_price * ($item->percent/100)/100,2)}}</h6>
@@ -102,12 +119,15 @@
                         <span class="font-bold text-red-500" style="font-size:0.7rem"> - {{number_format(($item->sale->total - $item->sale->paid)/100,2)}}</span>
                       @endif
                   @elseif($item->service)
-                  <span class="text-green-700 font-bold">
-                      
-                      + {{number_format(($item->service->paid - ($item->service_price * $item->percent/100) - ($item->service_price * ($item->percent/100)))/100,2)}}
+                  @if (($item->service->paid - ($item->service_price * $item->percent/100) - $item->service->productsbuyprice())/100 > 0)
+                    <span class="text-green-700 font-bold">
+                          
+                      + {{number_format(($item->service->paid - ($item->service_price * $item->percent/100) - $item->service->productsbuyprice())/100,2)}}
                     </span> <br>
-                    
+                  @endif
+                  
                     @if ($item->service->new_price > $item->service->paid) 
+                      
                       <span class="font-bold text-red-500" style="font-size:0.7rem"> - {{number_format(($item->service->new_price - $item->service->paid)/100,2)}}</span>
                     @endif
                   @endif

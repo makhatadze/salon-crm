@@ -31,6 +31,8 @@ class ServicesExport implements FromCollection, WithHeadings
             $serv->new_price = $serv->new_price/100;
             $serv->paid = $serv->paid/100;
             unset($serv->author);
+            $serv['spendonproducts'] = number_format($serv->spendonproducts()/100, 2);
+            $serv['getspendonproducts'] = number_format($serv->getspendonproducts()/100, 2);
         }
         return $services;
     }
@@ -49,6 +51,8 @@ class ServicesExport implements FromCollection, WithHeadings
             __('serviceexport.author'),
             __('serviceexport.service'),
             __('serviceexport.clientname'),
+            __('serviceexport.spendonproducts'),
+            __('serviceexport.getspendonproducts'),
         ];
     }
 }

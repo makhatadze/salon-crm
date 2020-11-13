@@ -187,8 +187,18 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        $product->delete();
-        return redirect('/products');
+        if ($product->warehouse == 1 && $product->children()->count() == 0) {
+            $product->delete();
+        }
+        return redirect()->back();
+    }
+    public function getinfo(Request $request)
+    {
+        $this->validate($request, [
+           'id' => 'required|integer|min:0' 
+        ]);
+        $product = Product::select('unit','buy_price', 'stock', 'price')->findOrFail(intval($request->id));
+        return response()->json(array('status' => true, 'product' => $product));
     }
     public function removeimg(Request $request)
     {
@@ -288,6 +298,7 @@ class ProductController extends Controller
     }
     public function addtocart(Request $request)
     {
+
         $user_id = Auth::user()->id;
         $method = $request->method();
 
@@ -298,9 +309,11 @@ class ProductController extends Controller
                 'quantity' => 'required|min:0',
             ]);
             $product = Product::findOrFail($request->select_product);
-            $currentquantity = Cart::session($user_id)->getContent($product->id);
-            if($currentquantity->first()){
-                if($product->stock < $currentquantity->first()->quantity + $request->quantity){
+            
+            $currentquantity = Cart::session($user_id)->get($product->id);
+
+            if($currentquantity){
+                if($product->stock < $currentquantity->quantity + $request->quantity){
                     return redirect()->back()->with('error', 'არასაკმარისი რაოდენობა. სულ:'.$product->stock);
                 }
             }else if($product->stock < $request->quantity){

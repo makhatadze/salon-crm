@@ -12,7 +12,8 @@ class StorageHistory extends Model
         'user_id',
         'department_id',
         'product_id',
-        'price'
+        'price',
+        'description'
     ];
     public function product()
     {

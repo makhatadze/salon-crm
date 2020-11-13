@@ -27,4 +27,6 @@ return [
     'clientnumber' => 'Номер клиента',
     'clientname' => 'имя клиента',
     'paid' => 'Оплаченная сумма',
+    'spendonproducts' => 'Цена на продукцию',
+    'getspendonproducts' => 'Доход',
 ];

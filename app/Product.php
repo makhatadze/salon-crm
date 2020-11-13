@@ -77,4 +77,12 @@ class Product extends Model implements Auditable
         }
         return;
     }
+    public function parent()
+    {
+        return $this->hasOne('App\Productparent', 'child_id');
+    }
+    public function children()
+    {
+        return $this->hasMany('App\Productparent', 'parent_id');
+    }
 }

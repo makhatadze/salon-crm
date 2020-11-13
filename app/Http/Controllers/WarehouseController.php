@@ -14,12 +14,18 @@ class WarehouseController extends Controller
             'dept_id' => 'required|integer',
             'user_id' => 'required|integer',
             'typeamout' => 'required|min:1',
-            
+            'sell_price' => 'required'
         ]);
         
         $prod = Product::findOrFail(intval($id));
         if($prod->stock < $request->typeamout){
-            return redirect()->back();
+            return redirect()->back()->with('error', 'საწყობში რაოდენობა ნაკლებია არჩეულ რაოდენობაზე');
+        }
+        if($prod->buy_price < $request->sell_price){
+            return redirect()->back()->with('error', 'შესყიდვის ფასი მეტია გაყიდვის ფასზე');
+        }
+        if (Product::where('department_id', $request->dept_id)->whereIn('id', $prod->children()->select('child_id')->get()->toArray())->count() > 0) {
+            return redirect()->back()->with('error', 'მსგავსი პროდუქტი უკვე არსებობს დეპარტამენტში');
         }
         if($prod->type == 1){
             $this->validate($request,[
@@ -47,6 +53,10 @@ class WarehouseController extends Controller
                     $newprod->department_id = $request->dept_id;
                     $newprod->user_id = $request->user_id;
                     $newprod->save();
+                    $newprod->parent()->create([
+                        'child_id' => $newprod->id,
+                        'parent_id' => $prod->id
+                    ]);
                 }
                 $thisprod = $prod;
                 if($thisprod->stock == $request->typeamout){
@@ -69,6 +79,10 @@ class WarehouseController extends Controller
             $newprod->stock = $request->typeamout;
             $newprod->fromwarehouse = true;
             $newprod->save();
+            $newprod->parent()->create([
+                'child_id' => $newprod->id,
+                'parent_id' => $prod->id
+            ]);
 
             $thisprod = $prod;
             if($thisprod->stock == $request->typeamout){
@@ -86,7 +100,8 @@ class WarehouseController extends Controller
             'user_id' => Auth::user()->id,
             'department_id' => $request->dept_id,
             'product_id' => $prod->id,
-            'price' => $request->sell_price*100
+            'price' => $request->sell_price*100,
+            'description' => 'fromstorage'
         ]);
         return redirect()->back();
     }

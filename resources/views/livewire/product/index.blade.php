@@ -1,11 +1,20 @@
 <div>
-    <div class="bg-white p-3">
-        <div class="flex items-center">
+    <div class="flex items-center">
+        <div class="w-full bg-white flex items-center p-5 mr-2">
           <input type="text" wire:model="name" autofocus class="w-full font-normal text-xs focus:outline-none" placeholder="@lang('product.search')">
         <svg width="1.18em" height="1.18em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
           <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
           <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
         </svg>
+        </div>
+        <div class="w-64 bg-white ml-2 p-2">
+          <span class="font-bolder font-caps text-xs">@lang('product.storage')</span>
+          <select wire:model="storage" class="w-full focus:outline-none font-normal text-xs">
+            <option value="">@lang('product.choose')</option>
+            @foreach ($storages as $storage)
+              <option value="{{$storage->id}}">{{$storage->name}}</option>
+            @endforeach
+          </select>
         </div>
       </div>
       <div class="flex mt-2">
@@ -63,8 +72,8 @@
       </div>
       @if ($products)
       @foreach ($products as $item)
-      <div class="flex items-center @if($item->stock <= 1 && $item->type != 1) bg-red-500 @else bg-white @endif @if($item->type == 1) border-l-4 border-orange-300 @endif p-3 block shadow-sm w-full mt-3">
-        <div class="w-2/12 flex">
+      <div class="grid grid-cols-6  items-center @if($item->stock <= 1 && $item->type != 1) bg-red-500 @else bg-white @endif @if($item->type == 1) border-l-4 border-orange-300 @endif p-3 block shadow-sm w-full mt-3">
+        <div class="col-span-2 md:col-span-1 flex">
           @foreach ($item->images as $key => $img)
             <img src="{{asset('../storage/productimage/'.$img->name)}}" class="w-8 h-8 object-cover rounded-full shadow -ml-1">
             @if ($key == 3)
@@ -72,15 +81,16 @@
             @endif
           @endforeach
         </div>
-        <div class="w-2/12">
+        <div class="col-span-2 md:col-span-1">
           <h6 class="font-medium text-black text-xs">
             {{$item->title_ge }}
           </h6>
         </div>
-        <div class="w-2/12 font-bolder font-caps uppercase text-xs">
-          {{$item->brand->name}}
+        <div class="col-span-2 md:col-span-1 font-bolder font-caps  text-xs">
+          <h6 class="uppercase">{{$item->brand->name}}</h6>
+          <small class="font-normal">{{$item->storage->name}}</small>
         </div>
-        <div class="w-2/12 font-normal text-xs">
+        <div class="col-span-2 md:col-span-1 font-normal text-xs">
           {{$item->stock}} 
           @if($item->unit == "unit")
           @lang('product.unit')
@@ -90,7 +100,7 @@
           @lang('product.centimeter')
           @endif
         </div>
-        <div class="w-2/12 font-normal text-xs">
+        <div class="col-span-1 md:col-span-2 lg:col-span-1 font-normal text-xs">
           <h6>{{$item->price/100}}
             @if ($item->currency_type == 'gel')
             @lang('money.icon')
@@ -103,14 +113,16 @@
             @endif</small>
           @endif
         </div>
-        <div x-data="{modal: false}" class="w-2/12">
+        <div x-data="{modal: false}" class="col-span-2 md:col-span-1">
           <div class="flex items-center">
             @php
                 $randomKey = rand(1, 999999).$item->id;
                 $randomKey2 = rand(1, 999999).$item->id;
+                $randomKey3 = rand(1, 999999).$item->id;
             @endphp
             <livewire:product.writedown :product="$item" :key="$randomKey">
             <livewire:product.calculate :product="$item" :key="$randomKey2">
+            <livewire:product.tobackstorage :product="$item" :key="$randomKey3">
             <a href="{{ route('ProductEdit', $item->id) }}" class="cursor-pointer p-2  bg-gray-200 rounded">
               <svg width="1.18em" height="1.18em" viewBox="0 0 16 16" class="bi bi-pencil-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                 <path fill-rule="evenodd" d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>

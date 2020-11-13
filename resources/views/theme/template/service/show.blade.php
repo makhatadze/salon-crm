@@ -39,7 +39,44 @@
             @endif
         </form>
         @endif
-      
+        @foreach ($clientservice->products as $item)
+        <div class="bg-gray-200 p-2 block w-full mt-2 justify-between flex">
+            <div class="text-xs">
+                <small class="font-normal">@lang('sale.formula')</small>
+                <h6 class="font-normal">{{intval($item->productquntity)}} x {{number_format($item->product->price/100, 2)}} = {{number_format((intval($item->productquntity) * $item->product->price/100), 2)}} 
+                    <sup>
+                    @if ($item->product->currency_type == "gel")
+                    @lang('money.icon')
+                    @endif    
+                    </sup></h6>
+                    <small class="font-normal">@lang('sale.income')</small>
+                <h6 class="font-normal">
+                    @if ((($item->newproductprice - $item->product->buy_price)/100)*$item->productquntity > 0)
+                        <span class="text-green-700 font-bold">
+                            + {{(($item->newproductprice - $item->product->buy_price)/100)*$item->productquntity}}
+                        </span>
+                    @else 
+                    <span class="text-red-700 font-bold">
+                        {{(($item->newproductprice - $item->product->buy_price)/100)*$item->productquntity}}
+                    </span>
+                    @endif
+                    <sup>
+                    @if ($item->product->currency_type == "gel")
+                    @lang('money.icon')
+                    @endif    
+                    </sup>
+                </h6>
+                    
+            </div>
+            <div class="text-xs">
+                <small class="font-normal">@lang('sale.buyprice')</small>
+                    <h6 class="font-normal">{{$item->product->buy_price/100}}
+                        @if ($item->product->currency_type == "gel")
+                        @lang('money.icon')
+                    @endif </h6>
+            </div>
+        </div>
+    @endforeach
     </div>
 </div>
 @endsection

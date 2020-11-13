@@ -9,7 +9,20 @@
                     <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
                   </svg>
                 </div>
-               
+            </div>
+            <div class="grid py-2 grid-cols-3 font-normal text-xs">
+                <div class="col-span-1 flex items-center justify-center">
+                    <input type="checkbox" wire:model="standard" id="standard">
+                    <label for="standard" class="ml-2">@lang('salary.standard')</label>
+                </div>
+                <div class="col-span-1 flex items-center justify-center">
+                    <input type="checkbox" wire:model="earn" id="earn">
+                    <label for="earn" class="ml-2">@lang('salary.earn')</label>
+                </div>
+                <div class="col-span-1 flex items-center justify-center">
+                    <input type="checkbox" wire:model="avansi" id="avansi">
+                    <label for="avansi" class="ml-2">@lang('salary.dept')</label>
+                </div>
             </div>
             @if ($salaries)
                 @foreach ($salaries as $item)
@@ -57,7 +70,7 @@
                     </div>
                 </div>
                 @endforeach
-                <div class="w-full">
+                <div class="w-full mt-2">
                     {{$salaries->links()}}
                 </div>
             @endif

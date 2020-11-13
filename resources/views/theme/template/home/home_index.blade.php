@@ -95,7 +95,7 @@
                                             <div class="relative text-left">
                                             <input required name="date[]" class="bg-gray-200" id="getdate{{$user->id}}" type="date" value="{{Carbon\Carbon::now()->isoFormat('Y-MM-DD')}}">
                                               <div class="font-medium flex items-center">
-                                                  <input required type="time" class="bg-gray-200"  min="09:00" max="19:00" name="time[]"  id="getthistime{{$user->id}}" onchange="gettime({{$user->id}})" value="{{Carbon\Carbon::now('Asia/Tbilisi')->format('h:i')}}"> 
+                                                  <input required type="time" class="bg-gray-200"  min="09:00" max="22:00" name="time[]"  id="getthistime{{$user->id}}" onchange="gettime({{$user->id}})" value="{{Carbon\Carbon::now('Asia/Tbilisi')->format('h:i')}}"> 
                                                   - 
                                                   <span id="settime{{$user->id}}"></span> </div>
                                               <div class="flex items-center font-normal text-xs justify-content-start">
@@ -230,11 +230,12 @@
                                             </div>
                                             <div class="w-full md:w-1/3 text-left font-bold text-xs px-3 mb-6 md:mb-0">
                                                 <small class="font-normal text-xs">@lang('homepage.price')</small> <br>
-                                                <span class="font-bold text-xs">{{$item->new_price/100}}
-                                                    @if ($item->service->currency_type == "gel") @lang('money.icon')
-                                                    
-                                                    @endif
-                                                </span> 
+                                                <span class="font-bold text-xs" id="serviceprice{{$item->id}}">
+                                                    {{$item->new_price/100}}
+                                                </span>
+                                                @if ($item->service->currency_type == "gel")
+                                                    @lang('money.icon')   
+                                                @endif
                                             </div>
                                             <div class="w-full md:w-1/3 text-left font-bold text-xs px-3 mb-6 md:mb-0">
                                                 <small class="font-normal text-xs">@lang('homepage.duration')</small> <br>
@@ -261,11 +262,19 @@
                                              </div>
                                            </div>
                                             <div id="consignation{{$item->id}}" style="display: none" class="w-full px-3 mb-6 md:mb-0">
-                                           <input class="text-xs cursor-pointer font-bold font-caps appearance-none block w-full bg-gray-200 text-gray-800 border rounded py-3 px-4" type="number" min="0" step="0.01" name="paid" max="{{number_format($item->new_price/100, 2)}}" value="@lang('homepage.submit')">
+                                           <input id="consignationmax{{$item->id}}" class="text-xs cursor-pointer font-bold font-caps appearance-none block w-full bg-gray-200 text-gray-800 border rounded py-3 px-4" type="number" min="0" step="0.01" name="paid" max="{{number_format($item->new_price/100, 2)}}" value="@lang('homepage.submit')">
                                            </div>
                                            <div class="w-full px-3 mb-6 md:mb-0">
                                              <input class="text-xs cursor-pointer font-bold font-caps appearance-none block w-full bg-indigo-500 text-white border rounded py-3 px-4" type="submit" value="@lang('homepage.submit')">
                                            </div>
+                                            <input type="hidden" name="newserviceprice" id="newserviceprice{{$item->id}}" required>
+                                     </div>
+                                     <div class="grid grid-cols-2 px-3">
+                                         <span onclick="addNewField({{$item->id}}, {{$item->new_price/100}})" class="col-span-2 focus:outline-none my-2 text-xs bg-indigo-500 p-2 text-white font-medium">
+                                            @lang('homepage.addproduct')
+                                         </span>
+                                         <div id="addproducts{{$item->id}}" class="grid grid-cols-2 col-span-2 gap-3">
+                                        </div>
                                      </div>
                                     </form>
                                     @else 
@@ -366,6 +375,21 @@
                             <div class="border-t flex items-center" style="height: 40px">
                                 <span>19:30</span>
                             </div>
+                            <div class="border-t flex items-center" style="height: 40px">
+                                <span>20:00</span>
+                            </div>
+                            <div class="border-t flex items-center" style="height: 40px">
+                                <span>20:30</span>
+                            </div>
+                            <div class="border-t flex items-center" style="height: 40px">
+                                <span>21:00</span>
+                            </div>
+                            <div class="border-t flex items-center" style="height: 40px">
+                                <span>21:30</span>
+                            </div>
+                            <div class="border-t flex items-center" style="height: 40px">
+                                <span>22:00</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -430,6 +454,8 @@
 
         $(document).ready(function () {
             $('.select2').select2();
+            $('.productselect').select2();
+            
             
         });
         $('.addnewservice').click(function(){
@@ -514,6 +540,89 @@
     function removeserv($id){
         $('#serv'+$id).remove();
     }
+    function addNewField($id, $servprice){
+        $randomid= Date.now();
+        $html = `<div class="col-span-2 relative grid grid-cols-2  gap-2 bg-gray-200 p-3 mt-2" id="newproduct`+$randomid+`">
+                    <span class="absolute top-0 right-0 -mt-2 rounded cursor-pointer -mr-2 bg-red-500 p-1">
+                        <svg onclick="removeNewField('newproduct`+$randomid+`')" width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash2-fill" fill="#fff" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M2.037 3.225l1.684 10.104A2 2 0 0 0 5.694 15h4.612a2 2 0 0 0 1.973-1.671l1.684-10.104C13.627 4.224 11.085 5 8 5c-3.086 0-5.627-.776-5.963-1.775z"/>
+                            <path fill-rule="evenodd" d="M12.9 3c-.18-.14-.497-.307-.974-.466C10.967 2.214 9.58 2 8 2s-2.968.215-3.926.534c-.477.16-.795.327-.975.466.18.14.498.307.975.466C5.032 3.786 6.42 4 8 4s2.967-.215 3.926-.534c.477-.16.795-.327.975-.466zM8 5c3.314 0 6-.895 6-2s-2.686-2-6-2-6 .895-6 2 2.686 2 6 2z"/>
+                        </svg>
+                    </span>
+                    <div class="col-span-1">
+                        <label for="select`+$randomid+`" class="text-xs font-normal float-left">@lang('homepage.product')</label>
+                        <select name="productnames[]" required onchange="selectproduct(`+$randomid+`, `+$id+`, `+$servprice+`)" id="select`+$randomid+`" class="select2 productselect w-full">
+                            <option value=""></option>
+                            @foreach($products as $prod)
+                                <option value="{{$prod->id}}">{{$prod->title_ge}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-span-1 ">
+                        <label  class="text-xs font-normal float-left">@lang('homepage.unit')</label> <br>
+                        <span id="unit`+$randomid+`" class="font-bold text-xs"></span>
+                    </div>
+                    <div class="col-span-1 mt-2">
+                        <label for="quntity`+$randomid+`" class="text-xs font-normal float-left">@lang('homepage.amout')</label>
+                        <input required type="number" name="productquntity[]" oninput="setnewprice(`+$id+`, `+$servprice+`)"  id="quntity`+$randomid+`" value="0" step="0.1" min="0" class="w-full p-2 rounded">
+                    </div>
+                    <div class="col-span-1 mt-2">
+                        <label for="price`+$randomid+`" class="text-xs font-normal float-left">@lang('homepage.price')</label>
+                        <input required type="number" name="newproductprice[]" oninput="setnewprice(`+$id+`, `+$servprice+`)" id="price`+$randomid+`" value="0" step="0.01" min="0" class="w-full p-2 rounded">
+                    </div>
+                </div>`;
+        $('#addproducts'+$id).append($html);
+        $('#select'+$randomid).select2();
+    }
+    function removeNewField($id){
+        $('#'+$id).remove();
+    }
+    function selectproduct($id, $main, $servprice){
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.ajax({
+            url: "{{ route('getProductInfo') }}",
+            method: 'POST',
+            data: { 
+                id: parseInt($('#select'+$id).val())
+                },
+            success: function(data){
+                if(data.status == true){
+                    if (data.product['unit'] == "gram") {
+                        $('#unit'+$id).html('@lang("homepage.gram")');
+                    }else if (data.product['unit'] == "unit") {
+                        $('#unit'+$id).html('@lang("homepage.unit")');
+                    }if (data.product['unit'] == "metre") {
+                        $('#unit'+$id).html('@lang("homepage.centimeter")');
+                    }
+                    $('#price'+$id).val(data.product['price']/100);
+                    $('#price'+$id).attr('max', data.product['price']/100);
+                    $('#price'+$id).attr('min', data.product['buy_price']/100);
+                    $('#quntity'+$id).attr('max', data.product['stock']);
+                    
+                     setnewprice($main, $servprice);
+                }
+            } 
+        });
+    }
+    
+    function setnewprice($id, $servprice){
+        var price = $("input[name='newproductprice[]']")
+              .map(function(){return $(this).val();}).get();
+        var quantity = $("input[name='productquntity[]']")
+              .map(function(){return $(this).val();}).get();
+        var money = 0;
+        jQuery.each( price, function( i, val ) {
+            money += val * quantity[i];
+        });
+        $('#newserviceprice'+$id).val(money);
+        money = money + $servprice;
+        $('#serviceprice'+$id).html(money);
+        $('#consignationmax'+$id).attr('max', money);
+    }
     function gettime($id){
         $val = $('#getthistime'+$id).val();
         $a = $val.split(':');
@@ -557,7 +666,6 @@
     function addtime($id){
             $('#duration'+$id).val(parseInt($('#duration'+$id).val())+5);
             $val = $('#getthistime'+$id).val();
-            console.log($id);
             $a = $val.split(':');
             $seconds = (+$a[0]) * 60 * 60 + (+$a[1]) * 60; 
             $duration = parseInt($('#duration'+$id).val()) * 60;
@@ -574,8 +682,26 @@
             checktime($serv_id, $user_id, $id, $date, $start, $end);
         }
         function selectservice($id){
-            $val = $('#getthistime'+$id).val();
             console.log($id);
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                url: "{{ route('selectService') }}",
+                method: 'POST',
+                data: { 
+                    id: parseInt($('#getservice'+$id).val()), },
+                success: function(data){
+                    if(data.status == true){
+                        $('#duration'+$id).val(data.duration);
+                        $('#price'+$id).val(data.price);
+                    }
+                } 
+            });
+
+            $val = $('#getthistime'+$id).val();
             $a = $val.split(':');
             $seconds = (+$a[0]) * 60 * 60 + (+$a[1]) * 60; 
             $duration = parseInt($('#duration'+$id).val()) * 60;
@@ -607,7 +733,6 @@
                 serv_id: parseInt($serv_id),
                 user_id: parseInt($user_id), },
             success: function(data){
-                console.log(data);
                 if(data.status == true){
                     $('#text'+$id).html(data.message);
                 }
@@ -623,6 +748,7 @@
             $('#selectclient'+$id).prop('required',true);
         }
     }
+
     </script>
 @endsection
             

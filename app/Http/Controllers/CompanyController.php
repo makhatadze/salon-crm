@@ -125,8 +125,8 @@ class CompanyController extends Controller
     }
     //Distribution Company
     public function distcompany(){
-        $distcompanies = DistributionCompany::whereNull('deleted_at')->paginate(25);
-        return view('theme.template.company.dist_company', compact('distcompanies'));
+        
+        return view('theme.template.company.dist_company');
     }
     public function distcreate(){
         return view('theme.template.company.add_dist_company');

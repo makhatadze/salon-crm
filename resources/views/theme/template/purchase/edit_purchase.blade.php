@@ -20,11 +20,11 @@
                 </select>
             </div>
         </div>
-        <div class="col-span-1 p-2" id="overhead_number" @if ($purchase->purchase_type == "purchase") style="display: none" @endif>
+      <div class="col-span-1 p-2" id="overhead_number"  style="{{($purchase->purchase_type == "purchase") ? 'display: none' : ''}}" >
             <label class="font-bold font-caps text-xs text-gray-700">@lang('addpurchase.zednadebi')</label>
             <input  type="text"   autocomplete="off" value="{{$purchase->overhead_number}}"  class="input w-full border mt-2" name="overhead_number">
         </div>
-        <div class="col-span-1 p-2" id="purchase_number" style="display: none"  @if ($purchase->purchase_type == "overhead") style="display: none" @endif>
+        <div class="col-span-1 p-2" id="purchase_number" style="{{($purchase->purchase_type == "overhead") ? 'display: none' : ''}}" >
             <label class="font-bold font-caps text-xs text-gray-700">@lang('addpurchase.nasyidoba')</label>
             <input  type="text"  autocomplete="off"  value="{{$purchase->purchase_number}}" class="input w-full border mt-2" name="purchases_number">
         </div>
@@ -33,7 +33,7 @@
               @lang('addpurchase.dist')
             </label>
             <div class="relative">
-              <select class="block font-normal text-xs appearance-none w-full border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none bg-white focus:border-gray-500" required id="distributor_id" name="distributor_id">
+              <select class="select2 block font-normal text-xs appearance-none w-full border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none bg-white focus:border-gray-500" required id="distributor_id" name="distributor_id">
                 <option value="">@lang('addpurchase.choose')</option>
                 @foreach ($distributors as $dist)
                     @if ($purchase->distributor->id == $dist->id)
@@ -90,6 +90,15 @@
 
     @foreach ($purchase->products()->where('fromwarehouse', 0)->get() as $key => $product)
   <div class="relative w-full mt-3 box p-4" id="remove{{$product->id}}">
+    
+      @if ($product->children()->count() == 0)
+        <a href=" {{route('DeleteProduct', $product->id)}} " class="bg-red-500 p-1 absolute top-0 mt-2 rounded-md right-0 mr-3">
+          <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash2-fill" fill="#fff" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2.037 3.225l1.684 10.104A2 2 0 0 0 5.694 15h4.612a2 2 0 0 0 1.973-1.671l1.684-10.104C13.627 4.224 11.085 5 8 5c-3.086 0-5.627-.776-5.963-1.775z"/>
+            <path fill-rule="evenodd" d="M12.9 3c-.18-.14-.497-.307-.974-.466C10.967 2.214 9.58 2 8 2s-2.968.215-3.926.534c-.477.16-.795.327-.975.466.18.14.498.307.975.466C5.032 3.786 6.42 4 8 4s2.967-.215 3.926-.534c.477-.16.795-.327.975-.466zM8 5c3.314 0 6-.895 6-2s-2.686-2-6-2-6 .895-6 2 2.686 2 6 2z"/>
+          </svg>
+        </a>
+      @endif
         <div class="flex flex-wrap -mx-3 mb-6">
             <div class="w-full md:w-1/4 px-3 mb-6 md:mb-0">
                 <label class="font-bold font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >

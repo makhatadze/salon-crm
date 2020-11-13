@@ -23,6 +23,8 @@ class Warehouse extends Component
     //Update ID
     public $typeamout;
     public $error;
+    public $maxunit;
+    public $minprice;
     public $isUnit = false;
     public $updateId;
     public $modalState = false;
@@ -60,6 +62,8 @@ class Warehouse extends Component
         $this->modalState = true;
         $this->updateId = $product->id;
         $this->isUnit = false;
+        $this->maxunit = $product->stock;
+        $this->minprice = $product->buy_price;
         if($product->type == 1){
             $this->isUnit = true;
         }

@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Money;
 
 use App\ClientService;
 use App\Product;
+use App\ProductToService;
 use App\Purchase;
 use App\SalaryToService;
 use App\Sale;
@@ -43,14 +44,26 @@ class Index extends Component
             if ($this->productstime == "today") {
                 $productsprod = $productsprod->whereDate('created_at', Carbon::today());
                 $soldproducts = Sale::whereDate('created_at', Carbon::today())->sum('paid');
+                foreach (ProductToService::whereDate('created_at', Carbon::today())->get() as $item) {
+                    $soldproducts += $item->newproductprice * $item->productquntity;
+                }
             }else if($this->productstime == "month") {
                 $productsprod = $productsprod->whereMonth('created_at', Carbon::now()->isoFormat('MM'));
                 $soldproducts = Sale::whereMonth('created_at', Carbon::now()->isoFormat('MM'))->sum('paid');
+                foreach (ProductToService::whereMonth('created_at', Carbon::now()->isoFormat('MM'))->get() as $item) {
+                    $soldproducts += $item->newproductprice * $item->productquntity;
+                }
             }else{
                 $soldproducts = Sale::sum('paid');
+                foreach (ProductToService::all() as $item) {
+                    $soldproducts += $item->newproductprice * $item->productquntity;
+                }
             }
         }else{
             $soldproducts = Sale::sum('paid');
+            foreach (ProductToService::all() as $item) {
+                $soldproducts += $item->newproductprice * $item->productquntity;
+            }
         }
         $productsprod = $productsprod->get();
 
@@ -91,17 +104,25 @@ class Index extends Component
         if ($this->servicetime) {
             if ($this->servicetime == "today") {
                 $services = Service::whereDate('created_at', Carbon::today())->sum('price');
-                $servicessold = ClientService::where('status', '1')->whereDate('created_at', Carbon::today())->sum('paid');
+                foreach (ClientService::where('status', '1')->whereDate('created_at', Carbon::today())->get() as $item) {
+                    $servicessold = $item->paid - $item->productsbuyprice();
+                }
             }else if ($this->servicetime == "month") {
                 $services = Service::whereMonth('created_at', Carbon::now()->isoFormat('MM'))->sum('price');
-                $servicessold = ClientService::where('status', '1')->whereMonth('created_at', Carbon::now()->isoFormat('MM'))->sum('paid');
+                foreach (ClientService::where('status', '1')->whereMonth('created_at', Carbon::now()->isoFormat('MM'))->get() as $item) {
+                    $servicessold = $item->paid - $item->productsbuyprice();
+                }
             }else{
                 $services = Service::sum('price');
-                $servicessold = ClientService::where('status', '1')->sum('paid');
+                foreach (ClientService::where('status', '1')->get() as $item) {
+                    $servicessold = $item->paid - $item->productsbuyprice();
+                }
             }
         }else{
             $services = Service::sum('price');
-            $servicessold = ClientService::where('status', '1')->sum('paid');
+            foreach (ClientService::where('status', '1')->get() as $item) {
+                $servicessold = $item->paid - $item->productsbuyprice();
+            }
         }
         
         return view('livewire.money.index', compact('purchase', 'products', 'soldproducts', 'clients', 'clientsdept', 'purchasedept', 'services', 'servicessold'));
