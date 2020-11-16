@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Cashier;
 use App\Client;
 use App\Product;
 use App\Profile;
@@ -66,8 +67,17 @@ class SaleController extends Controller
             'money' => 'required'
         ]);
         if($sale->pay_method == 'consignation' && $sale->total > $sale->paid){
+            $cashier = Cashier::where('id', 1)->first();
+            $cashier->amout = $cashier->amout - $sale->paid;
             $sale->paid = intval($request->money*100);
+            $cashier->amout += $sale->paid;
             $sale->save();
+            if ($cashier->save()) {
+                $cashier->paid()->create([
+                    'description' => __('paymethod.change_sale_consignation') .' ID: '.$sale->id,
+                    'amout' => $sale->paid
+                ]);
+            }
         }
         return redirect()->back();
     }

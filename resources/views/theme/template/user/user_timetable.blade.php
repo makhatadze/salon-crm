@@ -455,7 +455,6 @@
                         $('#unit'+$id).html('@lang("homepage.centimeter")');
                     }
                     $('#price'+$id).val(data.product['price']/100);
-                    $('#price'+$id).attr('max', data.product['price']/100);
                     $('#price'+$id).attr('min', data.product['buy_price']/100);
                     $('#quntity'+$id).attr('max', data.product['stock']);
                     

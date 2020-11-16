@@ -7,10 +7,12 @@
             @include('inc.message')
         </div>
         <!-- Table -->
-        <div class="col-span-12 xxl:col-span-9 grid grid-cols-12 gap-6">
-            
+        <div class="col-span-12 grid grid-cols-12 gap-6">
+            <div class="swiper-container col-span-12 grid grid-cols-12">
+                <div class="swiper-wrapper col-span-12 grid grid-cols-1">
             @foreach ($users as $user)
-                <div class="col-span-4 p-2">
+            <div class="swiper-slide col-span-1  bg-gray-200" style="background-color: #f1f5f8 !important;">
+                <div class="w-full p-2 text-xs">
                     <div class="box p-4">
                         <div class="border-b py-2">
                             <div class="flex items-center justify-between">
@@ -393,7 +395,12 @@
                         </div>
                     </div>
                 </div>
+            </div>
             @endforeach
+            </div>
+            <!-- Add Pagination -->
+            <div class="swiper-pagination"></div>
+        </div>
         </div>
     <div class="col-span-12 xxl:col-span-3 -mb-10 pb-10">
         <div class="mt-4 px-4">
@@ -445,7 +452,30 @@
     </div>
     </div>
 @endsection
-@section('custom_scripts')
+@section('custom_scripts')  <script>
+    var swiper = new Swiper('.swiper-container', {
+      slidesPerView: 4,
+      spaceBetween: 30,
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      breakpoints: {
+        640: {
+          slidesPerView: 1,
+          spaceBetween: 20,
+        },
+        808: {
+          slidesPerView: 2,
+          spaceBetween: 40,
+        },
+        1024: {
+          slidesPerView: 3,
+          spaceBetween: 50,
+        },
+    }
+    });
+  </script>
     <script type="text/javascript">
 
         function addPayMethod(id) {
@@ -599,7 +629,7 @@
                         $('#unit'+$id).html('@lang("homepage.centimeter")');
                     }
                     $('#price'+$id).val(data.product['price']/100);
-                    $('#price'+$id).attr('max', data.product['price']/100);
+                    
                     $('#price'+$id).attr('min', data.product['buy_price']/100);
                     $('#quntity'+$id).attr('max', data.product['stock']);
                     

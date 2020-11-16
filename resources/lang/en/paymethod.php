@@ -19,6 +19,7 @@ return [
     'added' => 'Added',
     'update' => 'Update',
     'add' => 'Add',
-    'addagain' => 'Add Again'
+    'addagain' => 'Add Again',
+    'miancashier' => 'Main Cashier'
 
 ];

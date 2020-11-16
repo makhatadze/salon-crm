@@ -120,10 +120,16 @@
                       @endif
                   @elseif($item->service)
                   @if (($item->service->paid - ($item->service_price * $item->percent/100) - $item->service->productsbuyprice())/100 > 0)
-                    <span class="text-green-700 font-bold">
+                  <span class="text-green-700 font-bold">
+                        
+                    + {{number_format(($item->service->paid - ($item->service_price * $item->percent/100) - $item->service->productsbuyprice())/100,2)}}
+                  </span> <br>
+                  @else 
+
+                  <span class="text-red-500 font-bold">
                           
-                      + {{number_format(($item->service->paid - ($item->service_price * $item->percent/100) - $item->service->productsbuyprice())/100,2)}}
-                    </span> <br>
+                     {{number_format(($item->service->paid - ($item->service_price * $item->percent/100) - $item->service->productsbuyprice())/100,2)}}
+                  </span> <br>
                   @endif
                   
                     @if ($item->service->new_price > $item->service->paid) 

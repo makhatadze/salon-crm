@@ -16,7 +16,7 @@ class CreateSalaryToServicesTable extends Migration
         Schema::create('salary_to_services', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->foreignId('service_id')->constrained('client_services')->onDelete('cascade');
+            $table->foreignId('service_id')->nullable()->constrained('client_services')->onDelete('cascade');
             $table->integer('service_price');
             $table->string('percent')->nullable();
             $table->timestamp('deleted_at')->nullable();

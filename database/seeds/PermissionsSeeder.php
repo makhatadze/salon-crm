@@ -8,6 +8,7 @@
  * @author Vito Makhatadze <vitomaxatadze@gmail.com>
  */
 
+use App\Cashier;
 use App\Company;
 use App\Profile;
 use Illuminate\Database\Seeder;
@@ -103,6 +104,9 @@ class PermissionsSeeder extends Seeder
              'user_id' => $user->id,
          ]);
         $user->assignRole($role1);
-
+        Cashier::create([
+            'name' => 'main',
+            'amout' => 0
+        ]);
     }
 }

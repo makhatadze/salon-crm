@@ -7,11 +7,11 @@
     <form action="{{route('addDistCompany')}}" method="post">
     
         @csrf
-        <h6 class="font-helvetica w-full mb-3"><b>@lang('adddistributor.register')</b></h6>
+        <h6 class="font-bold w-full mb-3"><b>@lang('adddistributor.register')</b></h6>
         
         <div class="flex flex-wrap -mx-3 mb-1">
             <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                <label class="font-bold font-caps text-xs">@lang('adddistributor.name') @lang('language.main')<span class="text-red-700">*</span></label>
+                <label class="font-bold font-caps text-xs">@lang('adddistributor.name')<span class="text-red-700">*</span></label>
                 <input required type="text" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"  name="name_ge">
             </div>
             <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">

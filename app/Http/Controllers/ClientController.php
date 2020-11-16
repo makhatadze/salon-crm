@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Cashier;
 use App\Client;
 use App\ClientService;
 use App\Department;
@@ -340,6 +341,7 @@ class ClientController extends Controller
             $clientservice->products()->createMany($json);
         // New Price
             $clientservice->new_price = $clientservice->new_price + intval($request->newserviceprice*100);
+
             $clientservice->save();
         // Minusproduct
             foreach($json as $prod){
@@ -352,11 +354,29 @@ class ClientController extends Controller
             $clientservice->session_endtime = Carbon::now('Asia/Tbilisi');
             $clientservice->pay_method = "consignation";
             $clientservice->paid = intval($request->paid * 100);
+
+            $cashier = Cashier::where('id', 1)->first();
+            $cashier->amout += $clientservice->paid;
+            if ($cashier->save()) {
+                $cashier->paid()->create([
+                    'description' => __('paymethod.consignation_on_service') .' ID: '.$clientservice->id,
+                    'amout' => $clientservice->paid
+                ]);
+            };
         }else{
             $clientservice->pay_method_id = $paymethod->id;
             $clientservice->session_endtime = Carbon::now('Asia/Tbilisi');
             $clientservice->paid = $clientservice->new_price;
             $clientservice->pay_method = $paymethod->name_ge;
+
+            $cashier = $paymethod->cashier;
+            $cashier->amout += $clientservice->paid;
+            if ($cashier->save()) {
+                $cashier->paid()->create([
+                    'description' => __('paymethod.pay_on_service') .' ID: '.$clientservice->id,
+                    'amout' => $clientservice->paid
+                ]);
+            };
         }
         $clientservice->salaryToService()->create([
             'user_id' => $user->id,
@@ -578,7 +598,17 @@ class ClientController extends Controller
             'paid' => 'required|numeric|min:0'
         ]);
         if($ClientService->pay_method == "consignation" && $ClientService->new_price > $ClientService->paid){
+            
+            $cashier = Cashier::where('id', 1)->first();
+            $cashier->amout = $cashier->amout - $ClientService->paid;
             $ClientService->paid = intval($request->paid*100);
+            $cashier->amout += $ClientService->paid;
+            $cashier->save();
+            $cashier->paid()->create([
+                'description' => __('paymethod.change_service_consignation') .' ID: '.$ClientService->id,
+                'amout' => $ClientService->paid
+            ]);
+
             $ClientService->save();
         }
         return redirect()->back();

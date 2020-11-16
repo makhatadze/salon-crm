@@ -12,7 +12,7 @@
                       <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
                         @lang('purchase.dept')  {{number_format($purchase->getPrice()/100 - $purchase->paidpurchases()->sum('paid')/100, 2)}}
                       </label>
-                      <input class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4      leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="number"  wire:model="paid" min="0" max="{{round(($purchase->getPrice() - $purchase->paidpurchases()->sum('paid'))/100, 2)}}" step="0.01" placeholder="@lang('purchase.depttime')">
+                      <input  class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="number"  wire:model="paid" min="0" max="{{($purchase->getPrice() - $purchase->paidpurchases()->sum('paid')) < ($money ?? 0) ? round(($purchase->getPrice() - $purchase->paidpurchases()->sum('paid'))/100, 2) : number_format($money/100 ,2)}}" step="0.01" placeholder="@lang('purchase.depttime')">
                       @error('paid')
                         <p class="font-normal text-xs text-red-500">
                             {{$message}}      
@@ -24,13 +24,15 @@
                         @lang('purchase.paymethod')
                       </label>
                       <div class="relative">
-                        <select wire:model="methodid" class="font-normal text-xs block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
+                        <select wire:model="cashier_id" class="font-normal text-xs block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
                             <option value="">@lang('purchase.choosepaymethod')</option>
-                            <option value="consignation">@lang('purchase.consignation')</option>
-                            @foreach ($methods as $method)
-                                <option value="{{$method->id}}">{{$method->name_ge }}</option>
+                            @foreach ($cashiers as $cashier)
+                                <option value="{{$cashier->id}}">{{$cashier->name == "main" ? __('paymethod.miancashier') : $cashier->name}}</option>
                             @endforeach
                         </select>
+                        @if ($money)
+                        <small>{{number_format($money/100 ,2)}} <sup> @lang('money.icon')</sup></small>
+                        @endif
                         <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
                           <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
                         </div>
@@ -58,7 +60,7 @@
                                     {{number_format($pay->paid/100, 2)}} <sup>@lang('money.icon')</sup>
                                 </h6>
                                 <small class="font-normal text-xs text-gray-600">
-                                        {{$pay->pay_name == "consignation" ? __('purchase.consignation') : $pay->pay->name_ge }}
+                                        {{$pay->pay->name ? ($pay->pay->name == "main" ? __('paymethod.miancashier') : $pay->pay->name) : ($pay->pay_name == "consignation" ? __('purchase.consignation') : $pay->pay_name) }}
                                         <br>
                                         
                                     {{$pay->created_at}}

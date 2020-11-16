@@ -9,7 +9,7 @@ class PayPurchase extends Model
     protected $fillable = [
         'purchase_id',
         'user_id',
-        'payment_id',
+        'cashier_id',
         'pay_name',
         'paid',
         'dept'
@@ -17,7 +17,7 @@ class PayPurchase extends Model
     protected $table = 'pay_purchases';
     public function pay()
     {
-        return $this->belongsTo('App\PayController', 'payment_id');
+        return $this->belongsTo('App\Cashier', 'cashier_id');
     }
     public function user()
     {

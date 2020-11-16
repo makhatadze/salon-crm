@@ -12,6 +12,7 @@
 namespace App\Http\Controllers;
 
 use App\Brand;
+use App\Cashier;
 use Illuminate\Http\Request;
 use App\Product;
 use App\Category;
@@ -314,10 +315,10 @@ class ProductController extends Controller
 
             if($currentquantity){
                 if($product->stock < $currentquantity->quantity + $request->quantity){
-                    return redirect()->back()->with('error', 'არასაკმარისი რაოდენობა. სულ:'.$product->stock);
+                    return redirect()->back()->with('error', __('not_enough').' Total:'.$product->stock);
                 }
             }else if($product->stock < $request->quantity){
-                return redirect()->back()->with('error', 'არასაკმარისი რაოდენობა. დარჩენილია:'.$product->stock);
+                return redirect()->back()->with('error', __('not_enough').' Left:'.$product->stock);
             }
                 $addtocart = [
                     'id' => $product->id,
@@ -345,7 +346,7 @@ class ProductController extends Controller
         $user_id = Auth()->user()->id;
         $total = Cart::session($user_id)->getTotal();
         if($total == 0){
-            return redirect()->back()->with('danger', 'კალათა ცარიელია');
+            return redirect()->back()->with('danger', __('paymethod.emplty_cart'));
         }
         // Check Pay Method
         $client = Client::findOrFail($request->client_id);
@@ -354,14 +355,34 @@ class ProductController extends Controller
             if ($request->paymethod != 'consignation') {
                 $paymethods = PayController::findOrFail($request->paymethod);
                 if(!$paymethods){
-                    return redirect()->back()->with('danger', 'გადახდის მეთოდი არ მოიძებნა');
+                    return redirect()->back()->with('danger', __('paymethod.pay_method_not_found'));
                 }
                 $sale->pay_method_id = $paymethods->id;
                 $sale->paid = $total;
-                $sale->pay_method = $paymethods->{"name_".app()->getLocale()};
+                $sale->pay_method = $paymethods->name_ge;
+                
+                $cashier = $paymethods->cashier;
+                $cashier->amout += $sale->paid;
+                if ($cashier->save()) {
+                    $cashier->paid()->create([
+                        'description' => __('paymethod.pay_on_sale') .' ID: '.$sale->id,
+                        'amout' => $sale->paid
+                    ]);
+                };
+                
             }else{
                 $sale->paid = intval($request->paid*100);
                 $sale->pay_method = "consignation";
+                
+                $cashier = Cashier::where('id', 1)->first();
+                $cashier->amout += $sale->paid;
+                if ($cashier->save()) {
+                    $cashier->paid()->create([
+                        'description' => __('paymethod.consignation_on_sale') .' ID: '.$sale->id,
+                        'amout' => $sale->paid
+                    ]);
+                }
+                
             }
         $sale->client_id = $request->client_id;
         $sale->address = $request->address;

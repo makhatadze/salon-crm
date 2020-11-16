@@ -101,6 +101,7 @@ class Index extends Component
             $clientsdept += $item->new_price - $item->paid; 
         }
         // Services
+            $servicessold = 0;
         if ($this->servicetime) {
             if ($this->servicetime == "today") {
                 $services = Service::whereDate('created_at', Carbon::today())->sum('price');

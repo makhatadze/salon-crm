@@ -151,6 +151,13 @@
                         <div class="side-menu__title font-normal text-xs"> @lang('menu.salaries') </div>
                     </a>
                 </li>
+                <li>
+                    <a href="/paymethods" class="side-menu custom-nav-item">
+                        <div class="side-menu__icon"><i data-feather="circle" style="width: 15px; height: 15px;"></i>
+                        </div>
+                        <div class="side-menu__title font-normal text-xs"> @lang('menu.pay_method')</div>
+                    </a>
+                </li>
             </ul>
         </li>
         @endif
@@ -178,13 +185,6 @@
                     <a href="/products" class="side-menu custom-nav-item">
                         <div class="side-menu__icon"> <i data-feather="circle" style="width: 15px; height: 15px;"></i> </div>
                         <div class="side-menu__title font-normal text-xs"> @lang('menu.product') </div>
-                    </a>
-                </li>
-                <li>
-                    <a href="/paymethods" class="side-menu custom-nav-item">
-                        <div class="side-menu__icon"><i data-feather="circle" style="width: 15px; height: 15px;"></i>
-                        </div>
-                        <div class="side-menu__title font-normal text-xs"> @lang('menu.pay_method')</div>
                     </a>
                 </li>
             </ul>
