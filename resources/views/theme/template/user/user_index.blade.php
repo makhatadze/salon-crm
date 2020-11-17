@@ -73,7 +73,7 @@
                             <div class="modal" id="salary_modal_{{$user->id}}">
                                 <div class="modal__content modal__content--lg p-10 text-center"> 
                                       
-                                    <livewire:user.salary :user="$user"/>
+                                    <livewire:user.salary :user="$user" :key="$user->id"/>
                                 </div>
                             </div>
                             @endif

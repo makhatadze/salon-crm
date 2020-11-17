@@ -175,6 +175,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
             Route::post('/clients/addconsignation/{ClientService}', 'ClientController@addconsignation')->name('addconsignation');
             Route::get('/clients/edit/{id}', 'ClientController@edit')->name('EditClient');
             Route::post('/client/ajaxdelete', 'ClientController@removeservice')->name('AjaxServiceRemove');
+            Route::post('/givesalary/{user}', 'ClientController@giveSalary')->name('giveSalary');
             Route::post('/clients/update/{id}', 'ClientController@update')->name('UpdateClient');
             Route::post('/clients/store', 'ClientController@store')->name('StoreClient');
             
@@ -187,7 +188,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
 
         // Export
         Route::group(['middleware' => ['permission:export_finances|admin']], function () {
-            Route::post('/givesalary/{user}', 'ClientController@givesalary')->name('giveSalary');
+            Route::get('/exportsalary', 'ClientController@exportsalary')->name('exportsalary');
             Route::any('/clients/finances', 'ClientController@services')->name('Finances');
             Route::get('/salaries', 'StatisticController@index')->name('StatisticController');
             Route::get('/clients/export', 'ClientController@export')->name('ClientExcel');

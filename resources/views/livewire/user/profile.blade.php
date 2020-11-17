@@ -103,7 +103,14 @@
             <div class="w-full flex items-center justify-center md:w-1/4">
                 <div>
                     <span class="font-xs text-gray-700">
-                        <small class="font-bold">{{$item->percent}}% =</small> {{number_format(($item->service_price * $item->percent/100)/100 ,2)}}
+                        @if ($item->sale)
+                        <span>{{$item->sale_percent}}% =</span> <h6 class="ml-1 text-xs font-bold text-gray-700"> {{number_format($item->service_price * ($item->sale_percent/100)/100,2)}}</h6>
+                        @elseif ($item->service)
+                        <div>
+                          <h6 class="ml-1 text-xs font-bold text-gray-700"> <span>{{$item->percent}}% =</span>  {{number_format( ($item->service->unchanged_service_price * $item->percent/100) /100, 2)}}</h6> 
+                        <span class="ml-1 text-xs font-bold text-gray-700"> <span>{{$item->sale_percent}}% =</span>  {{number_format( ($item->service->products()->sum('newproductprice') * $item->sale_percent/100)/100, 2)}}</span>
+                        </div>
+                        @endif
                     </span>
                 </div>
             </div>

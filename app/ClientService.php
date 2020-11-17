@@ -10,7 +10,7 @@ use OwenIt\Auditing\Contracts\Auditable;
 class ClientService extends Model implements Auditable
 {
     use SoftDeletes, \OwenIt\Auditing\Auditable;
-    protected $fillable = ['user_id','service_id', 'new_price', 'duration', 'author', 'department_id', 'paid', 'session_start_time'];
+    protected $fillable = ['user_id','service_id', 'unchanged_service_price', 'new_price', 'duration', 'author', 'department_id', 'paid', 'session_start_time'];
     
     protected $table = 'client_services';
     

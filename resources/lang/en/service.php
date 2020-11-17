@@ -30,5 +30,9 @@ return [
     'delete' => 'Delete',
     'add' => 'Upload',
     'uploadfile' => 'Upload File',
+    'deleteservice' => 'Delete service',
+    'cancel' => 'Cancel',
+    'deleteserviceinfo' => 'If you delete the service, you will lose the ability to add this service to the client.',
+
 
 ];

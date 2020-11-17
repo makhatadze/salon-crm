@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Cashier;
 use App\Salary as AppSalary;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
@@ -14,6 +15,7 @@ class Salary extends Component
 
     public $standard = null;
     public $earn = null;
+    public $cashier = null;
     public $avansi = null;
 
     public function render()
@@ -42,6 +44,9 @@ class Salary extends Component
                             $salaries = $salaries->where('salaries.type', 'earn');
                         }
                     }
+                    if ($this->cashier) {
+                        $salaries = $salaries->orWhere('salaries.cashier_id', 'LIKE', '%'.intval($this->cashier).'%');
+                    }
                     if ($this->avansi) {
                         if ($this->standard || $this->earn) {
                             $salaries = $salaries->orWhere('salaries.type', 'avansi');
@@ -52,6 +57,7 @@ class Salary extends Component
         $salaries = $salaries->join('users', 'salaries.user_id', '=', 'users.id')
         ->join('profiles', 'users.id', '=', 'profiles.profileable_id')
         ->paginate(20);
-        return view('livewire.salary', compact('salaries'));
+        $cashiers = Cashier::all();
+        return view('livewire.salary', compact('salaries', 'cashiers'));
     }
 }

@@ -16,7 +16,7 @@ return [
     'purchase' => 'Purchases',
     'product' => 'Products',
     'service' => 'Services',
-    'clients' => 'Clients',
+    'clients' => 'Product sales',
     'total' => 'Total',
     'dept' => 'Dept',
     'sold' => 'Sold',

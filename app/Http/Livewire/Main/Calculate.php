@@ -17,6 +17,13 @@ class Calculate extends Component
     public $totalsalaryget;
     public $soldservicesget;
     public $totalproductcostget;
+    public function mount()
+    {
+        $this->totalproductcostget = "today";
+        $this->totalsalaryget = "today";
+        $this->totalclientsget = "today";
+        $this->soldservicesget = "today";
+    }
     public function render()
     {
         $totalproductcost = new Sale;

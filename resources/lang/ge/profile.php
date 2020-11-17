@@ -38,7 +38,6 @@ return [
     'all' => 'ყველა',
     'client' => 'კლიენტი',
     'date' => 'თარიღი',
-    'salary' => 'ხელფასზე',
     'from_service' => 'სერვისიდან',
     'from_sale' => 'გაყიდვიდან',
     'transactions' => 'ტრანსაქციები',

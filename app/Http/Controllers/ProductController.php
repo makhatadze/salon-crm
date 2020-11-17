@@ -352,6 +352,12 @@ class ProductController extends Controller
         $client = Client::findOrFail($request->client_id);
         $cart = Cart::session($user_id)->getContent();
         $sale = new Sale();
+        
+        $sale->client_id = $request->client_id;
+        $sale->address = $request->address;
+        $sale->total = $total;
+        $sale->seller_id = Auth()->user()->id;
+        $sale->save();
             if ($request->paymethod != 'consignation') {
                 $paymethods = PayController::findOrFail($request->paymethod);
                 if(!$paymethods){
@@ -384,16 +390,12 @@ class ProductController extends Controller
                 }
                 
             }
-        $sale->client_id = $request->client_id;
-        $sale->address = $request->address;
-        $sale->total = $total;
-        $sale->seller_id = Auth()->user()->id;
-        $sale->save();
         SalaryToService::create([
             'user_id' => Auth::user()->id,
             'sale_id' => $sale->id,
             'service_price' => $total,
-            'percent' => auth()->user()->profile->percent_from_sales ?? 0
+            'percent' => 0,
+            'sale_percent' => auth()->user()->profile->percent_from_sales ?? 0
         ]);
         foreach($cart as $order){
             $product = Product::findOrFail($order->id);

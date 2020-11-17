@@ -31,10 +31,6 @@
                 <small class="bg-green-400 absolute top-0 right-0 p-1 font-bold text-x font-caps">სულ</small>
                 <div class="flex">
                     <div class="w-1/3 p-3">
-                        <h6 class="font-bold font-caps text-base text-black">{{ $user->getEarnedMoney() }} <sup>@lang('money.icon')</sup></h6>
-                        <span class="font-normal text-xs">@lang('profile.earn')</span>
-                    </div>
-                    <div class="w-1/3 p-3">
                         <h6 class="font-bold font-caps text-base text-black">{{$user->ClientCount()}}</h6>
                         <span class="font-normal text-xs">@lang('profile.client')</span>
                     </div>
@@ -52,7 +48,7 @@
                       </svg>@lang('profile.active')
                     </div>
                     @if ($user->id != Auth::user()->id)
-                    <a href="/profile/turn/{{$user->id}}/0" class="button button--sm border text-gray-700 ml-auto font-bold font-caps text-xs">@lang('profile.on')</a>
+                    <a href="/profile/turn/{{$user->id}}/0" class="button button--sm border text-gray-700 ml-auto font-bold font-caps text-xs">@lang('profile.off')</a>
                     @endif
                 @else
                 <div class="flex items-center justify-center h-full font-normal text-xs">
@@ -61,7 +57,7 @@
                       </svg>@lang('profile.non_active')
                     </div>
                     @if ($user->id != Auth::user()->id)
-               <a href="/profile/turn/{{$user->id}}/1" class="button button--sm border text-gray-700 ml-auto font-bold font-caps text-xs">@lang('profile.off')</a>
+               <a href="/profile/turn/{{$user->id}}/1" class="button button--sm border text-gray-700 ml-auto font-bold font-caps text-xs">@lang('profile.on')</a>
                @endif     
                 @endif
             </div>
@@ -115,7 +111,7 @@
           <div class="mt-5">
 
             {{-- Transactions --}}
-            @forelse ($user->transacrions() as $item)
+            @forelse ($user->SalaryToServices as $item)
             <div class="intro-x">
                 <div class="box px-5 py-3 mb-3 flex items-center zoom-in">
                     <div class="w-10 h-10 flex bg-gray-300 font-bolder items-center justify-center image-fit rounded-full overflow-hidden">
@@ -132,7 +128,12 @@
                             'toStringFormat' => 'jS \o\f F, Y',
                         ])}}</div>
                     </div>
-                <div class="text-theme-9 font-normal">+{{round($item->service_price/100 * $item->percent/100, 2)}} <sup>@lang('money.icon')</sup></div>
+                    @if ($item->sale_id)    
+                    <div class="text-theme-9 font-normal">+{{round($item->service_price/100 * $item->percent/100, 2)}} <sup>@lang('money.icon')</sup></div>
+                    @elseif($item->service_id)
+                    <div class="text-theme-9 font-normal">+{{number_format((($item->service->unchanged_service_price * $item->percent/100) + ($item->service->products()->sum('newproductprice') * $item->sale_percent/100))/100, 2)}} <sup>@lang('money.icon')</sup></div>
+                    
+                    @endif
                 </div>
             </div>
             @empty

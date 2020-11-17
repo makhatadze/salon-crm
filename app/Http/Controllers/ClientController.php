@@ -9,6 +9,7 @@ use App\Department;
 use App\Exports\ClientExport;
 use App\Exports\ClientServices;
 use App\Exports\FinanceExport;
+use App\Exports\SalaryExport;
 use App\MemberGroup;
 use App\PayController;
 use App\Product;
@@ -262,8 +263,21 @@ class ClientController extends Controller
             'amout' => '',
             'bonus' => '',
             'reason' => '',
-            'earn' => ''
+            'earn' => '',
+            'cashier' => 'required|integer'
         ]);
+        $cashier = Cashier::findOrFail(intval($request->cashier));
+        $amout = 0;
+        if ($request->salary_type == "avansi") {
+            $cashier->amout = $cashier->amout - ($request->amout ? $request->amout * 100 : 0);
+            $amout = ($request->amout ? $request->amout * 100 : 0);
+        }elseif($request->salary_type == "salary"){
+            $cashier->amout = $cashier->amout - ($request->amout ? $request->amout * 100 : 0) + ($request->bonus ? $request->bonus * 100 : 0);
+            $amout = ($request->amout ? $request->amout * 100 : 0) + ($request->bonus ? $request->bonus * 100 : 0);
+        }elseif($request->salary_type == "earn"){
+            $cashier->amout = $cashier->amout - ($request->earn ? $request->earn * 100 : 0);
+            $amout = ($request->earn ? $request->earn * 100 : 0);
+        }
         if ($user->profile) {
             Salary::create([
                 'type' => $request->salary_type,
@@ -272,8 +286,15 @@ class ClientController extends Controller
                 'made_salary' => $request->earn ? $request->earn * 100 : 0,
                 'avansi_complate' => 0,
                 'user_id' => $user->id,
+                'cashier_id' => $cashier->id,
                 'description' => $request->reason
             ]);
+            if ( $cashier->save()) {
+                $cashier->paid()->create([
+                    'description' => __('paymethod.givesalary') .' ID: '.$user->id,
+                    'amout' => $amout
+                ]);
+            }
             return redirect()->back()->with('success', 'ხელფასის გაცემა წარმატებით დაფიქსირდა.');
         }
         return redirect()->back()->with('error', 'დაფიქსირდა შეცდომა');
@@ -382,7 +403,8 @@ class ClientController extends Controller
             'user_id' => $user->id,
             'service_id' => $clientservice->id,
             'service_price' => $clientservice->new_price,
-            'percent' => $clientservice->user->profile->percent
+            'percent' => $clientservice->user->profile->percent,
+            'sale_percent' => $clientservice->user->profile->percent_from_sales
         ]);
         $clientservice->status = true;
        
@@ -567,6 +589,7 @@ class ClientController extends Controller
                 'session_start_time' => Carbon::parse($request->input('date')[$key])->settime($time[0], $time[1]),
                 'duration' => intval($request->duration[$key]),
                 'new_price' => intval($request->price[$key]*100),
+                'unchanged_service_price' => intval($request->price[$key]*100),
                 'paid' => 0,
                 'author' => Auth::user()->id,
                 'department_id' => $personal->userHasJob->department_id ?? null
@@ -585,9 +608,13 @@ class ClientController extends Controller
 
     public function financeExport()
     {
-        return Excel::download(new FinanceExport(), 'sale5.xlsx');
+        return Excel::download(new FinanceExport(), 'sale.xlsx');
     }
 
+    public function exportsalary()
+    {
+        return Excel::download(new SalaryExport(), 'salary.xlsx');
+    }
     public function clientserviceexport(Client $client)
     {
         return Excel::download(new ClientServices($client->id), $client->full_name_ge.'.xlsx');

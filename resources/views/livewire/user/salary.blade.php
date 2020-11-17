@@ -54,12 +54,38 @@
                     </label>
                     <input name="reason" class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text" >
                 </div>
-                <div class="w-full md:w-1/2 p-2" id="salaryreason">
-                    <label class="block uppercase tracking-wide text-left font-caps text-xs text-gray-700 text-xs font-bold mb-2">
-                    <small style="font-size: 0.1px">.</small>
+                
+ 
+                <div class="w-full md:w-1/2 p-2" >
+                    <label class="text-left font-caps text-xs block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
+                      @lang('employee.salary_type')
                     </label>
-                    <input class="font-normal text-xs appearance-none cursor-pointer block w-full bg-indigo-500 text-white rounded py-3 px-4" type="submit" value="@lang('employee.submit')">
-                </div>
+                    <div class="relative">
+                      <select required wire:model="cashier" name="cashier" class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
+                        <option value="">@lang('paymethod.choose') @lang('paymethod.cashier')</option>
+                        @foreach ($cashiers as $cashier)
+                            <option value="{{$cashier->id}}">{{$cashier->name == "main" ? __('paymethod.miancashier') : $cashier->name  }}</option>
+                        @endforeach
+                      </select>
+                      <div class="w-full text-left">
+                          @if ($moneyincashier)
+                          <span class="mt-2 text-xs font-normal">
+                            @lang('paymethod.money'): {{$moneyincashier}}
+                            </span>
+                          @endif
+
+                      </div>
+                      <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+              <div class="w-fullp-2" id="salaryreason">
+                  <label class="block uppercase tracking-wide text-left font-caps text-xs text-gray-700 text-xs font-bold mb-2">
+                  <small style="font-size: 0.1px">.</small>
+                  </label>
+                  <input class="font-normal text-xs appearance-none cursor-pointer block w-full bg-indigo-500 text-white rounded py-3 px-4" type="submit" value="@lang('employee.submit')">
               </div>
         </form>  
         <div class="bg-gray-200 p-2 my-2 grid grid-cols-2 gap-4 items-center justify-center">

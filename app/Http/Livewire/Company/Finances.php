@@ -44,7 +44,11 @@ class Finances extends Component
             $this->totalearn = 0;
             $this->totalsalary = 0;
             foreach (SalaryToService::whereNull('service_id')->get() as $item) {
-                $this->totalsalary += $item->service_price * $item->percent/100;   
+                if ($item->service_id) {
+                    $this->totalsalary += ($item->service->unchanged_service_price * $item->percent/100) + ($item->service->products()->sum('newproductprice') * $item->sale_percent/100);
+                }elseif($item->sale_id){
+                    $this->totalsalary += $item->service_price * $item->sale_percent/100; 
+                } 
             }
             
             $finances = $finances->whereNull('service_id');
@@ -58,7 +62,11 @@ class Finances extends Component
             $this->totalearn = 0;
             $this->totalsalary = 0;
             foreach (SalaryToService::whereNull('sale_id')->get() as $item) {
-                $this->totalsalary += $item->service_price * $item->percent/100;   
+                if ($item->service_id) {
+                    $this->totalsalary += ($item->service->unchanged_service_price * $item->percent/100) + ($item->service->products()->sum('newproductprice') * $item->sale_percent/100);
+                }else{
+                    $this->totalsalary += $item->service_price * $item->sale_percent/100; 
+                }
             }
             
             $finances = $finances->whereNull('sale_id');
@@ -73,7 +81,12 @@ class Finances extends Component
             $this->totalearn = 0;
             $this->totalsalary = 0;
             foreach (SalaryToService::all() as $item) {
-                $this->totalsalary += $item->service_price * $item->percent/100;   
+                if ($item->service_id) {
+                    $this->totalsalary += ($item->service->unchanged_service_price * $item->percent/100) + ($item->service->products()->sum('newproductprice') * $item->sale_percent/100);
+                }else{
+                    $this->totalsalary += $item->service_price * $item->sale_percent/100; 
+                }
+                  
             }
             //სუფთა მოგება
             foreach (Sale::all() as $item) {
