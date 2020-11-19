@@ -363,7 +363,6 @@ class ClientController extends Controller
         // New Price
             $clientservice->new_price = $clientservice->new_price + intval($request->newserviceprice*100);
 
-            $clientservice->save();
         // Minusproduct
             foreach($json as $prod){
                 $product = Product::Find(intval($prod['product_id']));

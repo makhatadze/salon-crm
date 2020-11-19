@@ -208,7 +208,7 @@
     </div>
 
     
-    <input type="submit" class=" mt-2 button text-white bg-theme-1 shadow-md mr-1" value="@lang('addpurchase.upload')">
+    <input type="submit" class=" mt-2 button text-white font-bold text-xs font-caps bg-theme-1 shadow-md mr-1" value="@lang('addpurchase.upload')">
 
 
    </form>
@@ -401,10 +401,10 @@
             <div class="flex flex-wrap -mx-3 mb-6">
                 <div class="w-full md:w-1/4 px-3 mb-6 md:mb-0">
                     <label class="font-bold font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
-                        @lang('addpurchase.type')
+                        <small> @lang('addpurchase.type') </small>
                     </label>
                     <div class="relative">
-                      <select required name="ability_type[]" class="font-medium text-xs block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
+                      <select required name="ability_type[]" onchange="producttype(`+randomid+`)" id="producttype`+randomid+`" class="font-medium text-xs block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
                         <option value="2" selected>@lang('addpurchase.xarjmasala')</option>
                         <option value="1">@lang('addpurchase.ziritadi')</option>
                       </select>
@@ -415,19 +415,20 @@
                   </div>
                   <div class="w-full md:w-1/4 px-3">
                     <label class="font-bold font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
-                        @lang('addpurchase.dasaxeleba')
+                        <small> @lang('addpurchase.dasaxeleba') </small>
                     </label>
                     <input required autocomplete="off" name="title[]" class="font-medium text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="text" placeholder="@lang('addpurchase.dasaxeleba')">
                   </div>
+                  
                   <div class="w-full md:w-1/4 px-3">
                     <label class="font-bold font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
-                        @lang('addpurchase.strix')
+                        <small> @lang('addpurchase.strix') </small>
                     </label>
                     <input required autocomplete="off" onkeyup="this.value = this.value.replace(/[^0-9\.]/g, '');" name="shtrix[]" class="font-medium text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="text" placeholder="xxxxxxxxxxxxx">
                   </div>
                   <div class="w-full md:w-1/4 px-3">
                     <div>
-                        <label for="price" class="block  leading-5 font-medium text-gray-700 font-bold font-caps text-xs">@lang('addpurchase.price')</label>
+                        <label for="price" class="block  leading-5 font-medium text-gray-700 font-bold font-caps text-xs">  <small>@lang('addpurchase.price')  </small></label>
                         <div class="mt-1 relative rounded-md shadow-sm">
                           <input name="unit_price[]" type="number" min="0" step="0.01" class="block font-medium text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="xxx.xx">
                           <div class="absolute inset-y-0 right-0 flex items-center">
@@ -440,10 +441,10 @@
                       </div>
                       <div class="w-full md:w-1/4 px-3 mb-6 mt-3 md:mb-0">
                         <label class="font-bold font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
-                            @lang('addpurchase.units')
+                            <small> @lang('addpurchase.units') </small>
                         </label>
                         <div class="relative">
-                          <select required name="unit[]" class="block font-medium text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
+                          <select required name="unit[]" onchange="unitchange(`+randomid+`)" id="unit`+randomid+`" class="block font-medium text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
                             <option value="unit" selected >@lang('addpurchase.unit')</option>
                             <option value="gram">@lang('addpurchase.gram')</option>
                             <option value="metre">@lang('addpurchase.metre')</option>
@@ -455,7 +456,7 @@
                       </div>
                       <div class="w-full md:w-1/4 mt-3 px-3">
                     <label class="font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="brand`+randomid+`">
-                        @lang('addpurchase.brand')
+                        <small> @lang('addpurchase.brand') </small>
                         </label>
                         <div class="relative">
                         <select name="brand[]" required class="brands font-normal text-xs block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="brand`+randomid+`">
@@ -471,7 +472,7 @@
                             <x-modal x-show="modal">
                                 <div class="w-full mb-6 md:mb-0">
                                 <label class="font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="brandcat`+randomid+`">
-                                    @lang('addpurchase.category')
+                                    <small>@lang('addpurchase.category') </small>
                                 </label>
                                 <div class="relative">
                                     <select class="font-normal text-xs block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="brandcat`+randomid+`">
@@ -492,7 +493,7 @@
                                 <div class="flex flex-wrap -mx-3 mt-3 mb-6">
                                 <div class="w-full px-3">
                                     <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="brandname`+randomid+`">
-                                        @lang('addpurchase.brandname')
+                                        <small>@lang('addpurchase.brandname') </small>
                                     </label>
                                     <input class="ont-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="brandname`+randomid+`" type="text" placeholder="@lang('addpurchase.dasaxeleba')">
                                 </div>
@@ -502,15 +503,25 @@
                         </div>
                         </div>
                     </div>
-              <div class="w-full md:w-1/4 mt-3 px-3">
-                <label class="font-bold font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
-                    @lang('addpurchase.amout')
-                </label>
-                <input required autocomplete="off" name="quantity[]" class="font-medium text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="number" min="0" step="1" placeholder="xxx">
+              <div class="w-full md:w-1/4 mt-3 px-3 grid grid-cols-2 gap-1">
+                <div class="col-span-2" id="raodenoba`+randomid+`">
+                    <label class="font-bold font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
+                        
+                        <small>@lang('addpurchase.amout')</small>
+                    </label>
+                    <input required autocomplete="off" name="quantity[]" class="font-medium text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="number" min="0" step="1" placeholder="xxx">
+                </div>
+    
+                <div class="col-span-1 hidden" id="grami`+randomid+`">
+                    <label class="font-bold font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
+                        <small>@lang('addpurchase.gram')</small>
+                    </label>
+                    <input  autocomplete="off" name="grami[]" class="font-medium text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="number" min="1" step="1" placeholder="xxx">
+                </div>
               </div>
               <div class="w-full md:w-1/4 px-3 mb-6 mt-3 md:mb-0">
                 <label class="font-bold font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
-                    @lang('addpurchase.storage')
+                    <small> @lang('addpurchase.storage') </small>
                 </label>
                 <div class="relative">
                   <select required name="storage[]" class="storages block font-medium text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" >
@@ -646,6 +657,30 @@
                 }
             }
         });
+    }
+    function unitchange($id){
+        $name = $('#unit'+$id).val();
+        if($name == "gram"){
+            $('#grami'+$id).css('display', 'block');
+            $('#raodenoba'+$id).removeClass('col-span-2');
+            $('#raodenoba'+$id).addClass('col-span-1');
+        }else{
+            $('#grami'+$id).css('display', 'none');
+            $('#raodenoba'+$id).removeClass('col-span-1');
+            $('#raodenoba'+$id).addClass('col-span-2');
+        }
+    }
+    function producttype($id){
+
+        $name = $('#producttype'+$id).val();
+        if ($name == '1') {
+            $("#unit"+$id).val('unit');
+            $("#unit"+$id+" option[value='gram']").attr("disabled", "disabled");
+            $("#unit"+$id+" option[value='metre']").attr("disabled", "disabled");
+        }else{
+            $("#unit"+$id+" option[value='gram']").removeAttr("disabled");
+            $("#unit"+$id+" option[value='metre']").removeAttr("disabled");
+        }
     }
 </script>
 @endsection

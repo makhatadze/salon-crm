@@ -357,7 +357,7 @@ class ProductController extends Controller
         $sale->address = $request->address;
         $sale->total = $total;
         $sale->seller_id = Auth()->user()->id;
-        $sale->save();
+        
             if ($request->paymethod != 'consignation') {
                 $paymethods = PayController::findOrFail($request->paymethod);
                 if(!$paymethods){
@@ -366,7 +366,7 @@ class ProductController extends Controller
                 $sale->pay_method_id = $paymethods->id;
                 $sale->paid = $total;
                 $sale->pay_method = $paymethods->name_ge;
-                
+                $sale->save();
                 $cashier = $paymethods->cashier;
                 $cashier->amout += $sale->paid;
                 if ($cashier->save()) {
@@ -379,7 +379,7 @@ class ProductController extends Controller
             }else{
                 $sale->paid = intval($request->paid*100);
                 $sale->pay_method = "consignation";
-                
+                $sale->save();
                 $cashier = Cashier::where('id', 1)->first();
                 $cashier->amout += $sale->paid;
                 if ($cashier->save()) {
