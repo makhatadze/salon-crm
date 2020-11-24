@@ -98,6 +98,9 @@
           @lang('product.gram')
           @elseif($item->unit == "metre")
           @lang('product.centimeter')
+          @endif <br>
+          @if ($item->unit == "gram")
+              <small>1 @lang('product.unit') = {{$item->gramunit}} @lang('product.gram')</small>
           @endif
         </div>
         <div class="col-span-1 md:col-span-2 lg:col-span-1 font-normal text-xs">

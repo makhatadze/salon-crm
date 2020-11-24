@@ -76,7 +76,7 @@ class WarehouseController extends Controller
             $newprod->warehouse = false;
             $newprod->price = $request->sell_price*100;
             $newprod->user_id = $request->user_id;
-            $newprod->stock = $request->typeamout;
+            $newprod->stock = $request->typeamout * $newprod->gramunit;
             $newprod->fromwarehouse = true;
             $newprod->save();
             $newprod->parent()->create([

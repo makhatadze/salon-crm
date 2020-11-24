@@ -29,6 +29,7 @@ class Product extends Model implements Auditable
         'department_id',
         'brand_id',
         'currency_type',
+        'gramunit',
         'product_code' 
     ];
     protected $table = 'products';

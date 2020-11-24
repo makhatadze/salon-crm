@@ -19,7 +19,12 @@ class Tobackstorage extends Component
             $parent = $this->product->parent->product;
             $parent->stock = $parent->stock - floatval($this->takefromstorage);
             $thisproduct = $this->product;
-            $thisproduct->stock = $thisproduct->stock + floatval($this->takefromstorage);
+            if($thisproduct->unit == "gram"){
+                $thisproduct->stock = $thisproduct->stock + floatval($this->takefromstorage * $thisproduct->gramunit);
+            }else{
+                $thisproduct->stock = $thisproduct->stock + floatval($this->takefromstorage);
+            }
+            
             if ($parent->stock == 0) {
                 $parent->writedown = 0;
             }
@@ -42,13 +47,18 @@ class Tobackstorage extends Component
     {
         
         if (floatval($this->backtostorage) > 0 & $this->product->stock >= floatval($this->backtostorage)) {
+            $thisproduct = $this->product;
+            if ($thisproduct->unit == "gram" && ($thisproduct->stock / $thisproduct->gramunit) < floatval($this->backtostorage)) {
+                return;
+            }
             $parent = $this->product->parent->product;
             if ($parent->writedown == 0) {
                 $parent->writedown = 1;
             }
             $parent->stock = $parent->stock + floatval($this->backtostorage);
-            $thisproduct = $this->product;
-            $thisproduct->stock = $thisproduct->stock - floatval($this->backtostorage);
+
+            $thisproduct->stock = $thisproduct->stock - $thisproduct->gramunit * floatval($this->backtostorage);
+            
             $thisproduct->save();
             $parent->save();
             StorageHistory::create([

@@ -140,7 +140,11 @@
                           </td>
                           <td @if($prod->stock == 0)  style="background-color: #ffaeae" @endif class="text-center ">
                               <span class="m-0 font-medium text-xs">
-                                  {{$prod->stock}} 
+                                @if ($prod->unit == "gram")
+                                {{$prod->stock}} @lang('warehouse.unit')= {{$prod->stock * $prod->gramunit}} 
+                                @else
+                                {{$prod->stock}} 
+                                @endif  
                                   @if($prod->unit == "unit")
                                   @lang('warehouse.unit')
                                   @elseif($prod->unit == "gram")

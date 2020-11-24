@@ -25,6 +25,14 @@ class Index extends Component
 
     public function mount()
     {
+
+        $this->name = '';
+        $this->pricefrom = Product::min('price')/100;
+        $this->pricetill = Product::max('price')/100;
+        $this->stocktill = Product::max('stock');
+    }
+    public function render()
+    {
         if(request('getbrand')){
             $this->brandarray[] = intval(request('getbrand'));
         }else if(request('getsubcat')){
@@ -38,13 +46,6 @@ class Index extends Component
                 }
             }
         }
-        $this->name = '';
-        $this->pricefrom = Product::min('price')/100;
-        $this->pricetill = Product::max('price')/100;
-        $this->stocktill = Product::max('stock');
-    }
-    public function render()
-    {
         $products = Product::where('warehouse', 0)
                     ->where('title_ge', 'LIKE', '%'.$this->name.'%')
                     ->where('price', '>=', $this->pricefrom ? $this->pricefrom*100 : 0)
@@ -55,7 +56,7 @@ class Index extends Component
                     if ($this->department) {
                         $products = $products->where('department_id', $this->department);
                     }
-                    if ($this->brandarray) {
+                    if (request('getbrand') || request('getsubcat') || request('getcat')) {
                         $products = $products->whereIn('brand_id', $this->brandarray);
                     }
                     

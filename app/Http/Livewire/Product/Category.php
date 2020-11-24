@@ -45,6 +45,24 @@ class Category extends Component
         ];
         Brand::create($fields);
     }
+    public function removebrand(Brand $brand)
+    {
+        if ($brand->products()->count() == 0) {
+            $brand->delete();
+        }
+    }
+    public function removesubcat(SubCategory $subcat)
+    {
+        if ($subcat->brands()->count() == 0){
+            $subcat->delete();
+        }
+    }
+    public function removecat(AppCategory $cat)
+    {
+        if($cat->subcategories()->count() == 0){
+            $cat->delete();
+        }
+    }
     public function render()
     {
         $categories = AppCategory::all();
