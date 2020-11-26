@@ -41,5 +41,6 @@ return [
     'pay_method' => 'გადახდის მეთოდები',
     'marketing' => 'მარკეტინგი',
     'sms_send' => 'SMS გაგზავნა',
+    'voucher' => 'ვაუჩერი',
 
 ];

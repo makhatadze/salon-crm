@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProductInventoriesTable extends Migration
+class CreateVouchersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateProductInventoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('product_inventories', function (Blueprint $table) {
+        Schema::create('vouchers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
-            $table->bigInteger('old');
-            $table->bigInteger('real');
-            $table->boolean('status')->default(false);
+            $table->string('code');
+            $table->bigInteger('money');
+            $table->bigInteger('usedmoney')->default(0);
+            $table->boolean('status')->default(true);
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ class CreateProductInventoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('product_inventories');
+        Schema::dropIfExists('vouchers');
     }
 }

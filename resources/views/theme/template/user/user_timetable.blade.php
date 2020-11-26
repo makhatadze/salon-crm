@@ -215,6 +215,9 @@
                        <input type="hidden" name="newserviceprice" id="newserviceprice{{$item->id}}" required>
                  </div>
                  
+                 <div class="w-full px-3 mb-6  mt-1 md:mb-0">
+                    <input name="voucher" class="block font-normal text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 text-xs font-normal pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text"  placeholder="@lang('voucher.voucher')">
+                  </div>
                  <div class="grid grid-cols-2 px-3">
                     <span onclick="addNewField({{$item->id}}, {{$item->new_price/100}})" class="col-span-2 focus:outline-none my-2 text-xs bg-indigo-500 p-2 text-white font-medium">
                        @lang('homepage.addproduct')

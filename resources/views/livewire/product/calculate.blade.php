@@ -40,34 +40,52 @@
                     @lang('product.unit')
                     @endif = <span class="font-bold ml-1 text-sm">
                                 {{($amout ? intval($amout) : 1) * $product->price/100}}
-                            </span> <sup class="ml-1"> ₾</sup>
+                            </span> <sup class="ml-1"> @lang('money.icon')</sup>
                   </div>
               </div>
-              <button class="w-full mb-3 py-2 px-4 bg-indigo-500 font-normal text-xs text-white">
-                ინვენტარიზაცია
+              <button wire:click="addproductinventory()" class="w-full mb-3 py-2 px-4 bg-indigo-500 font-normal text-xs text-white">
+                @lang('product.inventorisation')
               </button>
+              @if ($error)    
+              <p class="w-full py-2 text-center text-red-400 text-xs font-normal">
+                {{$error}}
+              </p>
+              @endif
+              @forelse ($inventories as $item)
               <div class="w-full bg-gray-200 mb-2 p-3 relative">
-                <span class="absolute top-0 right-0">
-                  <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash2-fill" fill="#ed3e3e" xmlns="http://www.w3.org/2000/svg">
+                @if ($item->status == 0)
+                <span wire:click="deleteinventory({{$item->id}})"class="absolute top-0 right-0 -mr-1 -mt-1 bg-gray-300 cursor-pointer p-1 shadow rounded-md">
+                  <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash2-fill" fill="#f54747" xmlns="http://www.w3.org/2000/svg">
                     <path d="M2.037 3.225l1.684 10.104A2 2 0 0 0 5.694 15h4.612a2 2 0 0 0 1.973-1.671l1.684-10.104C13.627 4.224 11.085 5 8 5c-3.086 0-5.627-.776-5.963-1.775z"/>
                     <path fill-rule="evenodd" d="M12.9 3c-.18-.14-.497-.307-.974-.466C10.967 2.214 9.58 2 8 2s-2.968.215-3.926.534c-.477.16-.795.327-.975.466.18.14.498.307.975.466C5.032 3.786 6.42 4 8 4s2.967-.215 3.926-.534c.477-.16.795-.327.975-.466zM8 5c3.314 0 6-.895 6-2s-2.686-2-6-2-6 .895-6 2 2.686 2 6 2z"/>
                   </svg>
                 </span>
+                
+                <span  wire:click="approveinventory({{$item->id}})"  class="absolute top-0 right-0 mt-6 -mr-1 bg-gray-300 cursor-pointer p-1 shadow rounded-md">
+                  <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-check" fill="#5cb876" stroke="#5cb876" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.236.236 0 0 1 .02-.022z"/>
+                  </svg>
+                </span>
+                @endif
                 <div class="flex items-center justify-between">
                   <div>
-                    <h3 class="font-bolder text-sm">45</h3>
-                    <h6 class="font-normal" style="font-size: 0.7rem">განახლებული რაოდენობა</h6>
+                    <h3 class="font-bolder text-sm">{{$item->real}}</h3>
+                    <h6 class="font-normal" style="font-size: 0.7rem">@lang('product.updatedamout')</h6>
                   </div>
                   <div>
-                    <h3 class="font-bolder text-sm">45</h3>
-                    <h6 class="font-normal" style="font-size: 0.7rem">ძველი რაოდენობა</h6>
+                    <h3 class="font-bolder text-sm">{{$item->old}}</h3>
+                    <h6 class="font-normal" style="font-size: 0.7rem">@lang('product.oldamout')</h6>
                   </div>
                   <div>
-                    <h3 class="font-bolder text-sm">თარიღი</h3>
-                    <h6 class="font-normal" style="font-size: 0.7rem">11/14/2020</h6>
+                    <h3 class="font-bolder text-sm">{{Carbon\Carbon::parse($item->created_at)->isoFormat('DD-MM-Y')}}</h3>
+                    <h6 class="font-normal" style="font-size: 0.7rem">@lang('product.date')</h6>
                   </div>
                 </div>
               </div>
+              @empty
+                  <p class="text-xs font-normal text-center w-full">@lang('product.notstarted')</p>
+              @endforelse
+
 
         </x-modal>
     </div>

@@ -59,5 +59,13 @@ return [
     'fromstoragetext' => 'Send From Storage',
     'productcode' => 'Product Code',
     'storage' => 'Storage',
+    'inventorisation' => 'Inventory',
+    'updatedamout' => 'Updated Qty',
+    'oldamout' => 'Old Qty',
+    'inventorisation' => 'Add Inventory',
+    'date' => 'Date',
+    'notstarted' => 'Inventory has not started',
+    'notlessthenzero' => 'Quantity can not be less than 0',
+    'notcomplated' => 'The old inventory is not completed',
 
 ];

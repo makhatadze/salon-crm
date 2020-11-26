@@ -45,7 +45,7 @@ class Finances extends Component
             $this->totalsalary = 0;
             foreach (SalaryToService::whereNull('service_id')->get() as $item) {
                 if ($item->service_id) {
-                    $this->totalsalary += ($item->service->unchanged_service_price * $item->percent/100) + ($item->service->products()->sum('newproductprice') * $item->sale_percent/100);
+                    $this->totalsalary += ($item->service->unchanged_service_price * $item->percent/100) + ($item->service->productclearprice() * $item->sale_percent/100);
                 }elseif($item->sale_id){
                     $this->totalsalary += $item->service_price * $item->sale_percent/100; 
                 } 
@@ -63,7 +63,7 @@ class Finances extends Component
             $this->totalsalary = 0;
             foreach (SalaryToService::whereNull('sale_id')->get() as $item) {
                 if ($item->service_id) {
-                    $this->totalsalary += ($item->service->unchanged_service_price * $item->percent/100) + ($item->service->products()->sum('newproductprice') * $item->sale_percent/100);
+                    $this->totalsalary += ($item->service->unchanged_service_price * $item->percent/100) + ($item->service->productclearprice() * $item->sale_percent/100);
                 }else{
                     $this->totalsalary += $item->service_price * $item->sale_percent/100; 
                 }
@@ -82,7 +82,7 @@ class Finances extends Component
             $this->totalsalary = 0;
             foreach (SalaryToService::all() as $item) {
                 if ($item->service_id) {
-                    $this->totalsalary += ($item->service->unchanged_service_price * $item->percent/100) + ($item->service->products()->sum('newproductprice') * $item->sale_percent/100);
+                    $this->totalsalary += ($item->service->unchanged_service_price * $item->percent/100) + ($item->service->productclearprice() * $item->sale_percent/100);
                 }else{
                     $this->totalsalary += $item->service_price * $item->sale_percent/100; 
                 }

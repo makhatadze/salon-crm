@@ -58,5 +58,13 @@ return [
     'backtostoragetext' => 'პროდუქტს დაემატა',
     'fromstoragetext' => 'საწყობიდან გავიდა',
     'storage' => 'საწყობი',
+    'inventorisation' => 'ინვენტარიზაცია',
+    'updatedamout' => 'განახლებული რაოდენობა',
+    'oldamout' => 'ძველი რაოდენობა',
+    'inventorisation' => 'ინვენტარიზაცია',
+    'date' => 'თარიღი',
+    'notstarted' => 'ინვენტარიზაცია არ არის დაწყებული',
+    'notlessthenzero' => 'რაოდენობა არ შეიძლება ნაკლები იყოს 0_ზე',
+    'notcomplated' => 'ძველი ინვენტარიზაცია არ არის დასრულებული',
 
 ];

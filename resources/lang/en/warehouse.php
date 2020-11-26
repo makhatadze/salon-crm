@@ -45,6 +45,9 @@ return [
     'expduration' => 'Depreciation period (Day)',
     'expluatation' => 'exploitation',
     'unlimitedexp' => 'Unlimited exploitation',
-    'warning' => 'The quantity selected is greater than the quantity of the product!'
+    'warning' => 'The quantity selected is greater than the quantity of the product!',
+    'message1' => 'Quantity in storage is less then you choose',
+    'message2' => 'Purchase price is less then sell price',
+    'message3' => 'Same product already exist in that department',
 
 ];

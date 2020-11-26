@@ -42,7 +42,7 @@ class ClientService extends Model implements Auditable
     }
     public function SalaryToService()
     {
-        return $this->hasMany('App\SalaryToService', 'service_id');
+        return $this->hasOne('App\SalaryToService', 'service_id');
     }
     public function products()
     {
@@ -61,6 +61,15 @@ class ClientService extends Model implements Auditable
         $money = 0;
         foreach ($this->products as $key => $value) {
             $money += $value->product->buy_price*$value->productquntity;
+        }
+        return $money;
+    }
+    
+    public function productclearprice()
+    {
+        $money = 0;
+        foreach ($this->products as $key => $value) {
+            $money += ($value->newproductprice-$value->product->buy_price)*$value->productquntity;
         }
         return $money;
     }

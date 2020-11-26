@@ -19,13 +19,13 @@ class WarehouseController extends Controller
         
         $prod = Product::findOrFail(intval($id));
         if($prod->stock < $request->typeamout){
-            return redirect()->back()->with('error', 'საწყობში რაოდენობა ნაკლებია არჩეულ რაოდენობაზე');
+            return redirect()->back()->with('error', __('warehouse.message1'));
         }
         if($prod->buy_price < $request->sell_price){
-            return redirect()->back()->with('error', 'შესყიდვის ფასი მეტია გაყიდვის ფასზე');
+            return redirect()->back()->with('error', __('warehouse.message2'));
         }
         if (Product::where('department_id', $request->dept_id)->whereIn('id', $prod->children()->select('child_id')->get()->toArray())->count() > 0) {
-            return redirect()->back()->with('error', 'მსგავსი პროდუქტი უკვე არსებობს დეპარტამენტში');
+            return redirect()->back()->with('error', __('warehouse.message3'));
         }
         if($prod->type == 1){
             $this->validate($request,[
@@ -34,7 +34,6 @@ class WarehouseController extends Controller
                 'unlimited_expluatation' => '',
             ]);
             $date = Carbon::parse($request->expluatation_date);
-            
             if($prod->type == 1){
                 for ($i = 0; $i < intval($request->typeamout); $i++) { 
                     $newprod = $prod->replicate();
@@ -74,9 +73,9 @@ class WarehouseController extends Controller
             $newprod = $prod->replicate();
             $newprod->department_id = $request->dept_id;
             $newprod->warehouse = false;
-            $newprod->price = $request->sell_price*100;
             $newprod->user_id = $request->user_id;
-            $newprod->stock = $request->typeamout * $newprod->gramunit;
+            $newprod->stock = ($newprod->unit == "gram") ? $request->typeamout * $newprod->gramunit : $request->typeamout;
+            $newprod->price = ($newprod->unit == "gram") ? intval(round(($request->sell_price / $newprod->gramunit) * 100, 2)) : intval(round($request->sell_price, 2) * 100);
             $newprod->fromwarehouse = true;
             $newprod->save();
             $newprod->parent()->create([

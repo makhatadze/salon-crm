@@ -19,6 +19,7 @@ use App\Sale;
 use App\Service;
 use App\User;
 use App\UserJob;
+use App\Voucher;
 use Carbon\Carbon;
 use DateTimeImmutable;
 use Illuminate\Http\Request;
@@ -324,7 +325,9 @@ class ClientController extends Controller
             'pay_id' => 'required|integer',
             'pay_method' => 'required',
             'paid' => '',
+            'voucher' => ''
         ]);
+
         // Check Pay Method
         if($request->pay_method != "consignation"){
             $paymethod = PayController::find(intval($request->pay_method));
@@ -362,18 +365,51 @@ class ClientController extends Controller
             $clientservice->products()->createMany($json);
         // New Price
             $clientservice->new_price = $clientservice->new_price + intval($request->newserviceprice*100);
-
         // Minusproduct
             foreach($json as $prod){
                 $product = Product::Find(intval($prod['product_id']));
                 $product->stock = $product->stock - $prod['productquntity'];
                 $product->save();
             }
+        // Voucher
+        $topay = $clientservice->new_price;
+        $willpay = ($request->paid != '') ? intval($request->paid * 100) : 0;
+        if ($clientservice->new_price < $willpay) {
+            $willpay = $topay;
+        }
+        if ($request->voucher) {
+            $voucher = Voucher::where([['code', $request->voucher], ['money', '>', 0], ['status', '=', 1]])->first();
+            if ($voucher) {
+                
+                if($voucher->money <= ($topay - $willpay)){
+                    
+                    $voucher->VoucherHistory()->create([
+                        'description' => __('voucher.paidservice'),
+                        'paid' => $voucher->money,
+                    ]);
+                    $willpay = $voucher->money;
+                    $voucher->money = 0;
+                    $voucher->save();
+                }else if($voucher->money > ($topay - $willpay)){
+                    
+                    $voucher->money = $voucher->money - ($topay - $willpay);
+                    $voucher->VoucherHistory()->create([
+                        'description' => __('voucher.paidservice'),
+                        'paid' => $topay - $willpay,
+                    ]);
+                    $willpay = $topay;
+                    
+
+                    $voucher->save();
+                }
+            }
+           
+        }
         // Save Client Service as Paid
         if ($request->pay_method == "consignation") {
             $clientservice->session_endtime = Carbon::now('Asia/Tbilisi');
-            $clientservice->pay_method = "consignation";
-            $clientservice->paid = intval($request->paid * 100);
+            $clientservice->pay_method = "consignation"; 
+            $clientservice->paid = $willpay;
 
             $cashier = Cashier::where('id', 1)->first();
             $cashier->amout += $clientservice->paid;
@@ -624,7 +660,9 @@ class ClientController extends Controller
             'paid' => 'required|numeric|min:0'
         ]);
         if($ClientService->pay_method == "consignation" && $ClientService->new_price > $ClientService->paid){
-            
+            $toupdate = $ClientService->SalaryToService;
+            $toupdate->updated_at = Carbon::now();
+            $toupdate->save();
             $cashier = Cashier::where('id', 1)->first();
             $cashier->amout = $cashier->amout - $ClientService->paid;
             $ClientService->paid = intval($request->paid*100);

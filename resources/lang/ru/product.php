@@ -59,5 +59,13 @@ return [
     'fromstoragetext' => 'Отправить из хранилища',
     'productcode' => 'Код продукта',
     'storage' => 'Место хранения',
+    'inventorisation' => 'Inventory',
+    'updatedamout' => 'Обновленное количество',
+    'oldamout' => 'Старое кол-во',
+    'inventorisation' => 'Добавить инвентарь',
+    'date' => 'Дата',
+    'notstarted' => 'Инвентаризация не началась',
+    'notlessthenzero' => 'Количество не может быть меньше 0',
+    'notcomplated' => 'Старый инвентарь не завершен',
 
 ];

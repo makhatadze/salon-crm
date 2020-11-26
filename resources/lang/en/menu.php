@@ -41,5 +41,6 @@ return [
     'pay_method' => 'Pay Methods',
     'marketing' => 'Marketing',
     'sms_send' => 'SMS Send',
+    'voucher' => 'Vouchers',
 
 ];

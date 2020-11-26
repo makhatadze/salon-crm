@@ -158,6 +158,13 @@
                         <div class="side-menu__title font-normal text-xs"> @lang('menu.pay_method')</div>
                     </a>
                 </li>
+                <li>
+                    <a href="/vouchers" class="side-menu custom-nav-item">
+                        <div class="side-menu__icon"><i data-feather="circle" style="width: 15px; height: 15px;"></i>
+                        </div>
+                        <div class="side-menu__title font-normal text-xs"> @lang('menu.voucher')</div>
+                    </a>
+                </li>
             </ul>
         </li>
         @endif

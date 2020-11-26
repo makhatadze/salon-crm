@@ -41,5 +41,6 @@ return [
     'pay_method' => 'Способы оплаты',
     'marketing' => 'Маркетинг',
     'sms_send' => 'SMS Отправить',
+    'voucher' => 'Ваучеры',
 
 ];

@@ -146,6 +146,7 @@ Route::group(['prefix' => LaravelLocalization::setLocale(), 'middleware' => ['we
             Route::get('/purchases/edit/{id}', 'PurchaseController@edit');
             Route::get('/purchases/create', 'PurchaseController@create');
             Route::view('/paymethods', 'theme.template.pay.index');
+            Route::view('/vouchers', 'theme.template.purchase.voucher');
             Route::post('/purchases/store', 'PurchaseController@store')->name('StorePurchase');
             Route::post('/purchases/pay/{purchase}', 'PurchaseController@paypurchase')->name('PayPurchase');
             Route::put('/purchases/update/{purchase}', 'PurchaseController@update')->name('UpdatePurchase');

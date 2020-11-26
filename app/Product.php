@@ -54,6 +54,9 @@ class Product extends Model implements Auditable
     public function images(){
         return $this->morphMany('App\Image', 'imageable');
     }
+    public function productinventory(){
+        return $this->hasMany('App\ProductInventory', 'product_id');
+    }
     public function getDepartmentName(){
         $depname = Department::find($this->department_id);
         if($depname){
