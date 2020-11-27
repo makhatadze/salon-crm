@@ -445,7 +445,7 @@
               </div>
              
             <div class="w-full px-4 mt-2">
-                <label class="font-bold font-caps text-xs text-gray-700">@lang('addpurchase.desc') @lang('language.main') <span class="text-red-500">*</span> </label>
+                <label class="font-bold font-caps text-xs text-gray-700">@lang('addpurchase.desc') @lang('language.main') </label>
                 <div class="mt-2 font-medium text-xs">
                     <textarea data-feature="basic" class="summernote" name="body[]" style="display: none;"></textarea>
                 </div>
