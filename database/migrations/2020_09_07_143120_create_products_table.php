@@ -18,7 +18,7 @@ class CreateProductsTable extends Migration
             $table->string('title_ge');
             $table->string('title_ru')->nullable();
             $table->string('title_en')->nullable();
-            $table->text('description_ge');
+            $table->text('description_ge')->nullable();
             $table->text('description_ru')->nullable();
             $table->text('description_en')->nullable();
             $table->integer('price')->nullable();

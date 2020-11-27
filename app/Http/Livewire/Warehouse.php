@@ -63,7 +63,7 @@ class Warehouse extends Component
         $this->updateId = $product->id;
         $this->isUnit = false;
         $this->maxunit = $product->stock;
-        $this->minprice = $product->buy_price;
+        $this->minprice = ($product->unit == "gram") ? $product->buy_price/$product->gramunit : $product->buy_price;
         if($product->type == 1){
             $this->isUnit = true;
         }

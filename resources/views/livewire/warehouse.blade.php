@@ -122,9 +122,10 @@
                               <a href="" class="font-medium whitespace-no-wrap font-bold text-black">{{$prod->title_ge }}</a> 
                               <div class="text-gray-600 text-xs whitespace-no-wrap font-normal"> </div>
                           </td>
-                          <td  @if($prod->stock == 0)  style="background-color: #ffaeae" @endif class="text-center font-normal">{{$prod->buy_price/100}} 
-                            @if ($prod->currency_type == 'gel')
-                            @lang('money.icon')
+                          <td  @if($prod->stock == 0)  style="background-color: #ffaeae" @endif class="text-center font-normal">
+                            <h6>{{$prod->buy_price/100}} @lang('money.icon')</h6>
+                            @if ($prod->unit == "gram")
+                              <span class="text-xs font-normal"> 1 @lang('warehouse.gram') = {{number_format(($prod->buy_price/$prod->gramunit)/100 ,2)}}</span>                                
                             @endif
                         </td>
                           <td @if($prod->stock == 0)  style="background-color: #ffaeae" @endif class="text-center font-normal ">

@@ -169,12 +169,23 @@
                       </div>
                     </div>
                   </div>
-          <div class="w-full md:w-1/4 mt-3 px-3">
-            <label class="font-bold font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
-              @lang('addpurchase.amout')
-            </label>
-            <input disabled required value="{{$product->boughtamout}}" autocomplete="off"  class="font-medium text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="number" min="0" step="0.1" placeholder="xxx.x">
+          <div class="w-full md:w-1/4 mt-3 px-3 grid grid-cols-2 gap-2">
+           <div class=" @if($product->unit == "gram") col-span-1 @else col-span-2 @endif" >
+              <label class="font-bold font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
+                  
+                  <small>@lang('addpurchase.amout')</small>
+              </label>
+              <input disabled required value="{{$product->boughtamout}}" autocomplete="off"  class="font-medium text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="number" min="0" step="1" placeholder="xxx">
           </div>
+  
+          <div class="col-span-1 @if($product->unit != "gram") hidden @endif" >
+              <label class="font-bold font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
+                  <small>@lang('addpurchase.gram')</small>
+              </label>
+              <input  disabled required value="{{$product->gramunit}}"  class="font-medium text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"  type="number" min="1" step="1" placeholder="xxx">
+          </div>
+        </div>
+          
           <div class="w-full md:w-1/4 px-3 mb-6 mt-3 md:mb-0">
             <label class="font-bold font-caps block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" >
               @lang('addpurchase.storage')
@@ -552,7 +563,7 @@
             <div class="w-full px-4 mt-2">
                 <label class="font-bold font-caps text-xs text-gray-700">@lang('addpurchase.desc') @lang('language.main') <span class="text-red-500">*</span> </label>
                 <div class="mt-2 font-medium text-xs">
-                    <textarea required data-feature="basic" class="summernote" name="body[]" style="display: none;"></textarea>
+                    <textarea data-feature="basic" class="summernote" name="body[]" style="display: none;"></textarea>
                 </div>
             </div>
             </div>

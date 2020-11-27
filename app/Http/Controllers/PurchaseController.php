@@ -117,7 +117,7 @@ class PurchaseController extends Controller
                     'ability_type' => $request->input('ability_type')[$key],
                     'title' => $request->input('title')[$key],
                     'unit' => $request->input('unit')[$key],
-                    'unit_price' => intval($request->input('unit_price')[$key]*100),
+                    'unit_price' => $request->input('unit')[$key] == "gram" ? intval(($request->input('quantity')[$key]/$request->input('unit_price')[$key])*100) : intval($request->input('unit_price')[$key]*100),
                     'currency_val' => $request->input('currency')[$key],
                     'quantity' => $request->input('unit')[$key] == "gram" ? $request->input('quantity')[$key] * ($request->input('grami')[$key] ?? 1) : $request->input('quantity')[$key],
                     'storage_id' => $request->input('storage')[$key],

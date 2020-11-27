@@ -75,7 +75,7 @@ class WarehouseController extends Controller
             $newprod->warehouse = false;
             $newprod->user_id = $request->user_id;
             $newprod->stock = ($newprod->unit == "gram") ? $request->typeamout * $newprod->gramunit : $request->typeamout;
-            $newprod->price = ($newprod->unit == "gram") ? intval(round(($request->sell_price / $newprod->gramunit) * 100, 2)) : intval(round($request->sell_price, 2) * 100);
+            $newprod->price =  intval(round($request->sell_price, 2) * 100);
             $newprod->fromwarehouse = true;
             $newprod->save();
             $newprod->parent()->create([
