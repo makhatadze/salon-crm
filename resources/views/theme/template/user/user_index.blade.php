@@ -43,7 +43,7 @@
                             <a href="{{route('ShowUserProfile', $user->id)}}"class="font-bolder text-xs text-gray-700 uppercase font-caps">{{$user->profile->first_name .' '. $user->profile->last_name}}</a><br>
                             @if($user->profile)
                             @if($user->profile->salary > 0) <span class="text-xs font-normal">@lang('employee.bank'):  {{$user->profile->salary}} <sup>₾</sup></span> <br> @endif
-                            <span class="text-xs font-normal">@lang('employee.earn'): {{$user->getEarnedMoney() ? round($user->getEarnedMoney(), 2) : 0 }} <sup>₾</sup></span> <br>
+                           
 
                             @endif
                         </div>
