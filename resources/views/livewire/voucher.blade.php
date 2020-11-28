@@ -11,15 +11,42 @@
                         @lang('voucher.code')
                       </label>
                       <input wire:model.lazy="code" class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" readonly  type="text" placeholder="Jane">
+                      
+                      @error('code')
+                        <p class="font-normal text-xs text-red-500">{{$message}}</p>
+                      @enderror
                     </div>
                     <div class="w-full md:w-1/2 px-3">
                       <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2 font-caps text-xs">
-                        @lang('voucher.date')
+                        @lang('voucher.money')
                       </label>
                       <input wire:model.lazy="money" class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" min="0" step="0.01" type="number" placeholder="x,xxx.xx">
+                      
+                      @error('money')
+                        <p class="font-normal text-xs text-red-500">{{$message}}</p>
+                      @enderror
                     </div>
                   </div>
-                  <button class="font-bold text-xs w-full py-2 px-3 bg-indigo-500 text-white">
+                  <div class="w-full  mb-6 md:mb-0">
+                    <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="cashier">
+                        @lang('voucher.cashier')
+                    </label>
+                    <div class="relative">
+                      <select wire:model="cashier" required class="block font-normal appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="cashier" >
+                        <option value="" selected>@lang('voucher.choose')</option>
+                        @foreach ($cashiers as $cashier)
+                        <option value="{{$cashier->id}}">{{$cashier->name == "main" ? __('paymethod.miancashier') : $cashier->name}}</option>
+                        @endforeach
+                      </select>
+                      <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                      </div>
+                      @error('cashier')
+                        <p class="font-normal text-xs text-red-500">{{$message}}</p>
+                      @enderror
+                    </div>
+                  </div>
+                  <button type="submit" class="font-bold mt-2 text-xs w-full py-2 px-3 bg-indigo-500 text-white">
                     @lang('voucher.create')
                   </button>
             </form>

@@ -23,5 +23,8 @@ return [
     'pay' => 'Pay',
     'date' => 'Date',
     'reason' => 'Reason',
+    'cashier' => 'Cashier',
+    'choose' => 'Choose',
+    'cashierreason' => 'Voucher Sold',
 
 ];

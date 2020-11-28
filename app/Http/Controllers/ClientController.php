@@ -418,7 +418,7 @@ class ClientController extends Controller
                     'description' => __('paymethod.consignation_on_service') .' ID: '.$clientservice->id,
                     'amout' => $clientservice->paid
                 ]);
-            };
+            }
         }else{
             $clientservice->pay_method_id = $paymethod->id;
             $clientservice->session_endtime = Carbon::now('Asia/Tbilisi');

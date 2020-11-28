@@ -1,4 +1,4 @@
-<?php
+თა<?php
 
 return [
 
@@ -23,5 +23,8 @@ return [
     'pay' => 'გადახდა',
     'date' => 'თარიღი',
     'reason' => 'მიზეზი',
+    'cashier' => 'სალარო',
+    'choose' => 'აირჩიეთ',
+    'cashierreason' => 'გაიყიდა ვაუჩერი',
 
 ];

@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Cashier;
 use App\Voucher as AppVoucher;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -12,10 +13,11 @@ class Voucher extends Component
     public $code;
     public $money;
     public $search = '';
+    public $cashier = '';
     
     public function mount()
     {
-       $this->code = rand(100000,9999999);
+        $this->code = rand(100000,9999999);
     }
     public function changestatus(AppVoucher $voucher)
     {
@@ -26,20 +28,31 @@ class Voucher extends Component
     {
         $this->validate([
             'code' => 'required|unique:vouchers',
-            'money' => 'required'
+            'money' => 'required',
+            'cashier' => 'required|integer'
         ]);
         
-        if (strlen($this->code) >= 5) {
-            AppVoucher::create([
-                'code' => intval($this->code),
-                'money' => intval($this->money * 100),
-            ]);
-        }
+            $selectedcashier = Cashier::findOrFail(intval($this->cashier));
+            if(strlen($this->code) >= 5 && $selectedcashier){
+                $voucher = AppVoucher::create([
+                    'code' => intval($this->code),
+                    'money' => intval($this->money * 100),
+                    'cashier_id' => $selectedcashier->id
+                ]);
+                $selectedcashier->amout += $voucher->money;
+                $selectedcashier->save();
+            }
+            $this->code = rand(100000,9999999);
+            $this->money = '';
+            $this->cashier = '';
        
     }
     public function deletevoucher(AppVoucher $voucher)
     {
         if ($voucher->voucherHistory()->count() == 0) {
+            $cashier = Cashier::findOrFail($voucher->cashier_id);
+            $cashier->amout = $cashier->amout - $voucher->money;
+            $cashier->save();
             $voucher->delete();
         }
     }
@@ -50,6 +63,7 @@ class Voucher extends Component
             $vouchers = $vouchers->where('code', 'LIKE', '%'.intval($this->search).'%');
         }
         $vouchers = $vouchers->paginate(5);
-        return view('livewire.voucher', compact('vouchers'));
+        $cashiers = Cashier::all();
+        return view('livewire.voucher', compact('vouchers', 'cashiers'));
     }
 }
