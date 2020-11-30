@@ -548,39 +548,17 @@ class ClientController extends Controller
         return view('theme.template.company.finance');
     }
     public function showclients(){
-        $date = '';
+        $user = Auth::user();
         if(request('date')){
-            $date = request('date');
-        }
-        $selecteduser = '';
-        if(request('users')){
-            $selecteduser = request('users');
-        }
-
-        $totalclients = Client::count();
-        $totalproductcost = Product::sum('price')/100;
-        $totalServiceCost = Service::sum('price')/100;
-        $allclientservices = ClientService::count();
-        $paymethods = PayController::all();
-        $alluser = User::permission('user')->get();;
-        $services = Service::all();
-        if ( request('users')) {
-            
-        $users = User::permission('user')->where('id', intval(request('users')))
-        ->where('active', true)
-        ->get();
+            $date = Carbon::parse(request('date'));
         }else{
-            
-        $users = User::permission('user')
-        ->where('active', true)
-        ->get();
-        }
+            $date = Carbon::today();
+        } 
         $clients = Client::all();
-        $income = ClientService::where('status', true)
-        ->join('services', 'client_services.service_id', '=', 'services.id')
-        ->sum('price')/100;
-        return view('theme.template.home.home_index', compact('alluser', 'services', 'selecteduser', 'users', 'clients', 'paymethods', 'totalclients', 'income', 'totalServiceCost', 'totalproductcost', 'date'));
-
+        
+        $products = Product::select('id', 'title_ge')->where([['fromwarehouse', 1], ['writedown', 1]])->get();
+        $paymethods = PayController::all();
+        return view('theme.template.user.user_timetable', compact('user', 'clients', 'date', 'paymethods', 'products'));
     }
     public function serviceselect(Request $request)
     {

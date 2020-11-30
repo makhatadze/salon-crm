@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 return [
 
@@ -12,18 +12,18 @@ return [
     | these language lines according to your application's requirements.
     |
     */
-    'sessiondate' => 'Дата сеанса',
-    'status' => 'Положение дел',
-    'createdate' => 'Дата создания',
+    'sessiondate' => 'Дата сессии',
+    'status' => 'Статус',
+    'createdate' => 'Дата регистрации',
     'updatedate' => 'Дата обновления',
     'paymethod' => 'Метод оплаты',
-    'servicename' => 'наименование услуги',
-    'personal' => 'Личное',
-    'clientname' => 'имя клиента',
+    'servicename' => 'Услуга',
+    'personal' => 'Получатель',
+    'clientname' => 'Клиента',
     'phone' => 'Телефон',
     'address' => 'Адрес',
-    'price' => 'Цена',
-    'paid' => 'Платный'
+    'price' => 'Цена'
+    'paid' => 'Оплачено'
     
 
 ];

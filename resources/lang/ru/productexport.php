@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 return [
 
@@ -12,24 +12,23 @@ return [
     | these language lines according to your application's requirements.
     |
     */
-    'name' => 'название',
+    'name' => 'Наименование',
     'price' => 'Цена',
     'type' => 'Тип',
     'quantity' => 'Количество',
-    'unit' => 'Ед. изм',
-    'status' => 'Положение дел',
-    'createdate' => 'Дата создания',
-    'updatedate' => 'Дата обновления',
-    'currency' => 'валюта',
+    'unit' => 'Единица',
+    'status' => 'Статус',
+    'createdate' => 'Добавить дату',
+    'updatedate' => 'Обновить даты',
+    'currency' => 'Валюта',
     'expstart' => 'Дата начала эксплуатации',
-    'expduration' => 'Продолжительность эксплуатации',
-    'expunlimited' => 'Неограниченная эксплуатация',
-    'buyprice' => 'Цена покупки',
-    'buynumber' => 'Купить номер',
-    'department' => 'департамент',
-    'brand' => 'Марка',
-    'storage' => 'Место хранения',
-    'author' => 'Автор',
-    'productcode' => 'Код продукта'
+    'expduration' => 'Продолжение эксплуатации(день)',
+    'expunlimited' => 'Неограниченная срок службы',
+    'buyprice' => 'Стоимость покупки',
+    'buynumber' => 'Номер покупки',
+    'department' => 'Студия',
+    'brand' => 'Бренд',
+    'storage' => 'Склад',
+    'author' => 'Создал',
 
 ];

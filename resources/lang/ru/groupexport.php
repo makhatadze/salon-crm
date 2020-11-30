@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 return [
 
@@ -12,13 +12,13 @@ return [
     | these language lines according to your application's requirements.
     |
     */
-    'name' => 'название',
-    'address' => 'Адрес',
-    'phone' => 'Телефон',
+    'name' => 'Имя',
+    'address' => 'Адресс',
+    'phone' => 'Телефонный номер',
     'created' => 'Дата регистрации',
-    'mail' => 'Почта',
-    'sex' => 'Секс',
-    'birthday' => 'День рождения',
-    'pid' => 'Персональный номер',
+    'mail' => 'Эл. почта',
+    'sex' => 'Пол',
+    'birthday' => 'Дата рождения',
+    'pid' => 'Личный номер',
     
 ];

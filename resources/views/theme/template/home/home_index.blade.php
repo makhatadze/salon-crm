@@ -1,6 +1,7 @@
 @extends('theme.layout.layout')
 
 @section('content')
+
     <div class="col-span-12 xxl:col-span-9 grid grid-cols-12 gap-6">
        @livewire('main.calculate')
         <div class="col-span-12 my-3 container mx-auto">

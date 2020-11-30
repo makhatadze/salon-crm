@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 return [
 
@@ -12,21 +12,19 @@ return [
     | these language lines according to your application's requirements.
     |
     */
-    'servicestart' => 'Время запуска службы',
-    'status' => 'Положение дел',
-    'register' => 'Дата регистрации',
+    'servicestart' => 'Начало услуги',
+    'status' => 'Статус',
+    'register' => 'Регистрация',
     'pay' => 'Метод оплаты',
-    'duration' => 'Продолжительность (мин)',
-    'service' => 'обслуживание',
-    'serviceoriginalprice' => 'Первоначальная цена услуги',
-    'endtime' => 'Время окончания',
+    'duration' => 'Продолжительность(мин)',
+    'service' => 'Услуга',
+    'serviceoriginalprice' => 'Цена услуги',
+    'endtime' => 'Конец работы',
     'employee' => 'Сотрудник',
-    'department' => 'Отдел',
-    'author' => 'Штат сотрудников',
-    'newprice' => 'Новая цена',
+    'department' => 'Студия',
+    'author' => 'Персонал',
+    'newprice' => 'Цена',
     'clientnumber' => 'Номер клиента',
-    'clientname' => 'имя клиента',
-    'paid' => 'Оплаченная сумма',
-    'spendonproducts' => 'Цена на продукцию',
-    'getspendonproducts' => 'Доход',
+    'clientname' => 'Имя клиента',
+    'paid' => 'Сумма оплаты',
 ];

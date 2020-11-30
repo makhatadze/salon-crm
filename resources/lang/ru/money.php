@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'slug' => 'RUB',
-    'icon' => '₽',
+    'slug' => 'Лар',
+    'icon' => '₾',
 
 ];

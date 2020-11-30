@@ -1,34 +1,18 @@
-<?php
-
-return [
-
-    /*
-    |--------------------------------------------------------------------------
-    | Authentication Language Lines
-    |--------------------------------------------------------------------------
-    |
-    | The following language lines are used during authentication for various
-    | messages that we need to display to the user. You are free to modify
-    | these language lines according to your application's requirements.
-    |
-    */
-
-    'employees' => 'Сотрудников',
-    'register' => 'регистрация',
+﻿    'employees' => 'Сотрудники',
+    'register' => 'Регистрация',
     'search' => 'Поиск',
-    'bank' => 'Зарплата',
-    'earn' => 'Заработать',
+    'bank' => 'Фиксированная',
+    'earn' => 'Заработанные',
     'salary_type' => 'Тип зарплаты',
-    'standard_salary' => 'Стандартная зарплата',
-    'dept' => 'Отдел',
+    'earn' => 'Заработанные',
+    'standard_salary' => 'Фиксированная',
+    'dept' => 'Аванс',
     'amout' => 'Количество',
     'bonus' => 'Бонус',
     'day' => 'День',
     'week' => 'Неделя',
     'month' => 'Месяц',
-    'reason' => 'Причина',
-    'all' => 'Все',
-    'submit' => 'Обновить',
-    'dept_noncomplate' => 'Незавершенный отдел',
-
-];
+    'reason' => 'Примечание',
+    'all' => 'Всего',
+    'submit' => 'Подтверждение',
+    'dept_noncomplate' => 'Аванс',

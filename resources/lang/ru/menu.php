@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 return [
 
@@ -13,34 +13,33 @@ return [
     |
     */
 
-    'home_page' => 'Главная страница',
-    'table' => 'Стол',
+    'home_page' => 'Главная страница ',
+    'table' => 'Таблица',
     'users' => 'Пользователи',
-    'employees' => 'Сотрудников',
+    'employees' => 'Сотрудники',
     'clients' => 'Клиенты',
     'groups' => 'Группы',
     'roles' => 'Роли',
-    'purchase' => 'Покупка',
+    'purchase' => 'Закупки',
     'purchases' => 'Покупки',
-    'storage' => 'Место хранения',
-    'storage_history' => 'История хранения',
-    'distributors' => 'Дистрибьюторам',
-    'service' => 'обслуживание',
+    'storage' => 'Склад',
+    'storage_history' => 'История склада',
+    'distributors' => 'Дистрибюторы',
+    'service' => 'Сервис',
     'services' => 'Сервисы',
     'company' => 'Компания',
     'information' => 'Информация',
     'offices' => 'Офисы',
-    'departments' => 'Отделы',
-    'accounting' => 'Бухгалтерский учет',
+    'departments' => 'Департамент',
+    'accounting' => 'Бухгалтерия',
     'finances' => 'Финансы',
-    'salaries' => 'Зарплаты',
+    'salaries' => 'Зарплата',
     'trade' => 'Сделка',
-    'new_sale' => 'Новая распродажа',
-    'sales' => 'Продажи',
-    'product' => 'Товары',
-    'pay_method' => 'Способы оплаты',
+    'new_sale' => 'Новая продажа',
+    'sales' => 'Продажа',
+    'product' => 'Продукция',
+    'pay_methods' => 'Метод оплаты',
     'marketing' => 'Маркетинг',
-    'sms_send' => 'SMS Отправить',
-    'voucher' => 'Ваучеры',
+    'sms_send' => 'Отправить SMS',
 
 ];

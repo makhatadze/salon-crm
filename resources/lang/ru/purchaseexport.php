@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 return [
 
@@ -12,11 +12,13 @@ return [
     | these language lines according to your application's requirements.
     |
     */
+    'type' => 'Тип покупки',
+    'number' => 'Номер покупки',
+    'date' => 'Дата покупки',
+    'dgg' => 'НДС',
+    'updated' => 'Последнее обновление',
+    'paid' => 'Оплачено',
+    'dept' => 'Задолжность',
+    'distributor' => 'Дистрибютор',
 
-    'register' => 'Регистрация',
-    'name' => 'Имя',
-    'code' => 'Код',
-    'phone' => 'Телефон',
-    'person' => 'Персональный номер',
-    'add' => 'Добавить',
 ];

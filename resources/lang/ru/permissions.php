@@ -1,37 +1,37 @@
 <?php
 
 return [
-    'admin' => 'Admin',
-    'user' => 'User',
+    'admin' => 'Админ',
+    'user' => 'Клиент',
 
-    'see_users' => 'See Users',
-    'add_user' => 'Add User',
-    'delete_user' => 'Delete User',
+    'see_users' => 'Посмотреть клиента',
+    'add_user' => 'Добавить клиента',
+    'delete_user' => 'Удалить клиента',
 
-    'see_service' => 'See Services',
-    'add_service' => 'Add Service',
-    'delete_service' => 'Delete Service',
+    'see_service' => 'Посмотреть услугу',
+    'add_service' => 'Добавить услугу',
+    'delete_service' => 'Удалить услугу',
 
-    'see_purchases' => 'See Purchases',
-    'add_purchase' => 'Add Purchase',
-    'delete_purchase' => 'Delete Purchase',
+    'see_purchases' => 'Посмотреть покупку',
+    'add_purchase' => 'Добавить покупку',
+    'delete_purchase' => 'Удалить покупку',
 
-    'see_products' => 'See Products',
-    'add_product' => 'Add Product',
-    'delete_product' => 'Delete Product',
+    'see_products' => 'Посмотреть продукт',
+    'add_product' => 'Добавить продукт',
+    'delete_product' => 'Удалить продукт',
 
-    'see_clients' => 'See Clients',
-    'add_client' => 'Add Client',
-    'delete_client' => 'Delete Client',
+    'see_clients' => 'Посмотреть клиента',
+    'add_client' => 'Добавить клиента',
+    'delete_client' => 'Удалить клиента',
 
-    'export_finances' => 'Export',
+    'export_finances' => 'Экспорт',
 
-    'see_company' => 'See Companies',
-    'add_company' => 'Add Company',
-    'delete_company' => 'Delete Company',
+    'see_company' => 'Посмотреть компанию',
+    'add_company' => 'Добавить офис или студию',
+    'delete_company' => 'Удалить офис или студию',
 
-    'see_sms' => 'See Messages',
-    'send_sms' => 'Send Messages',
-    'delete_sms' => 'Delete Messages',
+    'see_sms' => 'Посмотреть оповещение',
+    'send_sms' => 'Послать оповещение',
+    'delete_sms' => 'Удалить оповещение',
 
 ];
