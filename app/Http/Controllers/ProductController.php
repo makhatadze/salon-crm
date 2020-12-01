@@ -103,7 +103,7 @@ class ProductController extends Controller
             'title_en' => '',
             'get_category' => '',
             'department' => 'required|integer',
-            'editor-ge' => 'required',
+            'editor-ge' => '',
             'editor-ru' => '',
             'new_category' => '',
             'editor-en' => '',
@@ -163,7 +163,12 @@ class ProductController extends Controller
             $product->unlimited_expluatation = false;
         }
 
-        $product->price = intval($request->input('price') * 100);
+        if ($product->fromwarehouse == 0) {
+            $product->buy_price = intval($request->input('price') * 100);
+        }else{
+            
+            $product->price = intval($request->input('price') * 100);
+        }
         $product->currency_type = $request->input('currency');
         $product->save();
         $product->fields()->createMany($fields);

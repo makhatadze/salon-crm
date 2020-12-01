@@ -104,7 +104,7 @@
                                 <label for="price"
                                     class="block  leading-5 font-medium text-gray-700 font-bold font-caps text-xs">@lang('product.price')</label>
                                 <div class="mt-1 relative rounded-md shadow-sm">
-                                    <input autocomplete="off" type="number" value="{{ $product->price / 100 }}" name="price" min="0"
+                                    <input autocomplete="off" type="number" value="{{($product->fromwarehouse == 0) ? $product->buy_price/100 : $product->price / 100 }}" name="price" min="0"
                                         step="0.01"
                                         class="block font-medium text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                                         placeholder="xxx.xx">
@@ -240,9 +240,9 @@
 
                     </div>
                     <div class="mt-3 px-3">
-                        <label class="font-bold font-caps text-xs">@lang('product.desc') <span class="text-red-500">*</span> </label>
+                        <label class="font-bold font-caps text-xs">@lang('product.desc')  </label>
                         <div class="mt-2">
-                            <textarea required data-feature="basic" class="summernote font-normal text-xs" name="editor-ge"
+                            <textarea  data-feature="basic" class="summernote font-normal text-xs" name="editor-ge"
                                 style="display: none;">
                             {{ $product->description_ge }}
                             </textarea>

@@ -117,9 +117,10 @@ class PurchaseController extends Controller
                     'ability_type' => $request->input('ability_type')[$key],
                     'title' => $request->input('title')[$key],
                     'unit' => $request->input('unit')[$key],
-                    'unit_price' => $request->input('unit')[$key] == "gram" ? intval(($request->input('quantity')[$key]/$request->input('unit_price')[$key])*100) : intval($request->input('unit_price')[$key]*100),
+                    'unit_price' => $request->input('unit_price')[$key]*100,
                     'currency_val' => $request->input('currency')[$key],
-                    'quantity' => $request->input('unit')[$key] == "gram" ? $request->input('quantity')[$key] * ($request->input('grami')[$key] ?? 1) : $request->input('quantity')[$key],
+                    'quantity' => $request->input('quantity')[$key],
+                    'gramunit' => $request->input('grami')[$key],
                     'storage_id' => $request->input('storage')[$key],
                     'brand_id' => $request->input('brand')[$key],
                     'body' => $request->input('body')[$key],
@@ -127,7 +128,7 @@ class PurchaseController extends Controller
                 ];
             }
         }
-        $purchase= new Purchase;
+        $purchase = new Purchase();
         $purchase->purchase_type = $request->input('purchase_type');
         if($request->input('purchase_type') == "overhead"){
             $purchase->overhead_number = $request->input('overhead_number');
@@ -136,7 +137,7 @@ class PurchaseController extends Controller
         }
         $purchase->purchase_date = Carbon::parse($request->input('purchase_date'));
         $purchase->distributor_id = $request->input('distributor_id');
-        if($request->input('dgg')){
+       if($request->input('dgg')){
             $purchase->dgg = true;
         }else{
             $purchase->dgg = false;
@@ -152,12 +153,14 @@ class PurchaseController extends Controller
                     'stock' => $product['quantity'],
                     'boughtamout' => $product['quantity'],
                     'storage_id' => $product['storage_id'],
+                    'gramunit' => $product['gramunit'],
                     'description_ge' => $product['body'],
                     'type' => $product['ability_type'],
                     'brand_id' => $product['brand_id'],
                     'purchase_id' => $purchase->id,
                     'product_code' => intval($product['product_code']),
                 ]);
+                
             }
         }
         return redirect('/purchases');
