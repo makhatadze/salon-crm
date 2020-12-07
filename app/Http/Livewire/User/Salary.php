@@ -48,7 +48,7 @@ class Salary extends Component
     {
         if ($this->salaryperiod == "today") {
             $this->userearn = 0;
-            foreach ($this->user->SalaryToServices()
+            foreach ($this->user->SalaryToServices()->where('salary_status', 1)
                     ->whereDate('updated_at', Carbon::today())
                     ->get() as $item) {
                     if ($item->service_id) {
@@ -61,7 +61,7 @@ class Salary extends Component
             }
         }elseif ($this->salaryperiod == "week") {
             $this->userearn = 0;
-            foreach ($this->user->SalaryToServices()
+            foreach ($this->user->SalaryToServices()->where('salary_status', 1)
                 ->whereDate('updated_at', '<=', Carbon::today())
                 ->whereDate('updated_at', '>=', Carbon::now()->subDays(7))
                 ->get() as $item) {
@@ -75,7 +75,7 @@ class Salary extends Component
             }
         }elseif ($this->salaryperiod == "month") {
             $this->userearn = 0;
-            foreach ($this->user->SalaryToServices()
+            foreach ($this->user->SalaryToServices()->where('salary_status', 1)
             ->whereMonth('updated_at', Carbon::now()->isoFormat('MM'))
             ->get() as $item) {
                 if ($item->service_id) {
@@ -88,7 +88,7 @@ class Salary extends Component
             }
         }elseif ($this->salaryperiod == "all") {
             $this->userearn = 0;
-            foreach ($this->user->SalaryToServices as $item) {
+            foreach ($this->user->SalaryToServices()->where('salary_status', 1)->get() as $item) {
                 if ($item->service_id) {
                     if ($item->service->new_price == $item->service->paid) {
                         $this->userearn += ($item->service->unchanged_service_price * $item->percent/100) + ($item->service->productclearprice() * $item->sale_percent/100);

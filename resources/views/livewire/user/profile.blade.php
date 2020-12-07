@@ -107,9 +107,9 @@
                         <span>{{$item->sale_percent}}% =</span> <h6 class="ml-1 text-xs font-bold text-gray-700"> {{number_format($item->service_price * ($item->sale_percent/100)/100,2)}}</h6>
                         @elseif ($item->service)
                         <div>
-                          <h6 class="ml-1 text-xs font-bold text-gray-700"> <span>{{$item->percent}}% =</span>  {{number_format( ($item->service->unchanged_service_price * $item->percent/100) /100, 2)}}</h6> 
-                        <span class="ml-1 text-xs font-bold text-gray-700"> <span>{{$item->sale_percent}}% =</span>  {{number_format( ($item->service->products()->sum('newproductprice') * $item->sale_percent/100)/100, 2)}}</span>
-                        </div>
+                            <h6 class="ml-1 text-xs font-bold text-gray-700"> <span>{{$item->percent}}% =</span>  {{number_format( (($item->service->unchanged_service_price) * $item->percent/100)/100, 2)}}</h6> 
+                            <span class="ml-1 text-xs font-bold text-gray-700"> <span>{{$item->sale_percent}}% =</span>  {{number_format( ($item->service->productclearprice() * $item->sale_percent/100)/100, 2)}}</span>
+                            </div>
                         @endif
                     </span>
                 </div>

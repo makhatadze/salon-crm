@@ -30,14 +30,19 @@
               <div class="p-5 border-t border-gray-200 relative">
                 <small class="bg-green-400 absolute top-0 right-0 p-1 font-bold text-x font-caps">სულ</small>
                 <div class="flex">
+
                     <div class="w-1/3 p-3">
-                        <h6 class="font-bold font-caps text-base text-black">{{$user->ClientCount()}}</h6>
-                        <span class="font-normal text-xs">@lang('profile.client')</span>
+                        <h6 class="font-bold font-caps text-base text-black">{{$user->getEarnedMoney() ? $user->getEarnedMoney() : 0}} <sup>@lang('money.icon')</sup></h6>
+                        <span class="font-normal text-xs">@lang('details.earn')</span>
                     </div>
-                    <div class="w-1/3 p-3">
-                        <h6 class="font-bold font-caps text-base text-black"> {{$user->profile->salary}} <sup>@lang('money.icon')</sup></h6>
-                        <span class="font-normal text-xs">@lang('profile.salary')</span>
-                    </div>
+                      <div class="w-1/3 p-3">
+                          <h6 class="font-bold font-caps text-base text-black">{{$user->ClientCount()}}</h6>
+                          <span class="font-normal text-xs">@lang('details.clients')</span>
+                      </div>
+                      <div class="w-1/3 p-3">
+                          <h6 class="font-bold font-caps text-base text-black"> {{$user->profile->salary}} <sup>@lang('money.icon')</sup></h6>
+                          <span class="font-normal text-xs">@lang('details.salary')</span>
+                      </div>
                 </div>
               </div>
             <div class="p-5 border-t flex items-center justify-center">
@@ -129,9 +134,9 @@
                         ])}}</div>
                     </div>
                     @if ($item->sale_id)    
-                    <div class="text-theme-9 font-normal">+{{round($item->service_price/100 * $item->percent/100, 2)}} <sup>@lang('money.icon')</sup></div>
+                    <div class="text-theme-9 font-normal">+{{number_format($item->service_price * ($item->sale_percent/100)/100,2)}}<sup>@lang('money.icon')</sup></div>
                     @elseif($item->service_id)
-                    <div class="text-theme-9 font-normal">+{{number_format((($item->service->unchanged_service_price * $item->percent/100) + ($item->service->products()->sum('newproductprice') * $item->sale_percent/100))/100, 2)}} <sup>@lang('money.icon')</sup></div>
+                    <div class="text-theme-9 font-normal">+{{number_format( ((($item->service->unchanged_service_price) * $item->percent/100) + ($item->service->productclearprice() * $item->sale_percent/100))/100, 2)}} <sup>@lang('money.icon')</sup></div>
                     
                     @endif
                 </div>

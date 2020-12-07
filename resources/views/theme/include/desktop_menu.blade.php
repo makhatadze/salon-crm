@@ -19,7 +19,7 @@
         </a>
     </li>
        @endif
-        @if (auth()->user()->hasAnyPermission(['see_clients', 'add_clients', 'delete_clients','admin']))
+       @if (auth()->user()->hasAnyPermission(['see_clients', 'add_clients', 'delete_clients','admin']))
         <li id="menuuser">
             <a href="javascript:;" class="side-menu" data-menu="user">
                 <div class="side-menu__icon"> <i data-feather="users"></i> </div>

@@ -18,7 +18,7 @@ class Index extends Component
     public $pricefrom = null;
     public $pricetill = null;
     public $stocktill = null;
-    public $brand = null;
+    public $brand = '';
     public $storage = null;
     public $department = null;
     public $brandarray = array();

@@ -23,7 +23,7 @@ class SalaryToService extends Model implements Auditable
      * @var array
      */
     protected $fillable = [
-        'user_id', 'service_id', 'sale_id', 'sale_percent', 'service_price', 'percent',
+        'user_id', 'service_id', 'sale_id', 'sale_percent', 'service_price', 'percent', 'salary_status',
     ];
     protected $table = 'salary_to_services';
     

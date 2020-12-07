@@ -377,6 +377,7 @@ class ClientController extends Controller
         if ($clientservice->new_price < $willpay) {
             $willpay = $topay;
         }
+        $vouchermoney = 0;
         if ($request->voucher) {
             $voucher = Voucher::where([['code', $request->voucher], ['money', '>', 0], ['status', '=', 1]])->first();
             if ($voucher) {
@@ -388,11 +389,13 @@ class ClientController extends Controller
                         'paid' => $voucher->money,
                     ]);
                     $willpay = $voucher->money;
+                    $vouchermoney = $voucher->money;
                     $voucher->money = 0;
                     $voucher->save();
                 }else if($voucher->money > ($topay - $willpay)){
                     
                     $voucher->money = $voucher->money - ($topay - $willpay);
+                    $vouchermoney = $topay - $willpay;
                     $voucher->VoucherHistory()->create([
                         'description' => __('voucher.paidservice'),
                         'paid' => $topay - $willpay,
@@ -412,7 +415,7 @@ class ClientController extends Controller
             $clientservice->paid = $willpay;
 
             $cashier = Cashier::where('id', 1)->first();
-            $cashier->amout += $clientservice->paid;
+            $cashier->amout += $clientservice->paid - $vouchermoney;
             if ($cashier->save()) {
                 $cashier->paid()->create([
                     'description' => __('paymethod.consignation_on_service') .' ID: '.$clientservice->id,
@@ -426,7 +429,7 @@ class ClientController extends Controller
             $clientservice->pay_method = $paymethod->name_ge;
 
             $cashier = $paymethod->cashier;
-            $cashier->amout += $clientservice->paid;
+            $cashier->amout += $clientservice->paid - $vouchermoney;
             if ($cashier->save()) {
                 $cashier->paid()->create([
                     'description' => __('paymethod.pay_on_service') .' ID: '.$clientservice->id,
@@ -436,6 +439,7 @@ class ClientController extends Controller
         }
         $clientservice->salaryToService()->create([
             'user_id' => $user->id,
+            'salary_status' =>  $clientservice->salary_status,
             'service_id' => $clientservice->id,
             'service_price' => $clientservice->new_price,
             'percent' => $clientservice->user->profile->percent,

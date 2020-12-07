@@ -636,9 +636,9 @@
                     $('#price'+$id).val(data.product['price']/100);
                     if(data.product['unit'] == "gram"){
 
-                        $('#price'+$id).attr('min', (data.product['gramunit']/data.product['buy_price'])/100);
+                    $('#price'+$id).attr('min', (data.product['gramunit']/data.product['buy_price'])/100);
                     }else{
-                        $('#price'+$id).attr('min', data.product['buy_price']/100);
+                    $('#price'+$id).attr('min', data.product['buy_price']/100);
                     }
                     $('#quntity'+$id).attr('max', data.product['stock']);
                     

@@ -51,13 +51,13 @@
                     </sup></h6>
                     <small class="font-normal">@lang('sale.income')</small>
                 <h6 class="font-normal">
-                    @if ((($item->newproductprice - $item->product->buy_price)/100)*$item->productquntity > 0)
+                    @if ((($item->newproductprice - (($item->product->unit == "gram") ? $item->product->buy_price/$item->product->gramunit : $item->product->buy_price))/100)*$item->productquntity > 0)
                         <span class="text-green-700 font-bold">
-                            + {{(($item->newproductprice - $item->product->buy_price)/100)*$item->productquntity}}
+                            + {{(($item->newproductprice - (($item->product->unit == "gram") ? $item->product->buy_price/$item->product->gramunit : $item->product->buy_price))/100)*$item->productquntity}}
                         </span>
                     @else 
                     <span class="text-red-700 font-bold">
-                        {{(($item->newproductprice - $item->product->buy_price)/100)*$item->productquntity}}
+                        {{(($item->newproductprice - (($item->product->unit == "gram") ? $item->product->buy_price/$item->product->gramunit : $item->product->buy_price))/100)*$item->productquntity}}
                     </span>
                     @endif
                     <sup>
@@ -70,7 +70,7 @@
             </div>
             <div class="text-xs">
                 <small class="font-normal">@lang('sale.buyprice')</small>
-                    <h6 class="font-normal">{{$item->product->buy_price/100}}
+                    <h6 class="font-normal">{{(($item->product->unit == "gram") ? $item->product->buy_price/$item->product->gramunit : $item->product->buy_price)/100}}
                         @if ($item->product->currency_type == "gel")
                         @lang('money.icon')
                     @endif </h6>

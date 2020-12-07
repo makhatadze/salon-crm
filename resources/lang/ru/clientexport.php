@@ -22,7 +22,7 @@ return [
     'clientname' => 'Клиента',
     'phone' => 'Телефон',
     'address' => 'Адрес',
-    'price' => 'Цена'
+    'price' => 'Цена',
     'paid' => 'Оплачено'
     
 

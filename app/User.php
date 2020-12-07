@@ -118,10 +118,17 @@ class User extends Authenticatable implements Auditable
     public function getEarnedMoney(){
         
         $money = 0;
-        foreach ($this->SalaryToServices as $service) {
-            $money += ($service->service_price * $service->percent/100)/100;
+        foreach ($this->SalaryToServices()->where('salary_status', 1)->get() as $item) {
+            if ($item->service_id) {
+                if ($item->service->new_price == $item->service->paid) {
+                    $money += ($item->service->unchanged_service_price * $item->percent/100) + ($item->service->productclearprice() * $item->sale_percent/100);
+                }
+            }elseif($item->sale_id){
+                $money += $item->service_price * $item->sale_percent/100; 
+            } 
+
         }
-        return number_format($money, 2); 
+        return number_format($money/100, 2); 
     }
     public function getEarnedThisMoneth()
     {

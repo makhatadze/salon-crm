@@ -17,7 +17,7 @@
                 <a href="{{route('showService', $item->id)}}" target="_blank" class="w-full border-l-2 @if($item->pay_method == 'consignation' && $item->new_price > $item->paid) border-yellow-500 @else border-green-400 @endif mt-2 bg-gray-200 p-2 flex justify-between">
                     <div>
                         <h6 class="font-bold text-xs">
-                            {{$item->service->{"title_".app()->getLocale()} }}
+                            {{$item->service->title_ge }}
                         </h6>
                         <small class="font-normal">{{$item->session_endtime}}</small> <br>
                         @if($item->pay_method == 'consignation' && $item->new_price > $item->paid) <small class="font-normal">@lang('clients.dept')</small> @endif

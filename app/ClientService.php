@@ -60,7 +60,7 @@ class ClientService extends Model implements Auditable
     {
         $money = 0;
         foreach ($this->products as $key => $value) {
-            $money += $value->product->buy_price*$value->productquntity;
+            $money += (($value->product->unit == "gram") ? $value->product->buy_price/$value->product->gramunit : $value->product->buy_price)*$value->productquntity;
         }
         return $money;
     }
@@ -69,7 +69,7 @@ class ClientService extends Model implements Auditable
     {
         $money = 0;
         foreach ($this->products as $key => $value) {
-            $money += ($value->newproductprice-$value->product->buy_price)*$value->productquntity;
+            $money += ($value->newproductprice-(($value->product->unit == "gram") ? $value->product->buy_price/$value->product->gramunit : $value->product->buy_price))*$value->productquntity;
         }
         return $money;
     }
@@ -78,7 +78,7 @@ class ClientService extends Model implements Auditable
     {
         $money = 0;
         foreach ($this->products as $key => $value) {
-            $money += ($value->newproductprice - $value->product->buy_price)*$value->productquntity;
+            $money += ($value->newproductprice - (($value->product->unit == "gram") ? $value->product->buy_price/$value->product->gramunit : $value->product->buy_price))*$value->productquntity;
         }
         return $money;
     }

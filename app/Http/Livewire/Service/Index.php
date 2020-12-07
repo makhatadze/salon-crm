@@ -21,6 +21,11 @@ class Index extends Component
             $serv->delete();
         }
     }
+    public function changeSalaryStatus(Service $serv)
+    {
+        $serv->salary_status = !$serv->salary_status;
+        $serv->save();
+    }
     public function render()
     {
         $services = Service::where('title_ge', 'LIKE', '%'.$this->search.'%')->get();

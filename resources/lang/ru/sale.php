@@ -18,7 +18,7 @@ return [
     'date' => 'Дата',
     'client' => 'Клиент',
     'namenumber' => 'Имя,номер',
-    'employee' 'Цена',
+    'employee' => 'Цена',
     'from' => 'от',
     'till' => 'до',
     'consignation' => 'Консигнация',
