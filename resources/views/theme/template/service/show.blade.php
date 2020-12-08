@@ -40,8 +40,11 @@
         </form>
         @endif
         @foreach ($clientservice->products as $item)
-        <div class="bg-gray-200 p-2 block w-full mt-2 justify-between flex">
-            <div class="text-xs">
+        <div class="bg-gray-200 p-2 block w-full mt-2 ">
+            <span class="p-0.5 text-xs font-normal">{{$item->product->title_ge}}</span>
+            <div class="justify-between flex">
+
+            <div class="text-xs ">
                 <small class="font-normal">@lang('sale.formula')</small>
                 <h6 class="font-normal">{{intval($item->productquntity)}} x {{number_format($item->product->price/100, 2)}} = {{number_format((intval($item->productquntity) * $item->product->price/100), 2)}} 
                     <sup>
@@ -68,6 +71,7 @@
                 </h6>
                     
             </div>
+
             <div class="text-xs">
                 <small class="font-normal">@lang('sale.buyprice')</small>
                     <h6 class="font-normal">{{(($item->product->unit == "gram") ? $item->product->buy_price/$item->product->gramunit : $item->product->buy_price)/100}}
@@ -75,6 +79,8 @@
                         @lang('money.icon')
                     @endif </h6>
             </div>
+                            
+        </div>
         </div>
     @endforeach
     </div>

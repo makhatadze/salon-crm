@@ -34,7 +34,11 @@
             @endif
             @endif
             @foreach ($sale->orders as $item)
-                <div class="bg-gray-200 p-2 block w-full mt-2 justify-between flex">
+                <div class="bg-gray-200 p-2 block w-full mt-2 ">
+                    
+            <span class="p-0.5 text-xs font-normal">{{$item->product->title_ge}}</span>
+                    <div class="justify-between flex">
+
                     <div class="text-xs">
                         <small class="font-normal">@lang('sale.formula')</small>
                         <h6 class="font-normal">{{intval($item->quantity)}} x {{number_format($item->price/100, 2)}} = {{number_format((intval($item->quantity) * $item->price/100), 2)}} 
@@ -69,6 +73,8 @@
                                 @lang('money.icon')
                             @endif </h6>
                     </div>
+                                            
+                </div>
                 </div>
             @endforeach
         </div>

@@ -226,10 +226,10 @@
                                     <div class="modal__content p-10 text-center">
                                         <div class="flex justify-between my-3">
                                             <div class="w-full md:w-1/3 text-left font-bold text-xs px-3 mb-6 md:mb-0">
-                                                <small class="font-normal text-xs">@lang('homepage.name')</small> <br>
-                                                <a href="/clients/edit/{{$item->clinetserviceable->id}}">
-                                                     {{$item->service->title_ge }}
-                                                </a>
+                                                <small class="font-normal text-xs"><a href="/clients/edit/{{$item->clinetserviceable->id}}">
+                                                    {{$item->service->title_ge }}
+                                               </a></small> <br>
+                                                <input type="number" min="0" id="changeprice{{$item->id}}" oninput="setnewprice({{$item->id}})" value="{{number_format($item->new_price/100,2)}}" step="0.01" class="font-normal text-xs w-16">
                                             </div>
                                             <div class="w-full md:w-1/3 text-left font-bold text-xs px-3 mb-6 md:mb-0">
                                                 <small class="font-normal text-xs">@lang('homepage.price')</small> <br>
@@ -270,14 +270,15 @@
                                            <div class="w-full px-3 mb-6 md:mb-0">
                                              <input class="text-xs cursor-pointer font-bold font-caps appearance-none block w-full bg-indigo-500 text-white border rounded py-3 px-4" type="submit" value="@lang('homepage.submit')">
                                            </div>
-                                            <input type="hidden" name="newserviceprice" id="newserviceprice{{$item->id}}" required>
+                                           <input type="hidden" name="newserviceprice" id="newserviceprice{{$item->id}}" required>
+                                        <input type="hidden" id="changepricenew{{$item->id}}" name="changeprice" value="{{$item->new_price/100}}" required>
                                      </div>
                                      
                                      <div class="w-full px-3 mb-6  mt-1 md:mb-0">
                                         <input name="voucher" class="block font-normal text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 text-xs font-normal pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" type="text"  placeholder="@lang('voucher.voucher')">
                                       </div>
                                      <div class="grid grid-cols-2 px-3">
-                                         <span onclick="addNewField({{$item->id}}, {{$item->new_price/100}})" class="col-span-2 focus:outline-none my-2 text-xs bg-indigo-500 p-2 text-white font-medium">
+                                         <span onclick="addNewField({{$item->id}})" class="col-span-2 focus:outline-none my-2 text-xs bg-indigo-500 p-2 text-white font-medium">
                                             @lang('homepage.addproduct')
                                          </span>
                                          <div id="addproducts{{$item->id}}" class="grid grid-cols-2 col-span-2 gap-3">
@@ -575,18 +576,19 @@
     function removeserv($id){
         $('#serv'+$id).remove();
     }
-    function addNewField($id, $servprice){
+    function addNewField($id){
+        
         $randomid= Date.now();
         $html = `<div class="col-span-2 relative grid grid-cols-2  gap-2 bg-gray-200 p-3 mt-2" id="newproduct`+$randomid+`">
                     <span class="absolute top-0 right-0 -mt-2 rounded cursor-pointer -mr-2 bg-red-500 p-1">
-                        <svg onclick="removeNewField('newproduct`+$randomid+`')" width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash2-fill" fill="#fff" xmlns="http://www.w3.org/2000/svg">
+                        <svg onclick="removeNewField('newproduct`+$randomid+`', `+$id+`)" width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash2-fill" fill="#fff" xmlns="http://www.w3.org/2000/svg">
                             <path d="M2.037 3.225l1.684 10.104A2 2 0 0 0 5.694 15h4.612a2 2 0 0 0 1.973-1.671l1.684-10.104C13.627 4.224 11.085 5 8 5c-3.086 0-5.627-.776-5.963-1.775z"/>
                             <path fill-rule="evenodd" d="M12.9 3c-.18-.14-.497-.307-.974-.466C10.967 2.214 9.58 2 8 2s-2.968.215-3.926.534c-.477.16-.795.327-.975.466.18.14.498.307.975.466C5.032 3.786 6.42 4 8 4s2.967-.215 3.926-.534c.477-.16.795-.327.975-.466zM8 5c3.314 0 6-.895 6-2s-2.686-2-6-2-6 .895-6 2 2.686 2 6 2z"/>
                         </svg>
                     </span>
                     <div class="col-span-1">
                         <label for="select`+$randomid+`" class="text-xs font-normal float-left">@lang('homepage.product')</label>
-                        <select name="productnames[]" required onchange="selectproduct(`+$randomid+`, `+$id+`, `+$servprice+`)" id="select`+$randomid+`" class="select2 productselect w-full">
+                        <select name="productnames[]" required onchange="selectproduct(`+$randomid+`, `+$id+`)" id="select`+$randomid+`" class="select2 productselect w-full">
                             <option value=""></option>
                             @foreach($products as $prod)
                                 <option value="{{$prod->id}}">{{$prod->title_ge}}</option>
@@ -599,20 +601,22 @@
                     </div>
                     <div class="col-span-1 mt-2">
                         <label for="quntity`+$randomid+`" class="text-xs font-normal float-left">@lang('homepage.amout')</label>
-                        <input required type="number" name="productquntity[]" oninput="setnewprice(`+$id+`, `+$servprice+`)"  id="quntity`+$randomid+`" value="0" step="0.1" min="0" class="w-full p-2 rounded">
+                        <input required type="number" name="productquntity[]" oninput="setnewprice(`+$id+`)"  id="quntity`+$randomid+`" value="0" step="0.1" min="0" class="w-full p-2 rounded">
                     </div>
                     <div class="col-span-1 mt-2">
                         <label for="price`+$randomid+`" class="text-xs font-normal float-left">@lang('homepage.price')</label>
-                        <input required type="number" name="newproductprice[]" oninput="setnewprice(`+$id+`, `+$servprice+`)" id="price`+$randomid+`" value="0" step="0.01" min="0" class="w-full p-2 rounded">
+                        <input required type="number" name="newproductprice[]" oninput="setnewprice(`+$id+`)" id="price`+$randomid+`" value="0" step="0.01" min="0" class="w-full p-2 rounded">
                     </div>
                 </div>`;
         $('#addproducts'+$id).append($html);
         $('#select'+$randomid).select2();
     }
-    function removeNewField($id){
+    function removeNewField($id, $main){
         $('#'+$id).remove();
+        
+        setnewprice($main);
     }
-    function selectproduct($id, $main, $servprice){
+    function selectproduct($id, $main){
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -642,13 +646,15 @@
                     }
                     $('#quntity'+$id).attr('max', data.product['stock']);
                     
-                     setnewprice($main, $servprice);
+                    setnewprice($main);
                 }
             } 
         });
     }
     
-    function setnewprice($id, $servprice){
+    function setnewprice($id){
+        $servprice = $('#changeprice'+$id).val();
+        $('#changepricenew'+$id).val($servprice);
         var price = $("input[name='newproductprice[]']")
               .map(function(){return $(this).val();}).get();
         var quantity = $("input[name='productquntity[]']")
@@ -658,7 +664,7 @@
             money += val * quantity[i];
         });
         $('#newserviceprice'+$id).val(money);
-        money = money + $servprice;
+        money = +$servprice + +money;
         $('#serviceprice'+$id).html(money);
         $('#consignationmax'+$id).attr('max', money);
     }

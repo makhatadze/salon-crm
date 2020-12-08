@@ -80,7 +80,7 @@ class Finances extends Component
             $this->totalclearearn = 0;
             $this->totalearn = 0;
             $this->totalsalary = 0;
-            foreach (SalaryToService::all() as $item) {
+            foreach (SalaryToService::where('salary_status', 1)->get() as $item) {
                 if ($item->service_id) {
                     $this->totalsalary += ($item->service->unchanged_service_price * $item->percent/100) + ($item->service->productclearprice() * $item->sale_percent/100);
                 }else{

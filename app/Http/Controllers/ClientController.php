@@ -324,6 +324,7 @@ class ClientController extends Controller
         $this->validate($request, [
             'pay_id' => 'required|integer',
             'pay_method' => 'required',
+            'changeprice' => '',
             'paid' => '',
             'voucher' => ''
         ]);
@@ -338,7 +339,7 @@ class ClientController extends Controller
         // Check Client Service
         $id = $request->pay_id;
         $clientservice = ClientService::where('status', false)->findOrFail($id);
-
+        $clientservice->new_price = intval(($request->input('changeprice') ?? 0) * 100);
         // Service Products
         $json = array();
         if ($request->input('productnames') && $request->input('productquntity') && $request->input('newproductprice')) {
@@ -439,7 +440,7 @@ class ClientController extends Controller
         }
         $clientservice->salaryToService()->create([
             'user_id' => $user->id,
-            'salary_status' =>  $clientservice->salary_status,
+            'salary_status' =>  $clientservice->service->salary_status,
             'service_id' => $clientservice->id,
             'service_price' => $clientservice->new_price,
             'percent' => $clientservice->user->profile->percent,

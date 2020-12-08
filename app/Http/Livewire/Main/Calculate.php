@@ -45,7 +45,7 @@ class Calculate extends Component
                 $salaryservices = $salaryservices->whereMonth('created_at', Carbon::now()->isoFormat('MM'));
             }
         }
-        $salaryservices = $salaryservices->get();
+        $salaryservices = $salaryservices->where('salary_status', 1)->get();
         foreach ($salaryservices as $item) {
             $totalsalary += $item->service_price * $item->percent/100;
         }
