@@ -395,10 +395,15 @@ class ProductController extends Controller
                 }
                 
             }
+            $salarystatus = 1;
+            if (isset($request->notaddonsalary)) {
+                $salarystatus = 0;
+            }
         SalaryToService::create([
             'user_id' => Auth::user()->id,
             'sale_id' => $sale->id,
             'service_price' => $total,
+            'salary_status' => $salarystatus,
             'percent' => 0,
             'sale_percent' => auth()->user()->profile->percent_from_sales ?? 0
         ]);

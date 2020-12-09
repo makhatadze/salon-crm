@@ -97,7 +97,7 @@
                 @endif
               </div>
               <div class="col-span-1 flex items-center justify-center">
-                @if ($item->sale)
+                @if ($item->sale && $item->sale->SalaryToService->salary_status == 1)
                 <span>{{$item->sale_percent}}% =</span> <h6 class="ml-1 text-xs font-bold text-gray-700"> {{number_format($item->service_price * ($item->sale_percent/100)/100,2)}}</h6>
                 @elseif ($item->service && $item->service->SalaryToService->salary_status == 1)
                 <div>
