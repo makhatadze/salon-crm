@@ -162,6 +162,12 @@
                                             </label>
                                             <input class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="paied" name="paid" type="number" min="0" max="{{$cartsum/100}}" step="0.01" placeholder="@lang('newsale.paid')">
                                           </div>
+                                          <div class="flex items-center p-3">
+                                              <input type="checkbox" name="notaddonsalary" id="notaddonsalary">
+                                              <label for="notaddonsalary" class="ml-2 font-normal text-xs">
+                                                  ხელფასს <strong>არ</strong> დაემატოს
+                                              </label>
+                                          </div>
                                       <div class="flex mt-3 w-full text-center px-2">
                                         <div class="w-full md:w-1/2 px-1">
                                             <input class="appearance-none block w-full bg-indigo-500 text-white font-bold font-caps border rounded py-3 px-4 mb-3 leading-tight " style="font-size:0.7rem" value="@lang('newsale.submit')" type="submit" >

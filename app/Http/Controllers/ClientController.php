@@ -219,7 +219,7 @@ class ClientController extends Controller
             Storage::disk('public')->put("clientimg/".$imagename, (string) $img->encode());
 
             if($client->image){
-                Storage::delete('public/clientimg/'.$client->image->name);
+                Storage::delete('public/storage/clientimg/'.$client->image->name);
                 $firstimg = $client->image;
                 $firstimg->name = $imagename;
                 $firstimg->save();

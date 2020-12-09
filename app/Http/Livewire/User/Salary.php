@@ -49,8 +49,8 @@ class Salary extends Component
         if ($this->salaryperiod == "today") {
             $this->userearn = 0;
             foreach ($this->user->SalaryToServices()->where('salary_status', 1)
-                    ->whereDate('updated_at', Carbon::today())
-                    ->get() as $item) {
+            ->whereDate('updated_at', Carbon::today())
+            ->get() as $item) {
                     if ($item->service_id) {
                         if ($item->service->new_price == $item->service->paid) {
                             $this->userearn += ($item->service->unchanged_service_price * $item->percent/100) + ($item->service->productclearprice() * $item->sale_percent/100);

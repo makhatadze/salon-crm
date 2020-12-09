@@ -52,6 +52,11 @@ use SoftDeletes, \OwenIt\Auditing\Auditable;
         }
         return number_format($money/100, 2);
     }
+    
+    public function SalaryToService()
+    {
+        return $this->hasOne('App\SalaryToService', 'sale_id');
+    }
     protected $casts = [
         'total' => 'integer',
         'paid' => 'integer',
