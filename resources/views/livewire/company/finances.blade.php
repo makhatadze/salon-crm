@@ -1,7 +1,7 @@
 <div>
     <div class="grid grid-cols-12 gap-6 p-3 mt-3">
         <div class="col-span-12 xxl:col-span-9 grid grid-cols-10">
-            <div class="col-span-10 grid grid-cols-10 font-normal text-xs bg-white p-3">
+            <div class="col-span-10 grid grid-cols-3  lg:grid-cols-10 font-normal text-xs bg-white p-3">
                 <div class="col-span-1  flex items-center justify-center">
                   @lang('finance.date')
                 </div>

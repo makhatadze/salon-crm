@@ -1,6 +1,6 @@
 <div>
     <div class="grid grid-cols-12 gap-6 mt-5">
-        <div class="col-span-12 md:col-span-3">
+        <div class="col-span-12 lg:col-span-4">
             <div class="bg-gray-300 w-full text-center font-bolder text-xs py-2 px-3 font-caps">
                @lang('voucher.createvoucher')
             </div>

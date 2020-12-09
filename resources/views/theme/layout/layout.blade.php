@@ -17,7 +17,7 @@
 </head>
 
 <body class="app py-0" style="background: radial-gradient(circle, rgb(0 59 124) 0%, rgb(145 109 168) 100%)">
-<div class="flex">
+<div class="flex" id="app-wrap">
     @include('theme.include.mobile_menu')
     @include('theme.include.desktop_menu')
     <div class="content overflow-auto" style="background-color: #f1f5f8">
@@ -52,9 +52,10 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="{{ url('theme/js/app.js') }}"></script>
 <script src="{{ url('js/app.js') }}"></script>
+<script src="{{ asset('../js/responsive.js') }}"></script>
 <script src="https://unpkg.com/swiper/swiper-bundle.js"></script>
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 @yield('custom_scripts')
-</body>
+</body> 
 
 </html>

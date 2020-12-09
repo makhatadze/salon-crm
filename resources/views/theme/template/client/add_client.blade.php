@@ -21,7 +21,7 @@
                     <input required type="text" autocomplete="off" name="client_name_ge" id="client_name_ge"  class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="@lang('createclient.imia')">
                 </div>
                </div>
-               <div class="flex">
+               <div class="flex flex-wrap">
                 <div class="w-full md:w-1/4 p-2">
                     <label class="font-bold font-caps text-xs text-gray-700">@lang('createclient.phone') <span class="text-red-500">*</span></label>
                     <input required type="text" minlength="9" maxlength="9" step="1" onkeyup="this.value = this.value.replace(/[^0-9\.]/g, '');" name="client_number" id="client_number" class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="@lang('createclient.c_phone')">
@@ -48,7 +48,7 @@
                         </div>
                       </div>
                </div>
-               <div class="flex">
+               <div class="flex flex-wrap">
                 <div class="w-full md:w-1/3 p-2">
                     <label class="font-bold font-caps text-xs text-gray-700">@lang('createclient.group') </label>
                         <div class="relative">
@@ -74,7 +74,7 @@
                     </p>
                 </div>
                </div>
-               <div class="flex">
+               <div class="flex flex-wrap">
                 <div class="w-full md:w-1/2 p-2">
                     <label class="font-bold font-caps text-xs text-gray-700">@lang('createclient.p_number')</label>
                     <input type="text" name="personal_number" id="personal_number" class="font-normal text-xs appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" placeholder="xxxxxxxxxxxxxxxxx">

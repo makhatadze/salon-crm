@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="grid grid-cols-12 gap-6 mt-5">
-<div class=" col-span-12 lg:col-span-6">
+<div class=" col-span-12 lg:col-span-8">
 <form action="{{route('UpdatePurchase', $purchase->id)}}" method="post">
        @csrf
        @method('PUT')
@@ -10,7 +10,7 @@
 
 
        <div class="grid grid-cols-4 w-full">
-        <div class="col-span-1 p-2">
+        <div class="col-span-4 xl:col-span-1 p-2">
             <label class="font-bold font-caps text-xs text-gray-700">@lang('addpurchase.purchasetype')</label>
             <div class="mt-2">
                 <select required id="purchasetype" data-placeholder="აირჩიეთ შეტყიდვის ტიპი" name="purchase_type" class="font-helvetica select2 w-full" >
@@ -20,15 +20,15 @@
                 </select>
             </div>
         </div>
-      <div class="col-span-1 p-2" id="overhead_number"  style="{{($purchase->purchase_type == "purchase") ? 'display: none' : ''}}" >
+      <div class="col-span-4 xl:col-span-1 p-2" id="overhead_number"  style="{{($purchase->purchase_type == "purchase") ? 'display: none' : ''}}" >
             <label class="font-bold font-caps text-xs text-gray-700">@lang('addpurchase.zednadebi')</label>
             <input  type="text"   autocomplete="off" value="{{$purchase->overhead_number}}"  class="input w-full border mt-2" name="overhead_number">
         </div>
-        <div class="col-span-1 p-2" id="purchase_number" style="{{($purchase->purchase_type == "overhead") ? 'display: none' : ''}}" >
+        <div class="col-span-4 xl:col-span-1 p-2" id="purchase_number" style="{{($purchase->purchase_type == "overhead") ? 'display: none' : ''}}" >
             <label class="font-bold font-caps text-xs text-gray-700">@lang('addpurchase.nasyidoba')</label>
             <input  type="text"  autocomplete="off"  value="{{$purchase->purchase_number}}" class="input w-full border mt-2" name="purchases_number">
         </div>
-        <div class="col-span-1 p-2" >
+        <div class="col-span-4 xl:col-span-1 p-2" >
             <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="distributor_id">
               @lang('addpurchase.dist')
             </label>

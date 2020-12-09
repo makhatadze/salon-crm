@@ -1,10 +1,16 @@
+
 <nav class="side-nav">
-    <a href="" class="intro-x flex items-center pl-5 pt-4">
+    <a href="" class="home-p intro-x flex items-center pl-5 pt-4">
         <img alt="Midone Tailwind HTML Admin Template" class="w-6" src="{{ url('theme/images/logo.svg') }}">
-        <span class="hidden xl:block text-white text-lg ml-3"> CRM<span class="font-medium"> DIMOND</span> </span>
+        <span class="brand-n hidden xl:block text-white text-lg ml-3"> CRM<span class="font-medium"> DIMOND</span> </span>
     </a>
     <div class="side-nav__devider my-6"></div>
-    <ul>
+
+    <button id="nav-menu-btn">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bar-chart-2 w-8 h-8 text-white transform -rotate-90"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+    </button>
+
+    <ul id="navigation-sm">
         <li >
             <a href="/" class="side-menu side-menu--active" data-menu="home">
                 <div class="side-menu__icon"> <i data-feather="home"></i> </div>

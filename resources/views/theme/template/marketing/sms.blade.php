@@ -2,7 +2,7 @@
 
 @section('content')
 
-<div class="mx-auto mt-3" style="width: 40%">
+<div class="mx-auto mt-3" style="max-width: 600px">
     <div class="bg-orange-700">
 
     </div>

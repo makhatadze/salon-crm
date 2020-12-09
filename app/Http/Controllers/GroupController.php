@@ -32,6 +32,9 @@ class GroupController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'groupname' => 'required'
+        ]);
         MemberGroup::create([
             'name' => $request->groupname
         ]);

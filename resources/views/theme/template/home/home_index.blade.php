@@ -12,7 +12,7 @@
             <div class="swiper-container col-span-12 grid grid-cols-12">
                 <div class="swiper-wrapper col-span-12 grid grid-cols-1">
             @foreach ($users as $user)
-            <div class="swiper-slide col-span-1  bg-gray-200" style="background-color: #f1f5f8 !important;">
+            <div class="coworker swiper-slide col-span-1  bg-gray-200" style="background-color: #f1f5f8 !important;">
                 <div class="w-full p-2 text-xs">
                     <div class="box p-4">
                         <div class="border-b py-2">

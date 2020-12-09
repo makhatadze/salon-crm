@@ -1,8 +1,8 @@
 @extends('theme.layout.layout')
 
 @section('content')
-<div class="grid grid-cols-12 mt-3">
-    <div class="col-span-3 grid grid-cols-1">
+<div class="grid grid-cols-12 gap-2 mt-3">
+    <div class="col-span-12 lg:col-span-3 grid grid-cols-1">
         <div class="py-3 col-span-1 px-4 bg-white">
             <form action="{{route('addGroup')}}" method="POST">
                 @csrf
@@ -16,7 +16,7 @@
             </form>
         </div>
     </div>
-    <div class="col-span-3 grid grid-cols-1 px-4">
+    <div class="col-span-12 lg:col-span-3 grid grid-cols-1 ">
         @if ($groups)
                 @foreach ($groups as $group)
                     <div class="py-3 flex items-center justify-between col-span-1 px-4 bg-white" style="height: max-content" x-data="{modal: false}">

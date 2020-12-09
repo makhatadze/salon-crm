@@ -1,6 +1,7 @@
 <div>
-    <div class="grid grid-cols-4 mt-3">
-        <div class="col-span-1 px-4">
+    <div class="grid gap-4  grid-cols-1  md:grid-cols-2 xl:grid-cols-4  mt-3">
+        
+        <div class="col-span-1  ">
             <div class="bg-white p-3">
                 <div class="flex items-center justify-between">
                     <a target="_blank" href="/purchases" class="font-bolder font-caps text-xs" style="color: #173858">@lang('finance.purchase')</a>
@@ -40,7 +41,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-span-1 px-4">
+        <div class="col-span-1 ">
             <div class="bg-white p-3">
                 <div class="flex items-center justify-between">
                     <a target="_blank" href="/products" class="font-bolder font-caps text-xs" style="color: #173858">@lang('finance.product')</a>
@@ -80,7 +81,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-span-1 px-4">
+        <div class="col-span-1">
             <div class="bg-white p-3">
                 <div class="flex items-center justify-between">
                     <a target="_blank" href="/clients" class="font-bolder font-caps text-xs" style="color: #173858">@lang('finance.service')</a>
@@ -120,7 +121,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-span-1 px-4">
+        <div class="col-span-1 ">
             <div class="bg-white p-3">
                 <div class="flex items-center justify-between">
                     <a target="_blank" href="/clients" class="font-bolder font-caps text-xs" style="color: #173858">@lang('finance.clients')</a>

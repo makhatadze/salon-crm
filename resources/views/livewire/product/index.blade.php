@@ -1,13 +1,13 @@
 <div>
-    <div class="flex items-center">
-        <div class="w-full bg-white flex items-center p-5 mr-2">
+    <div class="grid grid-cols-12 gap-2 items-center">
+        <div class="col-span-12 sm:col-span-9  bg-white flex items-center p-5 ">
           <input type="text" wire:model="name" autofocus class="w-full font-normal text-xs focus:outline-none" placeholder="@lang('product.search')">
-        <svg width="1.18em" height="1.18em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-          <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
-          <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
-        </svg>
+          <svg width="1.18em" height="1.18em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
+            <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
+          </svg>
         </div>
-        <div class="w-64 bg-white ml-2 p-2">
+        <div class="col-span-12 sm:col-span-3  bg-white  p-2">
           <span class="font-bolder font-caps text-xs">@lang('product.storage')</span>
           <select wire:model="storage" class="w-full focus:outline-none font-normal text-xs">
             <option value="">@lang('product.choose')</option>
@@ -17,20 +17,20 @@
           </select>
         </div>
       </div>
-      <div class="flex mt-2">
-          <div class="bg-white w-1/2 p-2">
+      <div class="grid grid-cols-10 gap-2 mt-2">
+          <div class="bg-white col-span-12 lg:col-span-2 p-2">
             <span class="font-bolder font-caps text-xs">@lang('product.price')</span> <small class="font-normal text-gray-600"> [@lang('product.from')]</small>
             <input wire:model="pricefrom" type="number" step="0.01" min="0" class="font-normal w-full text-xs focus:outline-none" placeholder="00.00">
           </div>
-          <div class="w-1/2 bg-white ml-2 p-2">
+          <div class="col-span-12 lg:col-span-2 bg-white  p-2">
             <span  class="font-bolder font-caps text-xs">@lang('product.price')</span> <small class="font-normal text-gray-600"> [@lang('product.till')]</small>
             <input type="number" wire:model="pricetill" step="0.01" min="0" class="font-normal w-full text-xs focus:outline-none" placeholder="00.00">
           </div>
-          <div class="bg-white w-1/2 p-2 ml-2">
+          <div class="bg-white col-span-12 lg:col-span-2 p-2 ">
             <span  class="font-bolder font-caps text-xs">@lang('product.quantity')</span> <small class="font-normal text-gray-600"> [@lang('product.till')]</small>
             <input wire:model="stocktill" type="number" step="1" min="0" class="font-normal w-full text-xs focus:outline-none" placeholder="XXXX">
           </div>
-          <div class="w-1/2 bg-white ml-2 p-2">
+          <div class="col-span-12 lg:col-span-2 bg-white  p-2">
             <span class="font-bolder font-caps text-xs">@lang('product.brand')</span>
             <select wire:model="brand" class="w-full focus:outline-none font-normal text-xs">
               <option value="">@lang('product.choose')</option>
@@ -39,7 +39,7 @@
               @endforeach
             </select>
           </div>
-          <div class="w-1/2 bg-white ml-2 p-2">
+          <div class="col-span-12 lg:col-span-2 bg-white  p-2">
             <span class="font-bolder font-caps text-xs">@lang('product.department')</span>
             <select wire:model="department" class="w-full focus:outline-none font-normal text-xs">
               <option value="">@lang('product.choose')</option>
@@ -50,30 +50,30 @@
           </div>
       </div>
   
-      <div class="grid font-medium text-xs grid-cols-12 bg-white p-3 block shadow-sm w-full mt-3">
-        <div class="col-span-2">
+      <div class="grid font-medium text-xs grid-cols-12 gap-2 bg-white p-3 block shadow-sm w-full mt-3">
+        <div class="col-span-6 md:col-span-2">
           @lang('product.images')
         </div>
-        <div class="col-span-2">
+        <div class="col-span-6 md:col-span-2">
           @lang('product.name')
         </div>
-        <div class="col-span-2">
+        <div class="col-span-6 md:col-span-2">
           @lang('product.brand')
         </div>
-        <div class="col-span-2">
+        <div class="col-span-6 md:col-span-2">
           @lang('product.quantity')
         </div>
-        <div class="col-span-2">
+        <div class="col-span-6 md:col-span-2">
           @lang('product.price')
         </div>
-        <div class="col-span-2">
+        <div class="col-span-6 md:col-span-2">
           @lang('product.functions')
         </div>
       </div>
       @if ($products)
       @foreach ($products as $item)
       <div class="grid grid-cols-6  items-center @if($item->stock <= 1 && $item->type != 1) bg-red-500 @else bg-white @endif @if($item->type == 1) border-l-4 border-orange-300 @endif p-3 block shadow-sm w-full mt-3">
-        <div class="col-span-2 md:col-span-1 flex">
+        <div class="col-span-6 md:col-span-2 lg:col-span-1 flex">
           @foreach ($item->images as $key => $img)
             <img src="{{asset('../storage/productimage/'.$img->name)}}" class="w-8 h-8 object-cover rounded-full shadow -ml-1">
             @if ($key == 3)
@@ -81,16 +81,16 @@
             @endif
           @endforeach
         </div>
-        <div class="col-span-2 md:col-span-1">
+        <div class="col-span-6 md:col-span-2 lg:col-span-1">
           <h6 class="font-medium text-black text-xs">
             {{$item->title_ge }}
           </h6>
         </div>
-        <div class="col-span-2 md:col-span-1 font-bolder font-caps  text-xs">
+        <div class="col-span-6 md:col-span-2 lg:col-span-1 font-bolder font-caps  text-xs">
           <h6 class="uppercase">{{$item->brand->name}}</h6>
           <small class="font-normal">{{$item->storage->name}}</small>
         </div>
-        <div class="col-span-2 md:col-span-1 font-normal text-xs">
+        <div class="col-span-6 md:col-span-2 lg:col-span-1 font-normal text-xs">
           {{$item->stock}} 
           @if($item->unit == "unit")
           @lang('product.unit')
@@ -103,7 +103,7 @@
               <small>1 @lang('product.unit') = {{$item->gramunit}} @lang('product.gram')</small>
           @endif
         </div>
-        <div class="col-span-1 md:col-span-2 lg:col-span-1 font-normal text-xs">
+        <div class="col-span-6 md:col-span-2 lg:col-span-1 lg:col-span-1 font-normal text-xs">
           <h6>{{$item->price/100}}
             @if ($item->currency_type == 'gel')
             @lang('money.icon')
@@ -116,7 +116,7 @@
             @endif</small>
           @endif
         </div>
-        <div x-data="{modal: false}" class="col-span-2 md:col-span-1">
+        <div x-data="{modal: false}" class="col-span-6 md:col-span-2 lg:col-span-1">
           <div class="flex items-center">
             @php
                 $randomKey = rand(1, 999999).$item->id;

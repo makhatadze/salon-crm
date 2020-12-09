@@ -14,8 +14,8 @@
                </div>
         </div>
     </div>
-    <div class="col-span-12 xxl:col-span-9 grid grid-cols-12 gap-6">
-    <table class="table table-report -mt-2 col-span-12">
+    <div class="col-span-12 xxl:col-span-9 grid grid-cols-12 gap-6 scroll-horizontal">
+    <table  class="table table-report -mt-2 col-span-12  purchase-min-w">
         <thead>
             <tr>
                 <th class="whitespace-no-wrap font-bold font-caps text-gray-700 text-xs">@lang('purchase.number')</th>

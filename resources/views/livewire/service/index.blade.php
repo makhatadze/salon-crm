@@ -1,5 +1,7 @@
 <div>
-  <div class="mx-auto grid grid-cols-1 mt-4" style="width: 50%">
+  <div class="mx-auto grid grid-cols-1 mt-4" style="max-width: 620px">
+
+
       <div class="flex w-full items-center bg-white py-3 px-4">
           <input wire:model="search" type="text" class="w-full focus:outline-none font-normal text-xs" placeholder="@lang('service.search')">
           <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -13,23 +15,22 @@
           </a>
       </div>
       @foreach ($services as $item)
-      <div class="w-full col-span-1 flex mt-2 bg-white py-2 px-3">
-          <div class="w-1/4 ">
+      <div class="w-full flex-wrap col-span-1 flex mt-2 bg-white py-2 px-3">
+          <div class="w-1/2  md:w-1/4 ">
               <h6 class="font-bold text-xs text-gray-700">{{$item->title_ge}}</h6>
               <span class="text-xs font-normal">{{$item->duration_count}} @lang('service.minute')</span>
           </div>
-          <div class="w-1/4  flex items-center">
+          <div class="w-1/2  md:w-1/4  flex items-center">
               @if ($item->image)
                   <img src="{{asset('../storage/serviceimg/'.$item->image->name)}}" class="w-10 h-10 object-cover rounded">
               @endif
+              <span>img</span>
           </div>
-          <div class="w-1/4 flex items-center text-xs font-bold text-gray-700">
-              <div>
+          <div class="w-1/2 mt-5 sm:mt-0  md:w-1/4 flex items-center text-xs font-bold text-gray-700">
+              <div class="mr-4">
                   <h6>{{$item->price/100}} <sup> @lang('money.icon')</sup></h6> 
                   <small class="font-normal">@lang('service.price')</small>
               </div>
-          </div>
-          <div class="w-1/4 flex items-center justify-end">
               <button wire:click="changeStatus({{$item->id}})" class="p-2 focus:outline-none mr-2 bg-gray-200 rounded flex items-center font-normal text-xs">
                   <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi mr-1 bi-circle-fill"  fill="@if ($item->published == 1) #54ab89 @else #e35f5f @endif"  xmlns="http://www.w3.org/2000/svg">
                       <circle cx="8" cy="8" r="8"/>
@@ -40,6 +41,9 @@
                       @lang('service.off')
                     @endif
               </button>
+          </div>
+          <div class="w-1/2 mt-5 sm:mt-0  md:w-1/4 flex items-center justify-end">
+              
               <a href="{{route('oneserviceExport', $item->id)}}" class="p-2 mr-2 bg-gray-200 rounded">
                   <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-file-arrow-down-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                       <path fill-rule="evenodd" d="M12 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM8 5a.5.5 0 0 1 .5.5v3.793l1.146-1.147a.5.5 0 0 1 .708.708l-2 2a.5.5 0 0 1-.708 0l-2-2a.5.5 0 1 1 .708-.708L7.5 9.293V5.5A.5.5 0 0 1 8 5z"/>
@@ -93,7 +97,9 @@
                         </span>
                       </div>
                   </x-modal>
+                  
               @endif
+              
                 <span wire:click="changeSalaryStatus({{$item->id}})" class="bg-gray-200 cursor-pointer ml-2 rounded-md p-2">
                 @if ($item->salary_status)
                 <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-credit-card-2-front-fill" fill="#53a686" xmlns="http://www.w3.org/2000/svg">
@@ -108,7 +114,13 @@
             </div>
               
           </div>
+          
       @endforeach
-    </div>
+      </div>
+                    
+
+
   </div>
+
+  
 </div>

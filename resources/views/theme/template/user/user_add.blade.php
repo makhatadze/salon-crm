@@ -137,7 +137,7 @@
                         </div>
                         
                     </div>
-                    <div class=" flex justify-between items-center gap-2 mb-4 font-normal text-xs text-center">
+                    <div class=" flex flex-wrap justify-between items-center gap-2 mb-4 font-normal text-xs text-center">
                         <div class="relative mt-2 flex items-center  justify-content">
                             <input type="checkbox" name="showuser" class="mr-2" id="showschedule" checked> 
                             <label for="showschedule" class="cursor-pointer">@lang('adduser.showuser')</label>
@@ -167,12 +167,12 @@
                                </div>
                         </div>
                     </div>
-                    <div class="sm:grid grid-cols-2 gap-2">
-                        <div class="w-1/2 p-2 {{ $errors->has('files') ? ' has-error' : '' }}">
+                    <div class="flex flex-wrap gap-2 w-full">
+                        <div class=" p-2 {{ $errors->has('files') ? ' has-error' : '' }}">
                             {{ Form::label('image', __('adduser.image'), ['class' => 'font-helvetica']) }}
                             <div class="border-2 border-dashed rounded-md mt-2 pt-1">
                                 <div class="relative mt-1">
-                                    <div class="px-4 pb-2 flex items-center cursor-pointer relative">
+                                    <div class="px-4 pb-2 flex flex-wrap items-center cursor-pointer relative">
                                         <span class="text-theme-1 mr-1">@lang('adduser.uploadfile')</span>
                                         {!! Form::file('image',['class' => 'appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500', 'id' => 'files', 'name' =>'files']) !!}
                                     </div>

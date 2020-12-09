@@ -1,15 +1,15 @@
 <div>
     
 <div class=" bg-white mt-5">
-    <div class="px-5 sm:px-16 py-10 sm:py-20">
+    <div class="px-1 sm:px-16 py-10 sm:py-20">
     <div class=" grid grid-cols-12">
     <div class="px-3 col-span-12">
         <input type="text" name="title" wire:model="search" class="w-full bg-gray-200 p-2 col-span-12 font-normal text-xs" placeholder="მოძებნეთ დისტრიბუტორი..">
     </div>
     @if ($distcompanies)
     @foreach ($distcompanies as $company)
-    <div class="col-span-4 p-2">
-        <div class="bg-gray-200 border-t-4 @if($company->dept()) border-red-400 @endif p-4 rounded-md">
+    <div class="col-span-12  lg:col-span-6  xl:col-span-4  p-2 ">
+        <div class="bg-gray-200 border-t-4 @if($company->dept()) border-red-400 @endif p-2 md:p-4 rounded-md">
             <div  class="mb-2 flex justify-between items-center">
                     <a href="/companies/dist/edit/{{$company->id}}">
                         <img src="{{asset('../img/delivery-truck.svg')}}" class="w-8 h-8 object-contain">

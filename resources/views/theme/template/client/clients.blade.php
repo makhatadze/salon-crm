@@ -2,10 +2,10 @@
 
 @section('content')
 <div class="grid grid-cols-12">
-    <div class="col-span-9 px-2">
+    <div class="scroll-horizontal col-span-12 lg:col-span-9 px-2">
         @if ($clients)
         @foreach ($clients as $client)
-        <div class="grid @if($client->hasConsignation()) border-l-4 border-orange-400 @endif grid-cols-5 bg-white p-3 col-span-12  mt-5">
+        <div class="min-w-scroll grid @if($client->hasConsignation()) border-l-4 border-orange-400 @endif grid-cols-5 bg-white p-3 col-span-12  mt-5">
             <div class="col-span-1 flex items-center">
                 <div class="flex">
                     @if ($client->image)
@@ -129,7 +129,7 @@
           {{$clients->links()}}
         @endif
     </div>
-    <div class="col-span-3 grid grid-cols-1">
+    <div class="col-span-12 lg:col-span-3 grid grid-cols-1">
         <form action="" class="col-span-1">
             <div class="bg-white p-2 mt-5">
                 <div class="grid grid-cols-1 md:grid-cols-2 ">
