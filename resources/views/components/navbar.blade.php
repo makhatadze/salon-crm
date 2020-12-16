@@ -19,8 +19,8 @@
                 @endif
             </div>
             <div class="dropdown-box mt-10 absolute w-56 top-0 right-0 z-20">
-                <div class="dropdown-box__content box bg-theme-38 text-white">
-                    <div class="p-4 border-b border-theme-40">
+                <div class="dropdown-box__content profile__dd box bg-theme-38 text-white">
+                    <div class="p-4 border-b border-theme-40 border-bot-profile">
                         @if(Auth()->user()->profile)
                             <div class="font-medium">{{Auth()->user()->profile->first_name}} {{Auth()->user()->profile->last_name}}</div>
                         @else
@@ -67,7 +67,7 @@
                             </svg>
                             Help </a>
                     </div>
-                    <div class="p-2 border-t border-theme-40">
+                    <div class="p-2 border-t border-theme-40 border-top-profile">
                         <a href="/logout"
                            class="flex items-center block p-2 transition duration-300 ease-in-out hover:bg-theme-1 rounded-md">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
