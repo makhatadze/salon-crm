@@ -72,13 +72,14 @@ class Warehouse extends Component
     public function render()
     {
         $products = Product::where([
-            ['warehouse', true], 
-            ['title_ge', 'LIKE', '%'.$this->name.'%'], 
-            ['unit', 'LIKE', '%'.$this->unit.'%'], 
-            ['stock', '<=', floatval($this->amout)], 
-            ['storage_id', 'like', '%'.$this->storage.'%'],
+            ['warehouse', true],
+            ['title_ge', 'LIKE', '%' . $this->name . '%'],
+            ['unit', 'LIKE', '%' . $this->unit . '%'],
+            ['stock', '<=', floatval($this->amout)],
+            ['storage_id', 'like', '%' . $this->storage . '%'],
             ['writedown', true]])
-            ->whereBetween('buy_price', [$this->pricefrom*100 != "" ? $this->pricefrom*100 : 1, $this->pricetill != "" ? $this->pricetill*100 : 1])
+            ->whereBetween('buy_price', [$this->pricefrom * 100 != "" ? $this->pricefrom * 100 : 1, $this->pricetill != "" ? $this->pricetill * 100 : 1])
+            ->orderBy('updated_at', 'DESC')
             ->paginate(15);
             $departments = Department::all();
             $storages = Storage::all();
