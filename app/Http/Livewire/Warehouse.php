@@ -7,12 +7,14 @@ use App\Department;
 use App\Storage;
 use App\User;
 
+use Carbon\Carbon;
 use Livewire\Component;
 use Livewire\WithPagination;
 
 class Warehouse extends Component
 {
     use WithPagination;
+
     //Filter
     public $name;
     public $storage;
@@ -20,6 +22,8 @@ class Warehouse extends Component
     public $pricetill;
     public $amout;
     public $unit;
+    public $datefrom;
+    public $datetill;
     //Update ID
     public $typeamout;
     public $error;
@@ -28,14 +32,17 @@ class Warehouse extends Component
     public $isUnit = false;
     public $updateId;
     public $modalState = false;
-    
+
     public $storagename;
     
     //Initialize
-    public function mount(){
-        $this->pricefrom = Product::min('buy_price')/100;
-        $this->pricetill = Product::max('buy_price')/100;
+    public function mount()
+    {
+        $this->pricefrom = Product::min('buy_price') / 100;
+        $this->pricetill = Product::max('buy_price') / 100;
         $this->amout = Product::max('stock');
+        $this->datefrom = Carbon::parse(Product::min('created_at'))->isoFormat('Y-MM-DD');
+        $this->datetill = Carbon::parse(Product::max('created_at'))->isoFormat('Y-MM-DD');
     }
 
     // Product Delete
@@ -72,6 +79,8 @@ class Warehouse extends Component
     public function render()
     {
         $products = Product::where([
+            ['created_at', '>=', $this->datefrom],
+            ['created_at', '<=', $this->datetill],
             ['warehouse', true],
             ['title_ge', 'LIKE', '%' . $this->name . '%'],
             ['unit', 'LIKE', '%' . $this->unit . '%'],

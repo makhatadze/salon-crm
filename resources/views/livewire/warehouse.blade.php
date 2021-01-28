@@ -240,25 +240,52 @@
                             <label for="pricefrom" class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
                               @lang('warehouse.price') <small>@lang('warehouse.from')</small>
                             </label>
-                            <input wire:model="pricefrom" name="pricefrom" placeholder="xxxxxxxx" type="number" step="0.01" min="1" id="pricefrom" class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white">
+                              <input wire:model="pricefrom" name="pricefrom" placeholder="xxxxxxxx" type="number"
+                                     step="0.01" min="1" id="pricefrom"
+                                     class="appearance-none block w-full bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white">
                           </div>
                           <div class="w-full md:w-1/2 px-3">
-                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="pricetill">
-                              @lang('warehouse.price') <small>@lang('warehouse.till')</small>
-                            </label>
-                            <input type="number" placeholder="xxxxxxxx" step="0.01" min="1" id="pricetill" wire:model="pricetill" name="pricetill" class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                              <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                                     for="pricetill">
+                                  @lang('warehouse.price') <small>@lang('warehouse.till')</small>
+                              </label>
+                              <input type="number" placeholder="xxxxxxxx" step="0.01" min="1" id="pricetill"
+                                     wire:model="pricetill" name="pricetill"
+                                     class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
                           </div>
-                        </div>
-                        <div class="flex flex-wrap -mx-3 mb-1">
-                          <div class="w-full md:w-1/2 px-3 mb-1 md:mb-0">
-                            <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
+                      </div>
+                  <div class="flex flex-wrap -mx-3 mb-1">
+                      <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                          <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                              @lang('finance.date') <small>[@lang('finance.from')]</small>
+                          </label>
+                          <input wire:model="datefrom"
+                                 class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                                 type="date">
+                      </div>
+                      <div class="w-full md:w-1/2 px-3">
+                          <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">
+                              @lang('finance.date') <small>[@lang('finance.till')]</small>
+                          </label>
+                          <input wire:model="datetill"
+                                 class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                 type="date">
+                      </div>
+                  </div>
+                  <div class="flex flex-wrap -mx-3 mb-1">
+                      <div class="w-full md:w-1/2 px-3 mb-1 md:mb-0">
+                          <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                                 for="grid-first-name">
                               @lang('warehouse.amout')
-                            </label>
-                            <input type="number"  placeholder="xxxxxxxx" step="0.01"  id="amout" wire:model="amout" name="amout" class="appearance-none block w-full font-normal text-xs bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white">
-                          </div>
-                          <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
-                              <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-state">
-                                @lang('warehouse.units')
+                          </label>
+                          <input type="number" placeholder="xxxxxxxx" step="0.01" id="amout" wire:model="amout"
+                                 name="amout"
+                                 class="appearance-none block w-full font-normal text-xs bg-gray-200 text-gray-700 border rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white">
+                      </div>
+                      <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+                          <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                                 for="grid-state">
+                              @lang('warehouse.units')
                               </label> 
                               <div class="relative">
                                 <select name="unit" wire:model="unit" class="block font-normal text-xs appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
@@ -273,7 +300,6 @@
                               </div>
                             </div>
                             <p class="px-3 text-gray-600 text-xs italic font-normal">@lang('warehouse.unittext')</p>
-                            
                         </div>
               </form>
           </div>
