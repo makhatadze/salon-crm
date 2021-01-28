@@ -32,7 +32,6 @@ class Finances extends Component
 
     public function render()
     {
-
         $finances = SalaryToService::whereDate('created_at', '>=', $this->datefrom)
                                     ->whereDate('created_at', '<=', $this->datetill);
         if($this->user){
