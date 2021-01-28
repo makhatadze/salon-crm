@@ -291,12 +291,17 @@
     min-width: 900px;
   }
 }
+
 /* -- --  */
 @media (max-width: 1100px) {
   .ss-min-w {
     min-width: 810px;
   }
- 
+
 }
 
 /* -- 4 --  */
+
+.bg-warning td {
+  background-color: #ffcaca8a !important;
+}

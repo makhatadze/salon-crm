@@ -108,25 +108,27 @@
           <div class="w-full col-span-12 scroll-horizontal">
             <table class="table table-report -mt-2 col-span-12  warehouse-min-w">
                 <thead>
-                    <tr>
-                        <th class="whitespace-no-wrap font-bold font-caps text-xs text-gray-700">@lang('warehouse.name')</th>
-                        <th class="text-center whitespace-no-wrap font-bold font-caps text-xs text-gray-700">@lang('warehouse.price')</th>
-                        <th class="text-center whitespace-no-wrap font-bold font-caps text-xs text-gray-700">@lang('warehouse.dept')</th>
-                        <th class="text-center whitespace-no-wrap font-bold font-caps text-xs text-gray-700">@lang('warehouse.status')</th>
-                        <th class="text-center whitespace-no-wrap"></th>
-                    </tr>
+                <tr>
+                    <th class="whitespace-no-wrap font-bold font-caps text-xs text-gray-700">@lang('warehouse.name')</th>
+                    <th class="text-center whitespace-no-wrap font-bold font-caps text-xs text-gray-700">@lang('warehouse.price')</th>
+                    <th class="text-center whitespace-no-wrap font-bold font-caps text-xs text-gray-700">@lang('warehouse.dept')</th>
+                    <th class="text-center whitespace-no-wrap font-bold font-caps text-xs text-gray-700">@lang('warehouse.status')</th>
+                    <th class="text-center whitespace-no-wrap"></th>
+                </tr>
                 </thead>
                 <tbody id="products">
-                    @foreach ($products as $prod)
-                    <tr class="intro-x" >
-                          <td @if($prod->stock == 0)  style="background-color: #ffaeae" @endif>
-                              <a href="" class="font-medium whitespace-no-wrap font-bold text-black">{{$prod->title_ge }}</a> 
-                              <div class="text-gray-600 text-xs whitespace-no-wrap font-normal"> </div>
-                          </td>
-                          <td  @if($prod->stock == 0)  style="background-color: #ffaeae" @endif class="text-center font-normal">
+                @foreach ($products as $prod)
+                    <tr class="intro-x {{$prod->stock < 2 ? 'bg-warning' : ''}}">
+                        <td @if($prod->stock == 0)  style="background-color: #ffaeae" @endif>
+                            <a href=""
+                               class="font-medium whitespace-no-wrap font-bold text-black">{{$prod->title_ge }}</a>
+                            <div class="text-gray-600 text-xs whitespace-no-wrap font-normal"></div>
+                        </td>
+                        <td @if($prod->stock == 0)  style="background-color: #ffaeae"
+                            @endif class="text-center font-normal">
                             <h6>{{$prod->buy_price/100}} @lang('money.icon')</h6>
                             @if ($prod->unit == "gram")
-                              <span class="text-xs font-normal"> 1 @lang('warehouse.gram') = {{number_format(($prod->buy_price/($prod->gramunit ?? 1))/100 ,2)}}</span>                                
+                                <span class="text-xs font-normal"> 1 @lang('warehouse.gram') = {{number_format(($prod->buy_price/($prod->gramunit ?? 1))/100 ,2)}}</span>
                             @endif
                         </td>
                           <td @if($prod->stock == 0)  style="background-color: #ffaeae" @endif class="text-center font-normal ">
