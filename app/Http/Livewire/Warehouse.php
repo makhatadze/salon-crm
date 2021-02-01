@@ -78,9 +78,12 @@ class Warehouse extends Component
     }
     public function render()
     {
+        $dateTill = Carbon::parse($this->datetill)->addDay();
+        $dateFrom = Carbon::parse($this->datefrom)->addDay(-1);
+
         $products = Product::where([
-            ['created_at', '>=', $this->datefrom],
-            ['created_at', '<=', $this->datetill],
+            ['created_at', '>=', $dateFrom],
+            ['created_at', '<=', $dateTill],
             ['warehouse', true],
             ['title_ge', 'LIKE', '%' . $this->name . '%'],
             ['unit', 'LIKE', '%' . $this->unit . '%'],
