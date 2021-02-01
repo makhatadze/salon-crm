@@ -16,19 +16,21 @@ class WarehouseController extends Controller
             'typeamout' => 'required|min:1',
             'sell_price' => 'required'
         ]);
-        
+
         $prod = Product::findOrFail(intval($id));
-        if($prod->stock < $request->typeamout){
+        if ($prod->stock < $request->typeamout) {
             return redirect()->back()->with('error', __('warehouse.message1'));
         }
-        if($prod->buy_price < $request->sell_price){
-            return redirect()->back()->with('error', __('warehouse.message2'));
-        }
+
+//        if($prod->buy_price < $request->sell_price){
+//            return redirect()->back()->with('error', __('warehouse.message2'));
+//        }
+
         if (Product::where('department_id', $request->dept_id)->whereIn('id', $prod->children()->select('child_id')->get()->toArray())->count() > 0) {
             return redirect()->back()->with('error', __('warehouse.message3'));
         }
-        if($prod->type == 1){
-            $this->validate($request,[
+        if ($prod->type == 1) {
+            $this->validate($request, [
                 'expluatation_date' => '',
                 'expluatation_days' => '',
                 'unlimited_expluatation' => '',
