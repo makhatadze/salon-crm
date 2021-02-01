@@ -16,6 +16,7 @@ class ServicesExport implements FromCollection, WithHeadings
     {
         $services = ClientService::all();
         foreach($services as $serv){
+            unset($serv->unchanged_service_price);
             $serv['worker'] = $serv->user->profile->first_name .' '.$serv->user->profile->last_name;
             unset($serv->user_id);
             $serv['servicename'] = $serv->service->title_ge;
